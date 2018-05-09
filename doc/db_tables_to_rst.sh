@@ -1,8 +1,8 @@
 #!/bin/bash
 
 db=$1
-mysql $db --skip-column-names --batch --raw < generate_tables_doc.sql > /tmp/tmp1.log
-sed -i 's/\t/,/g' /tmp/tmp1.log
+mysql $db --skip-column-names --batch --raw < db_tables_to_tsv.sql > /tmp/tmp1.tsv
+sed -i 's/\t/,/g' /tmp/tmp1.tsv
 
 echo ".. csv-table:: Tables, columns and comments"
 echo '   :header: "Name", "Type", "Comment"'
@@ -11,4 +11,4 @@ echo ""
 
 while read p; do
   echo "   $p"
-done </tmp/tmp1.log
+done </tmp/tmp1.tsv
