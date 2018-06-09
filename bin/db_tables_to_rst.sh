@@ -1,7 +1,7 @@
 #!/bin/bash
 
 db=$1
-mysql $db --skip-column-names --batch --raw < db_tables_to_tsv.sql > /tmp/tmp1.tsv
+mysql $db --skip-column-names --batch --raw < sql/db_tables_to_tsv.sql > /tmp/tmp1.tsv
 sed -i 's/\t/,/g' /tmp/tmp1.tsv
 
 echo ".. csv-table:: Tables, columns and comments"
