@@ -1,0 +1,9 @@
+# Example .cnf file
+# Copy this to ".my.cnf" and edit the user and password.
+# The user must have grants for creating and dropping databases
+# as well a lot of other "super user" type of grants.
+  
+[client]
+user = root
+password = rootpassword
+
