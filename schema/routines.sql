@@ -190,7 +190,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
 CREATE FUNCTION `root_replace`(p_str varchar(255), p_oldroot varchar(255), p_newroot varchar(255)) RETURNS varchar(255) CHARSET latin1
-    COMMENT 'Returns a varchar where the old root p_oldroot (the leftmost par'
+    COMMENT 'Returns a varchar where the old root p_oldroot (the leftmost part) of p_str has been replaced with a new root p_newroot'
 BEGIN
  DECLARE path_len smallint unsigned DEFAULT LENGTH(p_oldroot);
  RETURN CASE WHEN LEFT(p_str, path_len) = BINARY p_oldroot THEN CONCAT(p_newroot, SUBSTRING(p_str, path_len + 1)) ELSE p_str END; 
@@ -1448,6 +1448,65 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insert_screening_output_v2` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `insert_screening_output_v2`(
+     OUT p_id int(11) unsigned,
+     p_screeningId int(10) unsigned,
+     p_statusDescription varchar(1024), 
+     p_rejectedReflections int(10) unsigned, 
+     p_resolutionObtained float, 
+     p_spotDeviationR float, 
+     p_spotDeviationTheta float, 
+     p_beamShiftX float, 
+     p_beamShiftY float, 
+     p_numSpotsFound int(10) unsigned, 
+     p_numSpotsUsed int(10) unsigned, 
+     p_numSpotsRejected int(10) unsigned, 
+     p_mosaicity float, 
+     p_iOverSigma float, 
+     p_diffractionRings boolean, 
+     p_mosaicityEstimated boolean, 
+     p_rankingResolution double, 
+     p_program varchar(45), 
+     p_doseTotal double, 
+     p_totalExposureTime double, 
+     p_totalRotationRange double, 
+     p_totalNumberOfImages int(11), 
+     p_rFriedel double, 
+     p_indexingSuccess boolean, 
+     p_strategySuccess boolean, 
+     p_alignmentSuccess boolean
+)
+    MODIFIES SQL DATA
+    COMMENT 'Insert a row with info about a screening output. Returns the ID in p_id.'
+BEGIN
+      INSERT INTO ScreeningOutput (screeningId, statusDescription, rejectedReflections, resolutionObtained, spotDeviationR, spotDeviationTheta, 
+        beamShiftX, beamShiftY, numSpotsFound, numSpotsUsed, numSpotsRejected, mosaicity, iOverSigma, 
+        diffractionRings, mosaicityEstimated, rankingResolution, program, doseTotal, totalExposureTime, totalRotationRange, 
+        totalNumberOfImages, rFriedel, indexingSuccess, strategySuccess, alignmentSuccess) 
+        VALUES (p_screeningId, p_statusDescription, p_rejectedReflections, p_resolutionObtained, p_spotDeviationR, p_spotDeviationTheta, 
+        p_beamShiftX, p_beamShiftY, p_numSpotsFound, p_numSpotsUsed, p_numSpotsRejected, p_mosaicity, p_iOverSigma, 
+        p_diffractionRings, p_mosaicityEstimated, p_rankingResolution, p_program, p_doseTotal, p_totalExposureTime, p_totalRotationRange,
+        p_totalNumberOfImages, p_rFriedel, p_indexingSuccess, p_strategySuccess, p_alignmentSuccess);
+
+	  IF LAST_INSERT_ID() <> 0 THEN 
+		  SET p_id = LAST_INSERT_ID();
+      END IF;      
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `insert_screening_strategy` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -2653,11 +2712,12 @@ DELIMITER ;
 DELIMITER ;;
 CREATE PROCEDURE `retrieve_processing_programs_for_job_id`(p_id int unsigned)
     READS SQL DATA
-    COMMENT 'Returns a multi-row result-set with processing program instances'
+    COMMENT 'Returns a multi-row result-set with processing program instances for the given processing job ID'
 BEGIN
     IF p_id IS NOT NULL THEN
-      SELECT autoProcProgramId "id", processingCommandLine "commandLine", processingPrograms "programs", processingMessage "message",
-          processingStartTime "startTime", processingEndTime "endTime", processingEnvironment "environment", 
+      SELECT autoProcProgramId "id", processingCommandLine "commandLine", processingPrograms "programs",
+          processingStatus "status", processingMessage "message", processingStartTime "startTime",
+          processingEndTime "endTime", processingEnvironment "environment",
           recordTimeStamp "recordTimeStamp", processingJobId "jobId"
       FROM AutoProcProgram  
 	  WHERE processingJobId = p_id
@@ -2846,6 +2906,37 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_sessions_for_person_login` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_sessions_for_person_login`(p_login varchar(45))
+    READS SQL DATA
+    COMMENT 'Returns a multi-row result-set with info about the sessions associated with a person with login=p_login'
+BEGIN
+    IF p_login IS NOT NULL THEN
+      SELECT bs.sessionId "id", bs.proposalId "proposalId", bs.startDate "startDate", bs.endDate "endDate",
+        bs.beamlineName "beamline", bs.visit_number "sessionNumber", bs.comments "comments", shp.role "personRoleOnSession", shp.remote "personRemoteOnSession"
+      FROM BLSession bs
+        INNER JOIN Session_has_Person shp on shp.sessionId = bs.sessionId
+        INNER JOIN Person p on p.personId = shp.personId
+	    WHERE p.login = p_login
+      ORDER BY bs.startDate;
+    ELSE
+	    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_login can not be NULL';
+	  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `retrieve_session_id` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -2900,46 +2991,66 @@ DELIMITER ;
 DELIMITER ;;
 CREATE PROCEDURE `update_container_assign`(IN p_beamline varchar(20), IN p_registry_barcode varchar(45), IN p_position int)
     MODIFIES SQL DATA
-    COMMENT 'Toggles the ''assign'' status of a container (barcode = p_barcode)'
+    COMMENT 'Toggles the ''assign'' status of a container (barcode = p_barcode) between ''processing'' and ''at facility''. Sets the sampleChangerLocation, beamlineLocation. If the containerStatus is set to ''processing'' then sets the same status for its dewar and shipping.'
 BEGIN
     DECLARE row_containerId int(10) unsigned DEFAULT NULL;
     DECLARE row_containerStatus varchar(45) DEFAULT NULL;
     DECLARE row_dewarId int(10) unsigned DEFAULT NULL;
+    DECLARE row_beamlineLocation varchar(20) DEFAULT NULL;
+    DECLARE row_sampleChangerLocation varchar(20) DEFAULT NULL;
+    DECLARE row_proposalId int(10) unsigned DEFAULT NULL;
 
     IF NOT (p_registry_barcode IS NULL) THEN
         START TRANSACTION;
 
-        SELECT c.containerId, c.containerStatus, c.dewarId INTO row_containerId, row_containerStatus, row_dewarId
+        SELECT c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId
+          INTO row_containerId, row_containerStatus, row_dewarId, row_beamlineLocation, row_sampleChangerLocation, row_proposalId
         FROM Container c
             INNER JOIN ContainerRegistry cr ON c.containerRegistryId = cr.containerRegistryId
+            INNER JOIN Dewar d ON d.dewarId = c.dewarId
+            INNER JOIN Shipping s ON s.shippingId = d.shippingId
         WHERE cr.barcode = p_registry_barcode
         ORDER BY c.containerId DESC
         LIMIT 1;
 
-        IF NOT row_containerId IS NULL THEN
         
-          UPDATE Container c
-          INNER JOIN Dewar d ON d.dewarId = c.dewarId
-          INNER JOIN Shipping s ON s.shippingId = d.shippingId
-          SET
-            c.sampleChangerLocation = IF(row_containerStatus='processing', '', p_position),
-            c.beamlineLocation = p_beamline,
-            c.containerStatus = IF(row_containerStatus='processing', 'at DLS', 'processing'),
-			d.dewarStatus = IF(row_containerStatus='processing', d.dewarStatus, 'processing'), 
-            d.storageLocation = IF(row_containerStatus='processing', d.storageLocation, p_beamline), 
-            s.shippingStatus = IF(row_containerStatus='processing', s.shippingStatus, 'processing')
-          WHERE
-            c.containerId = row_containerId;
+        IF NOT row_containerId IS NULL THEN
+          IF row_containerStatus <> 'processing' OR (row_beamlineLocation = p_beamline AND row_sampleChangerLocation = p_position) THEN
 
-		  IF row_containerStatus <> 'processing' THEN
-          
-            INSERT INTO DewarTransportHistory (dewarId, dewarStatus, storageLocation, arrivalDate) 
-              VALUES (row_dewarId, 'processing', p_beamline, NOW());
+            
+            UPDATE Container c
+            INNER JOIN Dewar d ON d.dewarId = c.dewarId
+            INNER JOIN Shipping s ON s.shippingId = d.shippingId
+            SET
+              c.sampleChangerLocation = IF(row_containerStatus='processing', '', p_position),
+              c.beamlineLocation = p_beamline,
+              c.containerStatus = IF(row_containerStatus='processing', 'at facility', 'processing'),
+			        d.dewarStatus = IF(row_containerStatus='processing', d.dewarStatus, 'processing'),
+              d.storageLocation = IF(row_containerStatus='processing', d.storageLocation, p_beamline),
+              s.shippingStatus = IF(row_containerStatus='processing', s.shippingStatus, 'processing')
+            WHERE
+              c.containerId = row_containerId;
+
+            IF row_containerStatus <> 'processing' THEN
+              
+              
+              UPDATE Container c
+                INNER JOIN Dewar d ON d.dewarId = c.dewarId
+                INNER JOIN Shipping s ON s.shippingId = d.shippingId
+              SET c.containerStatus = 'at facility',
+                c.sampleChangerLocation = ''
+              WHERE s.proposalId = row_proposalId AND c.beamlineLocation = p_beamline AND
+                c.sampleChangerLocation = p_position AND c.containerId <> row_containerId;
+
+              
+              INSERT INTO DewarTransportHistory (dewarId, dewarStatus, storageLocation, arrivalDate)
+                VALUES (row_dewarId, 'processing', p_beamline, NOW());
+            END IF;
+
+            
+            INSERT INTO ContainerHistory (containerId, location, status, beamlineName)
+              VALUES (row_containerId, p_position, IF(row_containerStatus='processing', 'at facility', 'processing'), p_beamline);
           END IF;
-
-          
-          INSERT INTO ContainerHistory (containerId, location, status, beamlineName)
-            VALUES (row_containerId, p_position, IF(row_containerStatus='processing', 'at DLS', 'processing'), p_beamline);
         ELSE
           SIGNAL SQLSTATE '02000' SET MYSQL_ERRNO=1643, MESSAGE_TEXT='Container with p_registry_barcode not found';
         END IF;
@@ -3325,7 +3436,7 @@ CREATE PROCEDURE `update_session_paths`(
   p_newRoot varchar(255)
 )
     MODIFIES SQL DATA
-    COMMENT 'Attempts to update the root (the leftmost part) of all paths rel'
+    COMMENT 'Attempts to update the root (the leftmost part) of all paths related to session \np_proposalCode + p_proposalNumber + p_sessionNumber from p_oldRoot to p_newRoot.\nNOTE:\nWe assume that p_oldRoot and p_newRoot both contain a trailing "/"'
 BEGIN
   DECLARE row_session_id int(10) unsigned DEFAULT NULL;
   DECLARE row_proposal_id int(10) unsigned DEFAULT NULL;
@@ -3338,7 +3449,7 @@ BEGIN
 
       IF row_session_id IS NOT NULL AND row_proposal_id IS NOT NULL THEN
 
--- DataCollection
+
         UPDATE DataCollection dc
           INNER JOIN DataCollectionGroup dcg on dcg.dataCollectionGroupId = dc.dataCollectionGroupId 
         SET 
@@ -3351,7 +3462,7 @@ BEGIN
         WHERE 
           dcg.sessionId = row_session_id;
 
--- DataCollectionFileAttachment
+
         UPDATE DataCollectionFileAttachment dcfa
 		  INNER JOIN DataCollection dc on dc.dataCollectionId = dcfa.datacollectionId
           INNER JOIN DataCollectionGroup dcg on dcg.dataCollectionGroupId = dc.dataCollectionGroupId 
@@ -3360,7 +3471,7 @@ BEGIN
         WHERE 
           dcg.sessionId = row_session_id;
           
--- XFEFluorescenceSpectrum 
+
 	UPDATE XFEFluorescenceSpectrum 
 	SET 
           jpegScanFileFullPath = root_replace(jpegScanFileFullPath, p_oldRoot, p_newRoot), 
@@ -3371,7 +3482,7 @@ BEGIN
 	WHERE 
           sessionId = row_session_id;
           
--- EnergyScan
+
 	UPDATE EnergyScan
 	SET 
           scanFileFullPath = root_replace(scanFileFullPath, p_oldRoot, p_newRoot), 
@@ -3382,7 +3493,7 @@ BEGIN
 	WHERE 
           sessionId = row_session_id;
 
--- PhasingProgramAttachment
+
 	UPDATE PhasingProgramAttachment ppa
           INNER JOIN Phasing p on p.phasingProgramRunId = ppa.phasingProgramRunId
           INNER JOIN Phasing_has_Scaling phs on phs.phasingAnalysisId = p.phasingAnalysisId
@@ -3395,7 +3506,7 @@ BEGIN
         WHERE
           dcg.sessionId = row_session_id;  
 
--- AutoProcProgramAttachment
+
         UPDATE AutoProcProgramAttachment appa
           INNER JOIN AutoProcIntegration api on api.autoProcProgramId = appa.autoProcProgramId
           INNER JOIN DataCollection dc on dc.dataCollectionId = api.dataCollectionId
@@ -3405,7 +3516,7 @@ BEGIN
         WHERE
           dcg.sessionId = row_session_id;
 
--- MXMRRun
+
         UPDATE MXMRRun mr
           INNER JOIN AutoProcScaling_has_Int apshi on mr.autoProcScalingId = apshi.autoProcScalingId 
           INNER JOIN AutoProcIntegration api on api.autoProcIntegrationId = apshi.autoProcIntegrationId 
@@ -3421,7 +3532,7 @@ BEGIN
         WHERE
           dcg.sessionId = row_session_id;
 
--- MXMRRunBlob
+
         UPDATE MXMRRunBlob mrb
           INNER JOIN MXMRRun mr on mrb.mxMRRunId = mr.mxMRRunId
           INNER JOIN AutoProcScaling_has_Int apshi on mr.autoProcScalingId = apshi.autoProcScalingId 
@@ -3435,7 +3546,7 @@ BEGIN
         WHERE
           dcg.sessionId = row_session_id;
 
--- BLSampleImage
+
         UPDATE BLSampleImage blsi
           INNER JOIN BLSample bls on blsi.blsampleId = bls.blsampleId
           INNER JOIN Container c on c.containerId = bls.containerId
@@ -3444,7 +3555,7 @@ BEGIN
         WHERE 
           c.sessionId = row_session_id;
 
--- BLSampleImageAnalysis
+
         UPDATE BLSampleImageAnalysis blsia
           INNER JOIN BLSampleImage blsi on blsia.blSampleImageId = blsi.blSampleImageId
           INNER JOIN BLSample bls on blsi.blsampleId = bls.blsampleId
@@ -3455,7 +3566,7 @@ BEGIN
           c.sessionId = row_session_id;
 
       ELSE
-        -- MYSQL_ERRNO=1643: ER_SIGNAL_NOT_FOUND: Unhandled user-defined not found condition
+        
 		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1643, MESSAGE_TEXT='Corresponding rows for p_proposalCode + p_proposalNumber + p_sessionNumber not found';
       END IF;
   END IF;
@@ -3600,7 +3711,7 @@ CREATE PROCEDURE `upsert_dc_file_attachment`(
      p_fileType varchar(45)
 	)
     MODIFIES SQL DATA
-    COMMENT 'Inserts or updates info about a file attachmet for a data collec'
+    COMMENT 'Inserts or updates info about a file attachmet for a data collection. Returns: The PK value in p_id.'
 BEGIN
 	IF p_id IS NOT NULL OR p_dataCollectionId IS NOT NULL THEN
 
@@ -3956,6 +4067,83 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `upsert_dc_main_v3` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `upsert_dc_main_v3`(
+     INOUT p_id int(11) unsigned,
+     p_groupId int(11) unsigned,
+     p_detectorId int(11),
+     p_blSubSampleId int(11) unsigned,
+     p_dcNumber int(10) unsigned,
+     p_startTime datetime,
+     p_endTime datetime,
+     p_status varchar(45),
+     p_noImages int(10) unsigned,
+	   p_startImgNumber int(10) unsigned,
+	   p_noPasses int(10) unsigned,
+     p_imgDir varchar(255),
+	   p_imgPrefix varchar(45),
+     p_imgSuffix varchar(45),
+     p_imgContainerSubPath varchar(255),
+     p_fileTemplate varchar(255),
+     p_snapshot1 varchar(255),
+     p_snapshot2 varchar(255),
+     p_snapshot3 varchar(255),
+     p_snapshot4 varchar(255),
+     p_comments varchar(1024)
+)
+    MODIFIES SQL DATA
+    COMMENT 'Inserts (if p_id not provided) or updates a row in DataCollection, returns ID in p_id. '
+BEGIN
+    INSERT INTO DataCollection (dataCollectionId, dataCollectionGroupId, sessionId, blSampleId, blSubSampleId, detectorId, datacollectionNumber, startTime, endTime,
+        runStatus, numberOfImages, startImageNumber, numberOfPasses, imageDirectory, imagePrefix, imageSuffix, imageContainerSubPath, fileTemplate,
+        xtalSnapshotFullPath1, xtalSnapshotFullPath2, xtalSnapshotFullPath3, xtalSnapshotFullPath4, comments)
+      VALUES (p_id, p_groupId,
+      (SELECT sessionId FROM DataCollectionGroup WHERE dataCollectionGroupId = p_groupId),
+      (SELECT blSampleId FROM DataCollectionGroup WHERE dataCollectionGroupId = p_groupId),
+      p_blSubSampleId,
+      p_detectorId,
+      p_dcNumber, p_startTime, p_endTime,
+      p_status, p_noImages, p_startImgNumber, p_noPasses, p_imgDir, p_imgPrefix, p_imgSuffix, p_imgContainerSubPath, p_fileTemplate,
+      p_snapshot1, p_snapshot2, p_snapshot3, p_snapshot4, comments)
+      ON DUPLICATE KEY UPDATE
+		    datacollectiongroupid = IFNULL(p_groupId, datacollectiongroupid),
+		    blSubSampleId = IFNULL(p_blSubSampleId, blSubSampleId),
+        detectorId = IFNULL(p_detectorId, detectorId),
+        datacollectionNumber = IFNULL(p_dcNumber, datacollectionNumber),
+        starttime = IFNULL(p_starttime, starttime),
+        endtime = IFNULL(p_endtime, endtime),
+        runStatus = IFNULL(p_status, runStatus),
+        numberOfImages = IFNULL(p_noImages, numberOfImages),
+        startImageNumber = IFNULL(p_noImages, startImageNumber),
+        numberOfPasses = IFNULL(p_noPasses, numberOfPasses),
+        imagedirectory = IFNULL(p_imgDir, imagedirectory),
+        imageprefix = IFNULL(p_imgPrefix, imageprefix),
+        imagesuffix = IFNULL(p_imgSuffix, imagesuffix),
+        imageContainerSubPath = IFNULL(p_imgContainerSubPath, imageContainerSubPath),
+        fileTemplate = IFNULL(p_fileTemplate, fileTemplate),
+        xtalSnapshotFullPath1 = IFNULL(p_snapshot1, xtalSnapshotFullPath1),
+        xtalSnapshotFullPath2 = IFNULL(p_snapshot2, xtalSnapshotFullPath2),
+        xtalSnapshotFullPath3 = IFNULL(p_snapshot3, xtalSnapshotFullPath3),
+        xtalSnapshotFullPath4 = IFNULL(p_snapshot4, xtalSnapshotFullPath4),
+        comments = IFNULL(p_comments, comments);
+	IF p_id IS NULL THEN
+		SET p_id = LAST_INSERT_ID();
+    END IF;
+  END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `upsert_dewar` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -3986,15 +4174,27 @@ CREATE PROCEDURE `upsert_dewar`(
 	 p_deliveryAgentBarcode varchar(30)
  )
     MODIFIES SQL DATA
-    COMMENT 'Inserts or updates info about a dewar/parcel (p_id).\nMandatory c'
+    COMMENT 'Inserts or updates info about a dewar/parcel (p_id).\nMandatory columns:\nFor insert: none\nFor update: p_id \nReturns: Record ID in p_id.'
 BEGIN
-	IF p_type IS NOT NULL THEN
-  	INSERT INTO Dewar(dewarId,shippingId,code,comments,storageLocation,dewarStatus,isStorageDewar,barCode,firstExperimentId,customsValue,transportValue,
-			trackingNumberToSynchrotron,trackingNumberFromSynchrotron,`type`,FACILITYCODE,weight,deliveryAgent_barcode)
-			VALUES (p_id, p_shippingId, p_name, p_comments, p_storageLocation, p_status, p_isStorageDewar, p_barcode, p_firstSessionId, p_customsValue, p_transportValue,
-				p_trackingNumberToSynchrotron, p_trackingNumberFromSynchrotron, p_type, p_facilityCode, p_weight, p_deliveryAgentBarcode)
-			ON DUPLICATE KEY UPDATE
-				shippingId = IFNULL(p_shippingId, shippingId),
+    DECLARE row_storageLocation varchar(45) DEFAULT NULL;
+	  DECLARE row_dewarStatus varchar(45) DEFAULT NULL;
+
+    IF p_id IS NULL THEN
+		  IF p_type IS NOT NULL THEN
+        INSERT INTO Dewar(dewarId,shippingId,code,comments,storageLocation,dewarStatus,isStorageDewar,barCode,firstExperimentId,customsValue,transportValue,
+			    trackingNumberToSynchrotron,trackingNumberFromSynchrotron,`type`,FACILITYCODE,weight,deliveryAgent_barcode)
+			    VALUES (p_id, p_shippingId, p_name, p_comments, p_storageLocation, p_status, p_isStorageDewar, p_barcode, p_firstSessionId, p_customsValue, p_transportValue,
+				    p_trackingNumberToSynchrotron, p_trackingNumberFromSynchrotron, p_type, p_facilityCode, p_weight, p_deliveryAgentBarcode);
+			  SET p_id = LAST_INSERT_ID();
+			ELSE
+				SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_type must be non-NULL.';
+			END IF;
+	  ELSE
+
+      SELECT storageLocation, dewarStatus INTO row_storageLocation, row_dewarStatus FROM Dewar WHERE dewarId = p_id;
+
+			UPDATE Dewar
+			  SET shippingId = IFNULL(p_shippingId, shippingId),
 				code = IFNULL(p_name, code),
 				comments = IFNULL(p_comments, comments),
 				storageLocation = IFNULL(p_storageLocation, storageLocation),
@@ -4009,14 +4209,23 @@ BEGIN
 				`type` = IFNULL(p_type, `type`),
 				FACILITYCODE = IFNULL(p_facilityCode, FACILITYCODE),
 				weight = IFNULL(p_weight, weight),
-				deliveryAgent_barcode = IFNULL(p_deliveryAgentBarcode, deliveryAgent_barcode);
+				deliveryAgent_barcode = IFNULL(p_deliveryAgentBarcode, deliveryAgent_barcode)
+			WHERE dewarId = p_id;
 
-		IF p_id IS NULL THEN
-			SET p_id = LAST_INSERT_ID();
+			
+      IF row_storageLocation <> p_storageLocation OR row_dewarStatus <> p_status THEN
+        INSERT INTO DewarTransportHistory (dewarId, dewarStatus, storageLocation, arrivalDate)
+				  VALUES (p_id, p_status, p_storageLocation, NOW());
+      END IF;
+
+			
+		  IF row_storageLocation <> p_storageLocation THEN
+			  
+        UPDATE Container
+				SET sampleChangerLocation = '', containerStatus = 'at facility'
+				WHERE dewarId = p_id;
+			END IF;
 		END IF;
-	ELSE
-		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_type must be non-NULL.';
-	END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4140,7 +4349,7 @@ CREATE PROCEDURE `upsert_fluo_mapping`(
 	 p_counts int(10) unsigned
  )
     MODIFIES SQL DATA
-    COMMENT 'Inserts or updates info about a fluorescence spectrum mapping (p'
+    COMMENT 'Inserts or updates info about a fluorescence spectrum mapping (p_id).\nMandatory columns:\nFor insert: (p_roiId OR (p_roiStartEnergy AND p_roiEndEnergy)) AND p_dcId\nFor update: p_id \nReturns: Record ID in p_id.'
 BEGIN
   DECLARE row_xrfFluorescenceMappingROIId int(10) unsigned DEFAULT NULL;
 
@@ -4394,7 +4603,7 @@ CREATE PROCEDURE `upsert_mrrun`(
      p_endtime datetime
      )
     MODIFIES SQL DATA
-    COMMENT 'Update or insert new entry with info about a MX molecular replac'
+    COMMENT 'Update or insert new entry with info about a MX molecular replacements run, e.g. Dimple'
 BEGIN
     IF p_parentId IS NOT NULL THEN
       INSERT INTO MXMRRun (mxMRRunId, autoProcScalingId, success, message, pipeline, inputCoordFile, outputCoordFile, inputMTZFile, outputMTZFile, 
@@ -4403,15 +4612,15 @@ BEGIN
         p_id, 
         p_parentId, 
         p_success, 
-        p_message, 
-        p_pipeline, 
-        p_inputCoordFile, 
-        p_outputCoordFile, 
-        p_inputMTZFile, 
-        p_outputMTZFile, 
-        p_runDirectory,
-        p_logFile,
-        p_commandLine,
+        substr(p_message, 1, 255),
+        substr(p_pipeline, 1, 50),
+        substr(p_inputCoordFile, 1, 255),
+        substr(p_outputCoordFile, 1, 255),
+        substr(p_inputMTZFile, 1, 255),
+        substr(p_outputMTZFile, 1, 255),
+        substr(p_runDirectory, 1, 255),
+        substr(p_logFile, 1, 255),
+        substr(p_commandLine, 1, 255),
         p_rValueStart, 
         p_rValueEnd, 
         p_rFreeValueStart, 
@@ -4421,15 +4630,15 @@ BEGIN
 		ON DUPLICATE KEY UPDATE
 			autoProcScalingId = IFNULL(p_parentId, autoProcScalingId), 
             success = IFNULL(p_success, success), 
-            message = IFNULL(p_message, message), 
-            pipeline = IFNULL(p_pipeline, pipeline), 
-            inputCoordFile = IFNULL(p_inputCoordFile, inputCoordFile), 
-            outputCoordFile = IFNULL(p_outputCoordFile, outputCoordFile), 
-            inputMTZFile = IFNULL(p_inputMTZFile, inputMTZFile), 
-            outputMTZFile = IFNULL(p_outputMTZFile, outputMTZFile), 
-            runDirectory = IFNULL(p_runDirectory, runDirectory), 
-            logFile = IFNULL(p_logFile, logFile), 
-            commandLine = IFNULL(p_commandLine, commandLine), 
+            message = IFNULL(substr(p_message, 1, 255), message), 
+            pipeline = IFNULL(substr(p_pipeline, 1, 50), pipeline), 
+            inputCoordFile = IFNULL(substr(p_inputCoordFile, 1, 255), inputCoordFile), 
+            outputCoordFile = IFNULL(substr(p_outputCoordFile, 1, 255), outputCoordFile), 
+            inputMTZFile = IFNULL(substr(p_inputMTZFile, 1, 255), inputMTZFile), 
+            outputMTZFile = IFNULL(substr(p_outputMTZFile, 1, 255), outputMTZFile), 
+            runDirectory = IFNULL(substr(p_runDirectory, 1, 255), runDirectory), 
+            logFile = IFNULL(substr(p_logFile, 1, 255), logFile), 
+            commandLine = IFNULL(substr(p_commandLine, 1, 255), commandLine), 
             rValueStart = IFNULL(p_rValueStart, rValueStart), 
             rValueEnd = IFNULL(p_rValueEnd, rValueEnd), 
             rFreeValueStart = IFNULL(p_rFreeValueStart, rFreeValueStart), 
@@ -4467,16 +4676,16 @@ CREATE PROCEDURE `upsert_mrrun_blob`(
      p_view3 varchar(255) 
   )
     MODIFIES SQL DATA
-    COMMENT 'Update or insert new entry with info about views (image paths) f'
+    COMMENT 'Update or insert new entry with info about views (image paths) for an MX molecular replacement run, e.g. Dimple.'
 BEGIN
   IF p_parentId IS NOT NULL THEN
     INSERT INTO MXMRRunBlob (mxMRRunBlobId, mxMRRunId, view1, view2, view3) 
-		VALUES (p_id, p_parentId, p_view1, p_view2, p_view3)
+		VALUES (p_id, p_parentId, substr(p_view1, 1, 255), substr(p_view2, 1, 255), substr(p_view3, 1, 255))
 		ON DUPLICATE KEY UPDATE
 			mxMRRunId = IFNULL(p_parentId, mxMRRunId),
-			view1 = IFNULL(p_view1, view1),
-			view2 = IFNULL(p_view2, view2),
-			view3 = IFNULL(p_view3, view3);
+			view1 = IFNULL(substr(p_view1, 1, 255), view1),
+			view2 = IFNULL(substr(p_view2, 1, 255), view2),
+			view3 = IFNULL(substr(p_view3, 1, 255), view3);
 
  	IF p_id IS NULL THEN 
 		SET p_id = LAST_INSERT_ID();
@@ -4513,7 +4722,7 @@ CREATE PROCEDURE `upsert_person`(
          p_externalPkUUID varchar(32)
  )
     MODIFIES SQL DATA
-    COMMENT 'Inserts or updates info about a person (p_id).\nMandatory columns'
+    COMMENT 'Inserts or updates info about a person (p_id).\nMandatory columns:\nFor insert: login\nFor update: p_id \nReturns: Record ID in p_id.'
 BEGIN
         IF p_id is NOT NULL THEN
                 UPDATE Person SET
@@ -4947,7 +5156,7 @@ CREATE PROCEDURE `upsert_proposal`(
    p_externalPkUUID varchar(32)
  )
     MODIFIES SQL DATA
-    COMMENT 'Inserts or updates info about a proposal (p_id).\nMandatory colum'
+    COMMENT 'Inserts or updates info about a proposal (p_id).\nMandatory columns:\nFor insert: p_personId AND p_proposalCode AND p_proposalNumber\nFor update: p_id \nReturns: Record ID in p_id.'
 BEGIN
 
 IF p_id IS NOT NULL OR (p_personId IS NOT NULL AND p_proposalCode IS NOT NULL AND p_proposalNumber IS NOT NULL)  THEN
@@ -4992,7 +5201,7 @@ CREATE PROCEDURE `upsert_proposal_has_person`(
          p_role varchar(100)
  )
     MODIFIES SQL DATA
-    COMMENT 'Inserts or updates info about a proposal - person association (p'
+    COMMENT 'Inserts or updates info about a proposal - person association (p_id).\nMandatory columns:\nFor insert: p_proposalId, p_personId\nFor update: p_id\nReturns: Record ID in p_id.'
 BEGIN
         IF p_id IS NOT NULL OR (p_proposalId IS NOT NULL AND p_personId IS NOT NULL) THEN
                 INSERT INTO ProposalHasPerson(proposalId, personId, `role`)
@@ -5043,7 +5252,7 @@ CREATE PROCEDURE `upsert_quality_indicators`(
   p_driftFactor float
 )
     MODIFIES SQL DATA
-    COMMENT 'Inserts into or updates a row in the image quality indicators ta'
+    COMMENT 'Inserts into or updates a row in the image quality indicators table'
 BEGIN
   DECLARE row_DataCollectionId int(11) unsigned DEFAULT NULL;
   DECLARE row_imageNumber mediumint(8) unsigned DEFAULT NULL;
@@ -5060,8 +5269,8 @@ BEGIN
         );
         SET p_id = 1;
     ELSE
-        -- Not setting dataCollectionId and imageNumber as they are sort of the "primary keys" here
-        -- and have already been used for looking up the row:
+        
+        
         UPDATE ImageQualityIndicators 
         SET
           spotTotal = IFNULL(p_spotTotal, spotTotal),
@@ -5100,7 +5309,7 @@ CREATE PROCEDURE `upsert_quality_indicators_dozor_score`(
   p_dozorScore double
 )
     MODIFIES SQL DATA
-    COMMENT 'Inserts into or updates a row in the image quality indicators ta'
+    COMMENT 'Inserts into or updates a row in the image quality indicators table'
 BEGIN
   DECLARE row_DataCollectionId int(11) unsigned DEFAULT NULL;
   DECLARE row_imageNumber mediumint(8) unsigned DEFAULT NULL;
@@ -5339,7 +5548,7 @@ CREATE PROCEDURE `upsert_session_has_person`(
          p_remote tinyint(1)
  )
     MODIFIES SQL DATA
-    COMMENT 'Inserts or updates info about a session - person association (p_'
+    COMMENT 'Inserts or updates info about a session - person association (p_sessionId, p_personId).\nMandatory columns:\nFor insert: p_sessionId, p_personId\nFor update: p_sessionId, p_personId\nReturns: Nothing.'
 BEGIN
         IF p_sessionId IS NOT NULL AND p_personId IS NOT NULL THEN
                 INSERT INTO Session_has_Person(sessionId, personId, `role`, remote)
@@ -5440,4 +5649,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-09 23:08:42
+-- Dump completed on 2018-07-25 16:28:56
