@@ -17,14 +17,13 @@ mysql --defaults-file=.my.cnf -e "CREATE DATABASE $db; SET GLOBAL log_bin_trust_
 if [[ $? -eq 0 ]]
 then
   mysql --defaults-file=.my.cnf -D $db < schema/tables.sql
+  mysql --defaults-file=.my.cnf -D $db < schema/data.sql
   mysql --defaults-file=.my.cnf -D $db < schema/routines.sql
 
   # Verify that all update .sql files have been run, if not exit with message
-  all_sql_files=`cd schema/updates && ls *.sql && cd -`
+  all_sql_files=`cd schema/updates && ls *.sql && cd ../..`
 
   done_sql_files=`mysql --defaults-file=.my.cnf -D $db --skip-column-names --silent --raw -e "SELECT scriptName FROM SchemaStatus WHERE schemaStatus = 'DONE' ORDER BY recordTimeStamp;"`
-
-  echo "4: $done_sql_files"
 
   arr=()
   while read -r sql_file; do
@@ -43,8 +42,10 @@ then
   echo "All .sql files appear to have been run."
 
   # Generate table and sproc documentation
-  bin/db_procs_to_rst.sh $db > doc/list_of_procs.rst
-  bin/db_tables_to_rst.sh $db > doc/list_of_tables_and_columns.rst
+  cd bin
+  ./db_procs_to_rst.sh $db > ../doc/list_of_procs.rst
+  ./db_tables_to_rst.sh $db > ../doc/list_of_tables_and_columns.rst
+  cd ..
 
   # Clean up
   mysql --defaults-file=.my.cnf -e "DROP DATABASE $db;"

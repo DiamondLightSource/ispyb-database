@@ -1,7 +1,7 @@
 #!/bin/bash
 
 db=$1
-mysql $db --skip-column-names --batch --raw < sql/db_procs_to_tsv.sql > /tmp/tmp2.tsv
+mysql --defaults-file=../.my.cnf -D $db --skip-column-names --batch --raw < sql/db_procs_to_tsv.sql > /tmp/tmp2.tsv
 sed -i 's/\t/,/g' /tmp/tmp2.tsv
 
 echo ".. csv-table:: Procedure signatures with comments"
