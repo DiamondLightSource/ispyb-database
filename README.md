@@ -14,6 +14,7 @@ CREATE DATABASE ispyb;
 ```
 ```bash
 mysql ispyb < schema/tables.sql
+mysql ispyb < schema/lookups.sql
 mysql ispyb < schema/data.sql
 mysql ispyb < schema/routines.sql
 ```

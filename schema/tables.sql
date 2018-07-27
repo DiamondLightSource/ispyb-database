@@ -91,7 +91,7 @@ CREATE TABLE `AdminVar` (
   PRIMARY KEY (`varId`),
   KEY `AdminVar_FKIndexName` (`name`),
   KEY `AdminVar_FKIndexValue` (`value`(767))
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='ISPyB administration values';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COMMENT='ISPyB administration values';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5639,4 +5639,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-25 16:28:55
+-- Dump completed on 2018-07-27 11:21:41

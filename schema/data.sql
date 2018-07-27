@@ -42,15 +42,6 @@ LOCK TABLES `AdminActivity` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `AdminVar`
---
-
-LOCK TABLES `AdminVar` WRITE;
-/*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-/*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `Aperture`
 --
 
@@ -166,15 +157,6 @@ LOCK TABLES `AutoProcStatus` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `BF_component`
---
-
-LOCK TABLES `BF_component` WRITE;
-/*!40000 ALTER TABLE `BF_component` DISABLE KEYS */;
-/*!40000 ALTER TABLE `BF_component` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `BF_component_beamline`
 --
 
@@ -193,30 +175,12 @@ LOCK TABLES `BF_fault` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `BF_subcomponent`
---
-
-LOCK TABLES `BF_subcomponent` WRITE;
-/*!40000 ALTER TABLE `BF_subcomponent` DISABLE KEYS */;
-/*!40000 ALTER TABLE `BF_subcomponent` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `BF_subcomponent_beamline`
 --
 
 LOCK TABLES `BF_subcomponent_beamline` WRITE;
 /*!40000 ALTER TABLE `BF_subcomponent_beamline` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_subcomponent_beamline` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `BF_system`
---
-
-LOCK TABLES `BF_system` WRITE;
-/*!40000 ALTER TABLE `BF_system` DISABLE KEYS */;
-/*!40000 ALTER TABLE `BF_system` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -382,16 +346,6 @@ LOCK TABLES `BeamCentres` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `BeamLineSetup`
---
-
-LOCK TABLES `BeamLineSetup` WRITE;
-/*!40000 ALTER TABLE `BeamLineSetup` DISABLE KEYS */;
-INSERT INTO `BeamLineSetup` VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2007-04-26 00:00:00','Diamond Light Source',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-19 22:56:25',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-/*!40000 ALTER TABLE `BeamLineSetup` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `BeamlineAction`
 --
 
@@ -456,42 +410,12 @@ INSERT INTO `ComponentLattice` VALUES (1,123497,'P21',10.1,11.1,12.1,90.1,90.2,9
 UNLOCK TABLES;
 
 --
--- Dumping data for table `ComponentSubType`
---
-
-LOCK TABLES `ComponentSubType` WRITE;
-/*!40000 ALTER TABLE `ComponentSubType` DISABLE KEYS */;
-INSERT INTO `ComponentSubType` VALUES (1,'Buffer',1),(2,'Precipitant',0),(3,'Salt',0);
-/*!40000 ALTER TABLE `ComponentSubType` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `ComponentType`
---
-
-LOCK TABLES `ComponentType` WRITE;
-/*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
-INSERT INTO `ComponentType` VALUES (1,'Protein'),(2,'DNA'),(3,'Small Molecule'),(4,'RNA');
-/*!40000 ALTER TABLE `ComponentType` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `Component_has_SubType`
 --
 
 LOCK TABLES `Component_has_SubType` WRITE;
 /*!40000 ALTER TABLE `Component_has_SubType` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Component_has_SubType` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `ConcentrationType`
---
-
-LOCK TABLES `ConcentrationType` WRITE;
-/*!40000 ALTER TABLE `ConcentrationType` DISABLE KEYS */;
-INSERT INTO `ConcentrationType` VALUES (1,'Molar','M'),(2,'Percentage Weight / Volume','%(w/v)'),(3,'Percentage Volume / Volume','%(v/v)'),(4,'Milligrams / Millilitre','mg/ml'),(5,'Grams','g');
-/*!40000 ALTER TABLE `ConcentrationType` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -666,16 +590,6 @@ LOCK TABLES `DataReductionStatus` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `Detector`
---
-
-LOCK TABLES `Detector` WRITE;
-/*!40000 ALTER TABLE `Detector` DISABLE KEYS */;
-INSERT INTO `Detector` VALUES (4,'Photon counting','In-house','Excalibur',NULL,NULL,NULL,NULL,'1109-434',100,300,NULL,NULL,NULL,NULL,NULL,NULL,NULL,55,'CrO3Br5Sr10',NULL,NULL,NULL,NULL),(8,'Diamond XPDF detector',NULL,NULL,NULL,NULL,NULL,NULL,'1109-761',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,10.4,'C+Br+He',NULL,NULL,NULL,NULL);
-/*!40000 ALTER TABLE `Detector` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `Dewar`
 --
 
@@ -692,15 +606,6 @@ UNLOCK TABLES;
 LOCK TABLES `DewarLocation` WRITE;
 /*!40000 ALTER TABLE `DewarLocation` DISABLE KEYS */;
 /*!40000 ALTER TABLE `DewarLocation` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `DewarLocationList`
---
-
-LOCK TABLES `DewarLocationList` WRITE;
-/*!40000 ALTER TABLE `DewarLocationList` DISABLE KEYS */;
-/*!40000 ALTER TABLE `DewarLocationList` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -857,26 +762,6 @@ LOCK TABLES `ImageQualityIndicators` WRITE;
 /*!40000 ALTER TABLE `ImageQualityIndicators` DISABLE KEYS */;
 INSERT INTO `ImageQualityIndicators` VALUES (1052494,1,NULL,NULL,296,296,259,0,2.03,2.03,0,0,0,0,NULL,2.61,NULL,NULL),(1052494,2,NULL,NULL,239,239,224,0,2.12,2.12,0,0,0,0,NULL,2.95,NULL,NULL),(1052503,1,274837177,NULL,217,217,202,0,2.07,2.07,0,0,0,0,NULL,2.99,NULL,NULL),(1052503,2,NULL,NULL,257,257,236,0,2.06,2.06,0,0,0,0,NULL,3.02,NULL,NULL),(1052503,3,NULL,NULL,306,306,278,0,2.04,2.04,0,0,0,0,NULL,2.75,NULL,NULL),(1066786,1,284717989,NULL,1132,1132,872,0,1.63,1.63,0,0,0,0,NULL,2.09,NULL,NULL),(1066786,2,284718055,NULL,848,848,652,0,1.56,1.56,0,0,0,0,NULL,2.03,NULL,NULL),(1066786,3,284718118,NULL,922,922,735,0,1.57,1.57,0,0,0,0,NULL,2.13,NULL,NULL);
 /*!40000 ALTER TABLE `ImageQualityIndicators` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `Imager`
---
-
-LOCK TABLES `Imager` WRITE;
-/*!40000 ALTER TABLE `Imager` DISABLE KEYS */;
-INSERT INTO `Imager` VALUES (2,'Imager1 20c',20,'Z125434',1000),(7,'VMXi sim',20,'RI1000-0000',750);
-/*!40000 ALTER TABLE `Imager` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `InspectionType`
---
-
-LOCK TABLES `InspectionType` WRITE;
-/*!40000 ALTER TABLE `InspectionType` DISABLE KEYS */;
-INSERT INTO `InspectionType` VALUES (1,'Visible'),(2,'UV');
-/*!40000 ALTER TABLE `InspectionType` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1225,15 +1110,6 @@ LOCK TABLES `PlateGroup` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `PlateType`
---
-
-LOCK TABLES `PlateType` WRITE;
-/*!40000 ALTER TABLE `PlateType` DISABLE KEYS */;
-/*!40000 ALTER TABLE `PlateType` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `Position`
 --
 
@@ -1559,16 +1435,6 @@ INSERT INTO `ScanParametersService` VALUES (4,'Temperature','Temperature in Cels
 UNLOCK TABLES;
 
 --
--- Dumping data for table `Schedule`
---
-
-LOCK TABLES `Schedule` WRITE;
-/*!40000 ALTER TABLE `Schedule` DISABLE KEYS */;
-INSERT INTO `Schedule` VALUES (1,'Daily - 1 week'),(2,'Schedule 2'),(11,'Fibonacci'),(15,'3 Hour Interval');
-/*!40000 ALTER TABLE `Schedule` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `ScheduleComponent`
 --
 
@@ -1700,15 +1566,6 @@ LOCK TABLES `ScreeningStrategyWedge` WRITE;
 /*!40000 ALTER TABLE `ScreeningStrategyWedge` DISABLE KEYS */;
 INSERT INTO `ScreeningStrategyWedge` VALUES (1143792,1473909,1,1.22,1,NULL,NULL,33,NULL,NULL,NULL,NULL,NULL),(1143795,1473912,1,1.22,0.98,NULL,NULL,33,NULL,NULL,NULL,NULL,NULL),(1143796,1473913,1,1.41,1,4.07,0,220,NULL,NULL,NULL,NULL,NULL),(1143799,1473916,1,1.41,1,16.02,0,867,NULL,NULL,NULL,NULL,NULL),(1143802,1473919,1,1.49,1,3.71,0,202,NULL,NULL,NULL,NULL,NULL),(1143805,1473922,1,1.41,0.997,3.08,0,480,NULL,NULL,NULL,NULL,NULL),(1143808,1473925,1,1.41,0.997,3.08,0,480,NULL,NULL,NULL,NULL,NULL),(1143829,1473946,1,1.51,1,15.93,0,860,NULL,NULL,NULL,NULL,NULL),(1143832,1473949,1,1.51,0.999,3.35,0,347,NULL,NULL,NULL,NULL,NULL),(1143834,1473951,1,1.47,0.99,NULL,NULL,450,NULL,NULL,NULL,NULL,NULL),(1143837,1473954,1,1.47,0.92,NULL,NULL,450,NULL,NULL,NULL,NULL,NULL),(1143838,1473955,1,1.57,1,3.95,0,215,NULL,NULL,NULL,NULL,NULL),(1143841,1473958,1,1.51,0.999,3.35,0,347,NULL,NULL,NULL,NULL,NULL),(1143844,1473961,1,1.51,1,3.83,0,208,NULL,NULL,NULL,NULL,NULL),(1156191,1507101,1,1.47,0.99,NULL,NULL,90,NULL,NULL,NULL,NULL,NULL),(1156194,1507104,1,1.47,0.93,NULL,NULL,90,NULL,NULL,NULL,NULL,NULL),(1156195,1507105,1,1.51,0.999,3.34,0,790,NULL,NULL,NULL,NULL,NULL),(1156204,1507114,1,1.51,0.999,3.3,0,780,NULL,NULL,NULL,NULL,NULL),(1156207,1507117,1,1.51,1,15.21,0,3600,NULL,NULL,NULL,NULL,NULL),(1156210,1507120,1,1.51,0.99,3.29,0,1520,NULL,NULL,NULL,NULL,NULL),(1156213,1507123,1,1.51,0.99,3.29,0,1520,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ScreeningStrategyWedge` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `SessionType`
---
-
-LOCK TABLES `SessionType` WRITE;
-/*!40000 ALTER TABLE `SessionType` DISABLE KEYS */;
-/*!40000 ALTER TABLE `SessionType` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1870,15 +1727,6 @@ LOCK TABLES `WorkflowStep` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `WorkflowType`
---
-
-LOCK TABLES `WorkflowType` WRITE;
-/*!40000 ALTER TABLE `WorkflowType` DISABLE KEYS */;
-/*!40000 ALTER TABLE `WorkflowType` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `XFEFluorescenceSpectrum`
 --
 
@@ -1913,4 +1761,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-25 16:28:56
+-- Dump completed on 2018-07-27 11:21:42

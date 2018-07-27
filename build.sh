@@ -17,6 +17,7 @@ mysql --defaults-file=.my.cnf -e "CREATE DATABASE $db; SET GLOBAL log_bin_trust_
 if [[ $? -eq 0 ]]
 then
   mysql --defaults-file=.my.cnf -D $db < schema/tables.sql
+  mysql --defaults-file=.my.cnf -D $db < schema/lookups.sql
   mysql --defaults-file=.my.cnf -D $db < schema/data.sql
   mysql --defaults-file=.my.cnf -D $db < schema/routines.sql
 
