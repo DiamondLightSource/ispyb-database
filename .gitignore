@@ -1,2 +1,3 @@
 .my.cnf
-
+.github-api-token
+dist/

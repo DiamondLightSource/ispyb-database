@@ -4,15 +4,21 @@
 # update .sql files that haven't been run. Also generate documentation from
 # inline comments in the schema.
 
+# Some code borrowed from Stefan Buck's gist file at:
+# https://gist.github.com/stefanbuck/ce788fee19ab6eb0b4447a85fc99f447
+
 # Author: Karl Levik
+
+set -e
 
 function contains() {
     [[ $1 =~ (^|[[:space:]])"$2"($|[[:space:]]) ]] && return 0 || return 1
 }
 
-db="tempdb_"`date +%Y%m%d_%H%M%S`
+db="ispyb_build"
 
-mysql --defaults-file=.my.cnf -e "CREATE DATABASE $db; SET GLOBAL log_bin_trust_function_creators=ON;"
+echo "Dropping + creating build database"
+mysql --defaults-file=.my.cnf -e "DROP DATABASE IF EXISTS $db; CREATE DATABASE $db; SET GLOBAL log_bin_trust_function_creators=ON;"
 
 if [[ $? -eq 0 ]]
 then
@@ -43,11 +49,11 @@ then
   echo "All .sql files appear to have been run."
 
   # Generate table and sproc documentation
-  cd bin
-  ./db_procs_to_rst.sh $db > ../doc/list_of_procs.rst
-  ./db_tables_to_rst.sh $db > ../doc/list_of_tables_and_columns.rst
-  cd ..
+  if [ -d "bin" ] && [ -d "doc" ]; then
+    cd bin
+    ./db_procs_to_rst.sh $db > ../doc/list_of_procs.rst
+    ./db_tables_to_rst.sh $db > ../doc/list_of_tables_and_columns.rst
+    cd ..
+  fi
 
-  # Clean up
-  mysql --defaults-file=.my.cnf -e "DROP DATABASE $db;"
 fi
