@@ -9,8 +9,6 @@
 
 # Author: Karl Levik
 
-set -e
-
 function contains() {
     [[ $1 =~ (^|[[:space:]])"$2"($|[[:space:]]) ]] && return 0 || return 1
 }
