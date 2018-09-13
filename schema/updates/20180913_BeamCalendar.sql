@@ -1,8 +1,8 @@
 INSERT INTO SchemaStatus (scriptName, schemaStatus) VALUES ('20180913_BeamCalendar.sql', 'ONGOING');
 
 ALTER table BLSession 
-  DROP foreign key BLSession_ibfk_3,
-  DROP column beamCalendarId;
+  DROP foreign key IF EXISTS BLSession_ibfk_3,
+  DROP column IF EXISTS beamCalendarId;
 
 DROP TABLE IF EXISTS BeamCalendar;
 
