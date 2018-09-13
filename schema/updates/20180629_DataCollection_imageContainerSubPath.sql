@@ -4,4 +4,4 @@ INSERT INTO SchemaStatus (scriptName, schemaStatus) VALUES ('20180629_DataCollec
 
 ALTER TABLE DataCollection ADD imageContainerSubPath VARCHAR(255) COMMENT 'Internal path of a HDF5 file pointing to the data for this data collection' AFTER imageSuffix, ALGORITHM=INPLACE;
 
-UPDATE SchemaStatus SET schemaStatus = 'DONE' where scriptName = '20180629_DataCollection_imageContainerSubPath.sql';
+UPDATE SchemaStatus SET schemaStatus = 'DONE' WHERE scriptName = '20180629_DataCollection_imageContainerSubPath.sql';
