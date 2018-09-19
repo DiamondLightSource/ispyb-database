@@ -1,8 +1,8 @@
--- MySQL dump 10.16  Distrib 10.2.14-MariaDB, for Linux (x86_64)
+-- MySQL dump 10.16  Distrib 10.3.9-MariaDB, for Linux (x86_64)
 --
--- Host: cs04r-sc-vserv-87    Database: ispybstage
+-- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.2.15-MariaDB-log
+-- Server version	10.3.9-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -15,7 +15,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping routines for database 'ispybstage'
+-- Dumping routines for database 'ispyb_build'
 --
 /*!50003 DROP FUNCTION IF EXISTS `insert_scaling` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -266,21 +266,21 @@ CREATE FUNCTION `upsert_dc`(
      p_focalSpotSizeAtSampleY float, 
      p_polarisation float, 
      p_flux float, 
--- new params
+
      p_processedDataFile varchar(255), 
      p_datFullPath varchar(255),
      p_magnification int(11),
      p_totalAbsorbedDose float,
-     p_binning tinyint(1), -- 1x or 2x 
-     p_particleDiameter float, -- in nm
+     p_binning tinyint(1), 
+     p_particleDiameter float, 
      p_boxSize_CTF float,
-     p_minResolution float, -- in A  
-     p_minDefocus float, -- in A
-     p_maxDefocus float, -- in A
-     p_defocusStepSize float, -- in A
-     p_amountAstigmatism float, -- in A
-     p_extractSize float, -- in nm
-     p_bgRadius float, -- in nm
+     p_minResolution float, 
+     p_minDefocus float, 
+     p_maxDefocus float, 
+     p_defocusStepSize float, 
+     p_amountAstigmatism float, 
+     p_extractSize float, 
+     p_bgRadius float, 
      p_voltage float,
      p_objAperture float,
      p_c1aperture float,
@@ -413,7 +413,7 @@ CREATE FUNCTION `upsert_dcgroup`(
 	 p_id int(11) unsigned,
      p_parentId int(10) unsigned,
      p_sampleId int(10) unsigned, 
-     p_experimenttype varchar(45), -- values controlled by enum on the table
+     p_experimenttype varchar(45), 
      p_starttime datetime,
      p_endtime datetime,
      p_crystalClass varchar(20),
@@ -633,7 +633,7 @@ CREATE FUNCTION `upsert_mrrun`(
     MODIFIES SQL DATA
 BEGIN
 
-    --  Insert a new row, using all the parameters
+    
     INSERT INTO MXMRRun (mxMRRunId, autoProcScalingId, success, message, pipeline, inputCoordFile, outputCoordFile, inputMTZFile, outputMTZFile, 
 		runDirectory, logFile, commandLine, rValueStart, rValueEnd, rFreeValueStart, rFreeValueEnd, starttime, endtime) 
       VALUES (
@@ -787,7 +787,7 @@ CREATE FUNCTION `upsert_program_run`(
      p_starttime datetime,
      p_endtime datetime,
      p_environment varchar(255),
--- Store AutoProcProgramAttachments as well
+
      p_file1_id int(10) unsigned,
      p_filename1 varchar(255),
      p_filepath1 varchar(255),
@@ -1103,7 +1103,7 @@ DELIMITER ;;
 CREATE PROCEDURE `insert_processing_scaling`(
      OUT p_id integer unsigned,
      p_parentId integer unsigned,
--- AutoProcScalingStatistics 1
+
      p_Type1 enum('overall','innerShell','outerShell'),
      p_Comments1 varchar(255), 
      p_ResolutionLimitLow1 float ,
@@ -1124,7 +1124,7 @@ CREATE PROCEDURE `insert_processing_scaling`(
      p_anomalousMultiplicity1 float,
      p_ccHalf1 float,
      p_ccAnomalous1 float,
--- AutoProcScalingStatistics 2
+
      p_Type2 enum('overall','innerShell','outerShell'),
      p_Comments2 varchar(255), 
      p_ResolutionLimitLow2 float,
@@ -1145,7 +1145,7 @@ CREATE PROCEDURE `insert_processing_scaling`(
      p_anomalousMultiplicity2 float,
      p_ccHalf2 float,
      p_ccAnomalous2 float,
--- AutoProcScalingStatistics 3
+
      p_Type3 enum('overall','innerShell','outerShell'),
      p_Comments3 varchar(255), 
      p_ResolutionLimitLow3 float,
@@ -1251,7 +1251,7 @@ BEGIN
         p_method1Res, p_method2Res, p_maxUnitCell, p_pctSaturationTop50Peaks, 
         p_inResolutionOvrlSpots, p_binPopCutOffMethod2Res, p_totalIntegratedSignal, p_driftFactor
       );
-	SET p_id = 1; -- indicate success ...
+	SET p_id = 1; 
   ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) p_dataCollectionId and/or p_imageNumber are NULL';  
   END IF;
@@ -2225,8 +2225,8 @@ BEGIN
         dc.beamSizeAtSampleX "beamSizeAtSampleX", dc.beamSizeAtSampleY "beamSizeAtSampleY", 
         dc.focalSpotSizeAtSampleX "focalSpotSizeAtSampleX", dc.focalSpotSizeAtSampleY "focalSpotSizeAtSampleY", 
         dc.polarisation "polarisation", dc.flux "flux", dc.flux_end "fluxEnd", a.sizeX "apertureSizeX"
-        -- processedDataFile, datFullPath, magnification, totalAbsorbedDose, binning, particleDiameter, boxSize_CTF, minResolution, minDefocus, maxDefocus, defocusStepSize, 
-        -- amountAstigmatism, extractSize, bgRadius, voltage, objAperture, c1aperture, c2aperture, c3aperture, c1lens, c2lens, c3lens
+        
+        
     FROM DataCollection dc
 		LEFT OUTER JOIN Aperture a on dc.apertureId = a.apertureId
     WHERE blSubSampleId = p_id;
@@ -2309,15 +2309,7 @@ BEGIN
       LEFT OUTER JOIN DataCollectionPlan_has_Detector dhd on dhd.dataCollectionPlanId = dp.diffractionPlanId
     WHERE bhd.blSampleId = p_sampleId
     ORDER BY dp.diffractionPlanId ASC, spm.sequenceNumber ASC;    
-/*
-    GROUP BY blss.blSubSampleId, location, pos1.posX, pos1.posY, pos1.posZ, pos2.posX, pos2.posY, pos2.posZ, 
-	  blsi.imageFullPath, blss.imgFilePath, blss.imgFileName, 
-      dp.experimentKind, dp.exposureTime, 
-      dp.preferredBeamSizeX, dp.preferredBeamSizeY, dp.requiredResolution, 
-      dp.monochromator, 12398.42 / dp.energy, dp.transmission, 
-      dp.boxSizeX, dp.boxSizeY, 
-      dp.kappaStart, dp.axisStart, dp.axisRange, dp.numberOfImages;
-*/
+
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_sampleId is NULL';
     END IF;
@@ -2408,7 +2400,7 @@ BEGIN
       detectorDistanceMin "distanceMin", detectorDistanceMax "distanceMax", 
       trustedPixelValueRangeLower "trustedPixelValueRangeLower", trustedPixelValueRangeUpper "trustedPixelValueRangeUpper", 
       sensorThickness "sensorThickness", overload "overload", detectorMode "mode"
-      -- , CS "CS", detectorPixelSize "pixelSize", density "density", composition "composition"
+      
 	FROM Detector
     WHERE detectorSerialNumber = p_serialNumber;
   ELSE
@@ -4864,7 +4856,7 @@ BEGIN
 		SET p_id = LAST_INSERT_ID();
     END IF;
       
-    -- Link the integration to the scaling
+    
     IF p_parentId IS NOT NULL THEN
 	  IF p_id IS NULL THEN
 		INSERT INTO AutoProcScaling_has_Int (autoProcScalingId, autoProcIntegrationId, recordTimeStamp)
@@ -5428,9 +5420,9 @@ BEGIN
           INNER JOIN Container c ON c.containerId = bls.containerId 
         WHERE c.barcode = p_containerBarcode AND bls.location = p_sampleLocation;
 
-	-- SELECT max(blSampleImageId) INTO row_sampleImageId 
-        -- FROM BLSampleImage
-        -- WHERE imageFullPath = p_imagerImage;
+	
+        
+        
       
         IF row_sampleImageId is NOT NULL THEN
   
@@ -5649,4 +5641,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-25 16:28:56
+-- Dump completed on 2018-09-19 10:55:57
