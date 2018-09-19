@@ -1520,7 +1520,7 @@ CREATE TABLE `DataCollection` (
   `startImageNumber` int(10) unsigned DEFAULT NULL,
   `numberOfPasses` int(10) unsigned DEFAULT NULL,
   `exposureTime` float DEFAULT NULL,
-  `imageDirectory` varchar(255) DEFAULT NULL,
+  `imageDirectory` varchar(255) DEFAULT NULL COMMENT 'The directory where files reside - should end with a slash',
   `imagePrefix` varchar(45) DEFAULT NULL,
   `imageSuffix` varchar(45) DEFAULT NULL,
   `imageContainerSubPath` varchar(255) DEFAULT NULL COMMENT 'Internal path of a HDF5 file pointing to the data for this data collection',
@@ -3936,7 +3936,7 @@ CREATE TABLE `SchemaStatus` (
   `recordTimeStamp` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`schemaStatusId`),
   UNIQUE KEY `scriptName` (`scriptName`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5642,4 +5642,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-19 10:55:57
+-- Dump completed on 2018-09-19 13:54:39
