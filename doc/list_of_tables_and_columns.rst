@@ -602,7 +602,7 @@
    ``startImageNumber``,int,""
    ``numberOfPasses``,int,""
    ``exposureTime``,float,""
-   ``imageDirectory``,varchar,""
+   ``imageDirectory``,varchar,"The directory where files reside - should end with a slash"
    ``imagePrefix``,varchar,""
    ``imageSuffix``,varchar,""
    ``imageContainerSubPath``,varchar,"Internal path of a HDF5 file pointing to the data for this data collection"
