@@ -15,6 +15,7 @@ mysqldump --defaults-file=../.my.cnf --opt --single-transaction --max_allowed_pa
 
 LOOKUP_TABLES=(
 AdminVar
+SchemaStatus
 ComponentType
 ComponentSubType
 ConcentrationType
