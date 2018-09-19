@@ -368,6 +368,7 @@
    ``sessionId``,int,""
    ``beamLineSetupId``,int,""
    ``proposalId``,int,""
+   ``beamCalendarId``,int,""
    ``projectCode``,varchar,""
    ``startDate``,datetime,""
    ``endDate``,datetime,""
