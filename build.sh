@@ -44,7 +44,7 @@ then
     echo ${arr[@]}
     exit 1
   fi
-  echo "All .sql files appear to have been run."
+  echo "All schema/updates/*.sql files appear to have been run."
 
   # Generate table and sproc documentation
   if [ -d "bin" ] && [ -d "doc" ]; then
