@@ -2445,6 +2445,46 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_grid_info_for_dcg` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_grid_info_for_dcg`(IN p_dcgId int unsigned)
+    READS SQL DATA
+    COMMENT 'Return multi-row result-set with grid info values for the dcg'
+BEGIN
+    IF NOT (p_dcgId IS NULL) THEN
+      SELECT
+        gi.gridInfoId,
+        gi.dx_mm,
+        gi.dy_mm,
+        gi.steps_x,
+        gi.steps_y,
+        gi.meshAngle,
+        gi.pixelsPerMicronX,
+        gi.pixelsPerMicronY,
+        gi.snapshot_offsetXPixel,
+        gi.snapshot_offsetYPixel,
+        gi.orientation,
+        gi.snaked
+    FROM GridInfo gi
+    WHERE gi.dataCollectionGroupId = p_dcgId
+    ORDER BY gi.gridInfoId ASC;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_dcgId is NULL';
+    END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `retrieve_grid_info_for_dc_ids` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -5641,4 +5681,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-19 10:55:57
+-- Dump completed on 2018-09-20 15:32:42
