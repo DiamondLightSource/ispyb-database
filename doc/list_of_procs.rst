@@ -40,6 +40,7 @@
    "**retrieve_dc_plan_info**","IN p_id int",""
    "**retrieve_detector**","IN p_serialNumber varchar(15)",""
    "**retrieve_dewars_for_proposal_code_number**","p_proposalCode varchar(3), p_proposalNumber int unsigned","Return multi-row result-set with dewar ID + other dewar info ass"
+   "**retrieve_grid_info_for_dcg**","IN p_dcgId int unsigned","Return multi-row result-set with grid info values for the dcg"
    "**retrieve_grid_info_for_dc_ids**","IN p_dcIds TEXT","Return multi-row result-set with dc ID, grid info and some addit"
    "**retrieve_lcs_for_session**","p_proposal_code varchar(5), p_proposal_number int, p_session_number int",""
    "**retrieve_most_recent_session**","IN p_beamline varchar(15), IN p_proposal_code varchar(5)",""
