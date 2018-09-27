@@ -20,7 +20,7 @@
 
 LOCK TABLES `AdminVar` WRITE;
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.0.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.1.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -30,7 +30,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `SchemaStatus` WRITE;
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
-INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `recordTimeStamp`) VALUES (6,'20180213_BLSample_subLocation.sql','DONE','2018-02-13 13:27:19'),(12,'20180213_DataCollectionFileAttachment_fileType.sql','DONE','2018-02-13 15:12:54'),(16,'20180303_v_run_to_table.sql','DONE','2018-07-25 15:11:18'),(19,'20180328_ImageQualityIndicators_alter_table.sql','DONE','2018-07-25 15:11:18'),(22,'20180410_BeamLineSetup_alter.sql','DONE','2018-07-25 15:11:18'),(25,'20180413_BeamLineSetup_and_Detector_alter.sql','DONE','2018-07-25 15:11:18'),(28,'20180501_DataCollectionGroup_experimentType_enum.sql','DONE','2018-07-25 15:11:18'),(31,'20180531_ScreeningOutput_alignmentSuccess.sql','DONE','2018-07-25 15:11:18'),(34,'20180629_DataCollection_imageContainerSubPath.sql','DONE','2018-07-25 15:11:18'),(35,'20180913_BeamCalendar.sql','DONE','2018-09-19 09:52:45'),(36,'2018_09_19_DataCollection_imageDirectory_comment.sql','DONE','2018-09-19 12:38:01');
+INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `recordTimeStamp`) VALUES (6,'20180213_BLSample_subLocation.sql','DONE','2018-02-13 13:27:19'),(12,'20180213_DataCollectionFileAttachment_fileType.sql','DONE','2018-02-13 15:12:54'),(16,'20180303_v_run_to_table.sql','DONE','2018-07-25 15:11:18'),(19,'20180328_ImageQualityIndicators_alter_table.sql','DONE','2018-07-25 15:11:18'),(22,'20180410_BeamLineSetup_alter.sql','DONE','2018-07-25 15:11:18'),(25,'20180413_BeamLineSetup_and_Detector_alter.sql','DONE','2018-07-25 15:11:18'),(28,'20180501_DataCollectionGroup_experimentType_enum.sql','DONE','2018-07-25 15:11:18'),(31,'20180531_ScreeningOutput_alignmentSuccess.sql','DONE','2018-07-25 15:11:18'),(34,'20180629_DataCollection_imageContainerSubPath.sql','DONE','2018-07-25 15:11:18'),(35,'20180913_BeamCalendar.sql','DONE','2018-09-19 09:52:45'),(36,'2018_09_19_DataCollection_imageDirectory_comment.sql','DONE','2018-09-19 12:38:01'),(37,'2018_09_27_increase_schema_version.sql','DONE','2018-09-27 13:17:15');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,4 +185,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-19 13:54:39
+-- Dump completed on 2018-09-27 14:17:59
