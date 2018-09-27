@@ -16,17 +16,16 @@ function version { echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4
 github_api_token=`cat .github-api-token`
 owner=DiamondLightSource
 repo=ispyb-database
-tag=v${schema_version}
-filename=$archive
 db="ispyb_build"
-GH_API="https://api.github.com"
-GH_REPO="$GH_API/repos/$owner/$repo"
-GH_RELEASES="$GH_REPO/releases"
-GH_TAGS="$GH_REPO/releases/tags/$tag"
-AUTH="Authorization: token $github_api_token"
-
-# Get version number from the database
 schema_version=`mysql --defaults-file=.my.cnf -D $db --skip-column-names --silent --raw -e "SELECT value FROM AdminVar WHERE name = 'schemaVersion';"`
+tag=v${schema_version}
+archive=./dist/ispyb-database-${schema_version}.tar.gz
+filename=${archive}
+GH_API="https://api.github.com"
+GH_REPO="${GH_API}/repos/${owner}/${repo}"
+GH_RELEASES="${GH_REPO}/releases"
+GH_TAGS="${GH_REPO}/releases/tags/${tag}"
+AUTH="Authorization: token ${github_api_token}"
 
 # Get most recent tag from repo, convert to release number
 released_version=`git describe --tags`
@@ -41,8 +40,7 @@ fi
 
 echo "Creating archive file"
 mkdir -p dist
-archive=./dist/ispyb-database-${schema_version}.tar.gz
-tar cvfz $archive build.sh schema/*.sql schema/updates/*.sql
+tar cvfz ${archive} build.sh schema/*.sql schema/updates/*.sql
 
 echo "Creating tag v${schema_version}"
 git tag -a v${schema_version} -m v${schema_version}
