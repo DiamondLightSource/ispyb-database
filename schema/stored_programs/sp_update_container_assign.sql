@@ -32,23 +32,23 @@ BEGIN
 
         -- We need a containerId, and also we dont' want to unassign unless the correct current beamline and s.c. position is given
         IF NOT row_containerId IS NULL THEN
-          IF row_containerStatus <> 'processing' OR (row_beamlineLocation = p_beamline AND row_sampleChangerLocation = p_position) THEN
+          IF (NOT row_containerStatus <=> 'processing') OR (row_beamlineLocation = p_beamline AND row_sampleChangerLocation = p_position) THEN
 
             -- Assign the container
             UPDATE Container c
               INNER JOIN Dewar d ON d.dewarId = c.dewarId
               INNER JOIN Shipping s ON s.shippingId = d.shippingId
             SET
-              c.sampleChangerLocation = IF(row_containerStatus='processing', '', p_position),
+              c.sampleChangerLocation = IF(row_containerStatus<=>'processing', '', p_position),
               c.beamlineLocation = p_beamline,
-              c.containerStatus = IF(row_containerStatus='processing', 'at facility', 'processing'),
-			        d.dewarStatus = IF(row_containerStatus='processing', d.dewarStatus, 'processing'),
-              d.storageLocation = IF(row_containerStatus='processing', d.storageLocation, p_beamline),
-              s.shippingStatus = IF(row_containerStatus='processing', s.shippingStatus, 'processing')
+              c.containerStatus = IF(row_containerStatus<=>'processing', 'at facility', 'processing'),
+              d.dewarStatus = IF(row_containerStatus<=>'processing', d.dewarStatus, 'processing'),
+              d.storageLocation = IF(row_containerStatus<=>'processing', d.storageLocation, p_beamline),
+              s.shippingStatus = IF(row_containerStatus<=>'processing', s.shippingStatus, 'processing')
             WHERE
               c.containerId = row_containerId;
 
-            IF row_containerStatus <> 'processing' THEN
+            IF NOT row_containerStatus <=> 'processing' THEN
               -- The container has been assigned a s.c. position on the beamline, so we need to unassign
               -- any other containers in this s.c. position on this beamline for this proposal
               UPDATE Container c
@@ -66,7 +66,7 @@ BEGIN
 
             -- Add to history
             INSERT INTO ContainerHistory (containerId, location, status, beamlineName)
-              VALUES (row_containerId, p_position, IF(row_containerStatus='processing', 'at facility', 'processing'), p_beamline);
+              VALUES (row_containerId, p_position, IF(row_containerStatus<=>'processing', 'at facility', 'processing'), p_beamline);
           END IF;
         ELSE
           SIGNAL SQLSTATE '02000' SET MYSQL_ERRNO=1643, MESSAGE_TEXT='Container with p_registry_barcode not found';
