@@ -1,12 +1,12 @@
 DELIMITER ;;
-CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `retrieve_processing_job`(p_id int unsigned) 
+CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `retrieve_processing_job`(p_id int unsigned)
 READS SQL DATA
 COMMENT 'Returns a single-row result-set with info about the processing job for the given ID'
 BEGIN
     IF p_id IS NOT NULL THEN
-      SELECT dataCollectionId "dataCollectionId", displayName "displayName", comments "comments", 
+      SELECT dataCollectionId "dataCollectionId", displayName "displayName", comments "comments",
         recordTimestamp "recordTimestamp", recipe "recipe", automatic "automatic"
-      FROM ProcessingJob  
+      FROM ProcessingJob
 	  WHERE processingJobId = p_id
       LIMIT 1;
     ELSE
@@ -14,4 +14,3 @@ BEGIN
 	END IF;
 END;;
 DELIMITER ;
-
