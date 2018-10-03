@@ -9,9 +9,12 @@ database.
 importing the test schema: set global log_bin_trust_function_creators=ON;
 
 ### Installation
+Run this from a SQL shell (e.g. the `mysql` command-line tool):
 ```mysql
 CREATE DATABASE ispyb;
 ```
+
+Run this on the command-line:
 ```bash
 mysql ispyb < schema/tables.sql
 mysql ispyb < schema/lookups.sql
