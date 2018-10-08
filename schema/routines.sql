@@ -3014,18 +3014,22 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `retrieve_sessions_for_person_login`(p_login varchar(45))
     READS SQL DATA
     COMMENT 'Returns a multi-row result-set with info about the sessions associated with a person with login=p_login'
 BEGIN
     IF p_login IS NOT NULL THEN
-      SELECT bs.sessionId "id", bs.proposalId "proposalId", bs.startDate "startDate", bs.endDate "endDate",
-        bs.beamlineName "beamline", bs.visit_number "sessionNumber", bs.comments "comments", shp.role "personRoleOnSession", shp.remote "personRemoteOnSession"
+      SELECT bs.sessionId "id", bs.proposalId "proposalId",
+        bs.startDate "startDate", bs.endDate "endDate",
+        bs.beamlineName "beamline", pr.proposalCode "proposalCode", pr.proposalNumber "proposalNumber", bs.visit_number "sessionNumber",
+        bs.comments "comments",
+        shp.role "personRoleOnSession", shp.remote "personRemoteOnSession"
       FROM BLSession bs
-        INNER JOIN Session_has_Person shp on shp.sessionId = bs.sessionId
-        INNER JOIN Person p on p.personId = shp.personId
+        INNER JOIN Session_has_Person shp ON shp.sessionId = bs.sessionId
+        INNER JOIN Person p ON p.personId = shp.personId
+        INNER JOIN Proposal pr ON pr.proposalId = bs.proposalId
 	    WHERE p.login = p_login
       ORDER BY bs.startDate;
     ELSE
@@ -5966,4 +5970,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-05 14:30:01
+-- Dump completed on 2018-10-08 15:11:24
