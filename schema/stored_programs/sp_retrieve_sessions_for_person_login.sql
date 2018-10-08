@@ -4,11 +4,15 @@ READS SQL DATA
 COMMENT 'Returns a multi-row result-set with info about the sessions associated with a person with login=p_login'
 BEGIN
     IF p_login IS NOT NULL THEN
-      SELECT bs.sessionId "id", bs.proposalId "proposalId", bs.startDate "startDate", bs.endDate "endDate",
-        bs.beamlineName "beamline", bs.visit_number "sessionNumber", bs.comments "comments", shp.role "personRoleOnSession", shp.remote "personRemoteOnSession"
+      SELECT bs.sessionId "id", bs.proposalId "proposalId",
+        bs.startDate "startDate", bs.endDate "endDate",
+        bs.beamlineName "beamline", pr.proposalCode "proposalCode", pr.proposalNumber "proposalNumber", bs.visit_number "sessionNumber",
+        bs.comments "comments",
+        shp.role "personRoleOnSession", shp.remote "personRemoteOnSession"
       FROM BLSession bs
-        INNER JOIN Session_has_Person shp on shp.sessionId = bs.sessionId
-        INNER JOIN Person p on p.personId = shp.personId
+        INNER JOIN Session_has_Person shp ON shp.sessionId = bs.sessionId
+        INNER JOIN Person p ON p.personId = shp.personId
+        INNER JOIN Proposal pr ON pr.proposalId = bs.proposalId
 	    WHERE p.login = p_login
       ORDER BY bs.startDate;
     ELSE
