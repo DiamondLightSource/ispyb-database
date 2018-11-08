@@ -50,6 +50,8 @@
    "**retrieve_processing_job_image_sweeps**","p_id int unsigned","Returns a multi-row result-set with sweep info for the given pro"
    "**retrieve_processing_job_parameters**","p_id int unsigned","Returns a multi-row result-set (max 1000) with parameters for th"
    "**retrieve_processing_programs_for_job_id**","p_id int unsigned","Returns a multi-row result-set with processing program instances for the given processing job ID"
+   "**retrieve_processing_program_attachments_for_dc_group_and_program**","p_id int unsigned, p_program varchar(255)","Returns a multi-row result-set with the processing program attachments for the given DC group ID"
+   "**retrieve_processing_program_attachments_for_program_id**","p_id int unsigned","Returns a multi-row result-set with the processing program attachments for the given processing program id"
    "**retrieve_reprocessing_by_dc**","p_dcId int(11) unsigned","Retrieves reprocessing requests for a data collection (p_dcId)."
    "**retrieve_samples_assigned_for_proposal**","IN p_proposalCode varchar(3), IN p_proposalNumber int","Retrieve the user friendly name and ID of all assigned instances"
    "**retrieve_samples_for_sample_group**","IN p_sampleGroupId int unsigned","Return multi-row result set with sample IDs, order in the group"
