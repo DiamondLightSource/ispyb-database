@@ -2038,6 +2038,7 @@ CREATE TABLE `EnergyScan` (
   `endEnergy` float DEFAULT NULL,
   `transmissionFactor` float DEFAULT NULL,
   `exposureTime` float DEFAULT NULL,
+  `axisPosition` float DEFAULT NULL,
   `synchrotronCurrent` float DEFAULT NULL,
   `temperature` float DEFAULT NULL,
   `peakEnergy` float DEFAULT NULL,
@@ -3960,7 +3961,7 @@ CREATE TABLE `SchemaStatus` (
   `recordTimeStamp` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`schemaStatusId`),
   UNIQUE KEY `scriptName` (`scriptName`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4749,6 +4750,7 @@ CREATE TABLE `XFEFluorescenceSpectrum` (
   `endTime` datetime DEFAULT NULL,
   `filename` varchar(255) DEFAULT NULL,
   `exposureTime` float DEFAULT NULL,
+  `axisPosition` float DEFAULT NULL,
   `beamTransmission` float DEFAULT NULL,
   `annotatedPymcaXfeSpectrum` varchar(255) DEFAULT NULL,
   `fittedDataFileFullPath` varchar(255) DEFAULT NULL,
@@ -5686,4 +5688,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-23  9:18:10
+-- Dump completed on 2018-12-20 11:59:31
