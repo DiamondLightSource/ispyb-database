@@ -1,8 +1,8 @@
--- MySQL dump 10.17  Distrib 10.3.11-MariaDB, for Linux (x86_64)
+-- MySQL dump 10.17  Distrib 10.3.12-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.3.11-MariaDB
+-- Server version	10.3.12-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -2198,6 +2198,36 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_dc_group` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_dc_group`(p_id int unsigned)
+    READS SQL DATA
+    COMMENT 'Returns a single-row result-set with the columns for the given data collection group id'
+BEGIN
+    IF p_id IS NOT NULL THEN
+      SELECT sessionId, blsampleId, experimentType, startTime, endTime,
+        crystalClass, detectorMode, actualSampleBarcode, actualSampleSlotInContainer, actualContainerBarcode, actualContainerSlotInSC,
+        comments, xtalSnapshotFullPath, scanParameters
+      FROM DataCollectionGroup
+      WHERE datacollectionGroupId = p_id;
+    ELSE
+	    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
+        MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
+	END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `retrieve_dc_infos_for_subsample` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -4303,6 +4333,106 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `upsert_dc_group_v3` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `upsert_dc_group_v3`(
+	 INOUT p_id int(11) unsigned,
+     p_sessionId int(10) unsigned,
+     p_proposalCode varchar(3),
+     p_proposalNumber int(10),
+     p_sessionNumber int(10),
+     p_sampleId int(10) unsigned,
+     p_sampleBarcode varchar(45),
+     p_experimenttype varchar(45), 
+     p_starttime datetime,
+     p_endtime datetime,
+     p_crystalClass varchar(20),
+     p_detectorMode varchar(255),
+     p_actualSampleBarcode varchar(45),
+     p_actualSampleSlotInContainer integer(10),
+     p_actualContainerBarcode varchar(45),
+     p_actualContainerSlotInSC integer(10),
+     p_comments varchar(1024),
+     p_xtalSnapshotFullPath	varchar(255),
+		 p_scanParameters JSON
+     )
+    MODIFIES SQL DATA
+    COMMENT 'Inserts or updates info about data collection group (p_id).\nMandatory columns:\nFor insert: Either p_sessionId or a valid session described by (p_proposalCode, p_proposalNumber, p_sessionNumber)\nFor update: p_id\nNote: In order to associate the data collection group with a sample, one of the following sets of parameters are required:\n* p_sampleId\n* p_proposalCode, p_proposalNumber, p_sessionNumber + p_sampleBarcode\n* p_actualContainerBarcode + p_actualSampleSlotInContainer\nReturns: Record ID in p_id.'
+BEGIN
+	DECLARE row_proposal_id int(10) unsigned DEFAULT NULL;
+	DECLARE row_sample_id int(10) unsigned DEFAULT NULL;
+
+	IF p_sessionId IS NULL AND p_proposalCode IS NOT NULL AND p_proposalNumber IS NOT NULL AND p_sessionNumber IS NOT NULL THEN
+      SELECT max(bs.sessionid), p.proposalId INTO p_sessionId, row_proposal_id
+      FROM Proposal p INNER JOIN BLSession bs ON p.proposalid = bs.proposalid
+      WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber;
+	END IF;
+
+	IF p_id IS NOT NULL OR p_sessionId IS NOT NULL THEN
+	  
+      IF p_sessionId IS NOT NULL AND p_sampleId IS NULL AND p_sampleBarcode IS NOT NULL THEN
+	    IF row_proposal_id IS NULL THEN
+          SELECT proposalId INTO row_proposal_id
+          FROM BLSession
+          WHERE sessionId = p_sessionId;
+	    END IF;
+        SELECT max(bls.blSampleId) INTO p_sampleId
+        FROM BLSample bls
+		  INNER JOIN Container c on c.containerId = bls.containerId
+          INNER JOIN Dewar d on d.dewarId = c.dewarId
+          INNER JOIN Shipping s on s.shippingId = d.shippingId
+        WHERE bls.code = p_sampleBarcode AND s.proposalId = row_proposal_id;
+	  END IF;
+
+	  IF p_sampleId IS NULL AND (p_actualContainerBarcode IS NOT NULL) AND (p_actualSampleSlotInContainer IS NOT NULL) THEN
+	    SELECT max(bls.blSampleId) INTO p_sampleId
+        FROM BLSample bls
+          INNER JOIN Container c on c.containerId = bls.containerId
+	    WHERE c.barcode = p_actualContainerBarcode AND bls.location = p_actualSampleSlotInContainer;
+      END IF;
+
+      INSERT INTO DataCollectionGroup (datacollectionGroupId, sessionId, blsampleId, experimenttype, starttime, endtime,
+        crystalClass, detectorMode, actualSampleBarcode, actualSampleSlotInContainer, actualContainerBarcode, actualContainerSlotInSC,
+        comments, xtalSnapshotFullPath, scanParameters)
+        VALUES (p_id, p_sessionId, p_sampleId, p_experimenttype, p_starttime, p_endtime, p_crystalClass, p_detectorMode,
+        p_actualSampleBarcode, p_actualSampleSlotInContainer, p_actualContainerBarcode, p_actualContainerSlotInSC,
+        p_comments, p_xtalSnapshotFullPath, p_scanParameters)
+	    ON DUPLICATE KEY UPDATE
+		  sessionId = IFNULL(p_sessionId, sessionId),
+          blsampleId = IFNULL(p_sampleId, blsampleId),
+          experimenttype = IFNULL(p_experimenttype, experimenttype),
+          starttime = IFNULL(p_starttime, starttime),
+          endtime = IFNULL(p_endtime, endtime),
+          crystalClass = IFNULL(p_crystalClass, crystalClass),
+          detectorMode = IFNULL(p_detectorMode, detectorMode),
+          actualSampleBarcode = IFNULL(p_actualSampleBarcode, actualSampleBarcode),
+          actualSampleSlotInContainer = IFNULL(p_actualSampleSlotInContainer, actualSampleSlotInContainer),
+          actualContainerBarcode = IFNULL(p_actualContainerBarcode, actualContainerBarcode),
+          actualContainerSlotInSC = IFNULL(p_actualContainerSlotInSC, actualContainerSlotInSC),
+          comments = IFNULL(p_comments, comments),
+          xtalSnapshotFullPath = IFNULL(p_xtalSnapshotFullPath, xtalSnapshotFullPath),
+					scanParameters = IFNULL (p_scanParameters, scanParameters);
+
+	    IF p_id IS NULL THEN
+		    SET p_id = LAST_INSERT_ID();
+      END IF;
+    ELSE
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_sessionId OR a valid session described by (p_proposalCode and p_proposalNumber and p_sessionNumber) must be non-NULL.';
+    END IF;
+  END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `upsert_dc_main` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -6075,4 +6205,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-14  9:50:25
+-- Dump completed on 2019-01-16 16:05:13

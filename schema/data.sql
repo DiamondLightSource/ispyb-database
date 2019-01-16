@@ -1,8 +1,8 @@
--- MySQL dump 10.17  Distrib 10.3.11-MariaDB, for Linux (x86_64)
+-- MySQL dump 10.17  Distrib 10.3.12-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.3.11-MariaDB
+-- Server version	10.3.12-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -575,7 +575,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `DataCollectionGroup` WRITE;
 /*!40000 ALTER TABLE `DataCollectionGroup` DISABLE KEYS */;
-INSERT INTO `DataCollectionGroup` (`dataCollectionGroupId`, `sessionId`, `comments`, `blSampleId`, `experimentType`, `startTime`, `endTime`, `crystalClass`, `detectorMode`, `actualSampleBarcode`, `actualSampleSlotInContainer`, `actualContainerBarcode`, `actualContainerSlotInSC`, `workflowId`, `xtalSnapshotFullPath`) VALUES (988855,55167,NULL,374695,'SAD',NULL,NULL,NULL,'Ext. Trigger','HA00AU3712',NULL,NULL,NULL,NULL,NULL),(996311,55167,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL),(1040398,55168,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL),(1040407,55168,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL),(1054243,55168,NULL,398810,'SAD',NULL,NULL,NULL,'Ext. Trigger','CA00AG9993',NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `DataCollectionGroup` (`dataCollectionGroupId`, `sessionId`, `comments`, `blSampleId`, `experimentType`, `startTime`, `endTime`, `crystalClass`, `detectorMode`, `actualSampleBarcode`, `actualSampleSlotInContainer`, `actualContainerBarcode`, `actualContainerSlotInSC`, `workflowId`, `xtalSnapshotFullPath`, `scanParameters`) VALUES (988855,55167,NULL,374695,'SAD',NULL,NULL,NULL,'Ext. Trigger','HA00AU3712',NULL,NULL,NULL,NULL,NULL,NULL),(996311,55167,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1040398,55168,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1040407,55168,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(1054243,55168,NULL,398810,'SAD',NULL,NULL,NULL,'Ext. Trigger','CA00AG9993',NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `DataCollectionGroup` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1265,7 +1265,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `Proposal` WRITE;
 /*!40000 ALTER TABLE `Proposal` DISABLE KEYS */;
-INSERT INTO `Proposal` (`proposalId`, `personId`, `title`, `proposalCode`, `proposalNumber`, `bltimeStamp`, `proposalType`, `externalId`) VALUES (37027,1,'I03 Commissioning Directory 2016','cm','14451','2015-12-21 15:20:43',NULL,NULL),(141666,46266,'Test Proposal cm-0001','cm','1','2016-03-16 16:01:34',NULL,NULL);
+INSERT INTO `Proposal` (`proposalId`, `personId`, `title`, `proposalCode`, `proposalNumber`, `bltimeStamp`, `proposalType`, `externalId`, `state`) VALUES (37027,1,'I03 Commissioning Directory 2016','cm','14451','2015-12-21 15:20:43',NULL,NULL,'Open'),(141666,46266,'Test Proposal cm-0001','cm','1','2016-03-16 16:01:34',NULL,NULL,'Open');
 /*!40000 ALTER TABLE `Proposal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1773,4 +1773,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-20 11:59:32
+-- Dump completed on 2019-01-14 12:13:51
