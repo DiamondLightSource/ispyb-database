@@ -2126,6 +2126,62 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_container_subsamples_v2` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_container_subsamples_v2`(IN p_barcode varchar(45))
+    READS SQL DATA
+    COMMENT 'Returns a mutli-row result-set with general info about submitted subsamples on submitted container p_barcode'
+BEGIN
+  IF NOT (p_barcode IS NULL) THEN
+    SELECT blss.blSubSampleId "id", bls.location "sampleLocation", pos1.posX "ROIPos1x", pos1.posY "ROIPos1y", pos1.posZ "ROIPos1z", pos2.posX "ROIPos2x", pos2.posY "ROIPos2y", pos2.posZ "ROIPos2z",
+	  blsi.imageFullPath "lastVisibleImgFullPath", blss.imgFilePath "uploadedImgFilePath", blss.imgFileName "uploadedImgFileName",
+      dp.experimentKind "experimentKind", dp.exposureTime "exposureTime",
+      dp.preferredBeamSizeX "preferredBeamSizeX", dp.preferredBeamSizeY "preferredBeamSizeY", dp.requiredResolution "requiredResolution",
+      dp.monochromator "monochromator", 12398.42 / dp.energy "wavelength", dp.transmission "transmission",
+      dp.boxSizeX "boxSizeX", dp.boxSizeY "boxSizeY",
+      dp.kappaStart "kappaStart", dp.axisStart "axisStart", dp.axisRange "axisRange", dp.numberOfImages "numberOfImages",
+      count(dc.dataCollectionId) "numDCs"
+    FROM Container c
+	    INNER JOIN ContainerQueue cq ON c.containerId = cq.containerId
+      INNER JOIN ContainerQueueSample cqs ON cq.containerQueueId = cqs.containerQueueId
+      INNER JOIN BLSubSample blss ON blss.blSubSampleId = cqs.blSubSampleId
+      INNER JOIN BLSample bls ON blss.blSampleId = bls.blSampleId
+      INNER JOIN Position pos1 ON pos1.positionId = blss.positionId
+      LEFT OUTER JOIN Position pos2 ON pos2.positionId = blss.position2Id
+      INNER JOIN DiffractionPlan dp ON dp.diffractionPlanId = blss.diffractionPlanId
+      LEFT OUTER JOIN BLSampleImage blsi ON blsi.blSampleId = bls.blSampleId AND blsi.blSampleImageId = (
+        SELECT max(blsi2.blSampleImageId)
+        FROM BLSampleImage blsi2
+          INNER JOIN ContainerInspection ci ON blsi2.containerInspectionId = ci.containerInspectionId
+          INNER JOIN InspectionType it ON ci.inspectionTypeId = it.inspectionTypeId
+        WHERE blsi2.blSampleId = bls.blSampleId AND it.name = 'Visible'
+      )
+      LEFT OUTER JOIN DataCollection dc on dc.blSubSampleId = blss.blSubSampleId
+	WHERE c.barcode = p_barcode
+    GROUP BY blss.blSubSampleId, location, pos1.posX, pos1.posY, pos1.posZ, pos2.posX, pos2.posY, pos2.posZ,
+	  blsi.imageFullPath, blss.imgFilePath, blss.imgFileName,
+      dp.experimentKind, dp.exposureTime,
+      dp.preferredBeamSizeX, dp.preferredBeamSizeY, dp.requiredResolution,
+      dp.monochromator, 12398.42 / dp.energy, dp.transmission,
+      dp.boxSizeX, dp.boxSizeY,
+      dp.kappaStart, dp.axisStart, dp.axisRange, dp.numberOfImages;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode is NULL';
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `retrieve_current_cm_sessions` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -6205,4 +6261,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-01-16 16:05:13
+-- Dump completed on 2019-01-16 16:31:31
