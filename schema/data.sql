@@ -237,7 +237,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `BLSampleImage` WRITE;
 /*!40000 ALTER TABLE `BLSampleImage` DISABLE KEYS */;
-INSERT INTO `BLSampleImage` (`blSampleImageId`, `blSampleId`, `micronsPerPixelX`, `micronsPerPixelY`, `imageFullPath`, `blSampleImageScoreId`, `comments`, `blTimeStamp`, `containerInspectionId`, `modifiedTimeStamp`) VALUES (2,398819,NULL,NULL,'/dls/i03/data/2016/cm1234-5/something.jpg',NULL,NULL,'2016-10-05 11:23:33',NULL,NULL),(5,398816,1.1,1.2,'/dls/i03/data/2016/cm1234-5/something-else.jpg',NULL,NULL,'2016-10-10 14:31:06',NULL,NULL);
+INSERT INTO `BLSampleImage` (`blSampleImageId`, `blSampleId`, `micronsPerPixelX`, `micronsPerPixelY`, `imageFullPath`, `blSampleImageScoreId`, `comments`, `blTimeStamp`, `containerInspectionId`, `modifiedTimeStamp`) VALUES (2,398819,NULL,NULL,'/dls/i03/data/2016/cm1234-5/something.jpg',NULL,NULL,'2016-10-05 11:23:33',NULL,NULL),(5,398816,1.1,1.2,'/dls/i03/data/2016/cm1234-5/something-else.jpg',NULL,NULL,'2016-10-10 14:31:06',4,NULL);
 /*!40000 ALTER TABLE `BLSampleImage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -453,6 +453,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `ContainerInspection` WRITE;
 /*!40000 ALTER TABLE `ContainerInspection` DISABLE KEYS */;
+INSERT INTO `ContainerInspection` (`containerInspectionId`, `containerId`, `inspectionTypeId`, `imagerId`, `temperature`, `blTimeStamp`, `scheduleComponentid`, `state`, `priority`, `manual`, `scheduledTimeStamp`, `completedTimeStamp`) VALUES (4,34874,1,NULL,NULL,'2018-08-07 15:20:00',NULL,'Completed',99,NULL,'2018-08-07 12:08:00','2018-08-07 15:36:00');
 /*!40000 ALTER TABLE `ContainerInspection` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1773,4 +1774,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-01-14 12:13:51
+-- Dump completed on 2019-01-17 14:17:04
