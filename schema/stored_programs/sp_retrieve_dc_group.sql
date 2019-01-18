@@ -4,7 +4,7 @@ READS SQL DATA
 COMMENT 'Returns a single-row result-set with the columns for the given data collection group id'
 BEGIN
     IF p_id IS NOT NULL THEN
-      SELECT sessionId, blsampleId, experimentType, startTime, endTime,
+      SELECT sessionId, blSampleId "sampleId", experimentType "experimenttype", startTime "starttime", endTime "endtime",
         crystalClass, detectorMode, actualSampleBarcode, actualSampleSlotInContainer, actualContainerBarcode, actualContainerSlotInSC,
         comments, xtalSnapshotFullPath, scanParameters
       FROM DataCollectionGroup

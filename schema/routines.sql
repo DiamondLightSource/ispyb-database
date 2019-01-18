@@ -2269,7 +2269,7 @@ CREATE PROCEDURE `retrieve_dc_group`(p_id int unsigned)
     COMMENT 'Returns a single-row result-set with the columns for the given data collection group id'
 BEGIN
     IF p_id IS NOT NULL THEN
-      SELECT sessionId, blsampleId, experimentType, startTime, endTime,
+      SELECT sessionId, blSampleId "sampleId", experimentType "experimenttype", startTime "starttime", endTime "endtime",
         crystalClass, detectorMode, actualSampleBarcode, actualSampleSlotInContainer, actualContainerBarcode, actualContainerSlotInSC,
         comments, xtalSnapshotFullPath, scanParameters
       FROM DataCollectionGroup
@@ -6261,4 +6261,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-01-16 16:31:31
+-- Dump completed on 2019-01-18 13:11:41
