@@ -1,0 +1,3 @@
+schema/stored_programs/*.sql linguist-language=SQLPL
+schema/routines.sql linguist-language=SQLPL
+
