@@ -1,3 +1,4 @@
+*.sql linguist-language=SQL
 schema/stored_programs/* linguist-language=SQLPL
 schema/routines.sql linguist-language=SQLPL
 
