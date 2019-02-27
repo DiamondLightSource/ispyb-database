@@ -4418,7 +4418,7 @@ CREATE PROCEDURE `upsert_dc_group_v3`(
      p_actualContainerSlotInSC integer(10),
      p_comments varchar(1024),
      p_xtalSnapshotFullPath	varchar(255),
-		 p_scanParameters JSON
+		 p_scanParameters longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin
      )
     MODIFIES SQL DATA
     COMMENT 'Inserts or updates info about data collection group (p_id).\nMandatory columns:\nFor insert: Either p_sessionId or a valid session described by (p_proposalCode, p_proposalNumber, p_sessionNumber)\nFor update: p_id\nNote: In order to associate the data collection group with a sample, one of the following sets of parameters are required:\n* p_sampleId\n* p_proposalCode, p_proposalNumber, p_sessionNumber + p_sampleBarcode\n* p_actualContainerBarcode + p_actualSampleSlotInContainer\nReturns: Record ID in p_id.'

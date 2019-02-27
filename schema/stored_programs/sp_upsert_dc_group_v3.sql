@@ -29,7 +29,7 @@ CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `upsert_dc_group_v3`(
      p_actualContainerSlotInSC integer(10),
      p_comments varchar(1024),
      p_xtalSnapshotFullPath	varchar(255),
-		 p_scanParameters JSON
+		 p_scanParameters longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin
      )
     MODIFIES SQL DATA
     COMMENT 'Inserts or updates info about data collection group (p_id).
