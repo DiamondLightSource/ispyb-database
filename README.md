@@ -29,6 +29,6 @@ Note that the data.sql file contains test data, so is only useful in a developme
 
 ## Documentation
 
-* A database diagram for some of the tables is found in the project [```Wiki```](https://github.com/DiamondLightSource/ispyb-database/wiki)
+* Please refer to the [```Wiki```](https://github.com/DiamondLightSource/ispyb-database/wiki) for database diagrams, stored procedure how-to, MariaDB installation and more  
 * A complete [```list of tables and columns```](https://github.com/DiamondLightSource/ispyb-database/blob/master/doc/list_of_tables_and_columns.rst) for more details about the tables and columns
 * A complete [```list of stored procedures```](https://github.com/DiamondLightSource/ispyb-database/blob/master/doc/list_of_procs.rst) for more details about the stored procedures
