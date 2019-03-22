@@ -1,8 +1,8 @@
--- MySQL dump 10.17  Distrib 10.3.12-MariaDB, for Linux (x86_64)
+-- MySQL dump 10.17  Distrib 10.3.13-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.3.12-MariaDB
+-- Server version	10.3.13-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -2212,15 +2212,17 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `retrieve_current_sessions`(IN p_beamline varchar(15), IN p_tolerance_minutes int)
+    READS SQL DATA
+    COMMENT 'Returns a multi-row result-set with the current (within tolerance p_tolerance_minutes)\nsession(s) (mx12345-123), their start and end dates for beamline p_beamline'
 BEGIN
 	set p_tolerance_minutes = IFNULL(p_tolerance_minutes, 0);
     SELECT concat(p.proposalCode, p.proposalNumber, '-', bs.visit_number) `session`, bs.startDate, bs.endDate
     FROM Proposal p
       INNER JOIN BLSession bs on p.proposalId = bs.proposalId
-	WHERE bs.beamlinename = p_beamline AND now() BETWEEN bs.startDate - INTERVAL p_tolerance_minutes MINUTE and bs.endDate + INTERVAL p_tolerance_minutes MINUTE 
+	WHERE bs.beamlinename = p_beamline AND bs.visit_number <> 0 AND now() BETWEEN bs.startDate - INTERVAL p_tolerance_minutes MINUTE and bs.endDate + INTERVAL p_tolerance_minutes MINUTE
     ORDER BY bs.startDate;
 END ;;
 DELIMITER ;
@@ -2236,17 +2238,19 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `retrieve_current_sessions_for_person`(IN p_beamline varchar(15), IN p_fed_id varchar(24), IN p_tolerance_minutes int)
+    READS SQL DATA
+    COMMENT 'Returns a multi-row result-set with the current (within tolerance p_tolerance_minutes)\nsession(s) (mx12345-123), their start and end dates for person p_fed_id and beamline p_beamline'
 BEGIN
-	set p_tolerance_minutes = IFNULL(p_tolerance_minutes, 0);
+	  SET p_tolerance_minutes = IFNULL(p_tolerance_minutes, 0);
     SELECT concat(p.proposalCode, p.proposalNumber, '-', bs.visit_number) `session`, bs.startDate, bs.endDate
     FROM Proposal p
       INNER JOIN BLSession bs on p.proposalId = bs.proposalId
-      INNER JOIN Session_has_Person shp ON shp.sessionId = bs.sessionId 
-	  INNER JOIN Person per ON shp.personId = per.personId
-	WHERE bs.beamlinename = p_beamline AND per.login = p_fed_id AND now() BETWEEN bs.startDate - INTERVAL p_tolerance_minutes MINUTE and bs.endDate + INTERVAL p_tolerance_minutes MINUTE
+      INNER JOIN Session_has_Person shp ON shp.sessionId = bs.sessionId
+	    INNER JOIN Person per ON shp.personId = per.personId
+	  WHERE bs.beamlinename = p_beamline AND bs.visit_number <> 0 AND per.login = p_fed_id AND now() BETWEEN bs.startDate - INTERVAL p_tolerance_minutes MINUTE and bs.endDate + INTERVAL p_tolerance_minutes MINUTE
     ORDER BY bs.startDate;
 END ;;
 DELIMITER ;
@@ -2657,14 +2661,16 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `retrieve_most_recent_session`(IN p_beamline varchar(15), IN p_proposal_code varchar(5))
+    READS SQL DATA
+    COMMENT 'Returns a single-row result-set with the session (mx12345-123), its start and end dates\nfor beamline p_beamline and proposal code p_proposal_code (e.g. cm, mx, nt, in, ee)'
 BEGIN
     SELECT concat(p.proposalCode, p.proposalNumber, '-', bs.visit_number) `session`, bs.startDate, bs.endDate
     FROM Proposal p
       INNER JOIN BLSession bs on p.proposalId = bs.proposalId
-	WHERE p.proposalCode = p_proposal_code AND bs.beamlinename = p_beamline AND now() > bs.startDate
+	WHERE p.proposalCode = p_proposal_code AND bs.beamlinename = p_beamline AND bs.visit_number <> 0 AND now() > bs.startDate
     ORDER BY bs.startDate DESC
     LIMIT 1;
 END ;;
@@ -3351,6 +3357,50 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_status does not have a valid value';
   END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_container_unassign_all_for_beamline` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `update_container_unassign_all_for_beamline`(IN p_beamline varchar(20))
+    MODIFIES SQL DATA
+    COMMENT 'Unassigns all containers on a given beamline one by one by calling update_container_assign on each.'
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE row_registry_barcode VARCHAR(20);
+    DECLARE row_position VARCHAR(20);
+    DECLARE cur CURSOR FOR SELECT cr.barcode, c.sampleChangerLocation  
+        FROM Container c
+            INNER JOIN ContainerRegistry cr ON cr.containerRegistryId = c.containerRegistryId
+            INNER JOIN BLSession bs ON bs.sessionId = c.sessionId
+        WHERE bs.beamlineName = p_beamline AND c.containerStatus = 'processing';
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    IF NOT (p_beamline IS NULL) THEN
+        OPEN cur;
+        call_loop: LOOP
+            FETCH cur INTO row_registry_barcode, row_position;
+            IF done THEN
+                LEAVE call_loop;
+            END IF;
+            CALL update_container_assign(p_beamline, row_registry_barcode, row_position);
+        END LOOP;
+        CLOSE cur;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_beamline is NULL';
+    END IF;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4720,7 +4770,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `upsert_dewar`(
 	 INOUT p_id int(10) unsigned,
@@ -6252,6 +6302,25 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Warnings` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `Warnings`()
+BEGIN
+select * from mysql.user;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -6261,4 +6330,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-01-18 13:11:41
+-- Dump completed on 2019-03-22 13:18:44
