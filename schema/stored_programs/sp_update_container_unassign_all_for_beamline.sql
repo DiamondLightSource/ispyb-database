@@ -24,7 +24,7 @@ BEGIN
         END LOOP;
         CLOSE cur;
     ELSE
-        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_registry_barcode is NULL';
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_beamline is NULL';
     END IF;
 
 END;;
