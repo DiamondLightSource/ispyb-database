@@ -12,6 +12,7 @@ If unassign then:
 BEGIN
     DECLARE row_containerId int(10) unsigned DEFAULT NULL;
     DECLARE row_containerStatus varchar(45) DEFAULT NULL;
+    DECLARE currentContainerStatus varchar(45) DEFAULT NULL;
     DECLARE row_dewarId int(10) unsigned DEFAULT NULL;
     DECLARE row_beamlineLocation varchar(20) DEFAULT NULL;
     DECLARE row_sampleChangerLocation varchar(20) DEFAULT NULL;
@@ -30,7 +31,9 @@ BEGIN
         ORDER BY c.containerId DESC
         LIMIT 1;
 
-        -- We need a containerId, and also we dont' want to unassign unless the correct current beamline and s.c. position is given
+        SELECT row_containerStatus INTO currentContainerStatus;
+
+        -- We need a containerId, and also we don't want to unassign unless the correct current beamline and s.c. position is given
         IF NOT row_containerId IS NULL THEN
           IF (NOT row_containerStatus <=> 'processing') OR (row_beamlineLocation = p_beamline AND row_sampleChangerLocation = p_position) THEN
 
@@ -47,6 +50,8 @@ BEGIN
               s.shippingStatus = IF(row_containerStatus<=>'processing', s.shippingStatus, 'processing')
             WHERE
               c.containerId = row_containerId;
+
+            SELECT IF(row_containerStatus<=>'processing', 'at facility', 'processing') INTO currentContainerStatus;
 
             IF NOT row_containerStatus <=> 'processing' THEN
               -- The container has been assigned a s.c. position on the beamline, so we need to unassign
@@ -76,5 +81,6 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_registry_barcode is NULL';
     END IF;
+    SELECT row_containerId as "containerId", currentContainerStatus as "containerStatus";
 END ;;
 DELIMITER ;
