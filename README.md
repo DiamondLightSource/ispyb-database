@@ -10,22 +10,17 @@ database.
 
 ## Installation
 
-Run this from a SQL shell (e.g. the `mysql` command-line tool):
-
-```mysql
-CREATE DATABASE ispyb;
-```
-
-Run this on the command-line:
+Run this on the command-line to create a database and import the schema stored in the SQL files:
 
 ```bash
+mysql -e "CREATE DATABASE ispyb"
 mysql ispyb < schema/tables.sql
 mysql ispyb < schema/lookups.sql
 mysql ispyb < schema/data.sql
 mysql ispyb < schema/routines.sql
 ```
 
-Note that the data.sql file contains test data, so is only useful in a development environment.
+Note that the `data.sql` file contains test data, so is only useful in a development environment.
 
 ## Documentation
 
