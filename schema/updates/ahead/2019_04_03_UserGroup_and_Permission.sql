@@ -1,4 +1,4 @@
-INSERT INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2019_04_03_.sql', 'ONGOING');
+INSERT INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2019_04_03_UserGroup_and_Permission.sql', 'ONGOING');
 
 INSERT IGNORE INTO UserGroup (userGroupId, name) VALUES (17, 'bag_stats');
 INSERT IGNORE INTO UserGroup (userGroupId, name) VALUES (20, 'bl_stats');
@@ -56,4 +56,4 @@ INSERT IGNORE INTO UserGroup_has_Permission (userGroupId, permissionId) VALUES (
 INSERT IGNORE INTO UserGroup_has_Permission (userGroupId, permissionId) VALUES (34, 49);                                          
 INSERT IGNORE INTO UserGroup_has_Permission (userGroupId, permissionId) VALUES (39, 69);                                          
 
-UPDATE SchemaStatus SET schemaStatus = 'DONE' WHERE scriptName = '2019_04_03_.sql';
+UPDATE SchemaStatus SET schemaStatus = 'DONE' WHERE scriptName = '2019_04_03_UserGroup_and_Permission.sql';
