@@ -1,3 +1,6 @@
+-- Warning: This assumes you have used exactly the same rows as previously found in the UserGroup, 
+-- Permission and UserGroup_has_Permission tables in schema/data.sql.
+
 INSERT INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2019_04_03_UserGroup_and_Permission.sql', 'ONGOING');
 
 INSERT IGNORE INTO UserGroup (userGroupId, name) VALUES (17, 'bag_stats');
