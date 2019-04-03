@@ -1,8 +1,8 @@
--- MySQL dump 10.17  Distrib 10.3.12-MariaDB, for Linux (x86_64)
+-- MySQL dump 10.17  Distrib 10.3.13-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.3.12-MariaDB
+-- Server version	10.3.13-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -804,6 +804,7 @@ CREATE TABLE `BLSession` (
   `lastUpdate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'last update timestamp: by default the end of the session, the last collect...',
   `protectedData` varchar(1024) DEFAULT NULL COMMENT 'indicates if the data are protected or not',
   `externalId` binary(16) DEFAULT NULL,
+  `archived` tinyint(1) DEFAULT 0 COMMENT 'The data for the session is archived and no longer available on disk',
   PRIMARY KEY (`sessionId`),
   KEY `BLSession_FKIndexOperatorSiteNumber` (`operatorSiteNumber`),
   KEY `Session_FKIndex1` (`proposalId`),
@@ -5691,4 +5692,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-01-16 16:01:19
+-- Dump completed on 2019-04-03 15:51:29
