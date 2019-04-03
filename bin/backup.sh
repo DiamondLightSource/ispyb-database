@@ -32,6 +32,7 @@ BeamLineSetup
 BF_component
 BF_subcomponent
 BF_system
+Permission
 )
 
 LOOKUP_TABLES_STRING=''
