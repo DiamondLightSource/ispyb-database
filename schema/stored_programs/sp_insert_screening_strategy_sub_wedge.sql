@@ -9,9 +9,9 @@ CREATE OR REPLACE PROCEDURE `insert_screening_strategy_sub_wedge`(
      p_exposureTime float,
      p_transmission float, 
      p_oscillationRange float,
-     p_resolution float,
      p_completeness float,
      p_multiplicity float,
+     p_resolution float,
      p_doseTotal float,
      p_numberOfImages	int(10) unsigned,
      p_comments varchar(255)
