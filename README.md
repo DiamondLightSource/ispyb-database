@@ -22,6 +22,8 @@ mysql ispyb < schema/routines.sql
 
 Note that the `data.sql` file contains test data, so is only useful in a development environment.
 
+Alternatively, in a test environment you can also run the build.sh file. This creates the database, runs the above .sql files and more.
+
 ## Documentation
 
 * Please refer to the [```Wiki```](https://github.com/DiamondLightSource/ispyb-database/wiki) for database diagrams, stored procedure how-to, MariaDB installation and more  
