@@ -1,0 +1,7 @@
+language: bash
+
+before_script:
+    - cp .my.example.cnf .my.cnf
+
+script:
+    - bash build.sh
