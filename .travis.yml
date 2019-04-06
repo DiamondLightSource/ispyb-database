@@ -1,7 +1,11 @@
 language: bash
 
+addons:
+  mariadb: '10.2'
+
 before_script:
-    - cp .my.example.cnf .my.cnf
+  - cp .my.example.cnf .my.cnf
+  - sed -i '/^password/d' .my.cnf
 
 script:
     - bash build.sh
