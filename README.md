@@ -29,5 +29,5 @@ Alternatively, in a test environment you can also run the build.sh file. This cr
 ## Documentation
 
 * Please refer to the [```Wiki```](https://github.com/DiamondLightSource/ispyb-database/wiki) for database diagrams, stored procedure how-to, MariaDB installation and more  
-* A complete [```list of tables and columns```](https://github.com/DiamondLightSource/ispyb-database/blob/master/doc/list_of_tables_and_columns.rst) for more details about the tables and columns
-* A complete [```list of stored procedures```](https://github.com/DiamondLightSource/ispyb-database/blob/master/doc/list_of_procs.rst) for more details about the stored procedures
+* A complete [```list of tables and columns```](https://github.com/DiamondLightSource/ispyb-database/blob/master/docs/list_of_tables_and_columns.rst) for more details about the tables and columns
+* A complete [```list of stored procedures```](https://github.com/DiamondLightSource/ispyb-database/blob/master/docs/list_of_procs.rst) for more details about the stored procedures
