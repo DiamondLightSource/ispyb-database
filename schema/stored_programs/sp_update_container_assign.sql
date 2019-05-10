@@ -7,7 +7,7 @@ MODIFIES SQL DATA
 COMMENT 'Toggles "assign" status of container (p_barcode).
 Sets the s.c. position and beamline.
 If assigned then: 1) Also assign its dewar and shipping. 2) Unassigns other containers in the same proposal on that beamline and s.c. position.
-If unassign then: 
+If unassign then:
 '
 BEGIN
     DECLARE row_containerId int(10) unsigned DEFAULT NULL;
@@ -17,17 +17,20 @@ BEGIN
     DECLARE row_beamlineLocation varchar(20) DEFAULT NULL;
     DECLARE row_sampleChangerLocation varchar(20) DEFAULT NULL;
     DECLARE row_proposalId int(10) unsigned DEFAULT NULL;
+    DECLARE row_queuedCount int(11) unsigned DEFAULT NULL;
 
     IF NOT (p_registry_barcode IS NULL) THEN
         START TRANSACTION;
 
-        SELECT c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId
-          INTO row_containerId, row_containerStatus, row_dewarId, row_beamlineLocation, row_sampleChangerLocation, row_proposalId
+        SELECT c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId, count(*)
+          INTO row_containerId, row_containerStatus, row_dewarId, row_beamlineLocation, row_sampleChangerLocation, row_proposalId, row_queuedCount
         FROM Container c
             INNER JOIN ContainerRegistry cr ON c.containerRegistryId = cr.containerRegistryId
             INNER JOIN Dewar d ON d.dewarId = c.dewarId
             INNER JOIN Shipping s ON s.shippingId = d.shippingId
+            LEFT OUTER JOIN ContainerQueue cq ON cq.containerId = c.containerId
         WHERE cr.barcode = p_registry_barcode
+        GROUP BY c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId
         ORDER BY c.containerId DESC
         LIMIT 1;
 
@@ -81,6 +84,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_registry_barcode is NULL';
     END IF;
-    SELECT row_containerId as "containerId", currentContainerStatus as "containerStatus";
+    SELECT row_containerId as "containerId",
+      currentContainerStatus as "containerStatus",
+      row_queuedCount as "queuedCount";
 END ;;
 DELIMITER ;
