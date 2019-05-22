@@ -6498,7 +6498,7 @@ CREATE PROCEDURE `upsert_processing_job_parameter`(
      INOUT p_id int(11) unsigned,
 	 p_processingJobId int(11) unsigned,
      p_parameterKey varchar(80),
-     p_parameterValue varchar(255)
+     p_parameterValue varchar(1024)
   )
     MODIFIES SQL DATA
     COMMENT 'If p_id is not provided, inserts new row. Otherwise updates exis'
