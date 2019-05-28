@@ -1989,7 +1989,7 @@
    ``Total logins``,bigint,""
    **v_monthDay**,table,"VIEW"
    ``num``,varchar,""
-   **v_run**,table,"VIEW"
+   **v_run**,table,""
    ``runId``,int,""
    ``run``,varchar,""
    ``startDate``,datetime,""
