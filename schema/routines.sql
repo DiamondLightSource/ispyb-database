@@ -1,8 +1,8 @@
--- MySQL dump 10.17  Distrib 10.3.14-MariaDB, for Linux (x86_64)
+-- MySQL dump 10.17  Distrib 10.3.15-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.3.14-MariaDB
+-- Server version	10.3.15-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -2436,6 +2436,72 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_dc_group_v2` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_dc_group_v2`(p_id int unsigned, p_authLogin varchar(45))
+    READS SQL DATA
+    COMMENT 'Returns a single-row result-set with the columns for the given data collection group id'
+BEGIN
+    IF p_id IS NOT NULL THEN
+      IF p_authLogin IS NOT NULL THEN
+      
+        SELECT dcg.sessionId,
+          dcg.blSampleId "sampleId",
+          dcg.experimentType "experimenttype",
+          dcg.startTime "starttime",
+          dcg.endTime "endtime",
+          dcg.crystalClass,
+          dcg.detectorMode,
+          dcg.actualSampleBarcode,
+          dcg.actualSampleSlotInContainer,
+          dcg.actualContainerBarcode,
+          dcg.actualContainerSlotInSC,
+          dcg.comments,
+          dcg.xtalSnapshotFullPath,
+          dcg.scanParameters
+        FROM DataCollectionGroup dcg
+          INNER JOIN BLSession bs ON dcg.sessionId = bs.sessionId
+          INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
+          INNER JOIN Person p ON p.personId = shp.personId
+        WHERE dcg.datacollectionGroupId = p_id AND p.login = p_authLogin;
+
+      ELSE
+
+        SELECT dcg.sessionId,
+          dcg.blSampleId "sampleId",
+          dcg.experimentType "experimenttype",
+          dcg.startTime "starttime",
+          dcg.endTime "endtime",
+          dcg.crystalClass,
+          dcg.detectorMode,
+          dcg.actualSampleBarcode,
+          dcg.actualSampleSlotInContainer,
+          dcg.actualContainerBarcode,
+          dcg.actualContainerSlotInSC,
+          dcg.comments,
+          dcg.xtalSnapshotFullPath,
+          dcg.scanParameters
+        FROM DataCollectionGroup dcg
+        WHERE dcg.datacollectionGroupId = p_id;
+      END IF;
+    ELSE
+	    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
+        MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
+	END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `retrieve_dc_infos_for_subsample` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -3968,7 +4034,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE PROCEDURE `update_container_assign`(IN p_beamline varchar(20), IN p_registry_barcode varchar(45), IN p_position int)
     MODIFIES SQL DATA
-    COMMENT 'Toggles "assign" status of container (p_barcode).\nSets the s.c. position and beamline.\nIf assigned then: 1) Also assign its dewar and shipping. 2) Unassigns other containers in the same proposal on that beamline and s.c. position.\nIf unassign then: \n'
+    COMMENT 'Toggles "assign" status of container (p_barcode).\nSets the s.c. position and beamline.\nIf assigned then: 1) Also assign its dewar and shipping. 2) Unassigns other containers in the same proposal on that beamline and s.c. position.\nIf unassign then:\n'
 BEGIN
     DECLARE row_containerId int(10) unsigned DEFAULT NULL;
     DECLARE row_containerStatus varchar(45) DEFAULT NULL;
@@ -3977,17 +4043,20 @@ BEGIN
     DECLARE row_beamlineLocation varchar(20) DEFAULT NULL;
     DECLARE row_sampleChangerLocation varchar(20) DEFAULT NULL;
     DECLARE row_proposalId int(10) unsigned DEFAULT NULL;
+    DECLARE row_queuedCount int(11) unsigned DEFAULT NULL;
 
     IF NOT (p_registry_barcode IS NULL) THEN
         START TRANSACTION;
 
-        SELECT c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId
-          INTO row_containerId, row_containerStatus, row_dewarId, row_beamlineLocation, row_sampleChangerLocation, row_proposalId
+        SELECT c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId, count(*)
+          INTO row_containerId, row_containerStatus, row_dewarId, row_beamlineLocation, row_sampleChangerLocation, row_proposalId, row_queuedCount
         FROM Container c
             INNER JOIN ContainerRegistry cr ON c.containerRegistryId = cr.containerRegistryId
             INNER JOIN Dewar d ON d.dewarId = c.dewarId
             INNER JOIN Shipping s ON s.shippingId = d.shippingId
+            LEFT OUTER JOIN ContainerQueue cq ON cq.containerId = c.containerId
         WHERE cr.barcode = p_registry_barcode
+        GROUP BY c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId
         ORDER BY c.containerId DESC
         LIMIT 1;
 
@@ -4041,7 +4110,9 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_registry_barcode is NULL';
     END IF;
-    SELECT row_containerId as "containerId", currentContainerStatus as "containerStatus";
+    SELECT row_containerId as "containerId",
+      currentContainerStatus as "containerStatus",
+      row_queuedCount as "queuedCount";
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -6492,7 +6563,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `upsert_processing_job_parameter`(
      INOUT p_id int(11) unsigned,
@@ -6501,7 +6572,7 @@ CREATE PROCEDURE `upsert_processing_job_parameter`(
      p_parameterValue varchar(1024)
   )
     MODIFIES SQL DATA
-    COMMENT 'If p_id is not provided, inserts new row. Otherwise updates exis'
+    COMMENT 'If p_id is not provided, inserts new row. Otherwise updates existing row.'
 BEGIN
   IF p_id IS NOT NULL OR p_processingJobId IS NOT NULL THEN
     INSERT INTO ProcessingJobParameter (
@@ -7323,4 +7394,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-23 10:22:27
+-- Dump completed on 2019-05-28 14:32:18
