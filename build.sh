@@ -47,10 +47,10 @@ then
   echo "All schema/updates/*.sql files appear to have been run."
 
   # Generate table and sproc documentation
-  if [ -d "bin" ] && [ -d "doc" ]; then
+  if [ -d "bin" ] && [ -d "docs" ]; then
     cd bin
-    ./db_procs_to_rst.sh $db > ../doc/list_of_procs.rst
-    ./db_tables_to_rst.sh $db > ../doc/list_of_tables_and_columns.rst
+    ./db_procs_to_rst.sh $db > ../docs/list_of_procs.rst
+    ./db_tables_to_rst.sh $db > ../docs/list_of_tables_and_columns.rst
     cd ..
   fi
 
