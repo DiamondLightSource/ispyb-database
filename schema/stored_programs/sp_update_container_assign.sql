@@ -22,7 +22,7 @@ BEGIN
     IF NOT (p_registry_barcode IS NULL) THEN
         START TRANSACTION;
 
-        SELECT c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId, count(*)
+        SELECT c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId, count(cq.containerQueueId)
           INTO row_containerId, row_containerStatus, row_dewarId, row_beamlineLocation, row_sampleChangerLocation, row_proposalId, row_queuedCount
         FROM Container c
             INNER JOIN ContainerRegistry cr ON c.containerRegistryId = cr.containerRegistryId
