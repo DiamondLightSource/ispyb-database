@@ -1,3 +1,6 @@
+SET @old_sql_mode       = @@sql_mode;
+SET sql_mode='';
+
 DELIMITER ;;
 CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `upsert_dc_main_v3`(
      INOUT p_id int(11) unsigned,
@@ -35,7 +38,7 @@ BEGIN
       p_detectorId,
       p_dcNumber, p_startTime, p_endTime,
       p_status, p_noImages, p_startImgNumber, p_noPasses, p_imgDir, p_imgPrefix, p_imgSuffix, p_imgContainerSubPath, p_fileTemplate,
-      p_snapshot1, p_snapshot2, p_snapshot3, p_snapshot4, comments)
+      p_snapshot1, p_snapshot2, p_snapshot3, p_snapshot4, p_comments)
       ON DUPLICATE KEY UPDATE
 		    datacollectiongroupid = IFNULL(p_groupId, datacollectiongroupid),
 		    blSubSampleId = IFNULL(p_blSubSampleId, blSubSampleId),
@@ -62,3 +65,4 @@ BEGIN
     END IF;
   END;;
 DELIMITER ;
+SET sql_mode = @old_sql_mode;

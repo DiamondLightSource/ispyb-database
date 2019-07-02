@@ -1,8 +1,8 @@
--- MySQL dump 10.17  Distrib 10.3.15-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.4.6-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.3.15-MariaDB
+-- Server version	10.4.6-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -5593,7 +5593,7 @@ BEGIN
       p_detectorId,
       p_dcNumber, p_startTime, p_endTime,
       p_status, p_noImages, p_startImgNumber, p_noPasses, p_imgDir, p_imgPrefix, p_imgSuffix, p_imgContainerSubPath, p_fileTemplate,
-      p_snapshot1, p_snapshot2, p_snapshot3, p_snapshot4, comments)
+      p_snapshot1, p_snapshot2, p_snapshot3, p_snapshot4, p_comments)
       ON DUPLICATE KEY UPDATE
 		    datacollectiongroupid = IFNULL(p_groupId, datacollectiongroupid),
 		    blSubSampleId = IFNULL(p_blSubSampleId, blSubSampleId),
@@ -6888,7 +6888,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `upsert_quality_indicators_dozor_score`(
   OUT p_id int(11) unsigned,
@@ -6899,12 +6899,12 @@ CREATE PROCEDURE `upsert_quality_indicators_dozor_score`(
     MODIFIES SQL DATA
     COMMENT 'Inserts into or updates a row in the image quality indicators table'
 BEGIN
-  DECLARE row_DataCollectionId int(11) unsigned DEFAULT NULL;
+  DECLARE row_dataCollectionId int(11) unsigned DEFAULT NULL;
   DECLARE row_imageNumber mediumint(8) unsigned DEFAULT NULL;
   
   SELECT dataCollectionId, imageNumber INTO row_DataCollectionId, row_imageNumber FROM ImageQualityIndicators WHERE dataCollectionId = p_dataCollectionId AND imageNumber = p_imageNumber;
 
-  IF dataCollectionId IS NULL THEN
+  IF row_dataCollectionId IS NULL THEN
         INSERT INTO ImageQualityIndicators (dataCollectionId, imageNumber, dozor_score)
           VALUES (p_dataCollectionId, p_imageNumber, p_dozorScore);
         SET p_id = 1;
@@ -7394,4 +7394,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-05-28 14:32:18
+-- Dump completed on 2019-07-02 11:48:59
