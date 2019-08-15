@@ -71,6 +71,7 @@
    "**retrieve_reprocessing_by_dc**","p_dcId int(11) unsigned","Retrieves reprocessing requests for a data collection (p_dcId)."
    "**retrieve_samples_assigned_for_proposal**","IN p_proposalCode varchar(3), IN p_proposalNumber int","Retrieve the user friendly name and ID of all assigned instances"
    "**retrieve_samples_for_sample_group**","IN p_sampleGroupId int unsigned","Return multi-row result set with sample IDs, order in the group"
+   "**retrieve_samples_not_loaded_for_container_reg_barcode**","p_barcode varchar(20)",""
    "**retrieve_sample_groups_for_sample**","IN p_sampleId int unsigned","Return multi-row result-set with sample group IDs, order in the"
    "**retrieve_sample_type_for_sample**","IN p_sampleId int unsigned","Return single-row result set with sample type columns for sample"
    "**retrieve_sessions_for_beamline_and_run**","IN p_beamline varchar(15),   IN p_run varchar(7)","Returns a multi-row result-set with the sessions (mx12345-123), their start and end dates for beamline p_beamline and run p_run"
