@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.4.6-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.4.7-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.4.6-MariaDB
+-- Server version	10.4.7-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,8 +27,7 @@
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE FUNCTION `insert_scaling`(
-     p_parentId integer,
+CREATE FUNCTION `insert_scaling`(p_parentId integer,
 
      p_Type1 enum('overall','innerShell','outerShell'),
      p_Comments1 varchar(255), 
@@ -210,8 +209,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE FUNCTION `upsert_dc`(
-     p_Id int(11) unsigned,
+CREATE FUNCTION `upsert_dc`(p_Id int(11) unsigned,
      p_parentId int(11) unsigned,
      p_visitId int(11) unsigned,
      p_sampleId int(11) unsigned, 
@@ -409,8 +407,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE FUNCTION `upsert_dcgroup`(
-	 p_id int(11) unsigned,
+CREATE FUNCTION `upsert_dcgroup`(p_id int(11) unsigned,
      p_parentId int(10) unsigned,
      p_sampleId int(10) unsigned, 
      p_experimenttype varchar(45), 
@@ -465,8 +462,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE FUNCTION `upsert_image`(
-     p_Id int(11) unsigned,
+CREATE FUNCTION `upsert_image`(p_Id int(11) unsigned,
      p_parentId int(11) unsigned,
      p_imageNumber int(10) unsigned, 
      p_filename varchar(255),
@@ -521,8 +517,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE FUNCTION `upsert_integration`(
-     p_id integer,
+CREATE FUNCTION `upsert_integration`(p_id integer,
      p_parentId integer,
      p_datacollectionId integer,
      p_programRunId integer,
@@ -610,8 +605,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE FUNCTION `upsert_mrrun`(
-     p_id integer,
+CREATE FUNCTION `upsert_mrrun`(p_id integer,
      p_parentId integer,
      p_success boolean,
      p_message varchar(255), 
@@ -695,8 +689,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE FUNCTION `upsert_mrrun_blob`(
-     p_Id integer,
+CREATE FUNCTION `upsert_mrrun_blob`(p_Id integer,
      p_parentId integer,
      p_view1 varchar(255), 
      p_view2 varchar(255), 
@@ -732,8 +725,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE FUNCTION `upsert_processing`(
-     p_id int(10),
+CREATE FUNCTION `upsert_processing`(p_id int(10),
      p_parentId int(10),
      p_spacegroup varchar(45), 
      p_refinedcell_a float, 
@@ -778,8 +770,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE FUNCTION `upsert_program_run`(
-     p_Id int(10) unsigned,
+CREATE FUNCTION `upsert_program_run`(p_Id int(10) unsigned,
      p_cmd_line varchar(255),
      p_programs varchar(255),
      p_status tinyint(1) ,
@@ -866,8 +857,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE FUNCTION `upsert_sample`(
-	 p_id int(10) unsigned,
+CREATE FUNCTION `upsert_sample`(p_id int(10) unsigned,
 	 p_crystalId int(10) unsigned,
      p_containerId int(10) unsigned, 
      p_name varchar(45),
@@ -3816,6 +3806,54 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_samples_not_loaded_for_container_reg_barcode` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_samples_not_loaded_for_container_reg_barcode`(p_barcode varchar(20))
+BEGIN
+  IF NOT (p_barcode IS NULL) THEN
+
+    WITH most_recent_container AS (
+      SELECT max(c.containerId) as containerId
+      FROM Container c
+        INNER JOIN ContainerRegistry cr USING(containerRegistryId)
+      WHERE cr.barcode=p_barcode
+    )
+    SELECT bls.blSampleId "sampleId",
+      bls.containerId "containerId",
+      bls.name "sampleName",
+      bls.code "sampleCode",
+      bls.comments "sampleComments",
+      bls.location "sampleLocation",
+      max(ra.robotActionId) as rId
+    FROM BLSample bls
+      INNER JOIN most_recent_container mrc ON bls.containerId = mrc.containerId
+      LEFT OUTER JOIN RobotAction ra ON bls.blSampleId = ra.blSampleId
+    GROUP BY bls.blSampleId,
+      bls.containerId,
+      bls.name,
+      bls.code,
+      bls.comments,
+      bls.location
+    HAVING rId IS NULL
+    ORDER BY bls.blSampleId;
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_barcode';
+  END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `retrieve_sample_groups_for_sample` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -3996,6 +4034,32 @@ BEGIN
 
     END IF;
 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_sleeve` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_sleeve`(p_id tinyint unsigned)
+BEGIN
+  IF NOT (p_id IS NULL) THEN
+    SELECT sleeveId "id", location "location", lastMovedToFreezer "lastMovedToFreezer", lastMovedFromFreezer "lastMovedFromFreezer"
+    FROM Sleeve
+    WHERE sleeveId = p_id;
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_id must be non-NULL.';
+
+  END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -7247,6 +7311,35 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `upsert_sleeve` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `upsert_sleeve`(p_id tinyint unsigned, p_location tinyint unsigned, p_lastMovedToFreezer datetime, p_lastMovedFromFreezer datetime)
+BEGIN
+  IF NOT (p_id IS NULL) THEN
+    INSERT INTO Sleeve (sleeveId, location, lastMovedToFreezer, lastMovedFromFreezer) VALUES (p_id, p_location, p_lastMovedToFreezer, p_lastMovedFromFreezer)
+    ON DUPLICATE KEY UPDATE
+		  location = IFNULL(p_location, location),
+      lastMovedToFreezer = IFNULL(p_lastMovedToFreezer, lastMovedToFreezer),
+      lastMovedFromFreezer = IFNULL(p_lastMovedFromFreezer, lastMovedFromFreezer);
+
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_id must be non-NULL.';
+
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `upsert_xfe_fluo_spectrum` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -7394,4 +7487,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-07-02 11:48:59
+-- Dump completed on 2019-08-15 11:55:50

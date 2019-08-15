@@ -45,3 +45,6 @@ GRANT EXECUTE ON PROCEDURE `retrieve_container_subsamples_v2` TO 'ispyb_acquisit
 GRANT EXECUTE ON PROCEDURE upsert_dc_group_v3 TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE retrieve_dc_group TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE retrieve_dc_group_v2 TO 'ispyb_acquisition';
+
+GRANT EXECUTE ON PROCEDURE retrieve_sleeve TO 'ispyb_acquisition';
+GRANT EXECUTE ON PROCEDURE upsert_sleeve TO 'ispyb_acquisition';
