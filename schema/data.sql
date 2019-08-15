@@ -1,8 +1,8 @@
--- MySQL dump 10.17  Distrib 10.3.14-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.4.7-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.3.14-MariaDB
+-- Server version	10.4.7-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -1592,6 +1592,15 @@ INSERT INTO `ShippingHasSession` (`shippingId`, `sessionId`) VALUES (474,339525)
 UNLOCK TABLES;
 
 --
+-- Dumping data for table `Sleeve`
+--
+
+LOCK TABLES `Sleeve` WRITE;
+/*!40000 ALTER TABLE `Sleeve` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Sleeve` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping data for table `SpaceGroup`
 --
 
@@ -1774,4 +1783,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-23 11:38:32
+-- Dump completed on 2019-08-15  9:49:01
