@@ -31,3 +31,13 @@ Alternatively, in a test environment you can also run the build.sh file. This cr
 * Please refer to the [```Wiki```](https://github.com/DiamondLightSource/ispyb-database/wiki) for database diagrams, stored procedure how-to, MariaDB installation and more  
 * A complete [```list of tables and columns```](https://github.com/DiamondLightSource/ispyb-database/blob/master/docs/list_of_tables_and_columns.rst) for more details about the tables and columns
 * A complete [```list of stored procedures```](https://github.com/DiamondLightSource/ispyb-database/blob/master/docs/list_of_procs.rst) for more details about the stored procedures
+
+## Naming and type convention
+
+* Table names: UpperCamelCase (i.e. TableName, DataCollection)
+* Column names: lowerCamelCase (i.e. columnName, dataCollectionId)
+* Table names are in singular when a single row in the table contains only one of the items that the name refers to (i.e. Container, but note: ImageQualityIndicators because there are multiple indicators in a single row)
+* Flag indication: 1=yes, 0=no, NULL=unknown
+* Primary key columns are always integer
+
+The schema does have some tables and columns that don't adhere to this convention, and there could be good reasons to break with the convention in certain cases. However, in the vast majority of cases we should try to follow this convention.
