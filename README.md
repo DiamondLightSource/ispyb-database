@@ -40,4 +40,4 @@ Alternatively, in a test environment you can also run the build.sh file. This cr
 * Flag indication: 1=yes, 0=no, NULL=unknown
 * Primary key columns are always integer
 
-The schema does have some tables and columns that don't adhere to this convention, and there could be good reasons to break with the convention in certain cases. However, in the vast majority of cases we should try to follow this convention.
+The schema does have some tables and columns that don't adhere to this convention. Some of those should be corrected, but there could be good reasons to break with the convention in a few cases. 
