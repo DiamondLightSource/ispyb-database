@@ -26,6 +26,21 @@ Note that the `data.sql` file contains test data, so is only useful in a develop
 
 Alternatively, in a test environment you can also run the build.sh file. This creates the database, runs the above .sql files and more.
 
+Note that SynchWeb currently assumes [`sql_mode`](https://mariadb.com/kb/en/library/sql-mode/) is not set. I.e. it assumes that you have a line like the below in the MariaDB .cnf file:
+
+sql_mode=''
+
+In a development environment it might be useful to log all SQL errors. In MariaDB, you can install the [SQL Error Log Plugin](https://mariadb.com/kb/en/library/sql-error-log-plugin/) to get these logged to a file `sql_errors.log` inside your datadir. Run this from the mariadb command-line:
+
+```
+INSTALL SONAME 'sql_errlog';
+```
+You can verify that it's installed and activated with:
+
+```
+SHOW PLUGINS SONAME WHERE Name = 'SQL_ERROR_LOG';
+```
+
 ## Documentation
 
 * Please refer to the [```Wiki```](https://github.com/DiamondLightSource/ispyb-database/wiki) for database diagrams, stored procedure how-to, MariaDB installation and more  
@@ -40,4 +55,4 @@ Alternatively, in a test environment you can also run the build.sh file. This cr
 * Flag indication: 1=yes, 0=no, NULL=unknown
 * Primary key columns are always integer
 
-The schema does have some tables and columns that don't adhere to this convention. Some of those should be corrected, but there could be good reasons to break with the convention in a few cases. 
+The schema does have some tables and columns that don't adhere to this convention. Some of those should be corrected, but there could be good reasons to break with the convention in a few cases.
