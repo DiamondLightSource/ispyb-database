@@ -79,6 +79,7 @@
    "**retrieve_session_id**","p_session varchar(15), OUT p_id int",""
    "**retrieve_session_id_v2**","p_session varchar(15), p_authLogin varchar(45)","Returns the session ID (an integer) for p_session (e.g. mx12345-123)"
    "**retrieve_sleeve**","p_id tinyint unsigned",""
+   "**retrieve_sleeves**","",""
    "**retrieve_test**","","For testing the connection"
    "**update_container_assign**","IN p_beamline varchar(20), IN p_registry_barcode varchar(45), IN p_position int","Toggles assign status of container (p_barcode).Sets the s.c. position and beamline.If assigned then: 1) Also assign its dewar and shipping. 2) Unassigns other containers in the same proposal on that beamline and s.c. position.If unassign then:"
    "**update_container_ls_position**","IN p_barcode varchar(45), IN p_position int","Updates container sampleChangerLocation for barcode = p_barcode,"

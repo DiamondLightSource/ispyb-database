@@ -47,4 +47,5 @@ GRANT EXECUTE ON PROCEDURE retrieve_dc_group TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE retrieve_dc_group_v2 TO 'ispyb_acquisition';
 
 GRANT EXECUTE ON PROCEDURE retrieve_sleeve TO 'ispyb_acquisition';
+GRANT EXECUTE ON PROCEDURE retrieve_sleeves TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE upsert_sleeve TO 'ispyb_acquisition';
