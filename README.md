@@ -43,6 +43,25 @@ You can verify that it's installed and activated with:
 SHOW PLUGINS SONAME WHERE Name = 'SQL_ERROR_LOG';
 ```
 
+## Updating
+
+In order to update a production database, please follow this procedure:
+
+1. For all .sql files in `schema/updates` that have not already been run, read any comments inside the files to decide if you should run them. Run a file e.g. like this:
+```bash
+mysql ispyb < schema/updates/2019_03_29_BLSession_archived.sql
+```
+2. If it's been updated, run `schema/routines.sql`. E.g.:
+```bash
+mysql ispyb < schema/routines.sql
+```
+3. If you ran the routines.sql, then re-apply the grants for the routines. E.g.:
+```bash
+mysql ispyb < grants/ispyb_acquisition.sql
+mysql ispyb < grants/ispyb_processing.sql
+mysql ispyb < grants/ispyb_web.sql
+```
+
 ## Documentation
 
 * Please refer to the [```Wiki```](https://github.com/DiamondLightSource/ispyb-database/wiki) for database diagrams, stored procedure how-to, MariaDB installation and more  
