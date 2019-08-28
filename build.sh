@@ -24,6 +24,9 @@ then
   mysql --defaults-file=.my.cnf -D $db < schema/lookups.sql
   mysql --defaults-file=.my.cnf -D $db < schema/data.sql
   mysql --defaults-file=.my.cnf -D $db < schema/routines.sql
+  mysql --defaults-file=.my.cnf -D $db < grants/ispyb_acquisition.sql
+  mysql --defaults-file=.my.cnf -D $db < grants/ispyb_processing.sql
+  mysql --defaults-file=.my.cnf -D $db < grants/ispyb_web.sql
 
   # Verify that all update .sql files have been run, if not exit with message
   all_sql_files=`cd schema/updates && ls *.sql && cd ../..`
