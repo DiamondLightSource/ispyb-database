@@ -1,5 +1,5 @@
 -- Create the processing application role.
-CREATE ROLE ispyb_processing;
+CREATE ROLE IF NOT EXISTS ispyb_processing;
 
 -- You must also create a database user and grant this role to them, e.g.
 -- CREATE USER zocalo@'%' IDENTIFIED BY 'the_zocalo_password';
@@ -9,7 +9,6 @@ CREATE ROLE ispyb_processing;
 GRANT SELECT ON AdminVar TO 'ispyb_processing'; -- Hack TO allow ispyb_processing to connect through MaxScale
 GRANT INSERT ON ImageQualityIndicators TO 'ispyb_processing'; -- Needed for bulk insertion of aggregated IQIs
 GRANT EXECUTE ON FUNCTION retrieve_visit_id TO 'ispyb_processing';
-GRANT EXECUTE ON FUNCTION retrieve_datacollection_id TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `retrieve_dc_main` TO 'ispyb_processing';
 GRANT EXECUTE ON FUNCTION upsert_sample TO 'ispyb_processing';
 GRANT EXECUTE ON FUNCTION upsert_dcgroup TO 'ispyb_processing';
@@ -29,7 +28,6 @@ GRANT EXECUTE ON PROCEDURE upsert_dc_group_v3 TO 'ispyb_processing';
 
 GRANT EXECUTE ON PROCEDURE retrieve_current_sessions TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_current_cm_sessions TO 'ispyb_processing';
-GRANT EXECUTE ON PROCEDURE retrieve_active_plates TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_current_sessions_for_person TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_sessions_for_beamline_and_run TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `retrieve_sessions_for_person_login` TO 'ispyb_processing';

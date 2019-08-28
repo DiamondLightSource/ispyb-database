@@ -1,5 +1,5 @@
 -- Create the web application role.
-CREATE ROLE ispyb_web;
+CREATE ROLE IF NOT EXISTS ispyb_web;
 
 -- You must also create a database user and grant this role to them, e.g.
 -- CREATE USER synchweb@'%' IDENTIFIED BY 'the_synchweb_password';

@@ -1,5 +1,5 @@
 -- Create the processing application role.
-CREATE ROLE ispyb_acquisition;
+CREATE ROLE IF NOT EXISTS ispyb_acquisition;
 
 -- You must also create a database user and grant this role to them, e.g.
 -- CREATE USER gda@'%' IDENTIFIED BY 'the_gda_password';
