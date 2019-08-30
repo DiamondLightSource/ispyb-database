@@ -1,6 +1,6 @@
 DELIMITER ;;
 
-CREATE OR REPLACE PROCEDURE upsert_sleeve(p_id tinyint unsigned, p_location tinyint unsigned, p_lastMovedToFreezer datetime, p_lastMovedFromFreezer datetime)
+CREATE OR REPLACE PROCEDURE upsert_sleeve(INOUT p_id tinyint unsigned, p_location tinyint unsigned, p_lastMovedToFreezer datetime, p_lastMovedFromFreezer datetime)
 BEGIN
   IF NOT (p_id IS NULL) THEN
     INSERT INTO Sleeve (sleeveId, location, lastMovedToFreezer, lastMovedFromFreezer) VALUES (p_id, p_location, p_lastMovedToFreezer, p_lastMovedFromFreezer)
