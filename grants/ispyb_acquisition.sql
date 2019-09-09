@@ -4,6 +4,7 @@ CREATE ROLE IF NOT EXISTS ispyb_acquisition;
 -- You must also create a database user and grant this role to them, e.g.
 -- CREATE USER gda@'%' IDENTIFIED BY 'the_gda_password';
 -- GRANT ispyb_acquisition to gda@'%';
+-- SET DEFAULT ROLE ispyb_acquisition FOR gda@'%';
 
 -- Grants for ispyb_acquisition
 GRANT SELECT ON `AdminVar` TO 'ispyb_acquisition';

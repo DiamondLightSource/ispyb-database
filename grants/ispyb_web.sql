@@ -4,6 +4,7 @@ CREATE ROLE IF NOT EXISTS ispyb_web;
 -- You must also create a database user and grant this role to them, e.g.
 -- CREATE USER synchweb@'%' IDENTIFIED BY 'the_synchweb_password';
 -- GRANT ispyb_web to synchweb@'%';
+-- SET DEFAULT ROLE ispyb_web FOR synchweb@'%';
 
 -- The grants for the web application role:
 GRANT SELECT ON * TO 'ispyb_web';

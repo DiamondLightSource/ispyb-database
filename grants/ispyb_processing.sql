@@ -4,6 +4,7 @@ CREATE ROLE IF NOT EXISTS ispyb_processing;
 -- You must also create a database user and grant this role to them, e.g.
 -- CREATE USER zocalo@'%' IDENTIFIED BY 'the_zocalo_password';
 -- GRANT ispyb_processing to zocalo@'%';
+-- SET DEFAULT ROLE ispyb_processing FOR zocalo@'%';
 
 -- Grants for ispyb_processing
 GRANT SELECT ON AdminVar TO 'ispyb_processing'; -- Hack TO allow ispyb_processing to connect through MaxScale
