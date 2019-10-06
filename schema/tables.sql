@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.4.7-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.4.8-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.4.7-MariaDB
+-- Server version	10.4.8-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -638,7 +638,7 @@ CREATE TABLE `BLSampleImage` (
   `micronsPerPixelX` float DEFAULT NULL,
   `micronsPerPixelY` float DEFAULT NULL,
   `imageFullPath` varchar(255) DEFAULT NULL,
-  `blSampleImageScoreId` int(11) DEFAULT NULL,
+  `blSampleImageScoreId` int(11) unsigned DEFAULT NULL,
   `comments` varchar(255) DEFAULT NULL,
   `blTimeStamp` datetime DEFAULT NULL,
   `containerInspectionId` int(11) unsigned DEFAULT NULL,
@@ -646,8 +646,10 @@ CREATE TABLE `BLSampleImage` (
   PRIMARY KEY (`blSampleImageId`),
   KEY `BLSampleImage_idx1` (`blSampleId`),
   KEY `BLSampleImage_fk2` (`containerInspectionId`),
+  KEY `BLSampleImage_fk3` (`blSampleImageScoreId`),
   CONSTRAINT `BLSampleImage_fk1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `BLSampleImage_fk2` FOREIGN KEY (`containerInspectionId`) REFERENCES `ContainerInspection` (`containerInspectionId`)
+  CONSTRAINT `BLSampleImage_fk2` FOREIGN KEY (`containerInspectionId`) REFERENCES `ContainerInspection` (`containerInspectionId`),
+  CONSTRAINT `BLSampleImage_fk3` FOREIGN KEY (`blSampleImageScoreId`) REFERENCES `BLSampleImageScore` (`blSampleImageScoreId`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5689,4 +5691,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-15  9:49:00
+-- Dump completed on 2019-10-06 17:56:13
