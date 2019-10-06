@@ -75,5 +75,7 @@ mysql ispyb < grants/ispyb_web.sql
 * Table names are in singular when a single row in the table contains only one of the items that the name refers to (i.e. Container, but note: ImageQualityIndicators because there are multiple indicators in a single row)
 * Flag indication: 1=yes, 0=no, NULL=unknown
 * Primary key columns are always integer
+* Linker tables used for many-to-many relationships between two entities Entity1 and Entity2 are named according to the pattern 'Entity1_has_Entity2'. If both have the same prefix, then the prefix might be left out of the last one, e.g. 'Component_has_SubType' where 'SubType' refers to the entity 'ComponentSubType'.
+* Sometimes it's justified to use abbreviations to avoid excessively long names.
 
 The schema does have some tables and columns that don't adhere to this convention. Some of those should be corrected, but there could be good reasons to break with the convention in a few cases.
