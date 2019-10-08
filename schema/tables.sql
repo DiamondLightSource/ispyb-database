@@ -1946,7 +1946,7 @@ DROP TABLE IF EXISTS `DiffractionPlan`;
 CREATE TABLE `DiffractionPlan` (
   `diffractionPlanId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) DEFAULT NULL,
-  `experimentKind` enum('Default','MXPressE','MXPressO','MXPressE_SAD','MXScore','MXPressM','MAD','SAD','Fixed','Ligand binding','Refinement','OSC','MAD - Inverse Beam','SAD - Inverse Beam','MESH','XFE') DEFAULT NULL,
+  `experimentKind` enum('Default','MXPressE','MXPressO','MXPressE_SAD','MXScore','MXPressM','MAD','SAD','Fixed','Ligand binding','Refinement','OSC','MAD - Inverse Beam','SAD - Inverse Beam','MESH','XFE','Stepped transmission') DEFAULT NULL,
   `observedResolution` float DEFAULT NULL,
   `minimalResolution` float DEFAULT NULL,
   `exposureTime` float DEFAULT NULL,
@@ -5691,4 +5691,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-06 17:56:13
+-- Dump completed on 2019-10-08 13:47:24
