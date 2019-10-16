@@ -2,6 +2,11 @@
 -- See issue description at:
 -- https://github.com/ispyb/ispyb-database-modeling/issues/45
 
+-- TODO:
+-- * Finish up INSERT INTO DataCollection ... for EnergyScans
+-- * Rename wavelength to startEnergy, convert values
+--
+
 ALTER TABLE DataCollectionFileAttachment
 MODIFY fileType enum('snapshot','log','xy','recip','pia','warning', 'scanFile', 'jpegScanFile', 'choochFile', 'jpegChoochFile', 'mcaFile', 'annotatedPymcaXfeSpectrum', 'fittedDataFile', 'bestWilsonPlot') DEFAULT NULL;
 
@@ -50,16 +55,17 @@ ALTER TABLE DataCollectionGroup
 ALTER TABLE DataCollection
   ADD element float COMMENT 'EnergyScan',
   ADD edgeEnergy float COMMENT 'EnergyScan',
-  ADD startEnergy float COMMENT 'EnergyScan',
+  CHANGE wavelength startEnergy float,
+--  ADD startEnergy float COMMENT 'EnergyScan',
   ADD endEnergy float COMMENT 'EnergyScan',
-  ADD peakEnergy float COMMENT 'EnergyScan',
-  ADD inflectionEnergy float COMMENT 'EnergyScan',
-  ADD energy float COMMENT 'XFEFluorescenceSpectrum',
+--  ADD peakEnergy float COMMENT 'EnergyScan',
+--  ADD inflectionEnergy float COMMENT 'EnergyScan',
+--  ADD energy float COMMENT 'XFEFluorescenceSpectrum',
   ADD synchrotronCurrent float COMMENT 'EnergyScan',
-  ADD inflectionFDoublePrime float COMMENT 'EnergyScan',
-  ADD inflectionFPrime float COMMENT 'EnergyScan',
-  ADD peakFDoublePrime float COMMENT 'EnergyScan',
-  ADD peakFPrime float COMMENT 'EnergyScan',
+--  ADD inflectionFDoublePrime float COMMENT 'EnergyScan',
+--  ADD inflectionFPrime float COMMENT 'EnergyScan',
+--  ADD peakFDoublePrime float COMMENT 'EnergyScan',
+--  ADD peakFPrime float COMMENT 'EnergyScan',
   DROP xtalSnapshotFullPath1,
   DROP xtalSnapshotFullPath2,
   DROP xtalSnapshotFullPath3,
@@ -74,6 +80,9 @@ ALTER TABLE DataCollection
   CHANGE imageSuffix fileSuffix varchar(45) DEFAULT NULL,
   CHANGE IF EXISTS imageContainerSubPath dataContainerSubPath varchar(255) DEFAULT NULL COMMENT 'Internal path of a HDF5 file pointing to the data for this data collection';
 
+-- Convert from wavelength to energy:
+-- UPDATE DataCollection SET startEnergy = ....;
+
 -- Copy the ES rows into DC and DCGroup + move column values into DCFA
 -- What should be the DCG.experimentType value for this?
 
@@ -87,19 +96,19 @@ BEGIN NOT ATOMIC
   DECLARE c_startTime, c_endTime datetime;
   DECLARE c_beamSizeHorizontal, c_beamSizeVertical, c_transmissionFactor, c_exposureTime, c_temperature, c_xrayDose float;
   DECLARE c_flux, c_flux_end double;
-  DECLARE c_scanFileFullPath, c_filename, c_choochFileFullPath, c_jpegChoochFileFullPath varchar(255);
+  DECLARE c_scanFileFullPath, c_filename, c_choochFileFullPath, c_jpegChoochFileFullPath, c_workingDirectory varchar(255);
   DECLARE c_comments varchar(1024);
   DECLARE c_crystalClass varchar(20);
   DECLARE c_element varchar(45);
 
   DECLARE cur1 CURSOR FOR
-    SELECT energyScanId, sessionId, blSampleId, blSubSampleId, startTime, endTime, beamSizeHorizontal, beamSizeVertical, transmissionFactor, comments, crystalClass, element, exposureTime, filename, temperature, xrayDose, flux, flux_end, scanFileFullPath, choochFileFullPath, jpegChoochFileFullPath
+    SELECT energyScanId, sessionId, blSampleId, blSubSampleId, startTime, endTime, beamSizeHorizontal, beamSizeVertical, transmissionFactor, comments, crystalClass, element, exposureTime, filename, temperature, xrayDose, flux, flux_end, scanFileFullPath, choochFileFullPath, jpegChoochFileFullPath, workingDirectory
     FROM EnergyScan;
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
   OPEN cur1;
   read_loop: LOOP
-    FETCH cur1 INTO c_energyScanId, c_sessionId, c_blSampleId, c_blSubSampleId, c_startTime, c_endTime, c_beamSizeHorizontal, c_beamSizeVertical, c_transmissionFactor, c_comments, c_crystalClass, c_element, c_exposureTime, c_filename, c_temperature, c_xrayDose, c_flux, c_flux_end, c_scanFileFullPath, c_choochFileFullPath, c_jpegChoochFileFullPath;
+    FETCH cur1 INTO c_energyScanId, c_sessionId, c_blSampleId, c_blSubSampleId, c_startTime, c_endTime, c_beamSizeHorizontal, c_beamSizeVertical, c_transmissionFactor, c_comments, c_crystalClass, c_element, c_exposureTime, c_filename, c_temperature, c_xrayDose, c_flux, c_flux_end, c_scanFileFullPath, c_choochFileFullPath, c_jpegChoochFileFullPath, c_workingDirectory;
     IF done THEN
       LEAVE read_loop;
     END IF;
@@ -116,9 +125,9 @@ BEGIN NOT ATOMIC
     SET dcg_id := LAST_INSERT_ID();
 
     INSERT INTO DataCollection (
-      dataCollectionGroupId, blSubSampleId, startTime, endTime, experimentType)
+      dataCollectionGroupId, blSubSampleId, startTime, endTime, experimentType, dataDirectory)
       VALUES (
-        dcg_id, c_blSubSampleId, c_startTime, c_endTime, 'Energy scan');
+        dcg_id, c_blSubSampleId, c_startTime, c_endTime, 'Energy scan', c_workingDirectory);
 
     SET dc_id := LAST_INSERT_ID();
 
