@@ -8,28 +8,29 @@
 --
 
 ALTER TABLE DataCollectionFileAttachment
-MODIFY fileType enum('snapshot','log','xy','recip','pia','warning', 'scanFile', 'jpegScanFile', 'choochFile', 'jpegChoochFile', 'mcaFile', 'annotatedPymcaXfeSpectrum', 'fittedDataFile', 'bestWilsonPlot') DEFAULT NULL;
+MODIFY fileType enum('snapshot','log','xy','recip','pia','warning', 'scanFile', 'jpegScanFile', 'choochFile', 'jpegChoochFile', 'mcaFile', 'annotatedPymcaXfeSpectrum', 'fittedDataFile', 'bestWilsonPlot') DEFAULT NULL,
+ADD `fileOrder` tinyint unsigned COMMENT 'For the particular dataCollectionId indicate the order of the attachment. 1 is the first, higher numbers are more later';
 
 -- Copy snapshots to DCFA table.
 -- Snapshot 1 will have the lowest DCFA id, snapshot 2 will have the next lowest and so on.
 
-INSERT INTO DataCollectionFileAttachment (dataCollectionId, fileType, fileFullPath)
-    SELECT dataCollectionId, 'snapshot', xtalSnapshotFullPath1
+INSERT INTO DataCollectionFileAttachment (dataCollectionId, fileType, fileOrder, fileFullPath)
+    SELECT dataCollectionId, 'snapshot', 1, xtalSnapshotFullPath1
     FROM DataCollection
     WHERE xtalSnapshotFullPath1 IS NOT NULL;
 
-INSERT INTO DataCollectionFileAttachment (dataCollectionId, fileType, fileFullPath)
-    SELECT dataCollectionId, 'snapshot', xtalSnapshotFullPath2
+INSERT INTO DataCollectionFileAttachment (dataCollectionId, fileType, fileOrder, fileFullPath)
+    SELECT dataCollectionId, 'snapshot', 2, xtalSnapshotFullPath2
     FROM DataCollection
     WHERE xtalSnapshotFullPath2 IS NOT NULL;
 
-INSERT INTO DataCollectionFileAttachment (dataCollectionId, fileType, fileFullPath)
-    SELECT dataCollectionId, 'snapshot', xtalSnapshotFullPath3
+INSERT INTO DataCollectionFileAttachment (dataCollectionId, fileType, fileOrder, fileFullPath)
+    SELECT dataCollectionId, 'snapshot', 3, xtalSnapshotFullPath3
     FROM DataCollection
     WHERE xtalSnapshotFullPath3 IS NOT NULL;
 
-INSERT INTO DataCollectionFileAttachment (dataCollectionId, fileType, fileFullPath)
-    SELECT dataCollectionId, 'snapshot', xtalSnapshotFullPath4
+INSERT INTO DataCollectionFileAttachment (dataCollectionId, fileType, fileOrder, fileFullPath)
+    SELECT dataCollectionId, 'snapshot', 4, xtalSnapshotFullPath4
     FROM DataCollection
     WHERE xtalSnapshotFullPath4 IS NOT NULL;
 
