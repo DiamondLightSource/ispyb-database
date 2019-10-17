@@ -3,7 +3,7 @@
 -- https://github.com/ispyb/ispyb-database-modeling/issues/45
 
 ALTER TABLE DataCollectionFileAttachment
-  MODIFY fileType enum('snapshot','log','xy','recip','pia','warning', 'scanFile', 'jpegScanFile', 'choochFile', 'jpegChoochFile', 'mcaFile', 'annotatedPymcaXfeSpectrum', 'fittedDataFile', 'bestWilsonPlot') DEFAULT NULL,
+  MODIFY fileType enum('snapshot','log','xy','recip','pia','warning', 'scanFile', 'jpegScanFile', 'mcaFile', 'bestWilsonPlot') DEFAULT NULL,
   ADD `fileOrder` tinyint unsigned COMMENT 'For the particular dataCollectionId indicate the order of the attachment. 1 is the first, higher numbers are more later';
 
 ALTER TABLE DataCollectionGroup

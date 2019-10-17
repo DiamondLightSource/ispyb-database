@@ -85,24 +85,25 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 DELIMITER ;;
 BEGIN NOT ATOMIC
   DECLARE done INT DEFAULT FALSE;
-  DECLARE dcg_id, dc_id int unsigned;
+  DECLARE proc_status INT DEFAULT 0;
+  DECLARE dcg_id, dc_id, app_id int unsigned;
   DECLARE c_energyScanId, c_sessionId, c_blSampleId, c_blSubSampleId int unsigned;
   DECLARE c_startTime, c_endTime datetime;
-  DECLARE c_beamSizeHorizontal, c_beamSizeVertical, c_transmissionFactor, c_exposureTime, c_temperature, c_xrayDose float;
+  DECLARE c_beamSizeHorizontal, c_beamSizeVertical, c_transmissionFactor, c_exposureTime, c_temperature, c_xrayDose, c_peakEnergy, c_inflectionEnergy, c_inflectionFDoublePrime, c_inflectionFPrime, c_peakFDoublePrime, c_peakFPrime float;
   DECLARE c_flux, c_flux_end double;
-  DECLARE c_scanFileFullPath, c_filename, c_choochFileFullPath, c_jpegChoochFileFullPath, c_workingDirectory varchar(255);
+  DECLARE c_edgeEnergy, c_scanFileFullPath, c_filename, c_choochFileFullPath, c_jpegChoochFileFullPath, c_workingDirectory varchar(255);
   DECLARE c_comments varchar(1024);
   DECLARE c_crystalClass varchar(20);
   DECLARE c_element varchar(45);
 
   DECLARE cur1 CURSOR FOR
-    SELECT energyScanId, sessionId, blSampleId, blSubSampleId, startTime, endTime, beamSizeHorizontal, beamSizeVertical, transmissionFactor, comments, crystalClass, element, exposureTime, filename, temperature, xrayDose, flux, flux_end, scanFileFullPath, choochFileFullPath, jpegChoochFileFullPath, workingDirectory
+    SELECT energyScanId, sessionId, blSampleId, blSubSampleId, startTime, endTime, beamSizeHorizontal, beamSizeVertical, transmissionFactor, comments, crystalClass, element, exposureTime, filename, temperature, xrayDose, flux, flux_end, edgeEnergy, peakEnergy, inflectionEnergy, inflectionFDoublePrime, inflectionFPrime, peakFDoublePrime, peakFPrime, scanFileFullPath, choochFileFullPath, jpegChoochFileFullPath, workingDirectory
     FROM EnergyScan;
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
   OPEN cur1;
   read_loop: LOOP
-    FETCH cur1 INTO c_energyScanId, c_sessionId, c_blSampleId, c_blSubSampleId, c_startTime, c_endTime, c_beamSizeHorizontal, c_beamSizeVertical, c_transmissionFactor, c_comments, c_crystalClass, c_element, c_exposureTime, c_filename, c_temperature, c_xrayDose, c_flux, c_flux_end, c_scanFileFullPath, c_choochFileFullPath, c_jpegChoochFileFullPath, c_workingDirectory;
+    FETCH cur1 INTO c_energyScanId, c_sessionId, c_blSampleId, c_blSubSampleId, c_startTime, c_endTime, c_beamSizeHorizontal, c_beamSizeVertical, c_transmissionFactor, c_comments, c_crystalClass, c_element, c_exposureTime, c_filename, c_temperature, c_xrayDose, c_flux, c_flux_end, c_edgeEnergy, c_peakEnergy, c_inflectionEnergy, c_inflectionFDoublePrime, c_inflectionFPrime, c_peakFDoublePrime, c_peakFPrime, c_scanFileFullPath, c_choochFileFullPath, c_jpegChoochFileFullPath, c_workingDirectory;
     IF done THEN
       LEAVE read_loop;
     END IF;
@@ -125,23 +126,25 @@ BEGIN NOT ATOMIC
 
     SET dc_id := LAST_INSERT_ID();
 
-    IF c_choochFileFullPath IS NOT NULL THEN
-      INSERT INTO DataCollectionFileAttachment (
-        dataCollectionId, fileType, fileFullPath)
-        VALUES (dc_id, 'choochFile', c_choochFileFullPath);
-    END IF;
-
-    IF c_jpegChoochFileFullPath IS NOT NULL THEN
-      INSERT INTO DataCollectionFileAttachment (
-        dataCollectionId, fileType, fileFullPath)
-        VALUES (dc_id, 'jpegChoochFile', c_jpegChoochFileFullPath);
-    END IF;
-
     IF c_scanFileFullPath IS NOT NULL THEN
       INSERT INTO DataCollectionFileAttachment (
         dataCollectionId, fileType, fileFullPath)
         VALUES (dc_id, 'scanFile', c_scanFileFullPath);
     END IF;
+
+    IF c_choochFileFullPath IS NOT NULL OR c_jpegChoochFileFullPath IS NOT NULL THEN
+      SET proc_status := 1;
+    ELSE
+      SET proc_status := 0;
+    END IF;
+
+    INSERT INTO AutoProcProgram (dataCollectionId, processingPrograms, processingStatus) VALUES (dc_id, 'chooch', proc_status);
+
+    SET app_id := LAST_INSERT_ID();
+
+    INSERT INTO KramersKronig (
+      autoProcProgramId, edgeEnergy, peakEnergy, inflectionEnergy, inflectionFDoublePrime, inflectionFPrime, peakFDoublePrime, peakFPrime, fitFileFullPath, jpegFitFileFullPath)
+        VALUES (app_id, c_edgeEnergy, c_peakEnergy, c_inflectionEnergy, c_inflectionFDoublePrime, c_inflectionFPrime, c_peakFDoublePrime, c_peakFPrime, c_choochFileFullPath, c_jpegChoochFileFullPath);
 
     INSERT INTO Project_has_DCGroup (projectId, dataCollectionGroupId)
       SELECT projectId, dcg_id FROM Project_has_EnergyScan WHERE energyScanId = c_energyScanId;
@@ -154,7 +157,6 @@ DELIMITER ;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 
 
-
 -- Copy the XFE FS rows into DC and DCGroup + move column values into DCFA
 -- What should be the DCG.experimentType value for this?
 
@@ -163,7 +165,8 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 DELIMITER ;;
 BEGIN NOT ATOMIC
   DECLARE done INT DEFAULT FALSE;
-  DECLARE dcg_id, dc_id int unsigned;
+  DECLARE proc_status INT DEFAULT 0;
+  DECLARE dcg_id, dc_id, app_id int unsigned;
   DECLARE c_xfeFluorescenceSpectrumId, c_sessionId, c_blSampleId, c_blSubSampleId int unsigned;
   DECLARE c_startTime, c_endTime datetime;
   DECLARE c_beamSizeHorizontal, c_beamSizeVertical, c_beamTransmission, c_exposureTime, c_energy, c_axisPosition float;
@@ -194,23 +197,28 @@ BEGIN NOT ATOMIC
     SET dcg_id := LAST_INSERT_ID();
 
     INSERT INTO DataCollection (
-      dataCollectionGroupId, blSubSampleId, startTime, endTime, experimentType, element, beamSizeAtSampleX, beamSizeAtSampleY, transmission, comments, crystalClass, exposureTime, flux, flux_end, energy, dataDirectory, axisStart, axisEnd, axisRange, rotationAxis)
+      dataCollectionGroupId, blSubSampleId, startTime, endTime, experimentType, element, beamSizeAtSampleX, beamSizeAtSampleY, transmission, comments, crystalClass, exposureTime, flux, flux_end, startEnergy, endEnergy, dataDirectory, axisStart, axisEnd, axisRange, rotationAxis)
       VALUES (
-        dcg_id, c_blSubSampleId, c_startTime, c_endTime, 'XRF spectrum', c_element, c_beamSizeHorizontal, c_beamSizeVertical, c_beamTransmission, c_comments, c_crystalClass, c_exposureTime, c_flux, c_flux_end, c_energy, c_workingDirectory, c_axisPosition, c_axisPosition, 0, 'Omega');
+        dcg_id, c_blSubSampleId, c_startTime, c_endTime, 'XRF spectrum', c_element, c_beamSizeHorizontal, c_beamSizeVertical, c_beamTransmission, c_comments, c_crystalClass, c_exposureTime, c_flux, c_flux_end, c_energy, c_energy, c_workingDirectory, c_axisPosition, c_axisPosition, 0, 'Omega');
 
     SET dc_id := LAST_INSERT_ID();
 
-    IF c_annotatedPymcaXfeSpectrum IS NOT NULL THEN
-      INSERT INTO DataCollectionFileAttachment (
-        dataCollectionId, fileType, fileFullPath)
-        VALUES (dc_id, 'annotatedPymcaXfeSpectrum', c_annotatedPymcaXfeSpectrum);
+    IF c_fittedDataFileFullPath IS NOT NULL OR c_annotatedPymcaXfeSpectrum IS NOT NULL THEN
+      SET proc_status := 1;
+    ELSE
+      SET proc_status := 0;
     END IF;
 
-    IF c_fittedDataFileFullPath IS NOT NULL THEN
-      INSERT INTO DataCollectionFileAttachment (
-        dataCollectionId, fileType, fileFullPath)
-        VALUES (dc_id, 'fittedDataFile', c_fittedDataFileFullPath);
-    END IF;
+    INSERT INTO AutoProcProgram (
+      dataCollectionId, processingPrograms, processingStatus)
+      VALUES (
+        dc_id, 'pymca', proc_status
+      );
+
+    SET app_id := LAST_INSERT_ID();
+
+    INSERT INTO MCAProcessing (autoProcProgramId, annotatedSpectrum, fittedDataFileFullPath) -- no peakListFullPath?
+      VALUES (app_id, c_annotatedPymcaXfeSpectrum, c_fittedDataFileFullPath);
 
     IF c_filename IS NOT NULL THEN
       INSERT INTO DataCollectionFileAttachment (
