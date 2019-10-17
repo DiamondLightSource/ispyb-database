@@ -7,12 +7,8 @@
 -- * Rename wavelength to startEnergy, convert values
 --
 
-ALTER TABLE DataCollectionFileAttachment
-MODIFY fileType enum('snapshot','log','xy','recip','pia','warning', 'scanFile', 'jpegScanFile', 'choochFile', 'jpegChoochFile', 'mcaFile', 'annotatedPymcaXfeSpectrum', 'fittedDataFile', 'bestWilsonPlot') DEFAULT NULL,
-ADD `fileOrder` tinyint unsigned COMMENT 'For the particular dataCollectionId indicate the order of the attachment. 1 is the first, higher numbers are more later';
-
 -- Copy snapshots to DCFA table.
--- Snapshot 1 will have the lowest DCFA id, snapshot 2 will have the next lowest and so on.
+-- Snapshot 1 will have fileOrder 1, snapshot 2 will have fileOrder 2 and so on.
 
 INSERT INTO DataCollectionFileAttachment (dataCollectionId, fileType, fileOrder, fileFullPath)
     SELECT dataCollectionId, 'snapshot', 1, xtalSnapshotFullPath1
@@ -46,9 +42,6 @@ INSERT INTO DataCollectionFileAttachment (dataCollectionId, fileType, fileFullPa
 
 -- Skipping datFullPath and processedDataFile as they're not used
 
-
-ALTER TABLE DataCollectionGroup
-  MODIFY experimentType enum('SAD','SAD - Inverse Beam','OSC','Collect - Multiwedge','MAD','Helical','Multi-positional','Mesh','Burn','MAD - Inverse Beam','Characterization','Dehydration','tomo','experiment','EM','PDF','PDF+Bragg','Bragg','single particle','Serial Fixed','Serial Jet','Standard','Time Resolved','Diamond Anvil High Pressure','Custom', 'Energy scan', 'XRF spectrum') DEFAULT NULL COMMENT 'Standard: Routine structure determination experiment. Time Resolved: Investigate the change of a system over time. Custom: Special or non-standard data collection.';
 
 -- Modify DC table: add, remove, rename columns as discussed.
 -- Since the table changes are likely to trigger a table rebuild which will lock the table and can take a long time if there's a lot of data in the table, let's put as much as possible into a single ALTER TABLE statement so we only trigger one table rebuild:
@@ -244,14 +237,3 @@ END;;
 DELIMITER ;
 
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-
--- Drop ES + child tables:
-
-DROP TABLE BLSample_has_EnergyScan;
-DROP TABLE Project_has_EnergyScan;
-DROP TABLE EnergyScan;
-
--- Drop XFEFS + child tables:
-
-DROP TABLE Project_has_XFEFSpectrum;
-DROP TABLE XFEFluorescenceSpectrum;
