@@ -97,6 +97,7 @@
    ``fileName``,varchar,"Attachment filename"
    ``filePath``,varchar,"Attachment filepath to disk storage"
    ``recordTimeStamp``,datetime,"Creation or last update date/time"
+   ``importanceRank``,tinyint,"For the particular autoProcProgramId and fileType, indicate the importance of the attachment. Higher numbers are more important"
    **AutoProcProgramMessage**,table,""
    ``autoProcProgramMessageId``,int,""
    ``autoProcProgramId``,int,""
