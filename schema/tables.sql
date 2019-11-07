@@ -263,10 +263,11 @@ DROP TABLE IF EXISTS `AutoProcProgramAttachment`;
 CREATE TABLE `AutoProcProgramAttachment` (
   `autoProcProgramAttachmentId` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `autoProcProgramId` int(10) unsigned NOT NULL COMMENT 'Related autoProcProgram item',
-  `fileType` enum('Log','Result','Graph') DEFAULT NULL COMMENT 'Type of file Attachment',
+  `fileType` enum('Log','Result','Graph','Debug') DEFAULT NULL COMMENT 'Type of file Attachment',
   `fileName` varchar(255) DEFAULT NULL COMMENT 'Attachment filename',
   `filePath` varchar(255) DEFAULT NULL COMMENT 'Attachment filepath to disk storage',
   `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
+  `importanceRank` tinyint(3) unsigned DEFAULT NULL COMMENT 'For the particular autoProcProgramId and fileType, indicate the importance of the attachment. Higher numbers are more important',
   PRIMARY KEY (`autoProcProgramAttachmentId`),
   KEY `AutoProcProgramAttachmentIdx1` (`autoProcProgramId`),
   CONSTRAINT `AutoProcProgramAttachmentFk1` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -5691,4 +5692,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-08 13:47:24
+-- Dump completed on 2019-11-07 16:35:36
