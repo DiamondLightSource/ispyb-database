@@ -31,6 +31,7 @@ GRANT EXECUTE ON PROCEDURE retrieve_current_sessions TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_current_cm_sessions TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_current_sessions_for_person TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_sessions_for_beamline_and_run TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE retrieve_expired_sessions_for_instrument_and_period TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `retrieve_sessions_for_person_login` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `retrieve_persons_for_proposal` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_most_recent_session TO 'ispyb_processing';
@@ -51,6 +52,7 @@ GRANT EXECUTE ON PROCEDURE `update_reprocessing_status` TO 'ispyb_processing';
 
 GRANT EXECUTE ON PROCEDURE `upsert_processing_program` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `upsert_processing_program_attachment` TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE upsert_processing_program_attachment_v2 TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `upsert_processing` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `insert_processing_scaling` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `upsert_processing_integration` TO 'ispyb_processing';
