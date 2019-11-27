@@ -1,43 +1,38 @@
 INSERT IGNORE INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2019_11_27_BLSampleImage_tables.sql', 'ONGOING');
 
-CREATE TABLE BLSampleImage_has_Score (
-  blSampleImageId int(11) unsigned,
-  blSampleImageScoreId int(11) unsigned,
-  PRIMARY KEY (blSampleImageId, blSampleImageScoreId)
+CREATE TABLE BLSampleImageAutoScoreSchema (
+  blSampleImageAutoScoreSchemaId tinyint(3) unsigned auto_increment PRIMARY KEY,
+  schemaName varchar(25) COMMENT 'Name of the schema e.g. Hampton, MARCO',
+  enabled tinyint(1) COMMENT 'Whether this schema is enabled (could be configurable in the UI)'
 );
 
-CREATE TABLE BLSampleImageScoreMethod (
-  blSampleImageScoreMethodId int(11) unsigned auto_increment PRIMARY KEY,
-  automatic tinyint(1) COMMENT '1: Automatic scoring process. 0: Scored by user.',
-  methodName varchar(25) COMMENT 'name of the schema (hampton, marco, something else)',
-  enabled tinyint(1) COMMENT 'whether this schema is enabled (this would allow multiple manual scoring schemas to exist simulatanously, again could be selectable in the ui)'
-) COMMENT 'Info about the method of scoring';
+INSERT INTO BLSampleImageAutoScoreSchema (
+  blSampleImageAutoScoreSchemaId, schemaName, enabled)
+  VALUES (1, 'MARCO', 1);
 
-ALTER TABLE BLSampleImageScore
-  ADD blSampleImageScoreMethodId int(11) unsigned,
-  ADD CONSTRAINT BLSampleImageScore_fk1 FOREIGN KEY (blSampleImageScoreMethodId) REFERENCES BLSampleImageScoreMethod(blSampleImageScoreMethodId) ON DELETE NO ACTION ON UPDATE CASCADE;
+CREATE TABLE BLSampleImageAutoScoreClass (
+  blSampleImageAutoScoreClassId tinyint(3) unsigned auto_increment PRIMARY KEY,
+  scoreClass varchar(15) COMMENT 'Thing being scored e.g. crystal, precipitant'
+) COMMENT 'The automated scoring classes';
 
-INSERT INTO BLSampleImageScoreMethod (
-  blSampleImageScoreMethodId, automatic, methodName, enabled)
+INSERT INTO BLSampleImageAutoScoreClass (
+  blSampleImageAutoScoreClassId, scoreClass)
 VALUES
-  (1, 0, 'manual', 1),
-  (2, 1, 'MARCO - clear', 1),
-  (3, 1, 'MARCO - crystal', 1),
-  (4, 1, 'MARCO - precipitant', 1),
-  (5, 1, 'MARCO - other', 1);
+  (1, 'clear'),
+  (2, 'crystal'),
+  (3, 'precipitant'),
+  (4, 'other');
 
--- Everything is manually scored at the moment, so:
-UPDATE BLSampleImageScore SET blSampleImageScoreMethodId = 1;
+CREATE TABLE BLSampleImage_has_AutoScore (
+  blSampleImageId int(11) unsigned,
+  blSampleImageAutoScoreSchemaId tinyint(3) unsigned,
+  blSampleImageAutoScoreClassId tinyint(3) unsigned,
+  probability float,
+  PRIMARY KEY (blSampleImageId, blSampleImageAutoScoreSchemaId, blSampleImageAutoScoreClassId),
+  CONSTRAINT BLSampleImage_has_AutoScore_fk1 FOREIGN KEY (blSampleImageId) REFERENCES BLSampleImage(blSampleImageId) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT BLSampleImage_has_AutoScore_fk2 FOREIGN KEY (blSampleImageAutoScoreSchemaId) REFERENCES BLSampleImageAutoScoreSchema(blSampleImageAutoScoreSchemaId) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT BLSampleImage_has_AutoScore_fk3 FOREIGN KEY (blSampleImageAutoScoreClassId) REFERENCES BLSampleImageAutoScoreClass(blSampleImageAutoScoreClassId) ON DELETE NO ACTION ON UPDATE CASCADE
+);
 
--- Copy current scores from BLSampleImage into BLSampleImage_has_Score:
-INSERT INTO BLSampleImage_has_Score (blSampleImageId, blSampleImageScoreId)
-  SELECT blSampleImageId, blSampleImageScoreId
-  FROM BLSampleImage
-  WHERE blSampleImageScoreId IS NOT NULL;
-
--- Then remove the old score column to avoid confusion - this needs to be coordinated with deployment of a new SynchWeb release:
-ALTER TABLE BLSampleImage
-  DROP CONSTRAINT BLSampleImage_fk3,
-  DROP blSampleImageScoreId;
 
 UPDATE SchemaStatus SET schemaStatus = 'DONE' WHERE scriptName = '2019_11_27_BLSampleImage_tables.sql';
