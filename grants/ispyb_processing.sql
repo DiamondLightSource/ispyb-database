@@ -113,3 +113,10 @@ GRANT EXECUTE ON PROCEDURE retrieve_dewars_for_proposal_code_number_v2 TO 'ispyb
 GRANT EXECUTE ON PROCEDURE retrieve_dc_main_v2 TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_dc TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_samples_not_loaded_for_container_reg_barcode TO 'ispyb_processing';
+
+GRANT EXECUTE ON PROCEDURE upsert_dcg_grid TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE upsert_motion_correction TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE retrieve_persons_for_session TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE upsert_proposal TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE update_dc_position TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE upsert_ctf TO 'ispyb_processing';
