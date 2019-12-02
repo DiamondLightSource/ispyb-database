@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.4.8-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.4.10-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.4.8-MariaDB
+-- Server version	10.4.10-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -6876,6 +6876,48 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `upsert_processing_program_message` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `upsert_processing_program_message`(
+     INOUT p_id int(10) unsigned,
+     p_programId int(10) unsigned,
+     p_severity varchar(255),
+     p_message varchar(255),
+     p_description text
+  )
+    MODIFIES SQL DATA
+    COMMENT 'Inserts or updates existing row in AutoProcProgramMessage.'
+BEGIN
+  IF p_id IS NULL AND NOT (p_programId IS NULL) THEN
+    INSERT INTO AutoProcProgramMessage (autoProcProgramMessageId, autoProcProgramId, severity, message, description)
+      VALUES (p_id, p_programId, p_severity, p_message, p_description);
+    SET p_id = LAST_INSERT_ID();
+  ELSEIF NOT (p_id IS NULL) THEN
+    UPDATE AutoProcProgramMessage
+      SET
+		    autoProcProgramId = IFNULL(p_programId, autoProcProgramId),
+        severity = IFNULL(p_severity, severity),
+        message = IFNULL(p_message, message),
+        description = IFNULL(p_description, description)
+      WHERE
+        autoProcProgramMessageId = p_id;
+	ELSE
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Both arguments p_id and p_programId cannot be NULL';
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `upsert_proposal` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -7575,4 +7617,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-08 16:10:10
+-- Dump completed on 2019-12-02 11:24:31
