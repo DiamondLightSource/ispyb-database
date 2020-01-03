@@ -33,6 +33,8 @@ BF_component
 BF_subcomponent
 BF_system
 Permission
+BLSampleImageAutoScoreSchema
+BLSampleImageAutoScoreClass
 )
 
 LOOKUP_TABLES_STRING=''

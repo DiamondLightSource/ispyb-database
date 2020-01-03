@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.4.8-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.4.11-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.4.8-MariaDB
+-- Server version	10.4.11-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -680,6 +680,38 @@ CREATE TABLE `BLSampleImageAnalysis` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `BLSampleImageAutoScoreClass`
+--
+
+DROP TABLE IF EXISTS `BLSampleImageAutoScoreClass`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BLSampleImageAutoScoreClass` (
+  `blSampleImageAutoScoreClassId` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `blSampleImageAutoScoreSchemaId` tinyint(3) unsigned DEFAULT NULL,
+  `scoreClass` varchar(15) NOT NULL COMMENT 'Thing being scored e.g. crystal, precipitant',
+  PRIMARY KEY (`blSampleImageAutoScoreClassId`),
+  KEY `BLSampleImageAutoScoreClass_fk1` (`blSampleImageAutoScoreSchemaId`),
+  CONSTRAINT `BLSampleImageAutoScoreClass_fk1` FOREIGN KEY (`blSampleImageAutoScoreSchemaId`) REFERENCES `BLSampleImageAutoScoreSchema` (`blSampleImageAutoScoreSchemaId`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='The automated scoring classes - the thing being scored';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `BLSampleImageAutoScoreSchema`
+--
+
+DROP TABLE IF EXISTS `BLSampleImageAutoScoreSchema`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BLSampleImageAutoScoreSchema` (
+  `blSampleImageAutoScoreSchemaId` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `schemaName` varchar(25) NOT NULL COMMENT 'Name of the schema e.g. Hampton, MARCO',
+  `enabled` tinyint(1) DEFAULT 1 COMMENT 'Whether this schema is enabled (could be configurable in the UI)',
+  PRIMARY KEY (`blSampleImageAutoScoreSchemaId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Scoring schema name and whether it is enabled';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `BLSampleImageMeasurement`
 --
 
@@ -717,6 +749,24 @@ CREATE TABLE `BLSampleImageScore` (
   `colour` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`blSampleImageScoreId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `BLSampleImage_has_AutoScoreClass`
+--
+
+DROP TABLE IF EXISTS `BLSampleImage_has_AutoScoreClass`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BLSampleImage_has_AutoScoreClass` (
+  `blSampleImageId` int(11) unsigned NOT NULL,
+  `blSampleImageAutoScoreClassId` tinyint(3) unsigned NOT NULL,
+  `probability` float DEFAULT NULL,
+  PRIMARY KEY (`blSampleImageId`,`blSampleImageAutoScoreClassId`),
+  KEY `BLSampleImage_has_AutoScoreClass_fk2` (`blSampleImageAutoScoreClassId`),
+  CONSTRAINT `BLSampleImage_has_AutoScoreClass_fk1` FOREIGN KEY (`blSampleImageId`) REFERENCES `BLSampleImage` (`blSampleImageId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `BLSampleImage_has_AutoScoreClass_fk2` FOREIGN KEY (`blSampleImageAutoScoreClassId`) REFERENCES `BLSampleImageAutoScoreClass` (`blSampleImageAutoScoreClassId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Many-to-many relationship between drop images and thing being scored, as well as the actual probability (score) that the drop image contains that thing';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5693,4 +5743,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-26 15:00:53
+-- Dump completed on 2020-01-03 16:05:58
