@@ -120,3 +120,5 @@ GRANT EXECUTE ON PROCEDURE retrieve_persons_for_session TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE upsert_proposal TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE update_dc_position TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE upsert_ctf TO 'ispyb_processing';
+
+GRANT EXECUTE ON PROCEDURE insert_sample_image_auto_score TO 'ispyb_processing';
