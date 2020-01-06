@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.4.10-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.4.11-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.4.10-MariaDB
+-- Server version	10.4.11-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -1245,6 +1245,48 @@ BEGIN
   ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) p_dataCollectionId and/or p_imageNumber are NULL';  
   END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insert_sample_image_auto_score` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `insert_sample_image_auto_score`(
+     OUT p_id int(11) unsigned,
+     p_imageFullPath varchar(255),
+     p_schemaName varchar(25),
+     p_scoreClass varchar(15),
+     p_probability float
+)
+    MODIFIES SQL DATA
+    COMMENT 'Insert a row with the auto scored probability for a given sample image using a certain class and schema. Returns the ID in p_id.'
+BEGIN
+    DECLARE l_blSampleImageId int(11) unsigned;
+    DECLARE l_blSampleImageAutoScoreClassId tinyint(3) unsigned;
+
+	  IF p_imageFullPath IS NOT NULL AND p_schemaName IS NOT NULL AND p_scoreClass IS NOT NULL THEN
+
+        SELECT max(blSampleImageId) INTO l_blSampleImageId FROM BLSampleImage WHERE imageFullPath = p_imageFullPath;
+
+        SELECT blSampleImageAutoScoreClassId INTO l_blSampleImageAutoScoreClassId FROM BLSampleImageAutoScoreClass bsiasc INNER JOIN BLSampleImageAutoScoreSchema bsiass USING(blSampleImageAutoScoreSchemaId)
+        WHERE bsiasc.scoreClass = p_scoreClass AND bsiass.schemaName = p_schemaName AND bsiass.enabled > 0;
+
+        INSERT INTO BLSampleImage_has_AutoScoreClass (blSampleImageId, blSampleImageAutoScoreClassId, probability)
+          VALUES (l_blSampleImageId, l_blSampleImageAutoScoreClassId, p_probability);
+
+        SET p_id = LAST_INSERT_ID();
+
+	  END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -7617,4 +7659,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-02 11:24:31
+-- Dump completed on 2020-01-06 11:39:27
