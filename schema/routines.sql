@@ -1888,6 +1888,76 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_container_for_barcode` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_container_for_barcode`(IN p_barcode varchar(45))
+    READS SQL DATA
+    COMMENT 'Return single-row result set with info about a Container identified by p_barcode'
+BEGIN
+    IF NOT (p_barcode IS NULL) THEN
+      SELECT c.containerId, c.sessionId, c.dewarId "dewarId",
+        c.code "name", c.barcode "barcode", c.containerStatus "status",
+        c.containerType "type", c.capacity "capacity",
+	      c.sampleChangerLocation "location", c.beamlineLocation "beamline",
+        c.comments "comments", c.experimentType "experimentType",
+        concat(p.proposalCode, p.proposalNumber, '-', bs.visit_number) "visit",
+        date_format(c.blTimeStamp, '%Y') "year"
+      FROM Container c
+        LEFT OUTER JOIN BLSession bs ON bs.sessionId = c.sessionId
+        LEFT OUTER JOIN Proposal p ON p.proposalId = bs.proposalId
+      WHERE c.barcode=p_barcode
+        LIMIT 1;
+     ELSE
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_barcode';
+    END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_container_for_inspection_id` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_container_for_inspection_id`(IN p_containerInspectionId int(11) unsigned)
+    READS SQL DATA
+    COMMENT 'Return single-row result set with info about a Container identified by p_containerInspectionId'
+BEGIN
+    IF NOT (p_containerInspectionId IS NULL) THEN
+        SELECT c.containerType, c.containerId, c.sessionId, concat(p.proposalCode, p.proposalNumber, '-', bs.visit_number) "visit",
+        date_format(c.blTimeStamp, '%Y') as year
+        FROM Container c
+          INNER JOIN ContainerInspection ci ON ci.containerId = c.containerId
+          INNER JOIN Dewar d ON d.dewarId = c.dewarId
+          INNER JOIN Shipping s ON s.shippingId = d.shippingId
+          INNER JOIN Proposal p ON p.proposalId = s.proposalId
+          LEFT OUTER JOIN BLSession bs ON bs.sessionId = c.sessionId
+        WHERE ci.containerinspectionId = p_containerInspectionId
+        LIMIT 1;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_containerInspectionId';
+    END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `retrieve_container_info` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -3915,6 +3985,38 @@ BEGIN
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_barcode';
   END IF;
 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_sample_for_container_id_and_location` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_sample_for_container_id_and_location`(IN p_containerId int(11) unsigned, p_location varchar(45))
+    READS SQL DATA
+    COMMENT 'Return single-row result set with info about a BLSample identified by p_containerId and p_location'
+BEGIN
+    IF NOT (p_containerId IS NULL OR p_location IS NULL) THEN
+      SELECT bls.blSampleId "sampleId",
+        bls.name "sampleName",
+        bls.code "sampleCode",
+        bls.comments "sampleComments",
+        bls.location "sampleLocation"
+      FROM BLSample bls
+      WHERE bls.location = p_location AND bls.containerId = p_containerId
+      LIMIT 1;
+    ELSE
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_containerId and/or p_location';
+    END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -7309,6 +7411,50 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `upsert_sample_image` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `upsert_sample_image`(
+     INOUT p_id int(11) unsigned,
+     p_sampleId int(11) unsigned,
+     p_containerInspectionId int(11) unsigned,
+     p_micronsPerPixelX float,
+     p_micronsPerPixelY float,
+     p_imageFullPath varchar(255),
+     p_comments varchar(255)
+  )
+    MODIFIES SQL DATA
+    COMMENT 'If p_id is not provided, inserts new row and returns ID in p_id. Otherwise updates existing row.'
+BEGIN
+	IF p_id IS NULL THEN
+    INSERT INTO BLSampleImage (blSampleId, containerInspectionId, micronsPerPixelX, micronsPerPixelY, imageFullPath, comments, blTimeStamp)
+            VALUES (p_sampleId, p_containerInspectionId, p_micronsPerPixelX, p_micronsPerPixelY, p_imageFullPath, p_comments, current_timestamp);
+    SET p_id = LAST_INSERT_ID();
+
+  ELSE
+    UPDATE BLSampleImage
+    SET
+      blSampleId = IFNULL(p_sampleId, blSampleId),
+      containerInspectionId = IFNULL(p_containerInspectionId, containerInspectionId),
+      micronsPerPixelX = IFNULL(p_micronsPerPixelX, micronsPerPixelX),
+      micronsPerPixelY = IFNULL(p_micronsPerPixelY, micronsPerPixelY),
+      imageFullPath = IFNULL(p_imageFullPath, imageFullPath),
+      comments = IFNULL(p_comments, comments)
+    WHERE blSampleImageId = p_id;
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `upsert_sample_image_analysis` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -7702,4 +7848,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-07  9:42:18
+-- Dump completed on 2020-01-20 16:21:09
