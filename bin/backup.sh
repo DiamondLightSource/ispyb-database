@@ -35,6 +35,7 @@ BF_system
 Permission
 BLSampleImageAutoScoreSchema
 BLSampleImageAutoScoreClass
+SpaceGroup
 )
 
 LOOKUP_TABLES_STRING=''
