@@ -38,6 +38,12 @@ mysqldump ${OPTIONS} --where="personId=${PERSID}" Person > ${OUT_DIR}/${DB}_Pers
 
 mysqldump ${OPTIONS} --where="proposalId=${PID}" Proposal > ${OUT_DIR}/${DB}_Proposal.sql
 
+mysqldump ${OPTIONS} --where="laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN LabContact lc USING(personId) WHERE lc.proposalId=${PID})" Laboratory > ${OUT_DIR}/${DB}_Laboratory2.sql
+
+mysqldump ${OPTIONS} --where="personId IN (SELECT personId FROM LabContact WHERE proposalId=${PID})" Person > ${OUT_DIR}/${DB}_Person2.sql
+
+mysqldump ${OPTIONS} --where="proposalId=${PID}" LabContact > ${OUT_DIR}/${DB}_LabContact.sql
+
 mysqldump ${OPTIONS} --where="proposalId=${PID}" Protein > ${OUT_DIR}/${DB}_Protein.sql
 
 mysqldump ${OPTIONS} --where="proposalId=${PID}" Screen > ${OUT_DIR}/${DB}_Screen.sql
@@ -93,6 +99,8 @@ mysqldump ${OPTIONS} --where="sessionId=${SID}" Session_has_Person > ${OUT_DIR}/
 
 mysqldump ${OPTIONS} --where="sessionId=${SID}" Container > ${OUT_DIR}/${DB}_Container2.sql
 
+mysqldump ${OPTIONS} --where="blsessionId=${SID}" RobotAction > ${OUT_DIR}/${DB}_RobotAction.sql
+
 mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ImageQualityIndicators > ${OUT_DIR}/${DB}_ImageQualityIndicators.sql
 
 mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" DataCollectionComment > ${OUT_DIR}/${DB}_DataCollectionComment.sql
@@ -123,7 +131,7 @@ mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT autoProcProgramId FRO
 
 mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT autoProcProgramId FROM AutoProcIntegration WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))" AutoProcProgramMessage > ${OUT_DIR}/${DB}_AutoProcProgramMessage1.sql
 
-mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID}))" AutoProcProgram > ${OUT_DIR}/${DB}_AutoProcProgram2.sql
+mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcProgram > ${OUT_DIR}/${DB}_AutoProcProgram2.sql
 
 mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT autoProcProgramId FROM AutoProcProgram WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))" AutoProcProgramAttachment > ${OUT_DIR}/${DB}_AutoProcProgramAttachment2.sql
 
@@ -143,9 +151,38 @@ mysqldump ${OPTIONS} --where="screeningStrategyId IN (SELECT screeningStrategyId
 
 mysqldump ${OPTIONS} --where="screeningStrategyWedgeId IN (SELECT screeningStrategyWedgeId FROM ScreeningStrategyWedge ssw INNER JOIN ScreeningStrategy ss USING(screeningStrategyId) INNER JOIN ScreeningOutput so USING(screeningOutputId) INNER JOIN Screening s USING(screeningId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID}) OR screeningStrategyWedgeId IN (SELECT screeningStrategyWedgeId FROM ScreeningStrategyWedge ssw INNER JOIN ScreeningStrategy ss USING(screeningStrategyId) INNER JOIN ScreeningOutput so USING(screeningOutputId) INNER JOIN Screening s USING(screeningId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg ON dcg.dataCollectionGroupId=dc.dataCollectionGroupId WHERE dcg.sessionId=${SID})" ScreeningStrategySubWedge > ${OUT_DIR}/${DB}_ScreeningStrategySubWedge.sql
 
-
-
-
-
-# TODO:
 # Phasing tables
+
+mysqldump ${OPTIONS} --where="autoProcScalingId IN (SELECT apshi.autoProcScalingId FROM AutoProcScaling_has_Int apshi INNER JOIN AutoProcIntegration api USING(autoProcIntegrationId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" Phasing_has_Scaling > ${OUT_DIR}/${DB}_Phasing_has_Scaling.sql
+
+mysqldump ${OPTIONS} --where="phasingAnalysisId IN (SELECT phs.phasingAnalysisId FROM Phasing_has_Scaling phs INNER JOIN  AutoProcScaling_has_Int USING(autoProcScalingId) INNER JOIN AutoProcIntegration USING(autoProcIntegrationId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" PhasingAnalysis > ${OUT_DIR}/${DB}_PhasingAnalysis.sql
+
+mysqldump ${OPTIONS} --where="phasingAnalysisId IN (SELECT phs.phasingAnalysisId FROM Phasing_has_Scaling phs INNER JOIN  AutoProcScaling_has_Int USING(autoProcScalingId) INNER JOIN AutoProcIntegration USING(autoProcIntegrationId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ModelBuilding > ${OUT_DIR}/${DB}_ModelBuilding.sql
+
+mysqldump ${OPTIONS} --where="phasingAnalysisId IN (SELECT phs.phasingAnalysisId FROM Phasing_has_Scaling phs INNER JOIN  AutoProcScaling_has_Int USING(autoProcScalingId) INNER JOIN AutoProcIntegration USING(autoProcIntegrationId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" SubstructureDetermination > ${OUT_DIR}/${DB}_SubstructureDetermination.sql
+
+mysqldump ${OPTIONS} --where="phasingAnalysisId IN (SELECT phs.phasingAnalysisId FROM Phasing_has_Scaling phs INNER JOIN  AutoProcScaling_has_Int USING(autoProcScalingId) INNER JOIN AutoProcIntegration USING(autoProcIntegrationId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" PreparePhasingData > ${OUT_DIR}/${DB}_PreparePhasingData.sql
+
+mysqldump ${OPTIONS} --where="phasingProgramRunId IN (SELECT p.phasingProgramRunId FROM Phasing p INNER JOIN Phasing_has_Scaling USING(phasingAnalysisId) INNER JOIN  AutoProcScaling_has_Int USING(autoProcScalingId) INNER JOIN AutoProcIntegration USING(autoProcIntegrationId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" PhasingProgramRun > ${OUT_DIR}/${DB}_PhasingProgramRun.sql
+
+mysqldump ${OPTIONS} --where="phasingProgramRunId IN (SELECT p.phasingProgramRunId FROM Phasing p INNER JOIN Phasing_has_Scaling USING(phasingAnalysisId) INNER JOIN  AutoProcScaling_has_Int USING(autoProcScalingId) INNER JOIN AutoProcIntegration USING(autoProcIntegrationId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" PhasingProgramAttachment > ${OUT_DIR}/${DB}_PhasingProgramAttachment.sql
+
+mysqldump ${OPTIONS} --where="phasingAnalysisId IN (SELECT phs.phasingAnalysisId FROM Phasing_has_Scaling phs INNER JOIN  AutoProcScaling_has_Int USING(autoProcScalingId) INNER JOIN AutoProcIntegration USING(autoProcIntegrationId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" Phasing > ${OUT_DIR}/${DB}_Phasing.sql
+
+mysqldump ${OPTIONS} --where="phasingStatisticsId IN (SELECT ps.phasingStatisticsId FROM PhasingStatistics ps INNER JOIN Phasing_has_Scaling phs ON ps.phasingHasScalingId1=phs.phasingHasScalingId OR ps.phasingHasScalingId2=phs.phasingHasScalingId INNER JOIN  AutoProcScaling_has_Int USING(autoProcScalingId) INNER JOIN AutoProcIntegration USING(autoProcIntegrationId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" PhasingStatistics > ${OUT_DIR}/${DB}_PhasingStatistics.sql
+
+
+
+
+# TODO
+# UserGroup_has_Person (meh ...)
+# GridInfo
+# XrayCentringResult
+# GridImageMap
+# ContainerInspection
+# ShippingHasSession
+# ProcessingJob*
+# ScreenComponentGroup
+# PDB
+# Protein_has_PDB
+# EM tables (CTF, Movie, ...)
