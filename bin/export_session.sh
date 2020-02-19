@@ -87,31 +87,35 @@ mysqldump ${OPTIONS} --where="sessionId=${SID}" XFEFluorescenceSpectrum > ${OUT_
 
 mysqldump ${OPTIONS} --where="sessionId=${SID}" EnergyScan > ${OUT_DIR}/${DB}_EnergyScan.sql
 
-mysqldump ${OPTIONS} --where="dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID}) OR dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID}))" Screening > ${OUT_DIR}/${DB}_Screening.sql
-
 mysqldump ${OPTIONS} --where="personId IN (SELECT personId FROM Session_has_Person WHERE sessionId=${SID})" Person > ${OUT_DIR}/${DB}_Person2.sql
 
 mysqldump ${OPTIONS} --where="sessionId=${SID}" Session_has_Person > ${OUT_DIR}/${DB}_Session_has_Person.sql
 
 mysqldump ${OPTIONS} --where="sessionId=${SID}" Container > ${OUT_DIR}/${DB}_Container2.sql
 
-mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID}))" ImageQualityIndicators > ${OUT_DIR}/${DB}_ImageQualityIndicators.sql
+mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ImageQualityIndicators > ${OUT_DIR}/${DB}_ImageQualityIndicators.sql
 
-mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID}))" DataCollectionComment > ${OUT_DIR}/${DB}_DataCollectionComment.sql
+mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" DataCollectionComment > ${OUT_DIR}/${DB}_DataCollectionComment.sql
 
-mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID}))" DataCollectionFileAttachment > ${OUT_DIR}/${DB}_DataCollectionFileAttachment.sql
+mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" DataCollectionFileAttachment > ${OUT_DIR}/${DB}_DataCollectionFileAttachment.sql
 
-mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID}))" AutoProcIntegration > ${OUT_DIR}/${DB}_AutoProcIntegration.sql
+# AutoProc* tables:
+
+mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcIntegration > ${OUT_DIR}/${DB}_AutoProcIntegration.sql
 
 mysqldump ${OPTIONS} --where="autoProcIntegrationId IN (SELECT autoProcIntegrationId FROM AutoProcIntegration WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))" AutoProcStatus > ${OUT_DIR}/${DB}_AutoProcStatus.sql
 
 mysqldump ${OPTIONS} --where="autoProcIntegrationId IN (SELECT autoProcIntegrationId FROM AutoProcIntegration WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))" AutoProcScaling_has_Int > ${OUT_DIR}/${DB}_AutoProcScaling_has_Int.sql
 
-mysqldump ${OPTIONS} --where="autoProcScalingId IN (SELECT autoProcScalingId FROM AutoProcScaling_has_Int WHERE autoProcIntegrationId IN (SELECT autoProcIntegrationId FROM AutoProcIntegration WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID}))))" AutoProcScaling > ${OUT_DIR}/${DB}_AutoProcScaling.sql
+mysqldump ${OPTIONS} --where="autoProcScalingId IN (SELECT apshi.autoProcScalingId FROM AutoProcScaling_has_Int apshi INNER JOIN AutoProcIntegration api USING(autoProcIntegrationId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcScaling > ${OUT_DIR}/${DB}_AutoProcScaling.sql
 
 mysqldump ${OPTIONS} --where="autoProcId IN (SELECT autoProcId FROM AutoProcScaling WHERE autoProcScalingId IN (SELECT autoProcScalingId FROM AutoProcScaling_has_Int WHERE autoProcIntegrationId IN (SELECT autoProcIntegrationId FROM AutoProcIntegration WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))))" AutoProc > ${OUT_DIR}/${DB}_AutoProc.sql
 
-mysqldump ${OPTIONS} --where="autoProcScalingId IN (SELECT autoProcScalingId FROM AutoProcScaling_has_Int WHERE autoProcIntegrationId IN (SELECT autoProcIntegrationId FROM AutoProcIntegration WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID}))))" AutoProcScalingStatistics > ${OUT_DIR}/${DB}_AutoProcScalingStatistics.sql
+mysqldump ${OPTIONS} --where="autoProcScalingId IN (SELECT apshi.autoProcScalingId FROM AutoProcScaling_has_Int apshi INNER JOIN AutoProcIntegration api USING(autoProcIntegrationId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcScalingStatistics > ${OUT_DIR}/${DB}_AutoProcScalingStatistics.sql
+
+mysqldump ${OPTIONS} --where="autoProcScalingId IN (SELECT apshi.autoProcScalingId FROM AutoProcScaling_has_Int apshi INNER JOIN AutoProcIntegration api USING(autoProcIntegrationId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" MXMRRun > ${OUT_DIR}/${DB}_MXMRRun.sql
+
+mysqldump ${OPTIONS} --where="mxMRRunId IN (SELECT mr.mxMRRunId FROM MXMRRun mr INNER JOIN AutoProcScaling_has_Int apshi USING(autoProcScalingId) INNER JOIN AutoProcIntegration api USING(autoProcIntegrationId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" MXMRRunBlob > ${OUT_DIR}/${DB}_MXMRRunBlob.sql
 
 mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT autoProcProgramId FROM AutoProcIntegration WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))" AutoProcProgram > ${OUT_DIR}/${DB}_AutoProcProgram1.sql
 
@@ -125,8 +129,23 @@ mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT autoProcProgramId FRO
 
 mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT autoProcProgramId FROM AutoProcProgram WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))" AutoProcProgramMessage > ${OUT_DIR}/${DB}_AutoProcProgramMessage2.sql
 
+# Screening* tables:
+
+mysqldump ${OPTIONS} --where="dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID}) OR dataCollectionId IN (SELECT dc.dataCollectionId FROM DataCollection dc INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" Screening > ${OUT_DIR}/${DB}_Screening.sql
+
+mysqldump ${OPTIONS} --where="screeningId IN (SELECT s.screeningId FROM Screening s INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID}) OR screeningId IN (SELECT screeningId FROM Screening s INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg ON dcg.dataCollectionGroupId=dc.dataCollectionGroupId WHERE dcg.sessionId=${SID})" ScreeningOutput > ${OUT_DIR}/${DB}_ScreeningOutput.sql
+
+mysqldump ${OPTIONS} --where="screeningOutputId IN (SELECT screeningOutputId FROM ScreeningOutput so INNER JOIN Screening s USING(screeningId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID}) OR screeningOutputId IN (SELECT screeningOutputId FROM ScreeningOutput so INNER JOIN Screening s USING(screeningId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg ON dcg.dataCollectionGroupId=dc.dataCollectionGroupId WHERE dcg.sessionId=${SID})" ScreeningOutputLattice > ${OUT_DIR}/${DB}_ScreeningOutputLattice.sql
+
+mysqldump ${OPTIONS} --where="screeningOutputId IN (SELECT screeningOutputId FROM ScreeningOutput so INNER JOIN Screening s USING(screeningId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID}) OR screeningOutputId IN (SELECT screeningOutputId FROM ScreeningOutput so INNER JOIN Screening s USING(screeningId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg ON dcg.dataCollectionGroupId=dc.dataCollectionGroupId WHERE dcg.sessionId=${SID})" ScreeningStrategy > ${OUT_DIR}/${DB}_ScreeningStrategy.sql
+
+mysqldump ${OPTIONS} --where="screeningStrategyId IN (SELECT screeningStrategyId FROM ScreeningStrategy ss INNER JOIN ScreeningOutput so USING(screeningOutputId) INNER JOIN Screening s USING(screeningId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID}) OR screeningStrategyId IN (SELECT screeningStrategyId FROM ScreeningStrategy ss INNER JOIN ScreeningOutput so USING(screeningOutputId) INNER JOIN Screening s USING(screeningId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg ON dcg.dataCollectionGroupId=dc.dataCollectionGroupId WHERE dcg.sessionId=${SID})" ScreeningStrategyWedge > ${OUT_DIR}/${DB}_ScreeningStrategyWedge.sql
+
+mysqldump ${OPTIONS} --where="screeningStrategyWedgeId IN (SELECT screeningStrategyWedgeId FROM ScreeningStrategyWedge ssw INNER JOIN ScreeningStrategy ss USING(screeningStrategyId) INNER JOIN ScreeningOutput so USING(screeningOutputId) INNER JOIN Screening s USING(screeningId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID}) OR screeningStrategyWedgeId IN (SELECT screeningStrategyWedgeId FROM ScreeningStrategyWedge ssw INNER JOIN ScreeningStrategy ss USING(screeningStrategyId) INNER JOIN ScreeningOutput so USING(screeningOutputId) INNER JOIN Screening s USING(screeningId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg ON dcg.dataCollectionGroupId=dc.dataCollectionGroupId WHERE dcg.sessionId=${SID})" ScreeningStrategySubWedge > ${OUT_DIR}/${DB}_ScreeningStrategySubWedge.sql
+
+
+
+
 
 # TODO:
-# Screening tables
 # Phasing tables
-# MXMRRun tables
