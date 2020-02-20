@@ -123,9 +123,41 @@ mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM 
 
 mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" DataCollectionFileAttachment > ${OUT_DIR}/${DB}_DataCollectionFileAttachment.sql
 
+mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" Movie > ${OUT_DIR}/${DB}_Movie.sql
+
+mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT mc.autoProcProgramId FROM MotionCorrection mc INNER JOIN Movie m USING(movieId) INNER JOIN DataCollection dc ON dc.dataCollectionId=m.dataCollectionId INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcProgram > ${OUT_DIR}/${DB}_AutoProcProgram3.sql
+
+mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT mc.autoProcProgramId FROM MotionCorrection mc INNER JOIN Movie m USING(movieId) INNER JOIN DataCollection dc ON dc.dataCollectionId=m.dataCollectionId INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcProgramAttachment > ${OUT_DIR}/${DB}_AutoProcProgramAttachment3.sql
+
+mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT mc.autoProcProgramId FROM MotionCorrection mc INNER JOIN Movie m USING(movieId) INNER JOIN DataCollection dc ON dc.dataCollectionId=m.dataCollectionId INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcProgramMessage > ${OUT_DIR}/${DB}_AutoProcProgramMessage3.sql
+
+mysqldump ${OPTIONS} --where="movieId IN (SELECT m.movieId FROM Movie m INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" MotionCorrection > ${OUT_DIR}/${DB}_MotionCorrection.sql
+
+mysqldump ${OPTIONS} --where="motionCorrectionId IN (SELECT mc.motionCorrectionId FROM MotionCorrection mc INNER JOIN Movie m USING(movieId) INNER JOIN DataCollection dc ON dc.dataCollectionId=m.dataCollectionId INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" MotionCorrectionDrift > ${OUT_DIR}/${DB}_MotionCorrectionDrift.sql
+
+mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT ctf.autoProcProgramId FROM CTF ctf INNER JOIN MotionCorrection USING(motionCorrectionId) INNER JOIN Movie m USING(movieId) INNER JOIN DataCollection dc ON dc.dataCollectionId=m.dataCollectionId INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcProgram > ${OUT_DIR}/${DB}_AutoProcProgram4.sql
+
+mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT ctf.autoProcProgramId FROM CTF ctf INNER JOIN MotionCorrection USING(motionCorrectionId) INNER JOIN Movie m USING(movieId) INNER JOIN DataCollection dc ON dc.dataCollectionId=m.dataCollectionId INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcProgramAttachment > ${OUT_DIR}/${DB}_AutoProcProgramAttachment4.sql
+
+mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT ctf.autoProcProgramId FROM CTF ctf INNER JOIN MotionCorrection USING(motionCorrectionId) INNER JOIN Movie m USING(movieId) INNER JOIN DataCollection dc ON dc.dataCollectionId=m.dataCollectionId INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcProgramMessage > ${OUT_DIR}/${DB}_AutoProcProgramMessage4.sql
+
+mysqldump ${OPTIONS} --where="motionCorrectionId IN (SELECT mc.motionCorrectionId FROM MotionCorrection mc INNER JOIN Movie m USING(movieId) INNER JOIN DataCollection dc ON dc.dataCollectionId=m.dataCollectionId INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" CTF > ${OUT_DIR}/${DB}_CTF.sql
+
+
 mysqldump ${OPTIONS} --where="containerId IN (SELECT containerId FROM Container WHERE sessionId=${SID})" ContainerInspection > ${OUT_DIR}/${DB}_ContainerInspection.sql
 
-# AutoProc* tables:
+mysqldump ${OPTIONS} --where="containerId IN (SELECT containerId FROM Container WHERE sessionId=${SID})" ContainerQueue > ${OUT_DIR}/${DB}_ContainerQueue.sql
+
+mysqldump ${OPTIONS} --where="containerQueueId IN (SELECT cq.containerQueueId FROM ContainerQueue cq INNER JOIN Container c USING(containerId) WHERE c.sessionId=${SID})" ContainerQueueSample > ${OUT_DIR}/${DB}_ContainerQueueSample.sql
+
+
+# ProcessingJob* and AutoProc* tables:
+
+mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ProcessingJob > ${OUT_DIR}/${DB}_ProcessingJob.sql
+
+mysqldump ${OPTIONS} --where="processingJobId IN (SELECT pj.processingJobId FROM ProcessingJob pj INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ProcessingJobParameter > ${OUT_DIR}/${DB}_ProcessingJobParameter.sql
+
+mysqldump ${OPTIONS} --where="processingJobId IN (SELECT pj.processingJobId FROM ProcessingJob pj INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ProcessingJobImageSweep > ${OUT_DIR}/${DB}_ProcessingJobImageSweep.sql
 
 mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcIntegration > ${OUT_DIR}/${DB}_AutoProcIntegration.sql
 
@@ -188,12 +220,3 @@ mysqldump ${OPTIONS} --where="phasingProgramRunId IN (SELECT p.phasingProgramRun
 mysqldump ${OPTIONS} --where="phasingAnalysisId IN (SELECT phs.phasingAnalysisId FROM Phasing_has_Scaling phs INNER JOIN  AutoProcScaling_has_Int USING(autoProcScalingId) INNER JOIN AutoProcIntegration USING(autoProcIntegrationId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" Phasing > ${OUT_DIR}/${DB}_Phasing.sql
 
 mysqldump ${OPTIONS} --where="phasingStatisticsId IN (SELECT ps.phasingStatisticsId FROM PhasingStatistics ps INNER JOIN Phasing_has_Scaling phs ON ps.phasingHasScalingId1=phs.phasingHasScalingId OR ps.phasingHasScalingId2=phs.phasingHasScalingId INNER JOIN  AutoProcScaling_has_Int USING(autoProcScalingId) INNER JOIN AutoProcIntegration USING(autoProcIntegrationId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" PhasingStatistics > ${OUT_DIR}/${DB}_PhasingStatistics.sql
-
-
-
-
-# TODO
-# UserGroup_has_Person (meh ...)
-# ProcessingJob*
-# ContainerQueue, ContainerQueueSample
-# EM tables (CTF, Movie, ...)
