@@ -54,6 +54,14 @@ mysqldump ${OPTIONS} --where="crystalId IN (SELECT crystalId FROM Crystal WHERE 
 
 mysqldump ${OPTIONS} --where="blSampleId IN (SELECT blSampleId FROM BLSample WHERE crystalId IN (SELECT crystalId FROM Crystal WHERE proteinId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID})))" BLSubSample > ${OUT_DIR}/${DB}_BLSubSample.sql
 
+mysqldump ${OPTIONS} --where="pdbId IN (SELECT pdbId FROM PDB INNER JOIN Protein_has_PDB php USING(pdbId) INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})" PDB > ${OUT_DIR}/${DB}_PDB.sql
+
+mysqldump ${OPTIONS} --where="proteinId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID})" Protein_has_PDB > ${OUT_DIR}/${DB}_Protein_has_PDB.sql
+
+mysqldump ${OPTIONS} --where="screenId IN (SELECT screenId FROM Screen WHERE proposalId=${PID})" ScreenComponentGroup > ${OUT_DIR}/${DB}_ScreenComponentGroup.sql
+
+mysqldump ${OPTIONS} --where="screenComponentGroupId IN (SELECT scg.screenComponentGroupId FROM ScreenComponentGroup scg INNER JOIN Screen s USING(screenId) WHERE s.proposalId=${PID}) AND componentId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID})" ScreenComponent > ${OUT_DIR}/${DB}_ScreenComponent.sql
+
 # BLSubSample.positionId
 mysqldump ${OPTIONS} --where="positionId IN (SELECT positionId FROM BLSubSample WHERE blSampleId IN (SELECT blSampleId FROM BLSample WHERE crystalId IN (SELECT crystalId FROM Crystal WHERE proteinId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID}))))" Position > ${OUT_DIR}/${DB}_Position1.sql
 
@@ -85,7 +93,15 @@ mysqldump ${OPTIONS} --where="sessionId=${SID}" SessionType > ${OUT_DIR}/${DB}_S
 
 mysqldump ${OPTIONS} --where="sessionId=${SID}" DataCollectionGroup > ${OUT_DIR}/${DB}_DataCollectionGroup.sql
 
+mysqldump ${OPTIONS} --where="sessionId=${SID}" ShippingHasSession > ${OUT_DIR}/${DB}_ShippingHasSession.sql
+
 mysqldump ${OPTIONS} --where="dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})" DataCollection > ${OUT_DIR}/${DB}_DataCollection.sql
+
+mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" GridImageMap > ${OUT_DIR}/${DB}_GridImageMap.sql
+
+mysqldump ${OPTIONS} --where="dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})" GridInfo > ${OUT_DIR}/${DB}_GridInfo.sql
+
+mysqldump ${OPTIONS} --where="gridInfoId IN (SELECT gi.gridInfoId FROM GridInfo gi INNER JOIN DataCollectionGroup dcg USING(datacollectionGroupId) WHERE dcg.sessionId=${SID})" XrayCentringResult > ${OUT_DIR}/${DB}_XrayCentringResult.sql
 
 mysqldump ${OPTIONS} --where="positionId IN (SELECT positionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID}))" Position > ${OUT_DIR}/${DB}_Position3.sql
 
@@ -106,6 +122,8 @@ mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM 
 mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" DataCollectionComment > ${OUT_DIR}/${DB}_DataCollectionComment.sql
 
 mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" DataCollectionFileAttachment > ${OUT_DIR}/${DB}_DataCollectionFileAttachment.sql
+
+mysqldump ${OPTIONS} --where="containerId IN (SELECT containerId FROM Container WHERE sessionId=${SID})" ContainerInspection > ${OUT_DIR}/${DB}_ContainerInspection.sql
 
 # AutoProc* tables:
 
@@ -176,13 +194,6 @@ mysqldump ${OPTIONS} --where="phasingStatisticsId IN (SELECT ps.phasingStatistic
 
 # TODO
 # UserGroup_has_Person (meh ...)
-# GridInfo
-# XrayCentringResult
-# GridImageMap
-# ContainerInspection
-# ShippingHasSession
 # ProcessingJob*
-# ScreenComponentGroup
-# PDB
-# Protein_has_PDB
+# ContainerQueue, ContainerQueueSample
 # EM tables (CTF, Movie, ...)
