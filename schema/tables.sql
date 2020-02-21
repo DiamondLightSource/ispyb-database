@@ -3571,7 +3571,7 @@ CREATE TABLE `ProposalHasPerson` (
   `proposalHasPersonId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `proposalId` int(10) unsigned NOT NULL,
   `personId` int(10) unsigned NOT NULL,
-  `role` enum('Co-Investigator','Principal Investigator','Alternate Contact') DEFAULT NULL,
+  `role` enum('Co-Investigator','Principal Investigator','Alternate Contact','ERA Admin') DEFAULT NULL,
   PRIMARY KEY (`proposalHasPersonId`),
   KEY `fk_ProposalHasPerson_Proposal` (`proposalId`),
   KEY `fk_ProposalHasPerson_Personal` (`personId`),
@@ -4351,7 +4351,7 @@ DROP TABLE IF EXISTS `Session_has_Person`;
 CREATE TABLE `Session_has_Person` (
   `sessionId` int(10) unsigned NOT NULL DEFAULT 0,
   `personId` int(10) unsigned NOT NULL DEFAULT 0,
-  `role` enum('Local Contact','Local Contact 2','Staff','Team Leader','Co-Investigator','Principal Investigator','Alternate Contact','Data Access','Team Member') DEFAULT NULL,
+  `role` enum('Local Contact','Local Contact 2','Staff','Team Leader','Co-Investigator','Principal Investigator','Alternate Contact','Data Access','Team Member','ERA Admin') DEFAULT NULL,
   `remote` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`sessionId`,`personId`),
   KEY `Session_has_Person_FKIndex1` (`sessionId`),
@@ -5743,4 +5743,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-13 17:13:47
+-- Dump completed on 2020-02-21 15:40:02
