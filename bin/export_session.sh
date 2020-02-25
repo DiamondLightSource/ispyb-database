@@ -5,7 +5,7 @@
 # Usage example:
 # export_proposal.sh ispyb cm14451 2 /tmp/cm14451
 # Author: Karl Levik
-# Date: 20200214
+# Date: 2020-02-14
 
 
 HOST=localhost
@@ -14,45 +14,54 @@ PROPOSAL=$2
 SESSNUM=$3
 OUT_DIR=$4
 
-rm -f -r -d ${OUT_DIR}
-mkdir -p ${OUT_DIR}
-
-OPTIONS="--defaults-file=../.my.cnf --add-drop-table --create-options --disable-keys --extended-insert --skip-add-locks --quick --set-charset --single-transaction --max_allowed_packet=1G --skip-triggers --no-create-info --complete-insert --host=${HOST} --port=3306 --default-character-set=utf8 ${DB}"
-
-# Global level data
-
-mysqldump ${OPTIONS} Detector Imager ComponentType ComponentSubType InspectionType SpaceGroup v_run UserGroup Permission UserGroup_has_Permission Schedule ScheduleComponent ScanParametersService ScanParametersModel > ${OUT_DIR}/${DB}_global.sql
-
-
-# Proposal level data
-
 PID=`mysql -s -D ${DB} -e "SELECT proposalId FROM Proposal WHERE concat(proposalCode, proposalNumber)='${PROPOSAL}';"`
+
+SID=`mysql -s -D ${DB} -e "SELECT sessionId FROM BLSession WHERE proposalId='${PID}' AND visit_number=${SESSNUM};"`
 
 PERSID=`mysql -s -D ${DB} -e "SELECT personId FROM Proposal WHERE proposalId=${PID};"`
 
 LABID=`mysql -s -D ${DB} -e "SELECT laboratoryId FROM Person WHERE personId=${PERSID};"`
 
+rm -f -r -I -d ${OUT_DIR}
+mkdir -p ${OUT_DIR}
+
+OPTIONS="--defaults-file=../.my.cnf --add-drop-table --create-options --disable-keys --skip-add-locks --quick --set-charset --single-transaction --max_allowed_packet=1G --skip-triggers --no-create-info --complete-insert --host=${HOST} --port=3306 --default-character-set=utf8 ${DB}"
+
+# Global level data
+
+mysqldump ${OPTIONS} Detector Imager ComponentType ComponentSubType InspectionType SpaceGroup v_run UserGroup Permission UserGroup_has_Permission Schedule ScheduleComponent ScanParametersService > ${OUT_DIR}/${DB}_global.sql
+
+mysqldump ${OPTIONS} --where="diffractionPlanId IN (SELECT dataCollectionPlanId FROM ScanParametersModel)" DiffractionPlan > ${OUT_DIR}/${DB}_DiffractionPlan0.sql
+
+mysqldump ${OPTIONS} ScanParametersModel > ${OUT_DIR}/${DB}_ScanParametersModel.sql
+
+# Proposal level data
+
 mysqldump ${OPTIONS} --where="laboratoryId=${LABID}" Laboratory > ${OUT_DIR}/${DB}_Laboratory.sql
 
-mysqldump ${OPTIONS} --where="personId=${PERSID}" Person > ${OUT_DIR}/${DB}_Person.sql
+mysqldump ${OPTIONS} --where="personId=${PERSID} OR personId IN (SELECT personId FROM LabContact WHERE proposalId=${PID}) OR personId IN (SELECT personId FROM Session_has_Person WHERE sessionId=${SID}) OR personId IN (SELECT personId FROM ProposalHasPerson WHERE proposalId=${PID})" Person > ${OUT_DIR}/${DB}_Person.sql
 
 mysqldump ${OPTIONS} --where="proposalId=${PID}" Proposal > ${OUT_DIR}/${DB}_Proposal.sql
 
-mysqldump ${OPTIONS} --where="laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN LabContact lc USING(personId) WHERE lc.proposalId=${PID})" Laboratory > ${OUT_DIR}/${DB}_Laboratory2.sql
+mysqldump ${OPTIONS} --where="beamLineSetupId IN (SELECT beamLineSetupId FROM BLSession WHERE sessionId=${SID})" BeamLineSetup > ${OUT_DIR}/${DB}_BeamLineSetup.sql
 
-mysqldump ${OPTIONS} --where="personId IN (SELECT personId FROM LabContact WHERE proposalId=${PID})" Person > ${OUT_DIR}/${DB}_Person2.sql
+mysqldump ${OPTIONS} --where="sessionId=${SID}" BLSession > ${OUT_DIR}/${DB}_BLSession.sql
+
+mysqldump ${OPTIONS} --where="laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN LabContact lc USING(personId) WHERE lc.proposalId=${PID})" Laboratory > ${OUT_DIR}/${DB}_Laboratory2.sql
 
 mysqldump ${OPTIONS} --where="proposalId=${PID}" LabContact > ${OUT_DIR}/${DB}_LabContact.sql
 
 mysqldump ${OPTIONS} --where="proposalId=${PID}" Protein > ${OUT_DIR}/${DB}_Protein.sql
 
+mysqldump ${OPTIONS} --where="componentId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID})" ComponentLattice > ${OUT_DIR}/${DB}_ComponentLattice.sql
+
+mysqldump ${OPTIONS} --where="componentId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID})" Component_has_SubType > ${OUT_DIR}/${DB}_Component_has_SubType.sql
+
 mysqldump ${OPTIONS} --where="proposalId=${PID}" Screen > ${OUT_DIR}/${DB}_Screen.sql
 
 mysqldump ${OPTIONS} --where="proteinId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID})" Crystal > ${OUT_DIR}/${DB}_Crystal.sql
 
-mysqldump ${OPTIONS} --where="crystalId IN (SELECT crystalId FROM Crystal WHERE proteinId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID}))" BLSample > ${OUT_DIR}/${DB}_BLSample.sql
-
-mysqldump ${OPTIONS} --where="blSampleId IN (SELECT blSampleId FROM BLSample WHERE crystalId IN (SELECT crystalId FROM Crystal WHERE proteinId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID})))" BLSubSample > ${OUT_DIR}/${DB}_BLSubSample.sql
+mysqldump ${OPTIONS} --where="componentId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID}) AND blSampleTypeId IN (SELECT crystalId FROM Crystal c INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})" BLSampleType_has_Component > ${OUT_DIR}/${DB}_BLSampleType_has_Component.sql
 
 mysqldump ${OPTIONS} --where="pdbId IN (SELECT pdbId FROM PDB INNER JOIN Protein_has_PDB php USING(pdbId) INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})" PDB > ${OUT_DIR}/${DB}_PDB.sql
 
@@ -63,16 +72,13 @@ mysqldump ${OPTIONS} --where="screenId IN (SELECT screenId FROM Screen WHERE pro
 mysqldump ${OPTIONS} --where="screenComponentGroupId IN (SELECT scg.screenComponentGroupId FROM ScreenComponentGroup scg INNER JOIN Screen s USING(screenId) WHERE s.proposalId=${PID}) AND componentId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID})" ScreenComponent > ${OUT_DIR}/${DB}_ScreenComponent.sql
 
 # BLSubSample.positionId
-mysqldump ${OPTIONS} --where="positionId IN (SELECT positionId FROM BLSubSample WHERE blSampleId IN (SELECT blSampleId FROM BLSample WHERE crystalId IN (SELECT crystalId FROM Crystal WHERE proteinId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID}))))" Position > ${OUT_DIR}/${DB}_Position1.sql
+mysqldump ${OPTIONS} --where="positionId IN (SELECT blss.positionId FROM BLSubSample blss INNER JOIN BLSample bls WHERE bls.crystalId IN (SELECT cr.crystalId FROM Crystal cr INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID}) OR bls.containerId IN (SELECT c.containerId FROM Container c INNER JOIN Dewar USING(dewarID) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID} AND (c.sessionId IS NULL OR c.sessionId=${SID})))" Position > ${OUT_DIR}/${DB}_Position1.sql
 
 # BLSubSample.position2Id
-mysqldump ${OPTIONS} --where="positionId IN (SELECT position2Id Id FROM BLSubSample WHERE blSampleId IN (SELECT blSampleId FROM BLSample WHERE crystalId IN (SELECT crystalId FROM Crystal WHERE proteinId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID}))))" Position > ${OUT_DIR}/${DB}_Position1.sql
+mysqldump ${OPTIONS} --where="positionId IN (SELECT blss.position2Id FROM BLSubSample blss INNER JOIN BLSample bls WHERE bls.crystalId IN (SELECT cr.crystalId FROM Crystal cr INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID}) OR bls.containerId IN (SELECT c.containerId FROM Container c INNER JOIN Dewar USING(dewarID) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID} AND (c.sessionId IS NULL OR c.sessionId=${SID})))" Position > ${OUT_DIR}/${DB}_Position2.sql
 
-mysqldump ${OPTIONS} --where="diffractionPlanId IN (SELECT diffractionPlanId FROM Crystal WHERE proteinId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID}))" DiffractionPlan > ${OUT_DIR}/${DB}_DiffractionPlan1.sql
-
-mysqldump ${OPTIONS} --where="diffractionPlanId IN (SELECT diffractionPlanId FROM BLSample WHERE crystalId IN (SELECT crystalId FROM Crystal WHERE proteinId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID})))" DiffractionPlan > ${OUT_DIR}/${DB}_DiffractionPlan2.sql
-
-mysqldump ${OPTIONS} --where="diffractionPlanId IN (SELECT diffractionPlanId FROM BLSubSample WHERE blSampleId IN (SELECT blSampleId FROM BLSample WHERE crystalId IN (SELECT crystalId FROM Crystal WHERE proteinId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID}))))" DiffractionPlan > ${OUT_DIR}/${DB}_DiffractionPlan3.sql
+mysqldump ${OPTIONS} --where="diffractionPlanId IN (SELECT c.diffractionPlanId FROM Crystal c INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})
+OR diffractionPlanId IN (SELECT bls.diffractionPlanId FROM BLSample bls INNER JOIN Crystal USING(crystalId) INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID}) OR diffractionPlanId IN (SELECT blss.diffractionPlanId FROM BLSubSample blss INNER JOIN BLSample USING(blSampleId) INNER JOIN Crystal c USING(crystalId) INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})" DiffractionPlan > ${OUT_DIR}/${DB}_DiffractionPlan1.sql
 
 mysqldump ${OPTIONS} --where="proposalId=${PID}" ProposalHasPerson > ${OUT_DIR}/${DB}_ProposalHasPerson.sql
 
@@ -80,14 +86,19 @@ mysqldump ${OPTIONS} --where="proposalId=${PID}" Shipping > ${OUT_DIR}/${DB}_Shi
 
 mysqldump ${OPTIONS} --where="shippingId IN (SELECT shippingId FROM Shipping WHERE proposalId=${PID})" Dewar > ${OUT_DIR}/${DB}_Dewar.sql
 
-mysqldump ${OPTIONS} --where="dewarId IN (SELECT dewarId FROM Dewar WHERE shippingId IN (SELECT shippingId FROM Shipping WHERE proposalId=${PID}))" Container > ${OUT_DIR}/${DB}_Container1.sql
+mysqldump ${OPTIONS} --where="containerRegistryId IN (SELECT c.containerRegistryId FROM Container c INNER JOIN Dewar USING(dewarId) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID})" ContainerRegistry > ${OUT_DIR}/${DB}_ContainerRegistry1.sql
+
+
+# Proposal/Session level data
+
+mysqldump ${OPTIONS} --where="(dewarId IN (SELECT d.dewarId FROM Dewar d INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID}) OR containerId IN (SELECT bls.containerId FROM BLSample bls INNER JOIN Crystal USING(crystalId) INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})) AND (sessionId IS NULL OR sessionId=${SID})" Container > ${OUT_DIR}/${DB}_Container1.sql
+
+mysqldump ${OPTIONS} --where="crystalId IN   (SELECT cr.crystalId FROM Crystal cr INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})   OR   containerId IN (SELECT c.containerId FROM Container c INNER JOIN Dewar USING(dewarID) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID} AND (c.sessionId IS NULL OR c.sessionId=${SID}))   OR   blSampleId IN (SELECT blSampleId FROM XFEFluorescenceSpectrum WHERE sessionId=${SID})   OR   blSampleId IN (SELECT blSampleId FROM EnergyScan WHERE sessionId=${SID})" BLSample > ${OUT_DIR}/${DB}_BLSample1.sql
+
+mysqldump ${OPTIONS} --where="blSampleId IN (SELECT bls.blSampleId FROM BLSample bls WHERE bls.crystalId IN (SELECT cr.crystalId FROM Crystal cr INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID}) OR containerId IN (SELECT c.containerId FROM Container c INNER JOIN Dewar USING(dewarID) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID} AND (c.sessionId IS NULL OR c.sessionId=${SID})))   OR   blSubSampleId IN (SELECT blSubSampleId FROM XFEFluorescenceSpectrum WHERE sessionId=${SID})" BLSubSample > ${OUT_DIR}/${DB}_BLSubSample.sql
 
 
 # Session level data
-
-SID=`mysql -s -D ${DB} -e "SELECT sessionId FROM BLSession WHERE proposalId='${PID}' AND visit_number=${SESSNUM};"`
-
-mysqldump ${OPTIONS} --where="sessionId=${SID}" BLSession > ${OUT_DIR}/${DB}_BLSession.sql
 
 mysqldump ${OPTIONS} --where="sessionId=${SID}" SessionType > ${OUT_DIR}/${DB}_SessionType.sql
 
@@ -109,11 +120,11 @@ mysqldump ${OPTIONS} --where="sessionId=${SID}" XFEFluorescenceSpectrum > ${OUT_
 
 mysqldump ${OPTIONS} --where="sessionId=${SID}" EnergyScan > ${OUT_DIR}/${DB}_EnergyScan.sql
 
-mysqldump ${OPTIONS} --where="personId IN (SELECT personId FROM Session_has_Person WHERE sessionId=${SID})" Person > ${OUT_DIR}/${DB}_Person2.sql
-
 mysqldump ${OPTIONS} --where="sessionId=${SID}" Session_has_Person > ${OUT_DIR}/${DB}_Session_has_Person.sql
 
-mysqldump ${OPTIONS} --where="sessionId=${SID}" Container > ${OUT_DIR}/${DB}_Container2.sql
+mysqldump ${OPTIONS} --where="containerRegistryId IN (SELECT c.containerRegistryId FROM Container c WHERE c.sessionId=${SID})" ContainerRegistry > ${OUT_DIR}/${DB}_ContainerRegistry2.sql
+
+mysqldump ${OPTIONS} --where="sessionId=${SID} AND (dewarId IS NULL OR dewarId IN (SELECT d.dewarId FROM Dewar d INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID}))" Container > ${OUT_DIR}/${DB}_Container2.sql
 
 mysqldump ${OPTIONS} --where="blsessionId=${SID}" RobotAction > ${OUT_DIR}/${DB}_RobotAction.sql
 
@@ -153,27 +164,11 @@ mysqldump ${OPTIONS} --where="containerQueueId IN (SELECT cq.containerQueueId FR
 
 # ProcessingJob* and AutoProc* tables:
 
-mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ProcessingJob > ${OUT_DIR}/${DB}_ProcessingJob.sql
+mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})   OR   processingJobId IN (SELECT processingJobId FROM AutoProcProgram INNER JOIN AutoProcIntegration api USING(autoProcProgramId) INNER JOIN DataCollection dc ON api.dataCollectionId=dc.dataCollectionId INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ProcessingJob > ${OUT_DIR}/${DB}_ProcessingJob.sql
 
-mysqldump ${OPTIONS} --where="processingJobId IN (SELECT pj.processingJobId FROM ProcessingJob pj INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ProcessingJobParameter > ${OUT_DIR}/${DB}_ProcessingJobParameter.sql
+mysqldump ${OPTIONS} --where="processingJobId IN (SELECT pj.processingJobId FROM ProcessingJob pj INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})   OR   processingJobId IN (SELECT processingJobId FROM AutoProcProgram INNER JOIN AutoProcIntegration api USING(autoProcProgramId) INNER JOIN DataCollection dc ON api.dataCollectionId=dc.dataCollectionId INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ProcessingJobParameter > ${OUT_DIR}/${DB}_ProcessingJobParameter.sql
 
-mysqldump ${OPTIONS} --where="processingJobId IN (SELECT pj.processingJobId FROM ProcessingJob pj INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ProcessingJobImageSweep > ${OUT_DIR}/${DB}_ProcessingJobImageSweep.sql
-
-mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcIntegration > ${OUT_DIR}/${DB}_AutoProcIntegration.sql
-
-mysqldump ${OPTIONS} --where="autoProcIntegrationId IN (SELECT autoProcIntegrationId FROM AutoProcIntegration WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))" AutoProcStatus > ${OUT_DIR}/${DB}_AutoProcStatus.sql
-
-mysqldump ${OPTIONS} --where="autoProcIntegrationId IN (SELECT autoProcIntegrationId FROM AutoProcIntegration WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))" AutoProcScaling_has_Int > ${OUT_DIR}/${DB}_AutoProcScaling_has_Int.sql
-
-mysqldump ${OPTIONS} --where="autoProcScalingId IN (SELECT apshi.autoProcScalingId FROM AutoProcScaling_has_Int apshi INNER JOIN AutoProcIntegration api USING(autoProcIntegrationId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcScaling > ${OUT_DIR}/${DB}_AutoProcScaling.sql
-
-mysqldump ${OPTIONS} --where="autoProcId IN (SELECT autoProcId FROM AutoProcScaling WHERE autoProcScalingId IN (SELECT autoProcScalingId FROM AutoProcScaling_has_Int WHERE autoProcIntegrationId IN (SELECT autoProcIntegrationId FROM AutoProcIntegration WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))))" AutoProc > ${OUT_DIR}/${DB}_AutoProc.sql
-
-mysqldump ${OPTIONS} --where="autoProcScalingId IN (SELECT apshi.autoProcScalingId FROM AutoProcScaling_has_Int apshi INNER JOIN AutoProcIntegration api USING(autoProcIntegrationId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcScalingStatistics > ${OUT_DIR}/${DB}_AutoProcScalingStatistics.sql
-
-mysqldump ${OPTIONS} --where="autoProcScalingId IN (SELECT apshi.autoProcScalingId FROM AutoProcScaling_has_Int apshi INNER JOIN AutoProcIntegration api USING(autoProcIntegrationId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" MXMRRun > ${OUT_DIR}/${DB}_MXMRRun.sql
-
-mysqldump ${OPTIONS} --where="mxMRRunId IN (SELECT mr.mxMRRunId FROM MXMRRun mr INNER JOIN AutoProcScaling_has_Int apshi USING(autoProcScalingId) INNER JOIN AutoProcIntegration api USING(autoProcIntegrationId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" MXMRRunBlob > ${OUT_DIR}/${DB}_MXMRRunBlob.sql
+mysqldump ${OPTIONS} --where="processingJobId IN (SELECT pj.processingJobId FROM ProcessingJob pj INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})   OR   processingJobId IN (SELECT processingJobId FROM AutoProcProgram INNER JOIN AutoProcIntegration api USING(autoProcProgramId) INNER JOIN DataCollection dc ON api.dataCollectionId=dc.dataCollectionId INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ProcessingJobImageSweep > ${OUT_DIR}/${DB}_ProcessingJobImageSweep.sql
 
 mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT autoProcProgramId FROM AutoProcIntegration WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))" AutoProcProgram > ${OUT_DIR}/${DB}_AutoProcProgram1.sql
 
@@ -186,6 +181,23 @@ mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM 
 mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT autoProcProgramId FROM AutoProcProgram WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))" AutoProcProgramAttachment > ${OUT_DIR}/${DB}_AutoProcProgramAttachment2.sql
 
 mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT autoProcProgramId FROM AutoProcProgram WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))" AutoProcProgramMessage > ${OUT_DIR}/${DB}_AutoProcProgramMessage2.sql
+
+mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcIntegration > ${OUT_DIR}/${DB}_AutoProcIntegration.sql
+
+mysqldump ${OPTIONS} --where="autoProcIntegrationId IN (SELECT autoProcIntegrationId FROM AutoProcIntegration WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))" AutoProcStatus > ${OUT_DIR}/${DB}_AutoProcStatus.sql
+
+mysqldump ${OPTIONS} --where="autoProcId IN (SELECT autoProcId FROM AutoProcScaling WHERE autoProcScalingId IN (SELECT autoProcScalingId FROM AutoProcScaling_has_Int WHERE autoProcIntegrationId IN (SELECT autoProcIntegrationId FROM AutoProcIntegration WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))))" AutoProc > ${OUT_DIR}/${DB}_AutoProc.sql
+
+mysqldump ${OPTIONS} --where="autoProcScalingId IN (SELECT apshi.autoProcScalingId FROM AutoProcScaling_has_Int apshi INNER JOIN AutoProcIntegration api USING(autoProcIntegrationId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcScaling > ${OUT_DIR}/${DB}_AutoProcScaling.sql
+
+mysqldump ${OPTIONS} --where="autoProcIntegrationId IN (SELECT autoProcIntegrationId FROM AutoProcIntegration WHERE dataCollectionId IN (SELECT dataCollectionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})))" AutoProcScaling_has_Int > ${OUT_DIR}/${DB}_AutoProcScaling_has_Int.sql
+
+mysqldump ${OPTIONS} --where="autoProcScalingId IN (SELECT apshi.autoProcScalingId FROM AutoProcScaling_has_Int apshi INNER JOIN AutoProcIntegration api USING(autoProcIntegrationId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcScalingStatistics > ${OUT_DIR}/${DB}_AutoProcScalingStatistics.sql
+
+mysqldump ${OPTIONS} --where="autoProcScalingId IN (SELECT apshi.autoProcScalingId FROM AutoProcScaling_has_Int apshi INNER JOIN AutoProcIntegration api USING(autoProcIntegrationId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" MXMRRun > ${OUT_DIR}/${DB}_MXMRRun.sql
+
+mysqldump ${OPTIONS} --where="mxMRRunId IN (SELECT mr.mxMRRunId FROM MXMRRun mr INNER JOIN AutoProcScaling_has_Int apshi USING(autoProcScalingId) INNER JOIN AutoProcIntegration api USING(autoProcIntegrationId) INNER JOIN DataCollection dc USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" MXMRRunBlob > ${OUT_DIR}/${DB}_MXMRRunBlob.sql
+
 
 # Screening* tables:
 
@@ -220,3 +232,12 @@ mysqldump ${OPTIONS} --where="phasingProgramRunId IN (SELECT p.phasingProgramRun
 mysqldump ${OPTIONS} --where="phasingAnalysisId IN (SELECT phs.phasingAnalysisId FROM Phasing_has_Scaling phs INNER JOIN  AutoProcScaling_has_Int USING(autoProcScalingId) INNER JOIN AutoProcIntegration USING(autoProcIntegrationId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" Phasing > ${OUT_DIR}/${DB}_Phasing.sql
 
 mysqldump ${OPTIONS} --where="phasingStatisticsId IN (SELECT ps.phasingStatisticsId FROM PhasingStatistics ps INNER JOIN Phasing_has_Scaling phs ON ps.phasingHasScalingId1=phs.phasingHasScalingId OR ps.phasingHasScalingId2=phs.phasingHasScalingId INNER JOIN  AutoProcScaling_has_Int USING(autoProcScalingId) INNER JOIN AutoProcIntegration USING(autoProcIntegrationId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" PhasingStatistics > ${OUT_DIR}/${DB}_PhasingStatistics.sql
+
+
+# Combine INSERT statements in the .sql files in the (hopefully) correct order:
+
+all_sql_files=`cd ${OUT_DIR} && ls -tr ${DB}_*.sql && cd ~-`
+arr=()
+while read -r sql_file; do
+  grep INSERT "${OUT_DIR}/${sql_file}" >> ${OUT_DIR}/summary.sql
+done <<< "$all_sql_files"
