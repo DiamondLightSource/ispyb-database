@@ -9,23 +9,24 @@
 
 
 HOST=localhost
-DB=$1
-PROPOSAL=$2
-SESSNUM=$3
-OUT_DIR=$4
+MYCNF=$1
+DB=$2
+PROPOSAL=$3
+SESSNUM=$4
+OUT_DIR=$5
 
-PID=`mysql -s -D ${DB} -e "SELECT proposalId FROM Proposal WHERE concat(proposalCode, proposalNumber)='${PROPOSAL}';"`
+PID=`mysql --defaults-extra-file=${MYCNF} -s -D ${DB} -e "SELECT proposalId FROM Proposal WHERE concat(proposalCode, proposalNumber)='${PROPOSAL}';"`
 
-SID=`mysql -s -D ${DB} -e "SELECT sessionId FROM BLSession WHERE proposalId='${PID}' AND visit_number=${SESSNUM};"`
+SID=`mysql --defaults-extra-file=${MYCNF} -s -D ${DB} -e "SELECT sessionId FROM BLSession WHERE proposalId='${PID}' AND visit_number=${SESSNUM};"`
 
-PERSID=`mysql -s -D ${DB} -e "SELECT personId FROM Proposal WHERE proposalId=${PID};"`
+PERSID=`mysql --defaults-extra-file=${MYCNF} -s -D ${DB} -e "SELECT personId FROM Proposal WHERE proposalId=${PID};"`
 
-LABID=`mysql -s -D ${DB} -e "SELECT laboratoryId FROM Person WHERE personId=${PERSID};"`
+LABID=`mysql --defaults-extra-file=${MYCNF} -s -D ${DB} -e "SELECT laboratoryId FROM Person WHERE personId=${PERSID};"`
 
 rm -f -r -I -d ${OUT_DIR}
 mkdir -p ${OUT_DIR}
 
-OPTIONS="--defaults-file=../.my.cnf --add-drop-table --create-options --disable-keys --skip-add-locks --quick --set-charset --single-transaction --max_allowed_packet=1G --skip-triggers --no-create-info --complete-insert --host=${HOST} --port=3306 --default-character-set=utf8 ${DB}"
+OPTIONS="--defaults-file=${MYCNF} --add-drop-table --create-options --disable-keys --skip-add-locks --quick --set-charset --single-transaction --max_allowed_packet=1G --skip-triggers --no-create-info --complete-insert --host=${HOST} --port=3306 --default-character-set=utf8 ${DB}"
 
 # Global level data
 
