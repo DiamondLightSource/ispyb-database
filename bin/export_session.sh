@@ -23,7 +23,10 @@ PERSID=`mysql --defaults-extra-file=${MYCNF} -s -D ${DB} -e "SELECT personId FRO
 
 LABID=`mysql --defaults-extra-file=${MYCNF} -s -D ${DB} -e "SELECT laboratoryId FROM Person WHERE personId=${PERSID};"`
 
-rm -f -r -I -d ${OUT_DIR}
+if [ -d "${OUT_DIR}" ]
+then
+  rm -f -r -I -d ${OUT_DIR}
+fi
 mkdir -p ${OUT_DIR}
 
 OPTIONS="--defaults-file=${MYCNF} --add-drop-table --create-options --disable-keys --skip-add-locks --quick --set-charset --single-transaction --max_allowed_packet=1G --skip-triggers --no-create-info --complete-insert --host=${HOST} --port=3306 --default-character-set=utf8 ${DB}"
@@ -38,7 +41,7 @@ mysqldump ${OPTIONS} ScanParametersModel > ${OUT_DIR}/${DB}_ScanParametersModel.
 
 # Proposal level data
 
-mysqldump ${OPTIONS} --where="laboratoryId=${LABID}   OR   laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN LabContact lc USING(personId) WHERE lc.proposalId=${PID})" Laboratory > ${OUT_DIR}/${DB}_Laboratory.sql
+mysqldump ${OPTIONS} --where="laboratoryId=${LABID}   OR   laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN LabContact lc USING(personId) WHERE lc.proposalId=${PID})   OR   laboratoryId IN (SELECT laboratoryId FROM Person p INNER JOIN Session_has_Person shp USING(personId) WHERE shp.sessionId=${SID})   OR   laboratoryId IN (SELECT laboratoryId FROM Person p INNER JOIN ProposalHasPerson php WHERE php.proposalId=${PID})" Laboratory > ${OUT_DIR}/${DB}_Laboratory.sql
 
 mysqldump ${OPTIONS} --where="personId=${PERSID} OR personId IN (SELECT personId FROM LabContact WHERE proposalId=${PID}) OR personId IN (SELECT personId FROM Session_has_Person WHERE sessionId=${SID}) OR personId IN (SELECT personId FROM ProposalHasPerson WHERE proposalId=${PID})" Person > ${OUT_DIR}/${DB}_Person.sql
 
