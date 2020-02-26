@@ -38,7 +38,7 @@ mysqldump ${OPTIONS} ScanParametersModel > ${OUT_DIR}/${DB}_ScanParametersModel.
 
 # Proposal level data
 
-mysqldump ${OPTIONS} --where="laboratoryId=${LABID}" Laboratory > ${OUT_DIR}/${DB}_Laboratory.sql
+mysqldump ${OPTIONS} --where="laboratoryId=${LABID}   OR   laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN LabContact lc USING(personId) WHERE lc.proposalId=${PID})" Laboratory > ${OUT_DIR}/${DB}_Laboratory.sql
 
 mysqldump ${OPTIONS} --where="personId=${PERSID} OR personId IN (SELECT personId FROM LabContact WHERE proposalId=${PID}) OR personId IN (SELECT personId FROM Session_has_Person WHERE sessionId=${SID}) OR personId IN (SELECT personId FROM ProposalHasPerson WHERE proposalId=${PID})" Person > ${OUT_DIR}/${DB}_Person.sql
 
@@ -47,8 +47,6 @@ mysqldump ${OPTIONS} --where="proposalId=${PID}" Proposal > ${OUT_DIR}/${DB}_Pro
 mysqldump ${OPTIONS} --where="beamLineSetupId IN (SELECT beamLineSetupId FROM BLSession WHERE sessionId=${SID})" BeamLineSetup > ${OUT_DIR}/${DB}_BeamLineSetup.sql
 
 mysqldump ${OPTIONS} --where="sessionId=${SID}" BLSession > ${OUT_DIR}/${DB}_BLSession.sql
-
-mysqldump ${OPTIONS} --where="laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN LabContact lc USING(personId) WHERE lc.proposalId=${PID})" Laboratory > ${OUT_DIR}/${DB}_Laboratory2.sql
 
 mysqldump ${OPTIONS} --where="proposalId=${PID}" LabContact > ${OUT_DIR}/${DB}_LabContact.sql
 
