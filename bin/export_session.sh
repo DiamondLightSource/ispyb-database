@@ -237,12 +237,12 @@ mysqldump ${OPTIONS} --where="phasingStatisticsId IN (SELECT ps.phasingStatistic
 
 
 # Combine INSERT statements in the .sql files in the (hopefully) correct order.
-# If it's an insert into the Position table, then use non-strict sql_mode.
-# This is because the Position table contains generated columns, and inserting
-# into those would result in an error.
+# For the Position table, use non-strict sql_mode due to generated columns.
+# For the DiffractionPlan table, convert empty experimentKind to NULL
+# For the Dewar table, turn off key constraint because of firstExperimentId
 
 all_sql_files=`cd ${OUT_DIR} && ls -tr ${DB}_*.sql && cd ~-`
 arr=()
 while read -r sql_file; do
-  grep INSERT "${OUT_DIR}/${sql_file}" | sed 's/^INSERT INTO `Position`.*/SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='\''NO_AUTO_VALUE_ON_ZERO'\'';\n\0\nSET @@SQL_MODE=@OLD_SQL_MODE;/' | sed 's/^INSERT INTO `DiffractionPlan`.*/SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='\''EMPTY_STRING_IS_NULL'\'';\n\0\nSET @@SQL_MODE=@OLD_SQL_MODE;/' >> ${OUT_DIR}/summary.sql
+  grep INSERT "${OUT_DIR}/${sql_file}" | sed 's/^INSERT INTO `Position`.*/SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='\''NO_AUTO_VALUE_ON_ZERO'\'';\n\0\nSET @@SQL_MODE=@OLD_SQL_MODE;/' | sed 's/^INSERT INTO `DiffractionPlan`.*/SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='\''EMPTY_STRING_IS_NULL'\'';\n\0\nSET @@SQL_MODE=@OLD_SQL_MODE;/' | sed 's/^INSERT INTO `Dewar`.*/ALTER TABLE `Dewar` DISABLE KEYS;\n\0\nALTER TABLE `Dewar` ENABLE KEYS;/' >> ${OUT_DIR}/summary.sql
 done <<< "$all_sql_files"
