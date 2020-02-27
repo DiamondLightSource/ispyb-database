@@ -244,5 +244,5 @@ mysqldump ${OPTIONS} --where="phasingStatisticsId IN (SELECT ps.phasingStatistic
 all_sql_files=`cd ${OUT_DIR} && ls -tr ${DB}_*.sql && cd ~-`
 arr=()
 while read -r sql_file; do
-  grep INSERT "${OUT_DIR}/${sql_file}" | sed 's/^INSERT INTO `Position`.*/SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='\''NO_AUTO_VALUE_ON_ZERO'\'';\n\0\nSET @@SQL_MODE=@OLD_SQL_MODE;/' >> ${OUT_DIR}/summary.sql
+  grep INSERT "${OUT_DIR}/${sql_file}" | sed 's/^INSERT INTO `Position`.*/SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='\''NO_AUTO_VALUE_ON_ZERO'\'';\n\0\nSET @@SQL_MODE=@OLD_SQL_MODE;/' | sed 's/^INSERT INTO `DiffractionPlan`.*/SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='\''EMPTY_STRING_IS_NULL'\'';\n\0\nSET @@SQL_MODE=@OLD_SQL_MODE;/' >> ${OUT_DIR}/summary.sql
 done <<< "$all_sql_files"
