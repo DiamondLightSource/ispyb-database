@@ -497,6 +497,7 @@
    ``experimentType``,varchar,""
    ``storageTemperature``,float,""
    ``containerRegistryId``,int,""
+   ``scLocationUpdated``,datetime,""
    **ContainerHistory**,table,""
    ``containerHistoryId``,int,""
    ``containerId``,int,""
