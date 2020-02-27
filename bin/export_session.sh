@@ -95,9 +95,9 @@ mysqldump ${OPTIONS} --where="containerRegistryId IN (SELECT c.containerRegistry
 
 # Proposal/Session level data
 
-mysqldump ${OPTIONS} --where="(dewarId IN (SELECT d.dewarId FROM Dewar d INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID}) OR containerId IN (SELECT bls.containerId FROM BLSample bls INNER JOIN Crystal USING(crystalId) INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})) AND (sessionId IS NULL OR sessionId=${SID})" Container > ${OUT_DIR}/${DB}_Container1.sql
+mysqldump ${OPTIONS} --where="sessionId=${SID}   OR   ((dewarId IN (SELECT d.dewarId FROM Dewar d INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID})  OR  containerId IN (SELECT bls.containerId FROM BLSample bls INNER JOIN Crystal USING(crystalId) INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})) AND (sessionId IS NULL OR sessionId=${SID}))   OR   containerId IN (SELECT containerId FROM BLSample INNER JOIN EnergyScan es USING(blSampleId) WHERE es.sessionId=${SID} UNION ALL SELECT containerId FROM BLSample INNER JOIN XFEFluorescenceSpectrum xfs USING(blSampleId) WHERE xfs.sessionId=${SID})" Container > ${OUT_DIR}/${DB}_Container.sql
 
-mysqldump ${OPTIONS} --where="crystalId IN   (SELECT cr.crystalId FROM Crystal cr INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})   OR   containerId IN (SELECT c.containerId FROM Container c INNER JOIN Dewar USING(dewarID) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID} AND (c.sessionId IS NULL OR c.sessionId=${SID}))   OR   blSampleId IN (SELECT blSampleId FROM XFEFluorescenceSpectrum WHERE sessionId=${SID})   OR   blSampleId IN (SELECT blSampleId FROM EnergyScan WHERE sessionId=${SID})" BLSample > ${OUT_DIR}/${DB}_BLSample1.sql
+mysqldump ${OPTIONS} --where="crystalId IN   (SELECT cr.crystalId FROM Crystal cr INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})   OR   containerId IN (SELECT c.containerId FROM Container c INNER JOIN Dewar USING(dewarID) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID} AND (c.sessionId IS NULL OR c.sessionId=${SID}))   OR   blSampleId IN (SELECT blSampleId FROM XFEFluorescenceSpectrum WHERE sessionId=${SID} UNION ALL SELECT blSampleId FROM EnergyScan WHERE sessionId=${SID})" BLSample > ${OUT_DIR}/${DB}_BLSample1.sql
 
 mysqldump ${OPTIONS} --where="blSampleId IN (SELECT bls.blSampleId FROM BLSample bls WHERE bls.crystalId IN (SELECT cr.crystalId FROM Crystal cr INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID}) OR containerId IN (SELECT c.containerId FROM Container c INNER JOIN Dewar USING(dewarID) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID} AND (c.sessionId IS NULL OR c.sessionId=${SID})))   OR   blSubSampleId IN (SELECT blSubSampleId FROM XFEFluorescenceSpectrum WHERE sessionId=${SID})" BLSubSample > ${OUT_DIR}/${DB}_BLSubSample.sql
 
@@ -125,8 +125,6 @@ mysqldump ${OPTIONS} --where="sessionId=${SID}" EnergyScan > ${OUT_DIR}/${DB}_En
 mysqldump ${OPTIONS} --where="sessionId=${SID}" Session_has_Person > ${OUT_DIR}/${DB}_Session_has_Person.sql
 
 mysqldump ${OPTIONS} --where="containerRegistryId IN (SELECT c.containerRegistryId FROM Container c WHERE c.sessionId=${SID})" ContainerRegistry > ${OUT_DIR}/${DB}_ContainerRegistry2.sql
-
-mysqldump ${OPTIONS} --where="sessionId=${SID} AND (dewarId IS NULL OR dewarId IN (SELECT d.dewarId FROM Dewar d INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID}))" Container > ${OUT_DIR}/${DB}_Container2.sql
 
 mysqldump ${OPTIONS} --where="blsessionId=${SID}" RobotAction > ${OUT_DIR}/${DB}_RobotAction.sql
 
