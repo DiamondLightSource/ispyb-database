@@ -73,11 +73,13 @@ mysqldump ${OPTIONS} --where="screenId IN (SELECT screenId FROM Screen WHERE pro
 
 mysqldump ${OPTIONS} --where="screenComponentGroupId IN (SELECT scg.screenComponentGroupId FROM ScreenComponentGroup scg INNER JOIN Screen s USING(screenId) WHERE s.proposalId=${PID}) AND componentId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID})" ScreenComponent > ${OUT_DIR}/${DB}_ScreenComponent.sql
 
+mysqldump ${OPTIONS} --where="positionId IN (SELECT positionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID}))" Position > ${OUT_DIR}/${DB}_Position1.sql
+
 # BLSubSample.positionId
-mysqldump ${OPTIONS} --where="positionId IN (SELECT blss.positionId FROM BLSubSample blss INNER JOIN BLSample bls WHERE bls.crystalId IN (SELECT cr.crystalId FROM Crystal cr INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID}) OR bls.containerId IN (SELECT c.containerId FROM Container c INNER JOIN Dewar USING(dewarID) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID} AND (c.sessionId IS NULL OR c.sessionId=${SID})))" Position > ${OUT_DIR}/${DB}_Position1.sql
+mysqldump ${OPTIONS} --where="positionId IN (SELECT blss.positionId FROM BLSubSample blss INNER JOIN BLSample bls WHERE bls.crystalId IN (SELECT cr.crystalId FROM Crystal cr INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID}) OR bls.containerId IN (SELECT c.containerId FROM Container c INNER JOIN Dewar USING(dewarID) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID} AND (c.sessionId IS NULL OR c.sessionId=${SID})))" Position > ${OUT_DIR}/${DB}_Position2.sql
 
 # BLSubSample.position2Id
-mysqldump ${OPTIONS} --where="positionId IN (SELECT blss.position2Id FROM BLSubSample blss INNER JOIN BLSample bls WHERE bls.crystalId IN (SELECT cr.crystalId FROM Crystal cr INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID}) OR bls.containerId IN (SELECT c.containerId FROM Container c INNER JOIN Dewar USING(dewarID) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID} AND (c.sessionId IS NULL OR c.sessionId=${SID})))" Position > ${OUT_DIR}/${DB}_Position2.sql
+mysqldump ${OPTIONS} --where="positionId IN (SELECT blss.position2Id FROM BLSubSample blss INNER JOIN BLSample bls WHERE bls.crystalId IN (SELECT cr.crystalId FROM Crystal cr INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID}) OR bls.containerId IN (SELECT c.containerId FROM Container c INNER JOIN Dewar USING(dewarID) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID} AND (c.sessionId IS NULL OR c.sessionId=${SID})))" Position > ${OUT_DIR}/${DB}_Position3.sql
 
 mysqldump ${OPTIONS} --where="diffractionPlanId IN (SELECT c.diffractionPlanId FROM Crystal c INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})
 OR diffractionPlanId IN (SELECT bls.diffractionPlanId FROM BLSample bls INNER JOIN Crystal USING(crystalId) INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID}) OR diffractionPlanId IN (SELECT blss.diffractionPlanId FROM BLSubSample blss INNER JOIN BLSample USING(blSampleId) INNER JOIN Crystal c USING(crystalId) INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})" DiffractionPlan > ${OUT_DIR}/${DB}_DiffractionPlan1.sql
@@ -115,8 +117,6 @@ mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM 
 mysqldump ${OPTIONS} --where="dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})" GridInfo > ${OUT_DIR}/${DB}_GridInfo.sql
 
 mysqldump ${OPTIONS} --where="gridInfoId IN (SELECT gi.gridInfoId FROM GridInfo gi INNER JOIN DataCollectionGroup dcg USING(datacollectionGroupId) WHERE dcg.sessionId=${SID})" XrayCentringResult > ${OUT_DIR}/${DB}_XrayCentringResult.sql
-
-mysqldump ${OPTIONS} --where="positionId IN (SELECT positionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID}))" Position > ${OUT_DIR}/${DB}_Position3.sql
 
 mysqldump ${OPTIONS} --where="sessionId=${SID}" XFEFluorescenceSpectrum > ${OUT_DIR}/${DB}_XFEFluorescenceSpectrum.sql
 
@@ -236,10 +236,13 @@ mysqldump ${OPTIONS} --where="phasingAnalysisId IN (SELECT phs.phasingAnalysisId
 mysqldump ${OPTIONS} --where="phasingStatisticsId IN (SELECT ps.phasingStatisticsId FROM PhasingStatistics ps INNER JOIN Phasing_has_Scaling phs ON ps.phasingHasScalingId1=phs.phasingHasScalingId OR ps.phasingHasScalingId2=phs.phasingHasScalingId INNER JOIN  AutoProcScaling_has_Int USING(autoProcScalingId) INNER JOIN AutoProcIntegration USING(autoProcIntegrationId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" PhasingStatistics > ${OUT_DIR}/${DB}_PhasingStatistics.sql
 
 
-# Combine INSERT statements in the .sql files in the (hopefully) correct order:
+# Combine INSERT statements in the .sql files in the (hopefully) correct order.
+# If it's an insert into the Position table, then use non-strict sql_mode.
+# This is because the Position table contains generated columns, and inserting
+# into those would result in an error.
 
 all_sql_files=`cd ${OUT_DIR} && ls -tr ${DB}_*.sql && cd ~-`
 arr=()
 while read -r sql_file; do
-  grep INSERT "${OUT_DIR}/${sql_file}" >> ${OUT_DIR}/summary.sql
+  grep INSERT "${OUT_DIR}/${sql_file}" | sed 's/^INSERT INTO `Position`.*/SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='\''NO_AUTO_VALUE_ON_ZERO'\'';\n\0\nSET @@SQL_MODE=@OLD_SQL_MODE;/' >> ${OUT_DIR}/summary.sql
 done <<< "$all_sql_files"
