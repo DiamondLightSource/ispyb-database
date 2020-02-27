@@ -1297,6 +1297,7 @@ CREATE TABLE `Container` (
   `experimentType` varchar(20) DEFAULT NULL,
   `storageTemperature` float DEFAULT NULL,
   `containerRegistryId` int(11) unsigned DEFAULT NULL,
+  `scLocationUpdated` datetime DEFAULT NULL,
   PRIMARY KEY (`containerId`),
   UNIQUE KEY `Container_UNIndex1` (`barcode`),
   KEY `Container_FKIndex` (`beamlineLocation`),
@@ -5743,4 +5744,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-21 15:40:02
+-- Dump completed on 2020-02-27 13:44:22
