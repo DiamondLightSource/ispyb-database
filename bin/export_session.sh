@@ -69,9 +69,9 @@ mysqldump ${OPTIONS} --where="pdbId IN (SELECT pdbId FROM PDB INNER JOIN Protein
 
 mysqldump ${OPTIONS} --where="proteinId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID})" Protein_has_PDB > ${OUT_DIR}/${DB}_Protein_has_PDB.sql
 
-mysqldump ${OPTIONS} --where="screenId IN (SELECT screenId FROM Screen WHERE proposalId=${PID})" ScreenComponentGroup > ${OUT_DIR}/${DB}_ScreenComponentGroup.sql
+mysqldump ${OPTIONS} --where="screenId IN (SELECT s.screenId FROM Screen s WHERE s.proposalId=${PID} OR s.global>0)" ScreenComponentGroup > ${OUT_DIR}/${DB}_ScreenComponentGroup.sql
 
-mysqldump ${OPTIONS} --where="screenComponentGroupId IN (SELECT scg.screenComponentGroupId FROM ScreenComponentGroup scg INNER JOIN Screen s USING(screenId) WHERE s.proposalId=${PID}) AND componentId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID})" ScreenComponent > ${OUT_DIR}/${DB}_ScreenComponent.sql
+mysqldump ${OPTIONS} --where="screenComponentGroupId IN (SELECT scg.screenComponentGroupId FROM ScreenComponentGroup scg INNER JOIN Screen s USING(screenId) WHERE s.proposalId=${PID} OR s.global>0) AND componentId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID})" ScreenComponent > ${OUT_DIR}/${DB}_ScreenComponent.sql
 
 mysqldump ${OPTIONS} --where="positionId IN (SELECT positionId FROM DataCollection WHERE dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID}))" Position > ${OUT_DIR}/${DB}_Position1.sql
 
@@ -109,6 +109,8 @@ mysqldump ${OPTIONS} --where="sessionId=${SID}" SessionType > ${OUT_DIR}/${DB}_S
 mysqldump ${OPTIONS} --where="sessionId=${SID}" DataCollectionGroup > ${OUT_DIR}/${DB}_DataCollectionGroup.sql
 
 mysqldump ${OPTIONS} --where="sessionId=${SID}" ShippingHasSession > ${OUT_DIR}/${DB}_ShippingHasSession.sql
+
+mysqldump ${OPTIONS} --where="apertureId IN (SELECT dc.apertureId FROM DataCollection dc INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" Aperture > ${OUT_DIR}/${DB}_Aperture.sql
 
 mysqldump ${OPTIONS} --where="dataCollectionGroupId IN (SELECT dataCollectionGroupId FROM DataCollectionGroup WHERE sessionId=${SID})" DataCollection > ${OUT_DIR}/${DB}_DataCollection.sql
 
