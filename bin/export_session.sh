@@ -59,7 +59,7 @@ mysqldump ${OPTIONS} --where="componentId IN (SELECT proteinId FROM Protein WHER
 
 mysqldump ${OPTIONS} --where="componentId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID})" Component_has_SubType > ${OUT_DIR}/${DB}_Component_has_SubType.sql
 
-mysqldump ${OPTIONS} --where="proposalId=${PID}" Screen > ${OUT_DIR}/${DB}_Screen.sql
+mysqldump ${OPTIONS} --where="proposalId=${PID} OR \`global\`>0" Screen > ${OUT_DIR}/${DB}_Screen.sql
 
 mysqldump ${OPTIONS} --where="proteinId IN (SELECT proteinId FROM Protein WHERE proposalId=${PID})" Crystal > ${OUT_DIR}/${DB}_Crystal.sql
 
