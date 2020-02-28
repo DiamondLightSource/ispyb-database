@@ -48,7 +48,7 @@ mysqldump ${OPTIONS} ScanParametersModel > ${PROPOSAL_DIR}/ScanParametersModel.s
 
 # Proposal level data
 
-mysqldump ${OPTIONS} --where="laboratoryId=${LABID}   OR   laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN LabContact lc USING(personId) WHERE lc.proposalId=${PID})   OR   laboratoryId IN (SELECT laboratoryId FROM Person p INNER JOIN Session_has_Person shp USING(personId) WHERE shp.sessionId=${SID})   OR   laboratoryId IN (SELECT laboratoryId FROM Person p INNER JOIN ProposalHasPerson php WHERE php.proposalId=${PID})   OR   laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN Container c ON c.ownerId=p.personId WHERE c.sessionId=${SID})   OR   laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN Container c ON c.ownerId=p.personId INNER JOIN Dewar d USING(dewarId) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID})   OR   laboratoryId IN (SELECT pe.laboratoryId FROM Person pe INNER JOIN Container c ON c.ownerId=pe.personId INNER JOIN BLSample bls USING(containerId) INNER JOIN Crystal USING(crystalId) INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})" Laboratory > ${PROPOSAL_DIR}/$Laboratory.sql
+mysqldump ${OPTIONS} --where="laboratoryId=${LABID}   OR   laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN LabContact lc USING(personId) WHERE lc.proposalId=${PID})   OR   laboratoryId IN (SELECT laboratoryId FROM Person p INNER JOIN Session_has_Person shp USING(personId) WHERE shp.sessionId=${SID})   OR   laboratoryId IN (SELECT laboratoryId FROM Person p INNER JOIN ProposalHasPerson php WHERE php.proposalId=${PID})   OR   laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN Container c ON c.ownerId=p.personId WHERE c.sessionId=${SID})   OR   laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN Container c ON c.ownerId=p.personId INNER JOIN Dewar d USING(dewarId) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID})   OR   laboratoryId IN (SELECT pe.laboratoryId FROM Person pe INNER JOIN Container c ON c.ownerId=pe.personId INNER JOIN BLSample bls USING(containerId) INNER JOIN Crystal USING(crystalId) INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})" Laboratory > ${PROPOSAL_DIR}/Laboratory.sql
 
 mysqldump ${OPTIONS} --where="personId=${PERSID}   OR   personId IN (SELECT personId FROM LabContact WHERE proposalId=${PID})   OR   personId IN (SELECT personId FROM Session_has_Person WHERE sessionId=${SID})   OR   personId IN (SELECT personId FROM ProposalHasPerson WHERE proposalId=${PID})   OR   personId IN (SELECT ownerId FROM Container WHERE sessionId=${SID})   OR   personId IN (SELECT c.ownerId FROM Container c INNER JOIN Dewar d USING(dewarId) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID})   OR   personId IN (SELECT c.ownerId FROM Container c INNER JOIN BLSample bls USING(containerId) INNER JOIN Crystal USING(crystalId) INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})" Person > ${PROPOSAL_DIR}/Person.sql
 
@@ -259,11 +259,11 @@ done <<< "$all_sql_files"
 # Tidy up the import above:
 # Set FK vals to NULL when they reference non-existing rows:
 
-echo "UPDATE Screen SET proposalId = NULL WHERE proposalId NOT IN (SELECT proposalId FROM Proposal);" >> ${PROPOSAL_FILE}
+echo "UPDATE Screen SET proposalId = NULL WHERE proposalId NOT IN (SELECT proposalId FROM Proposal);" >> ${OUT_DIR}/${PROPOSAL_FILE}
 
-echo "UPDATE Dewar SET firstExperimentId = NULL WHERE firstExperimentId NOT IN (SELECT sessionId FROM BLSession);" >> ${PROPOSAL_FILE}
+echo "UPDATE Dewar SET firstExperimentId = NULL WHERE firstExperimentId NOT IN (SELECT sessionId FROM BLSession);" >> ${OUT_DIR}/${PROPOSAL_FILE}
 
-echo "UPDATE Container SET sessionId = NULL WHERE sessionId NOT IN (SELECT sessionId FROM BLSession);" >> ${PROPOSAL_FILE}
+echo "UPDATE Container SET sessionId = NULL WHERE sessionId NOT IN (SELECT sessionId FROM BLSession);" >> ${OUT_DIR}/${PROPOSAL_FILE}
 
 # Combine INSERT statements in the SESSION_DIR .sql files in the correct order.
 
