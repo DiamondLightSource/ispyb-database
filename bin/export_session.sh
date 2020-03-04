@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # Usage:
-# export_session <db_name> <proposalCode><proposalNumber> <session number> <output dir>
+# export_session.sh <.cnf file> <db_name> <proposalCode><proposalNumber> <session number> <output dir>
 # Usage example:
-# export_proposal.sh ispyb cm14451 2 /tmp/cm14451
+# export_session.sh ~/.my.cnf ispyb cm14451 2 /tmp/cm14451-2
 # Author: Karl Levik
 # Date: 2020-02-14
 
