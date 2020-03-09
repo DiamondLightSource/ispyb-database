@@ -3639,66 +3639,6 @@ CREATE TABLE `Protein_has_PDB` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `Reprocessing`
---
-
-DROP TABLE IF EXISTS `Reprocessing`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Reprocessing` (
-  `reprocessingId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `dataCollectionId` int(11) unsigned DEFAULT NULL,
-  `displayName` varchar(80) DEFAULT NULL COMMENT 'xia2, fast_dp, dimple, etc',
-  `comments` varchar(255) DEFAULT NULL COMMENT 'For users to annotate the job and see the motivation for the job',
-  `recordTimestamp` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'When job was submitted',
-  `recipe` varchar(50) DEFAULT NULL COMMENT 'What we want to run (xia, dimple, etc) ',
-  `automatic` tinyint(1) DEFAULT NULL COMMENT 'Whether this processing was triggered automatically or not',
-  PRIMARY KEY (`reprocessingId`),
-  KEY `_Reprocessing_ibfk1` (`dataCollectionId`),
-  CONSTRAINT `_Reprocessing_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='From this we get both job times and lag times';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `ReprocessingImageSweep`
---
-
-DROP TABLE IF EXISTS `ReprocessingImageSweep`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ReprocessingImageSweep` (
-  `reprocessingImageSweepId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `reprocessingId` int(11) unsigned DEFAULT NULL,
-  `dataCollectionId` int(11) unsigned DEFAULT NULL,
-  `startImage` mediumint(8) unsigned DEFAULT NULL,
-  `endImage` mediumint(8) unsigned DEFAULT NULL,
-  PRIMARY KEY (`reprocessingImageSweepId`),
-  KEY `ReprocessingImageSweep_ibfk1` (`reprocessingId`),
-  KEY `_ReprocessingImageSweep_ibfk2` (`dataCollectionId`),
-  CONSTRAINT `ReprocessingImageSweep_ibfk1` FOREIGN KEY (`reprocessingId`) REFERENCES `Reprocessing` (`reprocessingId`),
-  CONSTRAINT `_ReprocessingImageSweep_ibfk2` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='This allows multiple sweeps per reprocessing for multi-xia2';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `ReprocessingParameter`
---
-
-DROP TABLE IF EXISTS `ReprocessingParameter`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ReprocessingParameter` (
-  `reprocessingParameterId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `reprocessingId` int(11) unsigned DEFAULT NULL,
-  `parameterKey` varchar(80) DEFAULT NULL COMMENT 'E.g. resolution, spacegroup, pipeline',
-  `parameterValue` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`reprocessingParameterId`),
-  KEY `ReprocessingParameter_ibfk1` (`reprocessingId`),
-  CONSTRAINT `ReprocessingParameter_ibfk1` FOREIGN KEY (`reprocessingId`) REFERENCES `Reprocessing` (`reprocessingId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `RobotAction`
 --
 
@@ -5744,4 +5684,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-27 13:44:22
+-- Dump completed on 2020-03-09 11:05:28

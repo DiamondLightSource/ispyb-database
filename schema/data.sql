@@ -1024,27 +1024,6 @@ INSERT INTO `Protein_has_PDB` (`proteinhaspdbid`, `proteinid`, `pdbid`) VALUES (
 /*!40000 ALTER TABLE `Protein_has_PDB` ENABLE KEYS */;
 
 --
--- Dumping data for table `Reprocessing`
---
-
-/*!40000 ALTER TABLE `Reprocessing` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Reprocessing` ENABLE KEYS */;
-
---
--- Dumping data for table `ReprocessingImageSweep`
---
-
-/*!40000 ALTER TABLE `ReprocessingImageSweep` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ReprocessingImageSweep` ENABLE KEYS */;
-
---
--- Dumping data for table `ReprocessingParameter`
---
-
-/*!40000 ALTER TABLE `ReprocessingParameter` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ReprocessingParameter` ENABLE KEYS */;
-
---
 -- Dumping data for table `RobotAction`
 --
 
@@ -1405,4 +1384,4 @@ INSERT INTO `v_run` (`runId`, `run`, `startDate`, `endDate`) VALUES (1,'2008-01'
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-27 13:44:22
+-- Dump completed on 2020-03-09 11:05:28
