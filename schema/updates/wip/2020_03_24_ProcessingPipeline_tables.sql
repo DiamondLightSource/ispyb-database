@@ -24,7 +24,7 @@ ALTER TABLE Container
   ADD CONSTRAINT Container_ibfk9 FOREIGN KEY(priorityPipeline) REFERENCES ProcessingPipeline(processingPipelineId);
 
 INSERT INTO ProcessingPipelineCategory (processingPipelineCategoryId, name)
-  VALUES (1, 'screening'), (2, 'processing'), (3, 'post processing'), (4, 'zocalo');
+  VALUES (1, 'screening'), (2, 'processing'), (3, 'post processing');
 
 INSERT INTO ProcessingPipeline (processingPipelineId, name, discipline, processingPipelineCategoryId, pipelineStatus, reprocessing)
   VALUES
