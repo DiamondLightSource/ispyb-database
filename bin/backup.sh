@@ -38,6 +38,8 @@ Permission
 BLSampleImageAutoScoreSchema
 BLSampleImageAutoScoreClass
 SpaceGroup
+ProcessingPipeline
+ProcessingPipelineCategory
 )
 
 LOOKUP_TABLES_STRING=''

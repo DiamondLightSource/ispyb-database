@@ -40,7 +40,7 @@ OPTIONS="--defaults-file=${MYCNF} --add-drop-table --create-options --disable-ke
 
 # Global level data
 
-mysqldump ${OPTIONS} Detector Imager ComponentType ComponentSubType InspectionType ConcentrationType SpaceGroup v_run UserGroup Permission UserGroup_has_Permission Schedule ScheduleComponent ScanParametersService | grep 'INSERT INTO' > ${OUT_DIR}/${GLOBALS_FILE}
+mysqldump ${OPTIONS} Detector Imager ComponentType ComponentSubType InspectionType ConcentrationType SpaceGroup v_run UserGroup Permission UserGroup_has_Permission Schedule ScheduleComponent ScanParametersService ProcessingPipeline ProcessingPipelineCategory | grep 'INSERT INTO' > ${OUT_DIR}/${GLOBALS_FILE}
 
 mysqldump ${OPTIONS} --where="diffractionPlanId IN (SELECT dataCollectionPlanId FROM ScanParametersModel)" DiffractionPlan > ${PROPOSAL_DIR}/DiffractionPlan0.sql
 
