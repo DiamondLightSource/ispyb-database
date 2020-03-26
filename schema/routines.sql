@@ -1958,6 +1958,93 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_container_for_sample_id` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_container_for_sample_id`(p_id int unsigned, p_authLogin varchar(45))
+    READS SQL DATA
+    COMMENT 'Returns a single-row result-set with the container and its processing pipeline info for the given ID'
+BEGIN
+    IF p_id IS NOT NULL THEN
+
+      IF p_authLogin IS NOT NULL THEN
+      
+      
+
+        SELECT c.dewarId, c.code, c.containerType, c.capacity,
+          c.sampleChangerLocation, c.containerStatus, c.bltimeStamp
+          "blTimeStamp", c.beamlineLocation, c.screenId, c.scheduleId,
+          c.barcode, c.imagerId, c.sessionId, c.ownerId, c.requestedImagerId,
+          c.requestedReturn, c.comments, c.experimentType,
+          c.storageTemperature, c.containerRegistryId,
+          cr.barcode "containerRegistryBarcode", cr.comments
+          "containerRegistryComments", cr.recordTimestamp
+          "containerRegistryRecordTimestamp",
+          o.familyName "ownerFamilyName", o.givenName "ownerGivenName",
+          o.emailAddress "ownerEmailAddress",
+          pp.name "processingPipelineName", pp.discipline
+          "processingPipelineDiscipline", pp.pipelineStatus
+          "processingPipelinePipelineStatus", pp.reprocessing
+          "processingPipelineReprocessing",
+          ppc.name "processingPipelineCategoryName"
+        FROM BLSample bls
+          INNER JOIN Container c USING (containerId)
+          LEFT OUTER JOIN Person o ON o.personId = c.ownerId
+          LEFT OUTER JOIN ContainerRegistry cr USING(containerRegistryId)
+          LEFT OUTER JOIN ProcessingPipeline pp
+            ON pp.processingPipelineId = c.priorityPipelineId
+          LEFT OUTER JOIN ProcessingPipelineCategory ppc
+            USING(processingPipelineCategoryId)
+        WHERE bls.blSampleId = p_id
+          AND p.login = p_authLogin;
+
+      ELSE
+
+        SELECT c.dewarId, c.code, c.containerType, c.capacity,
+          c.sampleChangerLocation, c.containerStatus, c.bltimeStamp
+          "blTimeStamp", c.beamlineLocation, c.screenId, c.scheduleId,
+          c.barcode, c.imagerId, c.sessionId, c.ownerId, c.requestedImagerId,
+          c.requestedReturn, c.comments, c.experimentType,
+          c.storageTemperature, c.containerRegistryId,
+          cr.barcode "containerRegistryBarcode", cr.comments
+          "containerRegistryComments", cr.recordTimestamp
+          "containerRegistryRecordTimestamp",
+          o.familyName "ownerFamilyName", o.givenName "ownerGivenName",
+          o.emailAddress "ownerEmailAddress",
+          pp.name "processingPipelineName", pp.discipline
+          "processingPipelineDiscipline", pp.pipelineStatus
+          "processingPipelinePipelineStatus", pp.reprocessing
+          "processingPipelineReprocessing",
+          ppc.name "processingPipelineCategoryName"
+        FROM BLSample bls
+          INNER JOIN Container c USING (containerId)
+          LEFT OUTER JOIN Person o ON o.personId = c.ownerId
+          LEFT OUTER JOIN ContainerRegistry cr USING(containerRegistryId)
+          LEFT OUTER JOIN ProcessingPipeline pp
+            ON pp.processingPipelineId = c.priorityPipelineId
+          LEFT OUTER JOIN ProcessingPipelineCategory ppc
+            USING(processingPipelineCategoryId)
+        WHERE bls.blSampleId = p_id;
+
+    	END IF;
+
+    ELSE
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
+        MESSAGE_TEXT='Mandatory arguments p_id can not be NULL';
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `retrieve_container_info` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -4094,18 +4181,37 @@ CREATE PROCEDURE `retrieve_sessions_for_beamline_and_run`(
   IN p_run varchar(7)
 )
     READS SQL DATA
-    COMMENT 'Returns a multi-row result-set with the sessions (mx12345-123), their start and end dates for beamline p_beamline and run p_run'
+    COMMENT 'Returns a multi-row result-set with the sessions (mx12345-123), their start and end dates for beamline p_beamline and run p_run. If called with NULL for p_run, then use the current run.'
 BEGIN
-  SELECT
-      bs.sessionId "sessionId",
-      concat(p.proposalCode, p.proposalNumber, '-', bs.visit_number) "session",
-      bs.startDate "startDate",
-      bs.endDate "endDate"
-  FROM Proposal p
-      INNER JOIN BLSession bs on p.proposalId = bs.proposalId
-      INNER JOIN v_run vr ON bs.startDate BETWEEN vr.startDate AND vr.endDate
-	WHERE bs.beamlinename = p_beamline AND vr.run = p_run
-  ORDER BY bs.startDate, bs.sessionId;
+  IF p_run IS NULL THEN
+
+    SELECT
+        bs.sessionId "sessionId",
+        concat(p.proposalCode, p.proposalNumber, '-', bs.visit_number) "session",
+        bs.startDate "startDate",
+        bs.endDate "endDate"
+    FROM Proposal p
+        INNER JOIN BLSession bs on p.proposalId = bs.proposalId
+        INNER JOIN v_run vr ON bs.startDate BETWEEN vr.startDate AND vr.endDate
+	  WHERE bs.beamlinename = p_beamline
+        AND bs.visit_number <> 0
+        AND now() BETWEEN vr.startDate AND vr.endDate
+    ORDER BY bs.startDate, bs.sessionId;
+
+  ELSE
+    SELECT
+        bs.sessionId "sessionId",
+        concat(p.proposalCode, p.proposalNumber, '-', bs.visit_number) "session",
+        bs.startDate "startDate",
+        bs.endDate "endDate"
+    FROM Proposal p
+        INNER JOIN BLSession bs on p.proposalId = bs.proposalId
+        INNER JOIN v_run vr ON bs.startDate BETWEEN vr.startDate AND vr.endDate
+  	WHERE bs.beamlinename = p_beamline
+        AND bs.visit_number <> 0
+        AND vr.run = p_run
+    ORDER BY bs.startDate, bs.sessionId;
+  END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -7848,7 +7954,7 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-27 15:24:03
+-- Dump completed on 2020-03-26 16:34:35
 -- MariaDB dump 10.17  Distrib 10.4.12-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
@@ -7894,4 +8000,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-27 15:24:03
+-- Dump completed on 2020-03-26 16:34:35
