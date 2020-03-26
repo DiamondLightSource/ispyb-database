@@ -1298,6 +1298,7 @@ CREATE TABLE `Container` (
   `storageTemperature` float DEFAULT NULL,
   `containerRegistryId` int(11) unsigned DEFAULT NULL,
   `scLocationUpdated` datetime DEFAULT NULL,
+  `priorityPipelineId` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`containerId`),
   UNIQUE KEY `Container_UNIndex1` (`barcode`),
   KEY `Container_FKIndex` (`beamlineLocation`),
@@ -1310,6 +1311,7 @@ CREATE TABLE `Container` (
   KEY `Container_ibfk7` (`requestedImagerId`),
   KEY `Container_ibfk8` (`containerRegistryId`),
   KEY `Container_ibfk6` (`sessionId`),
+  KEY `Container_ibfk9` (`priorityPipelineId`),
   CONSTRAINT `Container_ibfk2` FOREIGN KEY (`screenId`) REFERENCES `Screen` (`screenId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Container_ibfk3` FOREIGN KEY (`scheduleId`) REFERENCES `Schedule` (`scheduleId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Container_ibfk4` FOREIGN KEY (`imagerId`) REFERENCES `Imager` (`imagerId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -1317,6 +1319,7 @@ CREATE TABLE `Container` (
   CONSTRAINT `Container_ibfk6` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `Container_ibfk7` FOREIGN KEY (`requestedImagerId`) REFERENCES `Imager` (`imagerId`),
   CONSTRAINT `Container_ibfk8` FOREIGN KEY (`containerRegistryId`) REFERENCES `ContainerRegistry` (`containerRegistryId`),
+  CONSTRAINT `Container_ibfk9` FOREIGN KEY (`priorityPipelineId`) REFERENCES `ProcessingPipeline` (`processingPipelineId`),
   CONSTRAINT `Container_ibfk_1` FOREIGN KEY (`dewarId`) REFERENCES `Dewar` (`dewarId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -3363,6 +3366,40 @@ CREATE TABLE `ProcessingJobParameter` (
   KEY `ProcessingJobParameter_ibfk1` (`processingJobId`),
   CONSTRAINT `ProcessingJobParameter_ibfk1` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ProcessingPipeline`
+--
+
+DROP TABLE IF EXISTS `ProcessingPipeline`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ProcessingPipeline` (
+  `processingPipelineId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `processingPipelineCategoryId` int(11) unsigned DEFAULT NULL,
+  `name` varchar(20) NOT NULL,
+  `discipline` varchar(10) NOT NULL,
+  `pipelineStatus` enum('automatic','optional','deprecated') DEFAULT NULL COMMENT 'Is the pipeline in operation or available',
+  `reprocessing` tinyint(1) DEFAULT 1 COMMENT 'Pipeline is available for re-processing',
+  PRIMARY KEY (`processingPipelineId`),
+  KEY `ProcessingPipeline_fk1` (`processingPipelineCategoryId`),
+  CONSTRAINT `ProcessingPipeline_fk1` FOREIGN KEY (`processingPipelineCategoryId`) REFERENCES `ProcessingPipelineCategory` (`processingPipelineCategoryId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A lookup table for different processing pipelines and their categories';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ProcessingPipelineCategory`
+--
+
+DROP TABLE IF EXISTS `ProcessingPipelineCategory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ProcessingPipelineCategory` (
+  `processingPipelineCategoryId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  PRIMARY KEY (`processingPipelineCategoryId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A lookup table for the category of processing pipeline';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5684,4 +5721,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-09 11:05:28
+-- Dump completed on 2020-03-26 16:37:58
