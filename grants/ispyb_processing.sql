@@ -122,3 +122,5 @@ GRANT EXECUTE ON PROCEDURE update_dc_position TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE upsert_ctf TO 'ispyb_processing';
 
 GRANT EXECUTE ON PROCEDURE upsert_sample_image_auto_score TO 'ispyb_processing';
+
+GRANT EXECUTE ON PROCEDURE retrieve_container_for_sample_id TO 'ispyb_processing';
