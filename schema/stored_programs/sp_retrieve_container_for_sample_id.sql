@@ -7,9 +7,10 @@ BEGIN
 
       IF p_authLogin IS NOT NULL THEN
       -- Authorise only if the person (p_authLogin) is a member of a session on
-      -- the proposal.
+      -- the proposal that the sample belongs to.
 
-        SELECT c.dewarId, c.code, c.containerType, c.capacity,
+        SELECT DISTINCT
+          c.containerId, c.dewarId, c.code, c.containerType, c.capacity,
           c.sampleChangerLocation, c.containerStatus, c.bltimeStamp
           "blTimeStamp", c.beamlineLocation, c.screenId, c.scheduleId,
           c.barcode, c.imagerId, c.sessionId, c.ownerId, c.requestedImagerId,
@@ -27,6 +28,11 @@ BEGIN
           ppc.name "processingPipelineCategoryName"
         FROM BLSample bls
           INNER JOIN Container c USING (containerId)
+          INNER JOIN Dewar USING(dewarId)
+          INNER JOIN Shipping s USING(shippingId)
+          INNER JOIN BLSession bs ON bs.proposalId = s.proposalId
+          INNER JOIN Session_has_Person shp ON shp.sessionId = bs.sessionId
+          INNER JOIN Person p ON p.personId = shp.personId
           LEFT OUTER JOIN Person o ON o.personId = c.ownerId
           LEFT OUTER JOIN ContainerRegistry cr USING(containerRegistryId)
           LEFT OUTER JOIN ProcessingPipeline pp
@@ -38,7 +44,8 @@ BEGIN
 
       ELSE
 
-        SELECT c.dewarId, c.code, c.containerType, c.capacity,
+        SELECT
+          c.containerId, c.dewarId, c.code, c.containerType, c.capacity,
           c.sampleChangerLocation, c.containerStatus, c.bltimeStamp
           "blTimeStamp", c.beamlineLocation, c.screenId, c.scheduleId,
           c.barcode, c.imagerId, c.sessionId, c.ownerId, c.requestedImagerId,

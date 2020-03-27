@@ -1978,7 +1978,8 @@ BEGIN
       
       
 
-        SELECT c.dewarId, c.code, c.containerType, c.capacity,
+        SELECT DISTINCT
+          c.containerId, c.dewarId, c.code, c.containerType, c.capacity,
           c.sampleChangerLocation, c.containerStatus, c.bltimeStamp
           "blTimeStamp", c.beamlineLocation, c.screenId, c.scheduleId,
           c.barcode, c.imagerId, c.sessionId, c.ownerId, c.requestedImagerId,
@@ -1996,6 +1997,11 @@ BEGIN
           ppc.name "processingPipelineCategoryName"
         FROM BLSample bls
           INNER JOIN Container c USING (containerId)
+          INNER JOIN Dewar USING(dewarId)
+          INNER JOIN Shipping s USING(shippingId)
+          INNER JOIN BLSession bs ON bs.proposalId = s.proposalId
+          INNER JOIN Session_has_Person shp ON shp.sessionId = bs.sessionId
+          INNER JOIN Person p ON p.personId = shp.personId
           LEFT OUTER JOIN Person o ON o.personId = c.ownerId
           LEFT OUTER JOIN ContainerRegistry cr USING(containerRegistryId)
           LEFT OUTER JOIN ProcessingPipeline pp
@@ -2007,7 +2013,7 @@ BEGIN
 
       ELSE
 
-        SELECT c.dewarId, c.code, c.containerType, c.capacity,
+        SELECT c.containerId, c.dewarId, c.code, c.containerType, c.capacity,
           c.sampleChangerLocation, c.containerStatus, c.bltimeStamp
           "blTimeStamp", c.beamlineLocation, c.screenId, c.scheduleId,
           c.barcode, c.imagerId, c.sessionId, c.ownerId, c.requestedImagerId,
@@ -7954,7 +7960,7 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-26 16:34:35
+-- Dump completed on 2020-03-27 15:04:17
 -- MariaDB dump 10.17  Distrib 10.4.12-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
@@ -8000,4 +8006,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-26 16:34:35
+-- Dump completed on 2020-03-27 15:04:17
