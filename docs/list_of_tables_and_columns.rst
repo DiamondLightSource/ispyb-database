@@ -1476,6 +1476,7 @@
    ``proposalId``,int,""
    ``name``,varchar,""
    ``acronym``,varchar,""
+   ``safetyLevel``,enum,""
    ``molecularMass``,double,""
    ``proteinType``,varchar,""
    ``personId``,int,""

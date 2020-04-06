@@ -3630,6 +3630,7 @@ CREATE TABLE `Protein` (
   `proposalId` int(10) unsigned NOT NULL DEFAULT 0,
   `name` varchar(255) DEFAULT NULL,
   `acronym` varchar(45) DEFAULT NULL,
+  `safetyLevel` enum('GREEN','YELLOW','RED') DEFAULT NULL,
   `molecularMass` double DEFAULT NULL,
   `proteinType` varchar(45) DEFAULT NULL,
   `personId` int(10) unsigned DEFAULT NULL,
@@ -5721,4 +5722,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-26 16:37:58
+-- Dump completed on 2020-04-06 14:44:01
