@@ -1,10 +1,13 @@
 #!/bin/sh
 
 # This script removes Personally Identifiable Information (PII) for a particular person.
+#
 # Usage:
-# pii_forget_person.sh <.cnf file> <db_name> <personId>
+# ./forget_person.sh <.cnf file> <db_name> <personId>
+#
 # Usage example:
-# pii_forget_person.sh ~/.my.cnf ispyb 21414
+# ./forget_person.sh ~/.my.cnf ispyb 21414
+#
 # Author: Karl Levik
 # Date: 2020-03-04
 

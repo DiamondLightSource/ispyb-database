@@ -2,9 +2,12 @@
 
 # This script removes details about a particular laboratory.
 # Usage:
-# pii_forget_lab.sh <.cnf file> <db_name> <laboratoryId>
+#
+# ./forget_lab.sh <.cnf file> <db_name> <laboratoryId>
 # Usage example:
-# pii_forget_lab.sh ~/.my.cnf ispyb 21414
+#
+# ./forget_lab.sh ~/.my.cnf ispyb 21414
+#
 # Author: Karl Levik
 # Date: 2020-03-12
 

@@ -5,10 +5,11 @@
 # and session.
 #
 # Usage:
-# pii_forget_all_persons.sh <.cnf file> <db_name> <proposalCode><proposalNumber> <session number>
+# forget_all_persons.sh <.cnf file> <db_name> <proposalCode><proposalNumber> <session number>
 #
 # Usage example:
-# ./pii_forget_all_persons.sh ~/.my.cnf ispyb cm12345 2
+# ./forget_all_persons.sh ~/.my.cnf ispyb cm12345 2
+#
 # Author: Karl Levik
 # Date: 2020-03-09
 
@@ -29,5 +30,5 @@ PERSIDS=`mysql --defaults-file=${MYCNF} -D ${DB} --skip-column-names --silent --
 # iterate over and forget:
 
 while read -r PERSID; do
-  `./pii_forget_person.sh ${MYCNF} ${DB} ${PERSID}`
+  `./forget_person.sh ${MYCNF} ${DB} ${PERSID}`
 done <<< "${PERSIDS}"
