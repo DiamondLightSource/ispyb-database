@@ -85,9 +85,9 @@ FROM (
   FROM BLSample bls
     JOIN Crystal USING(crystalId)
     JOIN Protein p USING(proteinId)
-    LEFT JOIN DataCollectionGroup dcg USING(blSampleId)
-    LEFT JOIN EnergyScan es USING(blSampleId)
-    LEFT JOIN XFEFluorescenceSpectrum xfefs USING(blSampleId)
+    LEFT JOIN DataCollectionGroup dcg ON dcg.blSampleId=bls.blSampleId AND dcg.sessionId=${SID}
+    LEFT JOIN EnergyScan es ON es.blSampleId=bls.blSampleId AND es.sessionId=${SID}
+    LEFT JOIN XFEFluorescenceSpectrum xfefs ON xfefs.blSampleId=bls.blSampleId AND xfefs.sessionId=${SID}
   WHERE p.proposalId=${PID}
   GROUP BY bls.blSampleId) q1
 WHERE q1.cnt1=0 AND q1.cnt2=0 AND q1.cnt3=0"
@@ -104,14 +104,15 @@ done <<< "${BLSAMPLEIDS}"
 
 BLSUBSAMPLE_UNUSED_SELECT="SELECT q2.blSubSampleId
 FROM (
-  SELECT blss.blSubSampleId, count(dc.blSubSampleId) cnt1, count(es.blSubSampleId) cnt2, count(xfefs.blSubSampleId) cnt3
+  SELECT blss.blSubSampleId, count(dcg.dataCollectionGroupId) cnt1, count(es.blSubSampleId) cnt2, count(xfefs.blSubSampleId) cnt3
   FROM BLSubSample blss
   JOIN BLSample USING(blSampleId)
   JOIN Crystal USING(crystalId)
   JOIN Protein p USING(proteinId)
   LEFT JOIN DataCollection dc ON dc.blSubSampleId=blss.blSubSampleId
-  LEFT JOIN EnergyScan es ON es.blSubSampleId=blss.blSubSampleId
-  LEFT JOIN XFEFluorescenceSpectrum xfefs ON xfefs.blSubSampleId=blss.blSubSampleId
+  LEFT JOIN DataCollectionGroup dcg ON dcg.dataCollectionGroupId=dc.dataCollectionGroupId AND dcg.sessionId=${SID}
+  LEFT JOIN EnergyScan es ON es.blSubSampleId=blss.blSubSampleId AND es.sessionId=${SID}
+  LEFT JOIN XFEFluorescenceSpectrum xfefs ON xfefs.blSubSampleId=blss.blSubSampleId AND xfefs.sessionId=${SID}
   WHERE p.proposalId=${PID}
   GROUP BY blss.blSubSampleId) q2
 WHERE q2.cnt1=0 AND q2.cnt2=0 AND q2.cnt3=0"
@@ -143,3 +144,38 @@ FROM Protein p
 while read -r PROTEINID; do
   `./forget_protein.sh ${MYCNF} ${DB} ${PROTEINID}`
 done <<< "${PROTEINIDS}"
+
+# Query to find all unused PDBs on the proposal
+
+PDBIDS=`mysql --defaults-file=${MYCNF} -D ${DB} --skip-column-names --silent --raw -e "SELECT phpdb.pdbId
+FROM Protein_has_PDB phpdb
+  JOIN Protein p USING(proteinId)
+  WHERE p.proposalId=${PID}
+  EXCEPT
+  SELECT phpdb.pdbId
+  FROM Protein_has_PDB phpdb
+    JOIN Protein p USING(proteinId)
+    JOIN Crystal c USING(proteinId)
+    JOIN BLSample bls USING(crystalId)
+    LEFT JOIN DataCollectionGroup dcg ON dcg.blSampleId=bls.blSampleId AND dcg.sessionId=${SID}
+    LEFT JOIN EnergyScan es ON es.blSampleId=bls.blSampleId AND es.sessionId=${SID}
+    LEFT JOIN XFEFluorescenceSpectrum xfs ON xfs.blSampleId=bls.blSampleId AND xfs.sessionId=${SID}
+  WHERE p.proposalId=${PID} AND (dcg.dataCollectionGroupId IS NOT NULL OR es.energyScanId IS NOT NULL OR xfs.xfeFluorescenceSpectrumId IS NOT NULL)
+  EXCEPT
+  SELECT phpdb.pdbId
+  FROM Protein_has_PDB phpdb
+    JOIN Protein p USING(proteinId)
+    JOIN Crystal c USING(proteinId)
+    JOIN BLSample bls USING(crystalId)
+    JOIN BLSubSample blss USING(blSampleId)
+    LEFT JOIN DataCollection dc ON dc.blSubSampleId=blss.blSubSampleId
+    LEFT JOIN DataCollectionGroup dcg ON dcg.dataCollectionGroupId=dc.dataCollectionGroupId AND dcg.sessionId=${SID}
+    LEFT JOIN EnergyScan es ON es.blSubSampleId=blss.blSubSampleId AND es.sessionId=${SID}
+    LEFT JOIN XFEFluorescenceSpectrum xfs ON xfs.blSubSampleId=blss.blSubSampleId AND xfs.sessionId=${SID}
+  WHERE p.proposalId=${PID} AND (dcg.dataCollectionGroupId IS NOT NULL OR es.energyScanId IS NOT NULL OR xfs.xfeFluorescenceSpectrumId IS NOT NULL);"`
+
+# Iterate over PDBs and forget:
+
+while read -r PDBID; do
+  `./forget_pdb.sh ${MYCNF} ${DB} ${PDBID}`
+done <<< "${PDBIDS}"
