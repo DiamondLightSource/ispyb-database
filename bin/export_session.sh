@@ -58,7 +58,7 @@ mysqldump ${OPTIONS} --where="beamLineSetupId IN (SELECT beamLineSetupId FROM BL
 
 mysqldump ${OPTIONS} --where="sessionId=${SID}" BLSession > ${PROPOSAL_DIR}/BLSession.sql
 
-mysqldump ${OPTIONS} --where="proposalId=${PID}" LabContact > ${PROPOSAL_DIR}/LabContact.sql
+mysqldump ${OPTIONS} --where="proposalId=${PID} OR labContactId IN (SELECT  sendingLabContactId FROM Shipping WHERE proposalId=${PID}   UNION   SELECT returnLabContactId FROM Shipping WHERE proposalId=${PID})" LabContact > ${PROPOSAL_DIR}/LabContact.sql
 
 mysqldump ${OPTIONS} --where="proposalId=${PID}" Protein > ${PROPOSAL_DIR}/Protein.sql
 
