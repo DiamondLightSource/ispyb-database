@@ -246,20 +246,24 @@ mysqldump ${OPTIONS} --where="phasingStatisticsId IN (SELECT ps.phasingStatistic
 # Combine INSERT statements in the PROPOSAL_DIR .sql files in the correct order.
 # For the Position table, use non-strict sql_mode due to generated columns.
 # For the DiffractionPlan table, convert empty experimentKind to NULL
-# For the Screen table, turn off FK constraint because of proposalId
 # For the Dewar table, turn off FK constraint because of firstExperimentId
 # For the Container table, turn off FK constraint because of sessionId
+# For the Screen table, turn off FK constraint because of proposalId
+# For the LabContact table, turn off FK constraint because of proposalId
 
 all_sql_files=`cd ${PROPOSAL_DIR} && ls -tr *.sql && cd ~-`
 arr=()
 while read -r sql_file; do
-  grep INSERT "${PROPOSAL_DIR}/${sql_file}" | sed 's/^INSERT INTO `Position`.*/SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='\''NO_AUTO_VALUE_ON_ZERO'\'';\n\0\nSET @@SQL_MODE=@OLD_SQL_MODE;/' | sed 's/^INSERT INTO `DiffractionPlan`.*/SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='\''EMPTY_STRING_IS_NULL'\'';\n\0\nSET @@SQL_MODE=@OLD_SQL_MODE;/' | sed 's/^INSERT INTO `Dewar`.*/SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;\n\0\nSET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;/' | sed 's/^INSERT INTO `Container`.*/SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;\n\0\nSET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;/' | sed 's/^INSERT INTO `Screen`.*/SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;\n\0\nSET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;/' >> ${OUT_DIR}/${PROPOSAL_FILE}
+  grep INSERT "${PROPOSAL_DIR}/${sql_file}" | sed 's/^INSERT INTO `Position`.*/SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='\''NO_AUTO_VALUE_ON_ZERO'\'';\n\0\nSET @@SQL_MODE=@OLD_SQL_MODE;/' | sed 's/^INSERT INTO `DiffractionPlan`.*/SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='\''EMPTY_STRING_IS_NULL'\'';\n\0\nSET @@SQL_MODE=@OLD_SQL_MODE;/' | sed 's/^INSERT INTO `Dewar`.*/SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;\n\0\nSET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;/' | sed 's/^INSERT INTO `Container`.*/SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;\n\0\nSET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;/' | sed 's/^INSERT INTO `Screen`.*/SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;\n\0\nSET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;/' | sed 's/^INSERT INTO `LabContact`.*/SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;\n\0\nSET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;/' >> ${OUT_DIR}/${PROPOSAL_FILE}
 done <<< "$all_sql_files"
 
-# Tidy up the import above:
-# Set FK vals to NULL when they reference non-existing rows:
+# Tidy up the import above - set FK vals to:
+#  - NULL when they reference non-existing rows
+#  - ${PID} when referencing a different proposalId
 
 echo "UPDATE Screen SET proposalId = NULL WHERE proposalId NOT IN (SELECT proposalId FROM Proposal);" >> ${OUT_DIR}/${PROPOSAL_FILE}
+
+echo "UPDATE LabContact SET proposalId = ${PID} WHERE proposalId <> ${PID};" >> ${OUT_DIR}/${PROPOSAL_FILE}
 
 echo "UPDATE Dewar SET firstExperimentId = NULL WHERE firstExperimentId NOT IN (SELECT sessionId FROM BLSession);" >> ${OUT_DIR}/${PROPOSAL_FILE}
 
