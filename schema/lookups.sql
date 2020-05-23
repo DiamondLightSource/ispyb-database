@@ -19,7 +19,7 @@
 --
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.11.1');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.11.1a');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 --
