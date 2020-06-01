@@ -1,7 +1,7 @@
 language: bash
 
 addons:
-  mariadb: '10.2'
+  mariadb: '10.3'
 
 before_script:
   - cp .my.example.cnf .my.cnf
