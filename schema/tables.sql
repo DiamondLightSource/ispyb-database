@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.4.12-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.4.13-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.4.12-MariaDB
+-- Server version	10.4.13-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -1940,16 +1940,41 @@ DROP TABLE IF EXISTS `DewarRegistry`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `DewarRegistry` (
+  `dewarRegistryId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `facilityCode` varchar(20) NOT NULL,
   `proposalId` int(11) unsigned NOT NULL,
   `labContactId` int(11) unsigned NOT NULL,
   `purchaseDate` datetime DEFAULT NULL,
   `bltimestamp` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`facilityCode`),
+  PRIMARY KEY (`dewarRegistryId`),
+  UNIQUE KEY `facilityCode` (`facilityCode`),
   KEY `DewarRegistry_ibfk_1` (`proposalId`),
   KEY `DewarRegistry_ibfk_2` (`labContactId`),
   CONSTRAINT `DewarRegistry_ibfk_1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE,
   CONSTRAINT `DewarRegistry_ibfk_2` FOREIGN KEY (`labContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `DewarRegistry_has_Proposal`
+--
+
+DROP TABLE IF EXISTS `DewarRegistry_has_Proposal`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `DewarRegistry_has_Proposal` (
+  `dewarRegistryHasProposalId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `dewarRegistryId` int(11) unsigned DEFAULT NULL,
+  `proposalId` int(10) unsigned DEFAULT NULL,
+  `personId` int(10) unsigned DEFAULT NULL COMMENT 'Person registering the dewar',
+  `recordTimestamp` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`dewarRegistryHasProposalId`),
+  UNIQUE KEY `dewarRegistryId` (`dewarRegistryId`,`proposalId`),
+  KEY `DewarRegistry_has_Proposal_ibfk2` (`proposalId`),
+  KEY `DewarRegistry_has_Proposal_ibfk3` (`personId`),
+  CONSTRAINT `DewarRegistry_has_Proposal_ibfk1` FOREIGN KEY (`dewarRegistryId`) REFERENCES `DewarRegistry` (`dewarRegistryId`),
+  CONSTRAINT `DewarRegistry_has_Proposal_ibfk2` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`),
+  CONSTRAINT `DewarRegistry_has_Proposal_ibfk3` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3630,6 +3655,9 @@ CREATE TABLE `Protein` (
   `proposalId` int(10) unsigned NOT NULL DEFAULT 0,
   `name` varchar(255) DEFAULT NULL,
   `acronym` varchar(45) DEFAULT NULL,
+  `description` text DEFAULT NULL COMMENT 'A description/summary using words and sentences',
+  `hazardGroup` tinyint(3) unsigned NOT NULL DEFAULT 1 COMMENT 'A.k.a. risk group',
+  `containmentLevel` tinyint(3) unsigned NOT NULL DEFAULT 1 COMMENT 'A.k.a. biosafety level, which indicates the level of containment required',
   `safetyLevel` enum('GREEN','YELLOW','RED') DEFAULT NULL,
   `molecularMass` double DEFAULT NULL,
   `proteinType` varchar(45) DEFAULT NULL,
@@ -5722,4 +5750,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-06 14:44:01
+-- Dump completed on 2020-06-01 11:29:50
