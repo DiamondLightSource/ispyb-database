@@ -7,10 +7,12 @@ database.
 
 ## Requirements
 
-* MariaDB 10.0+ or MySQL 5.6+, but we recommend MariaDB 10.2 or later.
+* MariaDB 10.0+ or MySQL 5.6+, but we recommend MariaDB 10.3 or later.
 * If binary logging is enabled in the DB system, then execute this before importing the test schema: set global log_bin_trust_function_creators=ON;
 
 ## Installation
+
+### Schema
 
 Run this on the command-line to create a database and import the schema stored in the SQL files:
 
@@ -24,7 +26,20 @@ mysql ispyb < schema/routines.sql
 
 Note that the `data.sql` file contains test data, so is only useful in a development environment.
 
-Alternatively, in a test environment you can also run the build.sh file. This creates the database, runs the above .sql files and more.
+Alternatively, in a test environment you can also run the `build.sh` file. This creates the database, runs the above .sql files and more.
+
+### Grants
+
+Then apply the grants:
+
+```bash
+mysql ispyb < grants/ispyb_acquisition.sql
+mysql ispyb < grants/ispyb_processing.sql
+mysql ispyb < grants/ispyb_web.sql
+```
+Note that the grants files are based on roles, so to actually use these grants, you also need to create database users and grant the roles to them. This is described in the header section of the grant files.
+
+### Miscellaneous Notes
 
 Note that SynchWeb currently assumes [`sql_mode`](https://mariadb.com/kb/en/library/sql-mode/) is not set. I.e. it assumes that you have a line like the below in the MariaDB .cnf file:
 
@@ -55,7 +70,7 @@ mysql ispyb < schema/updates/2019_03_29_BLSession_archived.sql
 ```bash
 mysql ispyb < schema/routines.sql
 ```
-3. If you ran the routines.sql, then re-apply the grants for the routines. E.g.:
+3. If you ran the `routines.sql`, then re-apply the grants for the routines. E.g.:
 ```bash
 mysql ispyb < grants/ispyb_acquisition.sql
 mysql ispyb < grants/ispyb_processing.sql
