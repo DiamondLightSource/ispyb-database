@@ -1596,7 +1596,7 @@ CREATE TABLE `DataCollection` (
   `axisStart` float DEFAULT NULL,
   `axisEnd` float DEFAULT NULL,
   `axisRange` float DEFAULT NULL,
-  `overlap` float DEFAULT NULL, 'needed as flag for Full Data Collection'
+  `overlap` float DEFAULT NULL COMMENT 'needed as flag for Full Data Collection',
   `numberOfImages` int(10) unsigned DEFAULT NULL,
   `startImageNumber` int(10) unsigned DEFAULT NULL,
   `numberOfPasses` int(10) unsigned DEFAULT NULL,
