@@ -2027,7 +2027,7 @@ DROP TABLE IF EXISTS `DiffractionPlan`;
 CREATE TABLE `DiffractionPlan` (
   `diffractionPlanId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) DEFAULT NULL,
-  `experimentKind` enum('Default','MXPressE','MXPressO','MXPressE_SAD','MXScore','MXPressM','MAD','SAD','Fixed','Ligand binding','Refinement','OSC','MAD - Inverse Beam','SAD - Inverse Beam','MESH','XFE','Stepped transmission','XChem High Symmetry','XChem Low Symmetry') DEFAULT NULL,
+  `experimentKind` enum('Default','MXPressE','MXPressO','MXPressE_SAD','MXScore','MXPressM','MAD','SAD','Fixed','Ligand binding','Refinement','OSC','MAD - Inverse Beam','SAD - Inverse Beam','MESH','XFE','Stepped transmission','XChem High Symmetry','XChem Low Symmetry','Commissioning') DEFAULT NULL,
   `observedResolution` float DEFAULT NULL,
   `minimalResolution` float DEFAULT NULL,
   `exposureTime` float DEFAULT NULL,
@@ -4390,7 +4390,7 @@ CREATE TABLE `Shipping` (
   `laboratoryId` int(10) unsigned DEFAULT NULL,
   `isStorageShipping` tinyint(1) DEFAULT 0,
   `creationDate` datetime DEFAULT NULL,
-  `comments` varchar(255) DEFAULT NULL,
+  `comments` varchar(1000) DEFAULT NULL,
   `sendingLabContactId` int(10) unsigned DEFAULT NULL,
   `returnLabContactId` int(10) unsigned DEFAULT NULL,
   `returnCourier` varchar(45) DEFAULT NULL,
@@ -5751,4 +5751,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-01 11:29:50
+-- Dump completed on 2020-06-15 15:01:40
