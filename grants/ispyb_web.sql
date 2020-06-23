@@ -121,3 +121,5 @@ GRANT SELECT ON `MotionCorrection` TO 'ispyb_web';
 GRANT SELECT ON `MotionCorrectionDrift` TO 'ispyb_web';
 
 GRANT SELECT, INSERT ON Session_has_Person TO 'ispyb_web';
+
+GRANT SELECT, INSERT, UPDATE ON DewarRegistry_has_Proposal TO 'ispyb_web';
