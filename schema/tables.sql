@@ -603,6 +603,7 @@ DROP TABLE IF EXISTS `BLSampleGroup`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `BLSampleGroup` (
   `blSampleGroupId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL COMMENT 'Human-readable name',
   PRIMARY KEY (`blSampleGroupId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2076,6 +2077,7 @@ CREATE TABLE `DiffractionPlan` (
   `orientation` double DEFAULT NULL,
   `monoBandwidth` double DEFAULT NULL,
   `centringMethod` enum('xray','loop','diffraction','optical') DEFAULT NULL,
+  `userPath` varchar(100) DEFAULT NULL COMMENT 'User-specified relative "root" path inside the session directory to be used for holding collected data',
   PRIMARY KEY (`diffractionPlanId`),
   KEY `DiffractionPlan_ibfk1` (`presetForProposalId`),
   KEY `DataCollectionPlan_ibfk3` (`detectorId`),
@@ -5750,4 +5752,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-15 15:01:40
+-- Dump completed on 2020-06-24 11:57:46

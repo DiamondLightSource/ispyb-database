@@ -174,7 +174,7 @@ INSERT INTO `BLSample` (`blSampleId`, `diffractionPlanId`, `crystalId`, `contain
 --
 
 /*!40000 ALTER TABLE `BLSampleGroup` DISABLE KEYS */;
-INSERT INTO `BLSampleGroup` (`blSampleGroupId`) VALUES (5);
+INSERT INTO `BLSampleGroup` (`blSampleGroupId`, `name`) VALUES (5,NULL);
 /*!40000 ALTER TABLE `BLSampleGroup` ENABLE KEYS */;
 
 --
@@ -530,7 +530,7 @@ INSERT INTO `Dewar` (`dewarId`, `shippingId`, `code`, `comments`, `storageLocati
 --
 
 /*!40000 ALTER TABLE `DiffractionPlan` DISABLE KEYS */;
-INSERT INTO `DiffractionPlan` (`diffractionPlanId`, `name`, `experimentKind`, `observedResolution`, `minimalResolution`, `exposureTime`, `oscillationRange`, `maximalResolution`, `screeningResolution`, `radiationSensitivity`, `anomalousScatterer`, `preferredBeamSizeX`, `preferredBeamSizeY`, `preferredBeamDiameter`, `comments`, `DIFFRACTIONPLANUUID`, `aimedCompleteness`, `aimedIOverSigmaAtHighestRes`, `aimedMultiplicity`, `aimedResolution`, `anomalousData`, `complexity`, `estimateRadiationDamage`, `forcedSpaceGroup`, `requiredCompleteness`, `requiredMultiplicity`, `requiredResolution`, `strategyOption`, `kappaStrategyOption`, `numberOfPositions`, `minDimAccrossSpindleAxis`, `maxDimAccrossSpindleAxis`, `radiationSensitivityBeta`, `radiationSensitivityGamma`, `minOscWidth`, `recordTimeStamp`, `monochromator`, `energy`, `transmission`, `boxSizeX`, `boxSizeY`, `kappaStart`, `axisStart`, `axisRange`, `numberOfImages`, `presetForProposalId`, `beamLineName`, `detectorId`, `distance`, `orientation`, `monoBandwidth`, `centringMethod`) VALUES (197784,NULL,'OSC',NULL,NULL,0.2,NULL,NULL,NULL,NULL,NULL,10.5,10.5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,1.1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-20 23:50:27',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(197788,NULL,NULL,NULL,NULL,10,NULL,NULL,NULL,NULL,NULL,160,100,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-10-26 15:28:12',NULL,150,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,4,162.5,45,330.6,NULL),(197792,'XPDF-1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2017-03-22 10:56:32',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `DiffractionPlan` (`diffractionPlanId`, `name`, `experimentKind`, `observedResolution`, `minimalResolution`, `exposureTime`, `oscillationRange`, `maximalResolution`, `screeningResolution`, `radiationSensitivity`, `anomalousScatterer`, `preferredBeamSizeX`, `preferredBeamSizeY`, `preferredBeamDiameter`, `comments`, `DIFFRACTIONPLANUUID`, `aimedCompleteness`, `aimedIOverSigmaAtHighestRes`, `aimedMultiplicity`, `aimedResolution`, `anomalousData`, `complexity`, `estimateRadiationDamage`, `forcedSpaceGroup`, `requiredCompleteness`, `requiredMultiplicity`, `requiredResolution`, `strategyOption`, `kappaStrategyOption`, `numberOfPositions`, `minDimAccrossSpindleAxis`, `maxDimAccrossSpindleAxis`, `radiationSensitivityBeta`, `radiationSensitivityGamma`, `minOscWidth`, `recordTimeStamp`, `monochromator`, `energy`, `transmission`, `boxSizeX`, `boxSizeY`, `kappaStart`, `axisStart`, `axisRange`, `numberOfImages`, `presetForProposalId`, `beamLineName`, `detectorId`, `distance`, `orientation`, `monoBandwidth`, `centringMethod`, `userPath`) VALUES (197784,NULL,'OSC',NULL,NULL,0.2,NULL,NULL,NULL,NULL,NULL,10.5,10.5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,1.1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-20 23:50:27',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(197788,NULL,NULL,NULL,NULL,10,NULL,NULL,NULL,NULL,NULL,160,100,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-10-26 15:28:12',NULL,150,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,4,162.5,45,330.6,NULL,NULL),(197792,'XPDF-1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2017-03-22 10:56:32',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `DiffractionPlan` ENABLE KEYS */;
 
 --
@@ -1391,4 +1391,4 @@ INSERT INTO `v_run` (`runId`, `run`, `startDate`, `endDate`) VALUES (1,'2008-01'
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-01 11:29:50
+-- Dump completed on 2020-06-24 11:57:47
