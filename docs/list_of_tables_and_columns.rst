@@ -825,6 +825,7 @@
    ``proposalId``,int,""
    ``personId``,int,"Person registering the dewar"
    ``recordTimestamp``,datetime,""
+   ``labContactId``,int,"Owner of the dewar"
    **DewarReport**,table,""
    ``dewarReportId``,int,""
    ``facilityCode``,varchar,""
