@@ -1943,8 +1943,8 @@ DROP TABLE IF EXISTS `DewarRegistry`;
 CREATE TABLE `DewarRegistry` (
   `dewarRegistryId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `facilityCode` varchar(20) NOT NULL,
-  `proposalId` int(11) unsigned NOT NULL,
-  `labContactId` int(11) unsigned NOT NULL,
+  `proposalId` int(11) unsigned DEFAULT NULL,
+  `labContactId` int(11) unsigned DEFAULT NULL,
   `purchaseDate` datetime DEFAULT NULL,
   `bltimestamp` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`dewarRegistryId`),
@@ -1969,13 +1969,16 @@ CREATE TABLE `DewarRegistry_has_Proposal` (
   `proposalId` int(10) unsigned DEFAULT NULL,
   `personId` int(10) unsigned DEFAULT NULL COMMENT 'Person registering the dewar',
   `recordTimestamp` datetime DEFAULT current_timestamp(),
+  `labContactId` int(11) unsigned DEFAULT NULL COMMENT 'Owner of the dewar',
   PRIMARY KEY (`dewarRegistryHasProposalId`),
   UNIQUE KEY `dewarRegistryId` (`dewarRegistryId`,`proposalId`),
   KEY `DewarRegistry_has_Proposal_ibfk2` (`proposalId`),
   KEY `DewarRegistry_has_Proposal_ibfk3` (`personId`),
+  KEY `DewarRegistry_has_Proposal_ibfk4` (`labContactId`),
   CONSTRAINT `DewarRegistry_has_Proposal_ibfk1` FOREIGN KEY (`dewarRegistryId`) REFERENCES `DewarRegistry` (`dewarRegistryId`),
   CONSTRAINT `DewarRegistry_has_Proposal_ibfk2` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`),
-  CONSTRAINT `DewarRegistry_has_Proposal_ibfk3` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`)
+  CONSTRAINT `DewarRegistry_has_Proposal_ibfk3` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`),
+  CONSTRAINT `DewarRegistry_has_Proposal_ibfk4` FOREIGN KEY (`labContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5752,4 +5755,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-24 11:57:46
+-- Dump completed on 2020-07-01 14:52:02
