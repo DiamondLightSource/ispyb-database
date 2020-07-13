@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.4.12-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.4.13-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.4.12-MariaDB
+-- Server version	10.4.13-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -4521,17 +4521,17 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `update_container_status`(IN p_barcode varchar(45), IN p_status varchar(45))
     MODIFIES SQL DATA
-    COMMENT 'Set container containerStatus = p_status for barcode = p_barcode'
+    COMMENT 'Set container containerStatus = p_status for barcode = p_barcode. Only a defined range of statuses are accepted.'
 BEGIN
   DECLARE row_containerId int(11) unsigned DEFAULT NULL;
   DECLARE row_scLoc varchar(20) DEFAULT NULL;
 
   IF NOT (p_barcode IS NULL) AND p_status IN ('in_storage', 'in_localstorage', 'processing', 'disposed',
-	'in_transit_to_localstorage', 'in_transit_to_storage', 'in_transit_loading', 'in_transit_unloading') THEN
+	'in_transit_to_localstorage', 'in_transit_to_storage', 'in_transit_loading', 'in_transit_unloading', 'in_loadlock', 'in_transit_to_loadlock') THEN
 
 	SELECT containerId, sampleChangerLocation INTO row_containerId, row_scLoc
     FROM Container
@@ -7960,12 +7960,12 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-27 15:04:17
--- MariaDB dump 10.17  Distrib 10.4.12-MariaDB, for Linux (x86_64)
+-- Dump completed on 2020-07-13 20:02:24
+-- MariaDB dump 10.17  Distrib 10.4.13-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.4.12-MariaDB
+-- Server version	10.4.13-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -8006,4 +8006,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-27 15:04:17
+-- Dump completed on 2020-07-13 20:02:24
