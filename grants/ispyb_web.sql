@@ -122,4 +122,4 @@ GRANT SELECT ON `MotionCorrectionDrift` TO 'ispyb_web';
 
 GRANT SELECT, INSERT ON Session_has_Person TO 'ispyb_web';
 
-GRANT SELECT, INSERT, UPDATE ON DewarRegistry_has_Proposal TO 'ispyb_web';
+GRANT SELECT, INSERT, UPDATE, DELETE ON DewarRegistry_has_Proposal TO 'ispyb_web';
