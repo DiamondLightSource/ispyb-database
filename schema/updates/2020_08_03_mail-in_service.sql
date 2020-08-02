@@ -96,12 +96,14 @@ INSERT INTO `Column` (columnId, name)
 
 ALTER TABLE DiffractionPlan 
   ADD columnId int unsigned,
+  ADD experimentTypeId int unsigned,
   ADD robotPlateTemperature float COMMENT 'units: ',
   ADD exposureTemperature float COMMENT 'units: ',  
   ADD qMin float COMMENT 'minimum in qRange', 
   ADD qMax float COMMENT 'maximum in qRange',
   ADD reductionParametersAveraging enum('All', 'Fastest Dimension', '1D') COMMENT '',
-  ADD CONSTRAINT `DiffractionPlan_ibfk2` FOREIGN KEY (`columnId`) REFERENCES `Column` (`columnId`);
+  ADD CONSTRAINT `DiffractionPlan_ibfk2` FOREIGN KEY (`columnId`) REFERENCES `Column` (`columnId`),
+  ADD CONSTRAINT `DiffractionPlan_ibfk3` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`);
 
 ALTER TABLE BLSample
   ADD isotropy enum('isotropic', 'anisotropic') DEFAULT NULL;
