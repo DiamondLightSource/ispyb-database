@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.4.13-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.5.4-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.4.13-MariaDB
+-- Server version	10.5.4-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -174,7 +174,7 @@ INSERT INTO `BLSample` (`blSampleId`, `diffractionPlanId`, `crystalId`, `contain
 --
 
 /*!40000 ALTER TABLE `BLSampleGroup` DISABLE KEYS */;
-INSERT INTO `BLSampleGroup` (`blSampleGroupId`, `name`) VALUES (5,NULL), (6,'foo');
+INSERT INTO `BLSampleGroup` (`blSampleGroupId`, `name`) VALUES (5,NULL),(6,'foo');
 /*!40000 ALTER TABLE `BLSampleGroup` ENABLE KEYS */;
 
 --
@@ -1391,4 +1391,4 @@ INSERT INTO `v_run` (`runId`, `run`, `startDate`, `endDate`) VALUES (1,'2008-01'
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-24 11:57:47
+-- Dump completed on 2020-08-03 16:19:47
