@@ -40,6 +40,10 @@ BLSampleImageAutoScoreClass
 SpaceGroup
 ProcessingPipeline
 ProcessingPipelineCategory
+ExperimentType
+ContainerType
+BLSampleGroupType
+Column
 )
 
 LOOKUP_TABLES_STRING=''
