@@ -34,7 +34,7 @@ ALTER TABLE DiffractionPlan
 CREATE TABLE ExperimentType (
   experimentTypeId int unsigned auto_increment PRIMARY KEY,
   name varchar(100),
-  proposalType varchar(100),
+  proposalType varchar(20),
   active boolean DEFAULT 1 COMMENT '1=active, 0=inactive' 
 );
 
@@ -111,7 +111,7 @@ ALTER TABLE BLSample
 CREATE TABLE ContainerType (
   containerTypeId int unsigned auto_increment PRIMARY KEY,
   name varchar(100),
-  proposalType varchar(100),
+  proposalType varchar(20),
   active boolean DEFAULT 1 COMMENT '1=active, 0=inactive',
   capacity int,
   dropPerWellX smallint, 
@@ -144,30 +144,32 @@ ALTER TABLE Container
 
 -- Alternative 1: 
 
+/*
 ALTER TABLE BLSampleGroup_has_BLSample
   MODIFY `type` enum('background','container','sample','calibrant', 'buffer') DEFAULT NULL;
-  
---
+*/
+
 -- Alternative 2:
-/*
+
 CREATE TABLE BLSampleGroupType (
   blSampleGroupTypeId int unsigned auto_increment PRIMARY KEY,
   name varchar(100),
+  proposalType varchar(20),
   active boolean DEFAULT 1 COMMENT '1=active, 0=inactive' 
 );
 
-INSERT INTO BLSampleGroupType (blSampleGroupTypeId, name)
+INSERT INTO BLSampleGroupType (blSampleGroupTypeId, name, proposalType)
   VALUES
-    (1, 'background'),
-    (2, 'container'),
-    (3, 'sample'),
-    (4, 'calibrant'),
-    (5, 'buffer');
+    (1, 'background', 'XPDF'),
+    (2, 'container', 'XPDF'),
+    (3, 'sample', 'XPDF'),
+    (4, 'calibrant', 'XPDF'),
+    (5, 'buffer', 'SCM'),
+    (6, 'sample', 'SCM');
 
 ALTER TABLE BLSampleGroup_has_BLSample
   ADD blSampleGroupTypeId int unsigned,
   ADD CONSTRAINT `BLSampleGroup_has_BLSample_ibfk3` FOREIGN KEY (`blSampleGroupTypeId`) REFERENCES `BLSampleGroupType` (`blSampleGroupTypeId`);
 --
-*/
 
 UPDATE SchemaStatus SET schemaStatus = 'DONE' WHERE scriptName = '2020_08_03_mail-in_service.sql';
