@@ -619,7 +619,7 @@ DROP TABLE IF EXISTS `BLSampleGroupType`;
 CREATE TABLE `BLSampleGroupType` (
   `blSampleGroupTypeId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
-  `proposalType` varchar(20) DEFAULT NULL,
+  `proposalType` varchar(10) DEFAULT NULL,
   `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`blSampleGroupTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1206,21 +1206,6 @@ CREATE TABLE `CalendarHash` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `Column`
---
-
-DROP TABLE IF EXISTS `Column`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Column` (
-  `columnId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) DEFAULT NULL,
-  `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
-  PRIMARY KEY (`columnId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Experimental conditions lookup table for BioSAXS';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `ComponentLattice`
 --
 
@@ -1254,6 +1239,8 @@ CREATE TABLE `ComponentSubType` (
   `componentSubTypeId` int(11) unsigned NOT NULL,
   `name` varchar(31) NOT NULL,
   `hasPh` tinyint(1) DEFAULT 0,
+  `proposalType` varchar(10) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`componentSubTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1300,6 +1287,8 @@ CREATE TABLE `ConcentrationType` (
   `concentrationTypeId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(31) NOT NULL,
   `symbol` varchar(8) NOT NULL,
+  `proposalType` varchar(10) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`concentrationTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1526,9 +1515,10 @@ DROP TABLE IF EXISTS `ContainerType`;
 CREATE TABLE `ContainerType` (
   `containerTypeId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
-  `proposalType` varchar(20) DEFAULT NULL,
+  `proposalType` varchar(10) DEFAULT NULL,
   `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   `capacity` int(11) DEFAULT NULL,
+  `wellPerRow` smallint(6) DEFAULT NULL,
   `dropPerWellX` smallint(6) DEFAULT NULL,
   `dropPerWellY` smallint(6) DEFAULT NULL,
   `dropHeight` float DEFAULT NULL,
@@ -1537,7 +1527,7 @@ CREATE TABLE `ContainerType` (
   `dropOffsetY` float DEFAULT NULL,
   `wellDrop` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`containerTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A lookup table for different types of containers';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1837,13 +1827,16 @@ CREATE TABLE `DataCollectionGroup` (
   `workflowId` int(11) unsigned DEFAULT NULL,
   `xtalSnapshotFullPath` varchar(255) DEFAULT NULL,
   `scanParameters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`scanParameters`)),
+  `experimentTypeId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`dataCollectionGroupId`),
   KEY `DataCollectionGroup_FKIndex1` (`blSampleId`),
   KEY `DataCollectionGroup_FKIndex2` (`sessionId`),
   KEY `workflowId` (`workflowId`),
+  KEY `DataCollectionGroup_ibfk_4` (`experimentTypeId`),
   CONSTRAINT `DataCollectionGroup_ibfk_1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `DataCollectionGroup_ibfk_2` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `DataCollectionGroup_ibfk_3` FOREIGN KEY (`workflowId`) REFERENCES `Workflow` (`workflowId`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `DataCollectionGroup_ibfk_3` FOREIGN KEY (`workflowId`) REFERENCES `Workflow` (`workflowId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `DataCollectionGroup_ibfk_4` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='a dataCollectionGroup is a group of dataCollection for a spe';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2143,7 +2136,7 @@ CREATE TABLE `DiffractionPlan` (
   `monoBandwidth` double DEFAULT NULL,
   `centringMethod` enum('xray','loop','diffraction','optical') DEFAULT NULL,
   `userPath` varchar(100) DEFAULT NULL COMMENT 'User-specified relative "root" path inside the session directory to be used for holding collected data',
-  `columnId` int(10) unsigned DEFAULT NULL,
+  `purificationColumnId` int(10) unsigned DEFAULT NULL,
   `experimentTypeId` int(10) unsigned DEFAULT NULL,
   `robotPlateTemperature` float DEFAULT NULL COMMENT 'units: ',
   `exposureTemperature` float DEFAULT NULL COMMENT 'units: ',
@@ -2153,11 +2146,11 @@ CREATE TABLE `DiffractionPlan` (
   PRIMARY KEY (`diffractionPlanId`),
   KEY `DiffractionPlan_ibfk1` (`presetForProposalId`),
   KEY `DataCollectionPlan_ibfk3` (`detectorId`),
-  KEY `DiffractionPlan_ibfk2` (`columnId`),
+  KEY `DiffractionPlan_ibfk2` (`purificationColumnId`),
   KEY `DiffractionPlan_ibfk3` (`experimentTypeId`),
   CONSTRAINT `DataCollectionPlan_ibfk3` FOREIGN KEY (`detectorId`) REFERENCES `Detector` (`detectorId`) ON UPDATE CASCADE,
   CONSTRAINT `DiffractionPlan_ibfk1` FOREIGN KEY (`presetForProposalId`) REFERENCES `Proposal` (`proposalId`),
-  CONSTRAINT `DiffractionPlan_ibfk2` FOREIGN KEY (`columnId`) REFERENCES `Column` (`columnId`),
+  CONSTRAINT `DiffractionPlan_ibfk2` FOREIGN KEY (`purificationColumnId`) REFERENCES `PurificationColumn` (`purificationColumnId`),
   CONSTRAINT `DiffractionPlan_ibfk3` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2286,10 +2279,10 @@ DROP TABLE IF EXISTS `ExperimentType`;
 CREATE TABLE `ExperimentType` (
   `experimentTypeId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
-  `proposalType` varchar(20) DEFAULT NULL,
+  `proposalType` varchar(10) DEFAULT NULL,
   `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`experimentTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A lookup table for different types of experients';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3796,6 +3789,21 @@ CREATE TABLE `Protein_has_PDB` (
   CONSTRAINT `Protein_Has_PDB_fk1` FOREIGN KEY (`proteinid`) REFERENCES `Protein` (`proteinId`),
   CONSTRAINT `Protein_Has_PDB_fk2` FOREIGN KEY (`pdbid`) REFERENCES `PDB` (`pdbId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `PurificationColumn`
+--
+
+DROP TABLE IF EXISTS `PurificationColumn`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `PurificationColumn` (
+  `purificationColumnId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
+  PRIMARY KEY (`purificationColumnId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Size exclusion chromotography (SEC) lookup table for BioSAXS';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5844,4 +5852,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-03  9:43:07
+-- Dump completed on 2020-08-06 20:28:00

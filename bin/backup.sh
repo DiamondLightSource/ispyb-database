@@ -43,7 +43,7 @@ ProcessingPipelineCategory
 ExperimentType
 ContainerType
 BLSampleGroupType
-Column
+PurificationColumn
 )
 
 LOOKUP_TABLES_STRING=''
