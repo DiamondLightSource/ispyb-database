@@ -892,7 +892,7 @@
    ``monoBandwidth``,double,""
    ``centringMethod``,enum,""
    ``userPath``,varchar,"User-specified relative "root" path inside the session directory to be used for holding collected data"
-   ``collectionMode``,enum,"The requested collection mode, possible values are automated, manual"
+   ``collectionMode``,enum,"The requested collection mode, possible values are auto, manual"
    ``priority``,int,"The priority of this sample relative to others in the container"
    **EMMicroscope**,table,""
    ``emMicroscopeId``,int,""
