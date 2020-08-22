@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Usage example:
 # backup.sh ../dbbackups
