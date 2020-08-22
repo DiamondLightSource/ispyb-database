@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 -- MariaDB dump 10.17  Distrib 10.5.5-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
@@ -201,8 +200,4 @@ INSERT INTO `ProcessingPipelineCategory` (`processingPipelineCategoryId`, `name`
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-<<<<<<< HEAD
 -- Dump completed on 2020-08-22  7:35:16
-=======
--- Dump completed on 2020-08-03 16:19:47
->>>>>>> master
