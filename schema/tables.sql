@@ -2081,7 +2081,7 @@ CREATE TABLE `DiffractionPlan` (
   `monoBandwidth` double DEFAULT NULL,
   `centringMethod` enum('xray','loop','diffraction','optical') DEFAULT NULL,
   `userPath` varchar(100) DEFAULT NULL COMMENT 'User-specified relative "root" path inside the session directory to be used for holding collected data',
-  `collectionMode` enum('automated','manual') DEFAULT NULL COMMENT 'The requested collection mode, possible values are automated, manual',
+  `collectionMode` enum('auto','manual') DEFAULT NULL COMMENT 'The requested collection mode, possible values are auto, manual',
   `priority` int(4) DEFAULT NULL COMMENT 'The priority of this sample relative to others in the container',
   PRIMARY KEY (`diffractionPlanId`),
   KEY `DiffractionPlan_ibfk1` (`presetForProposalId`),
