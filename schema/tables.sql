@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.5.4-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.5.5-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.5.4-MariaDB
+-- Server version	10.5.5-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -577,7 +577,7 @@ CREATE TABLE `BLSample` (
   `blottingDrainTime` int(11) unsigned DEFAULT NULL COMMENT 'Time sample left to drain after blotting, Units: sec',
   `support` varchar(50) DEFAULT NULL COMMENT 'Sample support material',
   `subLocation` smallint(5) unsigned DEFAULT NULL COMMENT 'Indicates the sample''s location on a multi-sample pin, where 1 is closest to the pin base',
-  `isotropy` enum('isotropic','anisotropic') DEFAULT NULL,
+  `storageTemperature` float DEFAULT NULL COMMENT 'NULL=ambient',
   PRIMARY KEY (`blSampleId`),
   KEY `BLSample_FKIndex1` (`containerId`),
   KEY `BLSample_FKIndex2` (`crystalId`),
@@ -3759,6 +3759,7 @@ CREATE TABLE `Protein` (
   `externalId` binary(16) DEFAULT NULL,
   `density` float DEFAULT NULL,
   `abundance` float DEFAULT NULL COMMENT 'Deprecated',
+  `isotropy` enum('isotropic','anisotropic') DEFAULT NULL,
   PRIMARY KEY (`proteinId`),
   KEY `ProteinAcronym_Index` (`proposalId`,`acronym`),
   KEY `Protein_FKIndex1` (`proposalId`),
@@ -5852,4 +5853,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-07 11:10:42
+-- Dump completed on 2020-08-24 22:22:09
