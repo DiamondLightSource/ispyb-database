@@ -124,8 +124,11 @@ ALTER TABLE DataCollectionGroup
     FOREIGN KEY (`experimentTypeId`)
       REFERENCES `ExperimentType` (`experimentTypeId`);
 
-ALTER TABLE BLSample
+ALTER TABLE Protein
   ADD isotropy enum('isotropic', 'anisotropic') DEFAULT NULL;
+
+ALTER TABLE BLSample
+  ADD `storageTemperature` float DEFAULT NULL COMMENT 'NULL=ambient';
 
 CREATE TABLE ContainerType (
   containerTypeId int unsigned auto_increment PRIMARY KEY,
