@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.4.13-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.5.5-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.4.13-MariaDB
+-- Server version	10.5.5-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -1219,6 +1219,8 @@ CREATE TABLE `ComponentSubType` (
   `componentSubTypeId` int(11) unsigned NOT NULL,
   `name` varchar(31) NOT NULL,
   `hasPh` tinyint(1) DEFAULT 0,
+  `proposalType` varchar(10) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`componentSubTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1265,6 +1267,8 @@ CREATE TABLE `ConcentrationType` (
   `concentrationTypeId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(31) NOT NULL,
   `symbol` varchar(8) NOT NULL,
+  `proposalType` varchar(10) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`concentrationTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1885,7 +1889,7 @@ CREATE TABLE `Dewar` (
   `transportValue` int(11) unsigned DEFAULT NULL,
   `trackingNumberToSynchrotron` varchar(30) DEFAULT NULL,
   `trackingNumberFromSynchrotron` varchar(30) DEFAULT NULL,
-  `type` enum('Dewar','Toolbox') NOT NULL DEFAULT 'Dewar',
+  `type` enum('Dewar','Toolbox','Parcel') NOT NULL DEFAULT 'Dewar',
   `FACILITYCODE` varchar(20) DEFAULT NULL,
   `weight` float DEFAULT NULL COMMENT 'dewar weight in kg',
   `deliveryAgent_barcode` varchar(30) DEFAULT NULL COMMENT 'Courier piece barcode (not the airway bill)',
@@ -2081,11 +2085,16 @@ CREATE TABLE `DiffractionPlan` (
   `monoBandwidth` double DEFAULT NULL,
   `centringMethod` enum('xray','loop','diffraction','optical') DEFAULT NULL,
   `userPath` varchar(100) DEFAULT NULL COMMENT 'User-specified relative "root" path inside the session directory to be used for holding collected data',
+  `robotPlateTemperature` float DEFAULT NULL COMMENT 'units: kelvin',
+  `exposureTemperature` float DEFAULT NULL COMMENT 'units: kelvin',
+  `purificationColumnId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`diffractionPlanId`),
   KEY `DiffractionPlan_ibfk1` (`presetForProposalId`),
   KEY `DataCollectionPlan_ibfk3` (`detectorId`),
+  KEY `DiffractionPlan_ibfk2` (`purificationColumnId`),
   CONSTRAINT `DataCollectionPlan_ibfk3` FOREIGN KEY (`detectorId`) REFERENCES `Detector` (`detectorId`) ON UPDATE CASCADE,
-  CONSTRAINT `DiffractionPlan_ibfk1` FOREIGN KEY (`presetForProposalId`) REFERENCES `Proposal` (`proposalId`)
+  CONSTRAINT `DiffractionPlan_ibfk1` FOREIGN KEY (`presetForProposalId`) REFERENCES `Proposal` (`proposalId`),
+  CONSTRAINT `DiffractionPlan_ibfk2` FOREIGN KEY (`purificationColumnId`) REFERENCES `PurificationColumn` (`purificationColumnId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3707,6 +3716,21 @@ CREATE TABLE `Protein_has_PDB` (
   CONSTRAINT `Protein_Has_PDB_fk1` FOREIGN KEY (`proteinid`) REFERENCES `Protein` (`proteinId`),
   CONSTRAINT `Protein_Has_PDB_fk2` FOREIGN KEY (`pdbid`) REFERENCES `PDB` (`pdbId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `PurificationColumn`
+--
+
+DROP TABLE IF EXISTS `PurificationColumn`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `PurificationColumn` (
+  `purificationColumnId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
+  PRIMARY KEY (`purificationColumnId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Size exclusion chromotography (SEC) lookup table for BioSAXS';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5755,4 +5779,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-01 14:52:02
+-- Dump completed on 2020-08-28 17:54:56
