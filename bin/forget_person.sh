@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This script removes Personally Identifiable Information (PII) for a particular person.
 #

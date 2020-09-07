@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This script removes details about laboratories on a particular proposal
 # and session.

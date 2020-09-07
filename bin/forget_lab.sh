@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This script removes details about a particular laboratory.
 # Usage:

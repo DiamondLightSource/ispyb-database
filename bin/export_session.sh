@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Usage:
 # export_session.sh <.cnf file> <db_name> <proposalCode><proposalNumber> <session number> <output dir>
