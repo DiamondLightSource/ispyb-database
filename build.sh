@@ -9,9 +9,7 @@
 
 # Author: Karl Levik
 
-function contains() {
-    [[ $1 =~ (^|[[:space:]])"$2"($|[[:space:]]) ]] && return 0 || return 1
-}
+source bin/functions.sh
 
 db="ispyb_build"
 
@@ -29,7 +27,7 @@ then
   mysql --defaults-file=.my.cnf -D $db < grants/ispyb_web.sql
   mysql --defaults-file=.my.cnf -D $db < grants/ispyb_import.sql
 
-  # Verify that all update .sql files have been run, if not exit with message
+  # Identify update .sql files that haven't been run, and run them
   all_sql_files=`cd schema/updates && ls *.sql && cd ../..`
 
   done_sql_files=`mysql --defaults-file=.my.cnf -D $db --skip-column-names --silent --raw -e "SELECT scriptName FROM SchemaStatus WHERE schemaStatus = 'DONE' ORDER BY recordTimeStamp;"`
@@ -39,16 +37,19 @@ then
     contains "$done_sql_files" "$sql_file"
     if [[ $? -ne 0 ]]
     then
-      arr+=("$sql_file\n")
+      arr+=("$sql_file")
+      mysql --defaults-file=.my.cnf -D $db < schema/updates/$sql_file
     fi
   done <<< "$all_sql_files"
 
   if [ -n "$arr" ]; then
-    echo "These .sql files appear not to have been run yet:"
-    echo ${arr[@]}
-    exit 1
+    echo "The following schema/updates/*.sql files were sourced:"
+    for val in "${arr[@]}"; do
+      echo "$val"
+    done
+  else
+    echo "No new schema/updates/*.sql files."
   fi
-  echo "All schema/updates/*.sql files appear to have been run."
 
   # Generate table and sproc documentation
   if [ -d "bin" ] && [ -d "docs" ]; then
