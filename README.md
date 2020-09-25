@@ -2,13 +2,12 @@
 
 # ispyb-database
 
-This package provides all the scripts necessary to create an up-to-date ISPyB
-database.
+This package provides everything needed to create the Diamond flavour of the ISPyB database schema. As we evolve the schema we will publish the update scripts here, so hopefully it should be easy for other users of the schema to stay up-to-date.
 
 ## Requirements
 
-* MariaDB 10.0+ or MySQL 5.6+, but we recommend MariaDB 10.3 or later.
-* If binary logging is enabled in the DB system, then execute this before importing the test schema: set global log_bin_trust_function_creators=ON;
+* We recommend MariaDB 10.3 or later.
+* If binary logging is enabled in the DB system, then execute this before importing the test schema: `SET GLOBAL log_bin_trust_function_creators=ON;``
 
 ## Installation
 
@@ -62,11 +61,11 @@ SHOW PLUGINS SONAME WHERE Name = 'SQL_ERROR_LOG';
 
 In order to update a production database, please follow this procedure:
 
-1. For all .sql files in `schema/updates` that have not already been run, read any comments inside the files to decide if you should run them. Run a file e.g. like this:
+1. For all .sql files in `schema/updates` that have not already been run, read any comments inside the files to decide if/when you should run them. Run a file e.g. like this:
 ```bash
 mysql ispyb < schema/updates/2019_03_29_BLSession_archived.sql
 ```
-2. If it's been updated, run `schema/routines.sql`. E.g.:
+2. If `schema/routines.sql` has been updated since you installed it, you can simply re-run it. E.g.:
 ```bash
 mysql ispyb < schema/routines.sql
 ```
