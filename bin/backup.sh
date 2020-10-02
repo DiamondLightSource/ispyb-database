@@ -41,6 +41,7 @@ SpaceGroup
 ProcessingPipeline
 ProcessingPipelineCategory
 BLSampleGroupType
+PurificationColumn
 )
 
 LOOKUP_TABLES_STRING=''
