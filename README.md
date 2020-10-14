@@ -90,7 +90,7 @@ mysql ispyb < grants/ispyb_web.sql
 * Flag indication: 1=yes, 0=no, NULL=unknown
 * Primary key columns are always integer
 * Linker tables used for many-to-many relationships between two entities Entity1 and Entity2 are named according to the pattern 'Entity1_has_Entity2'. If both have the same prefix, then the prefix might be left out of the last one, e.g. 'Component_has_SubType' where 'SubType' refers to the entity 'ComponentSubType'.
-* Stored programs: lowercase_underscore_delimited. The first word should be a verb describing what the procedure, functions or trigger does, e.g. `update`, `upsert`, `insert`, `retrieve`. The second word should typically refer to a table or entity. If needed, add more words after this to describe how to identify the row(s) you want to operate on, e.g. `for_barcode` or `for_sample_id`.
+* Stored programs: lowercase_underscore_delimited. The first word should be a verb describing what the procedure or function does, e.g. `update`, `upsert`, `insert`, `retrieve`. The second word should typically refer to a table or entity. If needed, add more words after this to describe how to identify the row(s) you want to operate on, e.g. `for_barcode` or `for_container_id_and_location`. However, if the row is identified by primary key, then this information can be skipped, e.g. `retrieve_sample`.
 * Parameter names for stored programs: Start with `p_` followed typically by a column name. If the column is the primary key of the entity / table referred to by the stored program name, then simply call the parameter `p_id`.
 * Sometimes it's justified to use abbreviations to avoid excessively long names.
 
