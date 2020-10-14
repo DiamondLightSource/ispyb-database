@@ -40,7 +40,7 @@ BLSampleImageAutoScoreClass
 SpaceGroup
 ProcessingPipeline
 ProcessingPipelineCategory
-BLSampleGroupType
+BLSampleType
 PurificationColumn
 )
 
