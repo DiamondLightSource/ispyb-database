@@ -74,6 +74,7 @@
    "**retrieve_proposal_title**","p_proposal_code varchar(5), p_proposal_number int","Returns a single-row, single-column result set with the title of the proposal p_proposal_code + p_proposal_number"
    "**retrieve_proposal_title**","p_proposal_code varchar(5), p_proposal_number int, p_authLogin varchar(45)","Returns a single-row, single-column result set with the title of the proposal p_proposal_code + p_proposal_number"
    "**retrieve_reprocessing_by_dc**","p_dcId int(11) unsigned","Retrieves reprocessing requests for a data collection (p_dcId)."
+   "**retrieve_sample**","p_id int unsigned, p_useContainerSession boolean, p_authLogin varchar(45)","Returns a single-row result-set with the sample for the given ID"
    "**retrieve_samples_assigned_for_proposal**","IN p_proposalCode varchar(3), IN p_proposalNumber int","Retrieve the user friendly name and ID of all assigned instances"
    "**retrieve_samples_for_sample_group**","IN p_sampleGroupId int unsigned","Return multi-row result set with sample IDs, order in the group"
    "**retrieve_samples_not_loaded_for_container_reg_barcode**","p_barcode varchar(20)",""
