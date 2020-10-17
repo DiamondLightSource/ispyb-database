@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.4.13-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.5.6-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.4.13-MariaDB
+-- Server version	10.5.6-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -3954,6 +3954,138 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_dcId is NULL';
     END IF;
 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_sample` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_sample`(p_id int unsigned, p_useContainerSession boolean, p_authLogin varchar(45))
+    READS SQL DATA
+    COMMENT 'Returns a single-row result-set with the sample for the given ID'
+BEGIN
+    IF p_id IS NOT NULL THEN
+
+      IF p_useContainerSession = True THEN
+
+        IF p_authLogin IS NOT NULL THEN
+        
+
+          SELECT bls.blSampleId "sampleId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "dataCollectionPlanId",
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+            p.proposalId "proposalId",
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            bs.sessionId "sessionId",
+            bs.visit_number "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN BLSession bs ON c.sessionId = bs.sessionId
+            INNER JOIN Proposal p ON p.proposalId = bs.proposalId
+            INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
+            INNER JOIN Person pe ON pe.personId = shp.personId
+          WHERE pe.login = p_authLogin AND	bls.blSampleId = p_id;
+
+        ELSE
+
+          SELECT bls.blSampleId "sampleId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "dataCollectionPlanId",
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+            p.proposalId "proposalId",
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            bs.sessionId "sessionId",
+            bs.visit_number "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN BLSession bs ON c.sessionId = bs.sessionId
+            INNER JOIN Proposal p ON p.proposalId = bs.proposalId
+          WHERE bls.blSampleId = p_id;
+
+        END IF;
+
+      ELSE
+
+        IF p_authLogin IS NOT NULL THEN
+        
+
+          SELECT bls.blSampleId "sampleId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "dataCollectionPlanId",
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+            p.proposalId "proposalId",
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            NULL "sessionId",
+            NULL "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN Dewar d ON d.dewarId = c.dewarId
+            INNER JOIN Shipping s ON s.shippingId = d.shippingId
+            INNER JOIN Proposal p ON p.proposalId = s.proposalId
+            INNER JOIN BLSession bs ON bs.proposalId = p.proposalId
+            INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
+            INNER JOIN Person pe ON pe.personId = shp.personId
+          WHERE pe.login = p_authLogin AND	bls.blSampleId = p_id;
+
+        ELSE
+
+          SELECT bls.blSampleId "sampleId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "dataCollectionPlanId",
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+            p.proposalId "proposalId",
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            NULL "sessionId",
+            NULL "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN Dewar d ON d.dewarId = c.dewarId
+            INNER JOIN Shipping s ON s.shippingId = d.shippingId
+            INNER JOIN Proposal p ON p.proposalId = s.proposalId
+          WHERE bls.blSampleId = p_id;
+
+        END IF;
+
+      END IF;
+
+    ELSE
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
+  END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -7960,12 +8092,12 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-13 20:02:24
--- MariaDB dump 10.17  Distrib 10.4.13-MariaDB, for Linux (x86_64)
+-- Dump completed on 2020-10-16 17:05:55
+-- MariaDB dump 10.17  Distrib 10.5.6-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.4.13-MariaDB
+-- Server version	10.5.6-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -8006,4 +8138,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-13 20:02:24
+-- Dump completed on 2020-10-16 17:05:55
