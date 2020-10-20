@@ -3981,7 +3981,7 @@ BEGIN
         IF p_authLogin IS NOT NULL THEN
         
 
-          SELECT bls.blSampleId "sampleId",
+          SELECT DISTINCT bls.blSampleId "sampleId",
             bls.containerId "containerId",
             bls.diffractionPlanId "dataCollectionPlanId",
             bls.name "sampleName",
@@ -3999,7 +3999,8 @@ BEGIN
             INNER JOIN Container c ON c.containerId = bls.containerId
             INNER JOIN BLSession bs ON c.sessionId = bs.sessionId
             INNER JOIN Proposal p ON p.proposalId = bs.proposalId
-            INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
+            INNER JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
+            INNER JOIN Session_has_Person shp ON bs2.sessionId = shp.sessionId
             INNER JOIN Person pe ON pe.personId = shp.personId
           WHERE pe.login = p_authLogin AND	bls.blSampleId = p_id;
 
@@ -4032,7 +4033,7 @@ BEGIN
         IF p_authLogin IS NOT NULL THEN
         
 
-          SELECT bls.blSampleId "sampleId",
+          SELECT DISTINCT bls.blSampleId "sampleId",
             bls.containerId "containerId",
             bls.diffractionPlanId "dataCollectionPlanId",
             bls.name "sampleName",
@@ -8092,7 +8093,7 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-16 17:05:55
+-- Dump completed on 2020-10-19 23:18:55
 -- MariaDB dump 10.17  Distrib 10.5.6-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
@@ -8138,4 +8139,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-16 17:05:55
+-- Dump completed on 2020-10-19 23:18:55
