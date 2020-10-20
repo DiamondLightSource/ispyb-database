@@ -10,7 +10,7 @@ BEGIN
         IF p_authLogin IS NOT NULL THEN
         -- Authorise only if the person (p_authLogin) is a member of a session on the proposal.
 
-          SELECT bls.blSampleId "sampleId",
+          SELECT DISTINCT bls.blSampleId "sampleId",
             bls.containerId "containerId",
             bls.diffractionPlanId "dataCollectionPlanId",
             bls.name "sampleName",
@@ -28,7 +28,8 @@ BEGIN
             INNER JOIN Container c ON c.containerId = bls.containerId
             INNER JOIN BLSession bs ON c.sessionId = bs.sessionId
             INNER JOIN Proposal p ON p.proposalId = bs.proposalId
-            INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
+            INNER JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
+            INNER JOIN Session_has_Person shp ON bs2.sessionId = shp.sessionId
             INNER JOIN Person pe ON pe.personId = shp.personId
           WHERE pe.login = p_authLogin AND	bls.blSampleId = p_id;
 
@@ -61,7 +62,7 @@ BEGIN
         IF p_authLogin IS NOT NULL THEN
         -- Authorise only if the person (p_authLogin) is a member of a session on the proposal.
 
-          SELECT bls.blSampleId "sampleId",
+          SELECT DISTINCT bls.blSampleId "sampleId",
             bls.containerId "containerId",
             bls.diffractionPlanId "dataCollectionPlanId",
             bls.name "sampleName",
