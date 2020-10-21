@@ -67,10 +67,7 @@ mysql --defaults-group-suffix="${hostname}" -u root -e "SET GLOBAL wsrep_desync=
 mariabackup --defaults-extra-file="${credentials_file}" --backup --socket="${socket}" --no-lock --parallel=8 --target-dir="${backup_dir}"
 
 # Prepare the backup
-cd "${backup_dir}" || exit
-
-directory=$(find . -maxdepth 1 -type d | sort -n | tail -1)
-mariabackup --prepare --target-dir="${directory}" --parallel=8
+mariabackup --prepare --target-dir="${backup_dir}" --parallel=8
 
 # Sync the node again
 # You need (at least one of) the SUPER privilege(s) for this operation
@@ -83,8 +80,7 @@ fname=dbbackup-"${today}".tar.gz
 target_path="${dest_dir}"/"${fname}"
 
 # Compress backup
-cd "${directory}" || exit
-tar cfz "${target_path}/${fname}" ./*
+tar cfz "${target_path}" "${backup_dir:?}"/*
 
 # Remove files in the destination folder that are older than 7 days, except Tuesdays
 cd / && find "${dest_dir}/dbbackup*" -type f -mtime +7 ! -name "*Tuesday*" -exec rm -f {} \;
