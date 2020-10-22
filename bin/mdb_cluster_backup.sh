@@ -50,7 +50,7 @@ today=$(date +%Y-%m-%d-%A)
 backup_dir=${backup_root_dir}/${today} 
 hostname=$(hostname -s)
 
-# Remove old backups - last run copied these to an external location 
+# Remove old backups - last run already copied these to ${dest_dir}
 rm -rf "${backup_root_dir:?}/*"
 
 # Make sure backup directory exists
@@ -80,7 +80,8 @@ fname=dbbackup-"${today}".tar.gz
 target_path="${dest_dir}"/"${fname}"
 
 # Compress backup
-tar cfz "${target_path}" "${backup_dir:?}"/*
+cd "${backup_root_dir}"
+tar cfz "${target_path}" "${today:?}"/*
 
 # Remove files in the destination folder that are older than 7 days, except Tuesdays
 cd / && find "${dest_dir}/dbbackup*" -type f -mtime +7 ! -name "*Tuesday*" -exec rm -f {} \;
