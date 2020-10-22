@@ -51,7 +51,7 @@ backup_dir=${backup_root_dir}/${today}
 hostname=$(hostname -s)
 
 # Remove old backups - last run already copied these to ${dest_dir}
-rm -rf "${backup_root_dir:?}/*"
+rm -rf "${backup_root_dir:?}"/*
 
 # Make sure backup directory exists
 mkdir -p "${backup_dir:?}"
