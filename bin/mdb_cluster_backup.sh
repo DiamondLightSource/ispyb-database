@@ -80,12 +80,12 @@ fname=dbbackup-"${today}".tar.gz
 target_path="${dest_dir}"/"${fname}"
 
 # Compress backup
-cd "${backup_root_dir}"
+cd "${backup_root_dir}" || exit
 tar cfz "${target_path}" "${today:?}"/*
 
 # Remove files in the destination folder that are older than 7 days, except Tuesdays
-cd / && find "${dest_dir}/dbbackup*" -type f -mtime +7 ! -name "*Tuesday*" -exec rm -f {} \;
+cd / && find "${dest_dir}"/dbbackup* -type f -mtime +7 ! -name "*Tuesday*" -exec rm -f {} \;
 
 # Remove files in the target folder that are older than 4 weeks
-cd / && find "${dest_dir}/dbbackup*" -type f -mtime +28 -exec rm -f {} \;
+cd / && find "${dest_dir}"/dbbackup* -type f -mtime +28 -exec rm -f {} \;
 
