@@ -40,7 +40,7 @@ BEGIN
   START TRANSACTION;
 
   INSERT INTO PhasingAnalysis (recordTimeStamp) VALUES (JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, '$.PhasingContainer.PhasingAnalysis[0].recordTimeStamp')));
-  SET v_phasingAnalysisId := last_insert_id(); 
+  SET v_phasingAnalysisId := last_insert_id();
 
   INSERT INTO Phasing_has_Scaling (phasingAnalysisId, autoProcScalingId) 
     VALUES (v_phasingAnalysisId, p_autoProcScalingId);
@@ -148,7 +148,7 @@ BEGIN
   Need to roll-back and send signal if errors. May need a handler for this.
   Need to have checks before the inserts to ensure the corresponding element exists in the json.
 */
-
+  SET p_id := v_phasingAnalysisId;
   COMMIT;
 END `proc_body`;;
 DELIMITER ;
