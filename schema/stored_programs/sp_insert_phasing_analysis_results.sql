@@ -2,9 +2,8 @@ DELIMITER ;;
 
 -- Assumptions: 
 -- * spaceGroupId is actually spaceGroupId!
--- * Need to do ALTER TABLE Phasing MODIFY `method` enum('solvent flattening','solvent flipping', 'shelxe') DEFAULT NULL COMMENT 'phasing method';
 
-CREATE OR REPLACE DEFINER=`ispyb_root`@`%`PROCEDURE insert_phasing_analysis_results(OUT p_id int(11) unsigned, IN p_phasing_result JSON, IN p_autoProcScalingId int(10) unsigned)
+CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE insert_phasing_analysis_results(OUT p_id int(11) unsigned, IN p_phasing_result JSON, IN p_autoProcScalingId int(10) unsigned)
 MODIFIES SQL DATA
 COMMENT 'Insert all the results from a phasing into the relevant database tables. Returns the top-level phasing ID in p_id.'
 `proc_body`:
