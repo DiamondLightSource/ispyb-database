@@ -3153,7 +3153,7 @@ CREATE TABLE `Phasing` (
   `phasingAnalysisId` int(11) unsigned NOT NULL COMMENT 'Related phasing analysis item',
   `phasingProgramRunId` int(11) unsigned NOT NULL COMMENT 'Related program item',
   `spaceGroupId` int(10) unsigned DEFAULT NULL COMMENT 'Related spaceGroup',
-  `method` enum('solvent flattening','solvent flipping','shelxe') DEFAULT NULL COMMENT 'phasing method',
+  `method` enum('solvent flattening','solvent flipping','e','SAD','shelxe') DEFAULT NULL COMMENT 'phasing method',
   `solventContent` double DEFAULT NULL,
   `enantiomorph` tinyint(1) DEFAULT NULL COMMENT '0 or 1',
   `lowRes` double DEFAULT NULL,
@@ -5824,4 +5824,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-09  7:59:46
+-- Dump completed on 2020-11-09  8:21:38
