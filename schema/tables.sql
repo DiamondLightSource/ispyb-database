@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.5.6-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.18  Distrib 10.5.7-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.5.6-MariaDB
+-- Server version	10.5.7-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -2385,9 +2385,12 @@ CREATE TABLE `GridInfo` (
   `snapshot_offsetXPixel` float DEFAULT NULL,
   `snapshot_offsetYPixel` float DEFAULT NULL,
   `snaked` tinyint(1) DEFAULT 0 COMMENT 'True: The images associated with the DCG were collected in a snaked pattern',
+  `dataCollectionId` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`gridInfoId`),
   KEY `workflowMeshId` (`workflowMeshId`),
   KEY `GridInfo_ibfk_2` (`dataCollectionGroupId`),
+  KEY `GridInfo_fk_dataCollectionId` (`dataCollectionId`),
+  CONSTRAINT `GridInfo_fk_dataCollectionId` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `GridInfo_ibfk_1` FOREIGN KEY (`workflowMeshId`) REFERENCES `WorkflowMesh` (`workflowMeshId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `GridInfo_ibfk_2` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -3150,7 +3153,7 @@ CREATE TABLE `Phasing` (
   `phasingAnalysisId` int(11) unsigned NOT NULL COMMENT 'Related phasing analysis item',
   `phasingProgramRunId` int(11) unsigned NOT NULL COMMENT 'Related program item',
   `spaceGroupId` int(10) unsigned DEFAULT NULL COMMENT 'Related spaceGroup',
-  `method` enum('solvent flattening','solvent flipping') DEFAULT NULL COMMENT 'phasing method',
+  `method` enum('solvent flattening','solvent flipping','shelxe') DEFAULT NULL COMMENT 'phasing method',
   `solventContent` double DEFAULT NULL,
   `enantiomorph` tinyint(1) DEFAULT NULL COMMENT '0 or 1',
   `lowRes` double DEFAULT NULL,
@@ -5821,4 +5824,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-16 17:05:55
+-- Dump completed on 2020-11-09  7:59:46

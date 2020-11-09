@@ -1023,6 +1023,7 @@
    ``snapshot_offsetXPixel``,float,""
    ``snapshot_offsetYPixel``,float,""
    ``snaked``,tinyint,"True: The images associated with the DCG were collected in a snaked pattern"
+   ``dataCollectionId``,int,""
    **Image**,table,""
    ``imageId``,int,""
    ``dataCollectionId``,int,""
