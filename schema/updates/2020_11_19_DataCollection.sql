@@ -2,7 +2,7 @@ INSERT IGNORE INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2020_11_19_D
 
 ALTER TABLE `DataCollection`
   ADD `dataCollectionPlanId` INT UNSIGNED NULL DEFAULT NULL,
-  ADD CONSTRAINT `DataCollection_ibfk9`
+  ADD CONSTRAINT `DataCollection_dataCollectionPlanId`
     FOREIGN KEY (`dataCollectionPlanId`)
       REFERENCES `DiffractionPlan`(`diffractionPlanId`)
         ON DELETE NO ACTION ON UPDATE NO ACTION;
