@@ -174,7 +174,7 @@ INSERT INTO `BLSample` (`blSampleId`, `diffractionPlanId`, `crystalId`, `contain
 --
 
 /*!40000 ALTER TABLE `BLSampleGroup` DISABLE KEYS */;
-INSERT INTO `BLSampleGroup` (`blSampleGroupId`, `name`) VALUES (5,NULL),(6,'foo');
+INSERT INTO `BLSampleGroup` (`blSampleGroupId`, `name`) VALUES (5,NULL),(6,'foo'),(7,'bar');
 /*!40000 ALTER TABLE `BLSampleGroup` ENABLE KEYS */;
 
 --
@@ -182,7 +182,7 @@ INSERT INTO `BLSampleGroup` (`blSampleGroupId`, `name`) VALUES (5,NULL),(6,'foo'
 --
 
 /*!40000 ALTER TABLE `BLSampleGroup_has_BLSample` DISABLE KEYS */;
-INSERT INTO `BLSampleGroup_has_BLSample` (`blSampleGroupId`, `blSampleId`, `groupOrder`, `type`, `blSampleTypeId`) VALUES (5,398824,1,'background',NULL),(5,398827,2,'sample',NULL),(6,398810,NULL,NULL,NULL);
+INSERT INTO `BLSampleGroup_has_BLSample` (`blSampleGroupId`, `blSampleId`, `groupOrder`, `type`, `blSampleTypeId`) VALUES (5,398824,1,'background',NULL),(5,398827,2,'sample',NULL),(6,398810,NULL,NULL,NULL),(7,398810,NULL,NULL,NULL),(7,374695,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `BLSampleGroup_has_BLSample` ENABLE KEYS */;
 
 --
