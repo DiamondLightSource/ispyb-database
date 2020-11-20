@@ -809,7 +809,7 @@
    ``trackingNumberToSynchrotron``,varchar,""
    ``trackingNumberFromSynchrotron``,varchar,""
    ``type``,enum,""
-   ``FACILITYCODE``,varchar,""
+   ``facilityCode``,varchar,""
    ``weight``,float,"dewar weight in kg"
    ``deliveryAgent_barcode``,varchar,"Courier piece barcode (not the airway bill)"
    **DewarLocation**,table,"ISPyB Dewar location table"
