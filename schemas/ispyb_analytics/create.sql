@@ -43,11 +43,6 @@ CREATE TABLE Proposal_has_Instrument (
   PRIMARY KEY(proposalId, instrumentId)
 );
 
--- SELECT personId FROM Person WHERE givenName = 'Mark' AND familyName = 'Williams';
--- SELECT personId FROM Person WHERE givenName = 'Neil' AND familyName = 'Paterson';
--- SELECT personId FROM Person WHERE givenName = 'Elliot' AND familyName = 'Nelson';
--- SELECT personId FROM Person WHERE givenName = 'Christofer' AND familyName = 'Bjorklid';
-
 -- Add instrumentId + indexes to relevant tables
 
 ALTER TABLE BLSession
