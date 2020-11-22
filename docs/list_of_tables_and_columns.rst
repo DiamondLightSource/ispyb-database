@@ -907,6 +907,8 @@
    ``exposureTemperature``,float,"units: kelvin"
    ``experimentTypeId``,int,""
    ``purificationColumnId``,int,""
+   ``collectionMode``,enum,"The requested collection mode, possible values are auto, manual"
+   ``priority``,int,"The priority of this sample relative to others in the shipment"
    **EMMicroscope**,table,""
    ``emMicroscopeId``,int,""
    ``instrumentName``,varchar,""
