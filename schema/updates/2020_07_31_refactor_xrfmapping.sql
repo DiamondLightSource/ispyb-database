@@ -1,4 +1,4 @@
-INSERT INTO SchemaStatus (scriptName, schemaStatus) VALUES ('20200731_refactor_xrfmapping.sql', 'ONGOING');
+INSERT INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2020_07_31_refactor_xrfmapping.sql', 'ONGOING');
 
 
 DROP TABLE IF EXISTS `XRFFluorescenceMapping`;
@@ -22,7 +22,9 @@ CREATE TABLE `XRFFluorescenceMapping` (
       FOREIGN KEY (`gridInfoId`)
           REFERENCES `GridInfo` (`gridInfoId`)
               ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+)
+COMMENT 'An XRF map generated from an XRF Mapping ROI based on data from a gridscan of a sample'
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 ALTER TABLE `XRFFluorescenceMappingROI`
@@ -62,4 +64,4 @@ CREATE TABLE `XFEFluorescenceComposite` (
     ENGINE = InnoDB;
 
 
-UPDATE SchemaStatus SET schemaStatus = 'DONE' where scriptName = '20200731_refactor_xrfmapping.sql';
+UPDATE SchemaStatus SET schemaStatus = 'DONE' where scriptName = '2020_07_31_refactor_xrfmapping.sql';

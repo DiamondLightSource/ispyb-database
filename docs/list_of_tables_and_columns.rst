@@ -2145,7 +2145,7 @@
    ``status``,enum,""
    ``x``,float,"position in number of boxes in direction of the fast scan within GridInfo grid"
    ``y``,float,"position in number of boxes in direction of the slow scan within GridInfo grid"
-   **XRFFluorescenceMapping**,table,""
+   **XRFFluorescenceMapping**,table,"An XRF map generated from an XRF Mapping ROI based on data from a gridscan of a sample"
    ``xrfFluorescenceMappingId``,int,""
    ``xrfFluorescenceMappingROIId``,int,""
    ``gridInfoId``,int,""
