@@ -31,7 +31,8 @@ ALTER TABLE `XRFFluorescenceMappingROI`
       FOREIGN KEY (`blSampleId`)
           REFERENCES `BLSample`(`blSampleId`) 
               ON DELETE RESTRICT ON UPDATE RESTRICT,
-    ADD `scalar` VARCHAR(50) NULL DEFAULT NULL COMMENT 'For ROIs that are not an element, i.e. could be a scan counter instead';
+    ADD `scalar` VARCHAR(50) NULL DEFAULT NULL COMMENT 'For ROIs that are not an element, i.e. could be a scan counter instead',
+    CHANGE `edge` `edge` VARCHAR(15) NULL DEFAULT NULL COMMENT 'Edge type i.e. Ka1, could be a custom edge in case of overlap Ka1-noCa';
 
 
 CREATE TABLE `XFEFluorescenceComposite` ( 
