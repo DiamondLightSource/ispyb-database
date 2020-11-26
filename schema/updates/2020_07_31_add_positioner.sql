@@ -1,4 +1,4 @@
-INSERT INTO SchemaStatus (scriptName, schemaStatus) VALUES ('20200731_add_positioner.sql', 'ONGOING');
+INSERT INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2020_07_31_add_positioner.sql', 'ONGOING');
 
 CREATE TABLE `Positioner` ( 
     `positionerId` INT UNSIGNED NOT NULL AUTO_INCREMENT, 
@@ -41,4 +41,4 @@ CREATE TABLE `BLSubSample_has_Positioner` (
     ) ENGINE = InnoDB;
 
 
-UPDATE SchemaStatus SET schemaStatus = 'DONE' where scriptName = '20200731_add_positioner.sql';
+UPDATE SchemaStatus SET schemaStatus = 'DONE' where scriptName = '2020_07_31_add_positioner.sql';
