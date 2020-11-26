@@ -2161,7 +2161,7 @@
    ``startEnergy``,float,""
    ``endEnergy``,float,""
    ``element``,varchar,""
-   ``edge``,varchar,"In future may be changed to enum(K, L)"
+   ``edge``,varchar,"Edge type i.e. Ka1, could be a custom edge in case of overlap Ka1-noCa"
    ``r``,tinyint,"R colour component"
    ``g``,tinyint,"G colour component"
    ``b``,tinyint,"B colour component"
