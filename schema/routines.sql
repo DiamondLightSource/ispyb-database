@@ -3883,7 +3883,7 @@ BEGIN
     IF p_id IS NOT NULL AND p_program IS NOT NULL THEN
       SELECT dc.dataCollectionId, app.autoProcProgramId,
         app.processingStatus,
-        concat('[', group_concat(json_object('fileType', appa.fileType, 'fullFilePath', concat(appa.filePath, '/', appa.fileName, 'importanceRank', appa.importanceRank))), ']') "processingAttachments"
+        concat('[', group_concat(json_object('fileType', appa.fileType, 'fullFilePath', concat(appa.filePath, '/', appa.fileName), 'importanceRank', appa.importanceRank)), ']') "processingAttachments"
       FROM DataCollection dc
         INNER JOIN AutoProcIntegration api
           ON api.dataCollectionId = dc.dataCollectionId
