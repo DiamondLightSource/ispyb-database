@@ -3883,7 +3883,7 @@ BEGIN
     IF p_id IS NOT NULL AND p_program IS NOT NULL THEN
       SELECT dc.dataCollectionId, app.autoProcProgramId,
         app.processingStatus,
-        concat('[', group_concat(json_object('fileType', appa.fileType, 'fullFilePath', concat(appa.filePath, '/', appa.fileName))), ']') "processingAttachments"
+        concat('[', group_concat(json_object('fileType', appa.fileType, 'fullFilePath', concat(appa.filePath, '/', appa.fileName), 'importanceRank', appa.importanceRank)), ']') "processingAttachments"
       FROM DataCollection dc
         INNER JOIN AutoProcIntegration api
           ON api.dataCollectionId = dc.dataCollectionId
@@ -3927,7 +3927,7 @@ BEGIN
         IF p_authLogin IS NOT NULL THEN
             SELECT dc.dataCollectionId, app.autoProcProgramId,
                 app.processingStatus,
-                concat('[', group_concat(json_object('fileType', appa.fileType, 'fullFilePath', concat(appa.filePath, '/', appa.fileName))), ']') "processingAttachments"
+                concat('[', group_concat(json_object('fileType', appa.fileType, 'fullFilePath', concat(appa.filePath, '/', appa.fileName), 'importanceRank', appa.importanceRank)), ']') "processingAttachments"
             FROM DataCollection dc
                 INNER JOIN AutoProcIntegration api ON api.dataCollectionId = dc.dataCollectionId
                 INNER JOIN AutoProcProgram app ON app.autoProcProgramId = api.autoProcProgramId
@@ -3942,7 +3942,7 @@ BEGIN
         ELSE
             SELECT dc.dataCollectionId, app.autoProcProgramId,
                 app.processingStatus,
-                concat('[', group_concat(json_object('fileType', appa.fileType, 'fullFilePath', concat(appa.filePath, '/', appa.fileName))), ']') "processingAttachments"
+                concat('[', group_concat(json_object('fileType', appa.fileType, 'fullFilePath', concat(appa.filePath, '/', appa.fileName), 'importanceRank', appa.importanceRank)), ']') "processingAttachments"
             FROM DataCollection dc
                 INNER JOIN AutoProcIntegration api ON api.dataCollectionId = dc.dataCollectionId
                 INNER JOIN AutoProcProgram app ON app.autoProcProgramId = api.autoProcProgramId
@@ -3978,7 +3978,7 @@ CREATE PROCEDURE `retrieve_processing_program_attachments_for_program_id`(p_id i
 BEGIN
     IF p_id IS NOT NULL THEN
       SELECT
-        appa.autoProcProgramAttachmentId "attachmentId", appa.fileType "fileType", appa.filePath "filePath", appa.fileName "fileName"
+        appa.autoProcProgramAttachmentId "attachmentId", appa.fileType "fileType", appa.filePath "filePath", appa.fileName "fileName", appa.importanceRank "importanceRank"
       FROM AutoProcProgramAttachment appa
       WHERE appa.autoProcProgramId = p_id;
     ELSE
@@ -4011,7 +4011,7 @@ BEGIN
     IF p_id IS NOT NULL THEN
         IF p_authLogin IS NOT NULL THEN
             SELECT
-                appa.autoProcProgramAttachmentId "attachmentId", appa.fileType "fileType", appa.filePath "filePath", appa.fileName "fileName"
+                appa.autoProcProgramAttachmentId "attachmentId", appa.fileType "fileType", appa.filePath "filePath", appa.fileName "fileName", appa.importanceRank "importanceRank"
             FROM AutoProcProgramAttachment appa
                 INNER JOIN AutoProcProgram app ON app.autoProcProgramId = appa.autoProcProgramId
                 INNER JOIN ProcessingJob pj ON pj.processingJobId = app.processingJobId
@@ -4023,7 +4023,7 @@ BEGIN
             GROUP BY appa.autoProcProgramAttachmentId, appa.fileType, appa.filePath, appa.fileName;
         ELSE
             SELECT
-                appa.autoProcProgramAttachmentId "attachmentId", appa.fileType "fileType", appa.filePath "filePath", appa.fileName "fileName"
+                appa.autoProcProgramAttachmentId "attachmentId", appa.fileType "fileType", appa.filePath "filePath", appa.fileName "fileName", appa.importanceRank "importanceRank"
             FROM AutoProcProgramAttachment appa
             WHERE appa.autoProcProgramId = p_id;
         END IF;
