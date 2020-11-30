@@ -3,7 +3,7 @@
 -- https://vettabase.com/blog/mariadb-mysql-using-views-to-grant-or-deny-row-level-privileges/
 --
 
-USE ispyb_build;
+USE $ispyb;
 
 CREATE TABLE Instrument (
   instrumentId SMALLINT UNSIGNED PRIMARY KEY,
@@ -102,55 +102,55 @@ ALTER TABLE XFEFluorescenceSpectrum
 
 -- Recreate database
 
-DROP DATABASE IF EXISTS ispyb_analytics;
-CREATE DATABASE IF NOT EXISTS ispyb_analytics;
+DROP DATABASE IF EXISTS $ispyb_analytics;
+CREATE DATABASE IF NOT EXISTS $ispyb_analytics;
 
 -- Create views
 
-USE ispyb_analytics;
+USE $ispyb_analytics;
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW BLSession AS
   SELECT * 
-  FROM ispyb_build.BLSession bs
+  FROM $ispyb.BLSession bs
   WHERE instrumentId IN (
     SELECT instrumentId 
-    FROM ispyb_build.Instrument_has_Username ihu
+    FROM $ispyb.Instrument_has_Username ihu
     WHERE ihu.username = current_user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW DataCollectionGroup AS
   SELECT * 
-  FROM ispyb_build.DataCollectionGroup bs
+  FROM $ispyb.DataCollectionGroup bs
   WHERE instrumentId IN (
     SELECT instrumentId 
-    FROM ispyb_build.Instrument_has_Username ihu
+    FROM $ispyb.Instrument_has_Username ihu
     WHERE ihu.username = current_user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW DataCollection AS
   SELECT * 
-  FROM ispyb_build.DataCollection bs
+  FROM $ispyb.DataCollection bs
   WHERE instrumentId IN (
     SELECT instrumentId 
-    FROM ispyb_build.Instrument_has_Username ihu
+    FROM $ispyb.Instrument_has_Username ihu
     WHERE ihu.username = current_user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW EnergyScan AS
   SELECT * 
-  FROM ispyb_build.EnergyScan bs
+  FROM $ispyb.EnergyScan bs
   WHERE instrumentId IN (
     SELECT instrumentId 
-    FROM ispyb_build.Instrument_has_Username ihu
+    FROM $ispyb.Instrument_has_Username ihu
     WHERE ihu.username = current_user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW XFEFluorescenceSpectrum AS
   SELECT * 
-  FROM ispyb_build.XFEFluorescenceSpectrum bs
+  FROM $ispyb.XFEFluorescenceSpectrum bs
   WHERE instrumentId IN (
     SELECT instrumentId 
-    FROM ispyb_build.Instrument_has_Username ihu
+    FROM $ispyb.Instrument_has_Username ihu
     WHERE ihu.username = current_user()
   );
 
