@@ -1,8 +1,8 @@
--- MariaDB dump 10.18  Distrib 10.5.7-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.18  Distrib 10.5.8-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.5.7-MariaDB
+-- Server version	10.5.8-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -3916,7 +3916,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `retrieve_processing_program_attachments_for_dc_group_program_v2`(
-    p_id int unsigned,
+    p_id int unsigned, 
     p_program varchar(255),
     p_authLogin varchar(45)
 )
@@ -3934,12 +3934,12 @@ BEGIN
                 INNER JOIN AutoProcProgramAttachment appa ON appa.autoProcProgramId = api.autoProcProgramId
                 INNER JOIN DataCollectionGroup dcg ON dcg.dataCollectionGroupId = dc.dataCollectionGroupId
                 INNER JOIN Session_has_Person shp ON shp.sessionId = dcg.sessionId
-                INNER JOIN Person per ON per.personId = shp.personId
+                INNER JOIN Person per ON per.personId = shp.personId 
             WHERE
                 dc.dataCollectionGroupId = p_id AND app.processingPrograms = p_program AND per.login = p_authLogin
             GROUP BY
                 dc.dataCollectionId, app.autoProcProgramId, app.processingStatus;
-        ELSE
+        ELSE 
             SELECT dc.dataCollectionId, app.autoProcProgramId,
                 app.processingStatus,
                 concat('[', group_concat(json_object('fileType', appa.fileType, 'fullFilePath', concat(appa.filePath, '/', appa.fileName), 'importanceRank', appa.importanceRank)), ']') "processingAttachments"
@@ -4002,7 +4002,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `retrieve_processing_program_attachments_for_program_id_v2`(
-    p_id int unsigned,
+    p_id int unsigned,	
     p_authLogin varchar(45)
 )
     READS SQL DATA
@@ -4018,9 +4018,9 @@ BEGIN
                 INNER JOIN DataCollection dc ON dc.dataCollectionId = pj.dataCollectionId
                 INNER JOIN DataCollectionGroup dcg ON dcg.dataCollectionGroupId = dc.dataCollectionGroupId
                 INNER JOIN Session_has_Person shp ON shp.sessionId = dcg.sessionId
-                INNER JOIN Person per ON per.personId = shp.personId
+                INNER JOIN Person per ON per.personId = shp.personId 
             WHERE appa.autoProcProgramId = p_id AND per.login = p_authLogin
-            GROUP BY appa.autoProcProgramAttachmentId, appa.fileType, appa.filePath, appa.fileName;
+            GROUP BY appa.autoProcProgramAttachmentId, appa.fileType, appa.filePath, appa.fileName, appa.importanceRank;
         ELSE
             SELECT
                 appa.autoProcProgramAttachmentId "attachmentId", appa.fileType "fileType", appa.filePath "filePath", appa.fileName "fileName", appa.importanceRank "importanceRank"
@@ -8252,12 +8252,12 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-09  7:59:46
--- MariaDB dump 10.18  Distrib 10.5.7-MariaDB, for Linux (x86_64)
+-- Dump completed on 2020-12-01 12:22:39
+-- MariaDB dump 10.18  Distrib 10.5.8-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.5.7-MariaDB
+-- Server version	10.5.8-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -8298,4 +8298,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-09  7:59:47
+-- Dump completed on 2020-12-01 12:22:40
