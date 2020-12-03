@@ -27,7 +27,7 @@ BEGIN
             pr.proteinId "materialId",
             bls.containerId "containerId",
             bls.diffractionPlanId "planId",
-            bs.sessionId "sessionId",
+            c.sessionId "sessionId",
             p.proposalId "proposalId",
 
             bls.name "sampleName",
@@ -81,7 +81,7 @@ BEGIN
             pr.proteinId "materialId",
             bls.containerId "containerId",
             bls.diffractionPlanId "planId",
-            bs.sessionId "sessionId",
+            c.sessionId "sessionId",
             p.proposalId "proposalId",
 
             bls.name "sampleName",
@@ -137,7 +137,7 @@ BEGIN
             pr.proteinId "materialId",
             bls.containerId "containerId",
             bls.diffractionPlanId "planId",
-            NULL "sessionId",
+            c.sessionId "sessionId",
             p.proposalId "proposalId",
 
             bls.name "sampleName",
@@ -192,7 +192,7 @@ BEGIN
             pr.proteinId "materialId",
             bls.containerId "containerId",
             bls.diffractionPlanId "planId",
-            NULL "sessionId",
+            c.sessionId "sessionId",
             p.proposalId "proposalId",
 
             bls.name "sampleName",
