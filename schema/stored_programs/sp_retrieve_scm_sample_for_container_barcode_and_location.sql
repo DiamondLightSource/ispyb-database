@@ -13,7 +13,7 @@ DELIMITER ;;
 
 CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `retrieve_scm_sample_for_container_barcode_and_location`(p_barcode varchar(45), p_location varchar(45), p_useContainerSession boolean, p_authLogin varchar(45)) 
 READS SQL DATA
-COMMENT 'Returns a single-row result-set with the sample for the given ID'
+COMMENT 'Returns a single-row result-set (although can be multi-row if multiple samples per location in a container) with the sample for the given container barcode and sample location.'
 BEGIN
 
     IF p_barcode IS NOT NULL AND p_location IS NOT NULL THEN
