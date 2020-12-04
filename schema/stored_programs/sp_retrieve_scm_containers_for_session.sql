@@ -45,7 +45,7 @@ BEGIN
             bs.visit_number "sessionNumber",
             
             c.comments "comments",
-            c.experimentType "experimentType"
+            et.name "experimentType"
           FROM Container c
             JOIN BLSession bs ON bs.sessionId = c.sessionId
             JOIN Proposal p ON p.proposalId = bs.proposalId
@@ -53,6 +53,7 @@ BEGIN
             JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
             JOIN Person per on per.personId = shp.personId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber AND c.containerStatus = p_status AND per.login = p_authLogin;
 
         ELSE
@@ -77,11 +78,12 @@ BEGIN
             bs.visit_number "sessionNumber",
             
             c.comments "comments",
-            c.experimentType "experimentType"
+            et.name "experimentType"
           FROM Container c
             JOIN BLSession bs ON bs.sessionId = c.sessionId
             JOIN Proposal p ON p.proposalId = bs.proposalId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber AND c.containerStatus = p_status;
 
 
@@ -112,7 +114,7 @@ BEGIN
             NULL "sessionNumber",
             
             c.comments "comments",
-            c.experimentType "experimentType"
+            et.name "experimentType"
           FROM Container c
             JOIN Dewar d ON c.dewarId = d.dewarId
             JOIN Shipping s ON s.shippingId = d.shippingId
@@ -121,6 +123,7 @@ BEGIN
             JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
             JOIN Person per on per.personId = shp.personId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND c.containerStatus = p_status AND per.login = p_authLogin;
 
         ELSE
@@ -145,12 +148,13 @@ BEGIN
             NULL "sessionNumber",
 
             c.comments "comments",
-            c.experimentType "experimentType"
+            et.name "experimentType"
           FROM Container c
             JOIN Dewar d ON c.dewarId = d.dewarId
             JOIN Shipping s ON s.shippingId = d.shippingId
             JOIN Proposal p ON p.proposalId = s.proposalId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND c.containerStatus = p_status;
 
         END IF;
