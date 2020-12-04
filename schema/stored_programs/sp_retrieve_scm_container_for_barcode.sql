@@ -26,7 +26,7 @@ BEGIN
             c.sessionId "sessionId",
             p.proposalId "proposalId",
             c.ownerId "ownerId",
-            -- what about owner login, givenName, familyName ????
+            per2.login "ownerUsername",
             c.code "name",
             c.containerType "type",
             c.barcode "barcode",
@@ -48,6 +48,7 @@ BEGIN
             JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
             JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
             JOIN Person per on per.personId = shp.personId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
           WHERE c.barcode = p_barcode AND per.login = p_authLogin;
 
         ELSE
@@ -57,7 +58,7 @@ BEGIN
             c.sessionId "sessionId",
             p.proposalId "proposalId",
             c.ownerId "ownerId",
-            -- what about owner login, givenName, familyName ????
+            per2.login "ownerUsername",
             c.code "name",
             c.containerType "type",
             c.barcode "barcode",
@@ -76,6 +77,7 @@ BEGIN
           FROM Container c
             JOIN BLSession bs ON bs.sessionId = c.sessionId
             JOIN Proposal p ON p.proposalId = bs.proposalId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
           WHERE c.barcode = p_barcode;
 
         END IF;
@@ -90,7 +92,7 @@ BEGIN
             c.sessionId "sessionId",
             p.proposalId "proposalId",
             c.ownerId "ownerId",
-            -- what about owner login, givenName, familyName ????
+            per2.login "ownerUsername",
             c.code "name",
             c.containerType "type",
             c.barcode "barcode",
@@ -113,6 +115,7 @@ BEGIN
             JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
             JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
             JOIN Person per on per.personId = shp.personId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
           WHERE c.barcode = p_barcode AND per.login = p_authLogin;
 
         ELSE
@@ -122,7 +125,7 @@ BEGIN
             c.sessionId "sessionId",
             p.proposalId "proposalId",
             c.ownerId "ownerId",
-            -- what about owner login, givenName, familyName ????
+            per2.login "ownerUsername",
             c.code "name",
             c.containerType "type",
             c.barcode "barcode",
@@ -142,6 +145,7 @@ BEGIN
             JOIN Dewar d ON c.dewarId = d.dewarId
             JOIN Shipping s ON s.shippingId = d.shippingId
             JOIN Proposal p ON p.proposalId = s.proposalId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
           WHERE c.barcode = p_barcode;
 
         END IF;
