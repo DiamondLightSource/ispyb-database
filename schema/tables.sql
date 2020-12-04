@@ -1323,6 +1323,7 @@ CREATE TABLE `Container` (
   `containerRegistryId` int(11) unsigned DEFAULT NULL,
   `scLocationUpdated` datetime DEFAULT NULL,
   `priorityPipelineId` int(11) unsigned DEFAULT NULL,
+  `experimentTypeId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`containerId`),
   UNIQUE KEY `Container_UNIndex1` (`barcode`),
   KEY `Container_FKIndex` (`beamlineLocation`),
@@ -1336,6 +1337,8 @@ CREATE TABLE `Container` (
   KEY `Container_ibfk8` (`containerRegistryId`),
   KEY `Container_ibfk6` (`sessionId`),
   KEY `Container_ibfk9` (`priorityPipelineId`),
+  KEY `Container_fk_experimentTypeId` (`experimentTypeId`),
+  CONSTRAINT `Container_fk_experimentTypeId` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`),
   CONSTRAINT `Container_ibfk2` FOREIGN KEY (`screenId`) REFERENCES `Screen` (`screenId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Container_ibfk3` FOREIGN KEY (`scheduleId`) REFERENCES `Schedule` (`scheduleId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Container_ibfk4` FOREIGN KEY (`imagerId`) REFERENCES `Imager` (`imagerId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -5824,4 +5827,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-20 17:50:06
+-- Dump completed on 2020-12-04 16:35:22

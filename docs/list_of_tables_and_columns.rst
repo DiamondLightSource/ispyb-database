@@ -510,6 +510,7 @@
    ``containerRegistryId``,int,""
    ``scLocationUpdated``,datetime,""
    ``priorityPipelineId``,int,""
+   ``experimentTypeId``,int,""
    **ContainerHistory**,table,""
    ``containerHistoryId``,int,""
    ``containerId``,int,""

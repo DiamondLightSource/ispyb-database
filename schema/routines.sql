@@ -4464,6 +4464,1268 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_scm_container` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_scm_container`(p_id int unsigned, p_useContainerSession boolean, p_authLogin varchar(45))
+    READS SQL DATA
+    COMMENT 'Returns a single-row result-set with the container for the given ID'
+BEGIN
+
+    IF p_id IS NOT NULL THEN
+
+      IF p_useContainerSession = True THEN
+
+        IF p_authLogin IS NOT NULL THEN
+        
+
+          SELECT DISTINCT c.containerId "containerId",
+            c.dewarId "dewarId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+            c.ownerId "ownerId",
+            per2.login "ownerUsername",
+            c.code "name",
+            c.containerType "type",
+            c.barcode "barcode",
+            c.beamlineLocation "beamline",
+            c.sampleChangerLocation "location",
+            c.containerStatus "status",
+            c.capacity "capacity",
+            c.storageTemperature "storageTemperature",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            bs.visit_number "sessionNumber",
+            
+            c.comments "comments",
+            et.name "experimentType"
+          FROM Container c
+            JOIN BLSession bs ON bs.sessionId = c.sessionId
+            JOIN Proposal p ON p.proposalId = bs.proposalId
+            JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
+            JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
+            JOIN Person per on per.personId = shp.personId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+          WHERE c.containerId = p_id AND per.login = p_authLogin;
+
+        ELSE
+
+          SELECT c.containerId "containerId",
+            c.dewarId "dewarId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+            c.ownerId "ownerId",
+            per2.login "ownerUsername",
+            c.code "name",
+            c.containerType "type",
+            c.barcode "barcode",
+            c.beamlineLocation "beamline",
+            c.sampleChangerLocation "location",
+            c.containerStatus "status",
+            c.capacity "capacity",
+            c.storageTemperature "storageTemperature",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            bs.visit_number "sessionNumber",
+            
+            c.comments "comments",
+            et.name "experimentType"
+          FROM Container c
+            JOIN BLSession bs ON bs.sessionId = c.sessionId
+            JOIN Proposal p ON p.proposalId = bs.proposalId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+          WHERE c.containerId = p_id;
+
+
+        END IF;
+
+      ELSE
+
+        IF p_authLogin IS NOT NULL THEN
+        
+
+          SELECT DISTINCT c.containerId "containerId",
+            d.dewarId "dewarId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+            c.ownerId "ownerId",
+            per2.login "ownerUsername",
+            c.code "name",
+            c.containerType "type",
+            c.barcode "barcode",
+            c.beamlineLocation "beamline",
+            c.sampleChangerLocation "location",
+            c.containerStatus "status",
+            c.capacity "capacity",
+            c.storageTemperature "storageTemperature",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            NULL "sessionNumber",
+            
+            c.comments "comments",
+            et.name "experimentType"
+          FROM Container c
+            JOIN Dewar d ON c.dewarId = d.dewarId
+            JOIN Shipping s ON s.shippingId = d.shippingId
+            JOIN Proposal p ON p.proposalId = s.proposalId
+            JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
+            JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
+            JOIN Person per on per.personId = shp.personId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+          WHERE c.containerId = p_id AND per.login = p_authLogin;
+
+        ELSE
+
+          SELECT c.containerId "containerId",
+            d.dewarId "dewarId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+            c.ownerId "ownerId",
+            per2.login "ownerUsername",
+            c.code "name",
+            c.containerType "type",
+            c.barcode "barcode",
+            c.beamlineLocation "beamline",
+            c.sampleChangerLocation "location",
+            c.containerStatus "status",
+            c.capacity "capacity",
+            c.storageTemperature "storageTemperature",
+
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            NULL "sessionNumber",
+
+            c.comments "comments",
+            et.name "experimentType"
+          FROM Container c
+            JOIN Dewar d ON c.dewarId = d.dewarId
+            JOIN Shipping s ON s.shippingId = d.shippingId
+            JOIN Proposal p ON p.proposalId = s.proposalId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+          WHERE c.containerId = p_id;
+
+        END IF;
+
+      END IF;
+
+    ELSE
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
+  END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_scm_containers_for_session` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_scm_containers_for_session`(
+  p_proposalCode varchar(45),
+  p_proposalNumber varchar(45),
+  p_sessionNumber int unsigned,
+  p_status varchar(45),
+  p_authLogin varchar(45)
+)
+    READS SQL DATA
+    COMMENT 'Returns a multi-row result-set with the containers for the given session defined by proposal code, proposal number and session number'
+BEGIN
+
+    IF p_proposalCode IS NOT NULL AND p_proposalNumber IS NOT NULL THEN
+
+      IF p_sessionNumber IS NOT NULL THEN
+
+        IF p_authLogin IS NOT NULL THEN
+        
+
+          SELECT DISTINCT c.containerId "containerId",
+            c.dewarId "dewarId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+            c.ownerId "ownerId",
+            per2.login "ownerUsername",
+            c.code "name",
+            c.containerType "type",
+            c.barcode "barcode",
+            c.beamlineLocation "beamline",
+            c.sampleChangerLocation "location",
+            c.containerStatus "status",
+            c.capacity "capacity",
+            c.storageTemperature "storageTemperature",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            bs.visit_number "sessionNumber",
+            
+            c.comments "comments",
+            et.name "experimentType"
+          FROM Container c
+            JOIN BLSession bs ON bs.sessionId = c.sessionId
+            JOIN Proposal p ON p.proposalId = bs.proposalId
+            JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
+            JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
+            JOIN Person per on per.personId = shp.personId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+          WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber AND c.containerStatus = p_status AND per.login = p_authLogin;
+
+        ELSE
+
+          SELECT c.containerId "containerId",
+            c.dewarId "dewarId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+            c.ownerId "ownerId",
+            per2.login "ownerUsername",
+            c.code "name",
+            c.containerType "type",
+            c.barcode "barcode",
+            c.beamlineLocation "beamline",
+            c.sampleChangerLocation "location",
+            c.containerStatus "status",
+            c.capacity "capacity",
+            c.storageTemperature "storageTemperature",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            bs.visit_number "sessionNumber",
+            
+            c.comments "comments",
+            et.name "experimentType"
+          FROM Container c
+            JOIN BLSession bs ON bs.sessionId = c.sessionId
+            JOIN Proposal p ON p.proposalId = bs.proposalId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+          WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber AND c.containerStatus = p_status;
+
+
+        END IF;
+
+      ELSE
+
+        IF p_authLogin IS NOT NULL THEN
+        
+
+          SELECT DISTINCT c.containerId "containerId",
+            d.dewarId "dewarId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+            c.ownerId "ownerId",
+            per2.login "ownerUsername",
+            c.code "name",
+            c.containerType "type",
+            c.barcode "barcode",
+            c.beamlineLocation "beamline",
+            c.sampleChangerLocation "location",
+            c.containerStatus "status",
+            c.capacity "capacity",
+            c.storageTemperature "storageTemperature",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            NULL "sessionNumber",
+            
+            c.comments "comments",
+            et.name "experimentType"
+          FROM Container c
+            JOIN Dewar d ON c.dewarId = d.dewarId
+            JOIN Shipping s ON s.shippingId = d.shippingId
+            JOIN Proposal p ON p.proposalId = s.proposalId
+            JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
+            JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
+            JOIN Person per on per.personId = shp.personId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+          WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND c.containerStatus = p_status AND per.login = p_authLogin;
+
+        ELSE
+
+          SELECT c.containerId "containerId",
+            d.dewarId "dewarId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+            c.ownerId "ownerId",
+            per2.login "ownerUsername",
+            c.code "name",
+            c.containerType "type",
+            c.barcode "barcode",
+            c.beamlineLocation "beamline",
+            c.sampleChangerLocation "location",
+            c.containerStatus "status",
+            c.capacity "capacity",
+            c.storageTemperature "storageTemperature",
+
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            NULL "sessionNumber",
+
+            c.comments "comments",
+            et.name "experimentType"
+          FROM Container c
+            JOIN Dewar d ON c.dewarId = d.dewarId
+            JOIN Shipping s ON s.shippingId = d.shippingId
+            JOIN Proposal p ON p.proposalId = s.proposalId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+          WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND c.containerStatus = p_status;
+
+        END IF;
+
+      END IF;
+
+    ELSE
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_proposalCode and p_proposalNumber can not be NULL';
+  END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_scm_container_for_barcode` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_scm_container_for_barcode`(p_barcode varchar(45), p_useContainerSession boolean, p_authLogin varchar(45))
+    READS SQL DATA
+    COMMENT 'Returns a single-row result-set with the container for the given barcode'
+BEGIN
+
+    IF p_barcode IS NOT NULL THEN
+
+      IF p_useContainerSession = True THEN
+
+        IF p_authLogin IS NOT NULL THEN
+        
+
+          SELECT DISTINCT c.containerId "containerId",
+            c.dewarId "dewarId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+            c.ownerId "ownerId",
+            per2.login "ownerUsername",
+            c.code "name",
+            c.containerType "type",
+            c.barcode "barcode",
+            c.beamlineLocation "beamline",
+            c.sampleChangerLocation "location",
+            c.containerStatus "status",
+            c.capacity "capacity",
+            c.storageTemperature "storageTemperature",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            bs.visit_number "sessionNumber",
+            
+            c.comments "comments",
+            et.name "experimentType"
+          FROM Container c
+            JOIN BLSession bs ON bs.sessionId = c.sessionId
+            JOIN Proposal p ON p.proposalId = bs.proposalId
+            JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
+            JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
+            JOIN Person per on per.personId = shp.personId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+          WHERE c.barcode = p_barcode AND per.login = p_authLogin;
+
+        ELSE
+
+          SELECT c.containerId "containerId",
+            c.dewarId "dewarId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+            c.ownerId "ownerId",
+            per2.login "ownerUsername",
+            c.code "name",
+            c.containerType "type",
+            c.barcode "barcode",
+            c.beamlineLocation "beamline",
+            c.sampleChangerLocation "location",
+            c.containerStatus "status",
+            c.capacity "capacity",
+            c.storageTemperature "storageTemperature",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            bs.visit_number "sessionNumber",
+            
+            c.comments "comments",
+            et.name "experimentType"
+          FROM Container c
+            JOIN BLSession bs ON bs.sessionId = c.sessionId
+            JOIN Proposal p ON p.proposalId = bs.proposalId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+          WHERE c.barcode = p_barcode;
+
+        END IF;
+
+      ELSE
+
+        IF p_authLogin IS NOT NULL THEN
+        
+
+          SELECT DISTINCT c.containerId "containerId",
+            d.dewarId "dewarId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+            c.ownerId "ownerId",
+            per2.login "ownerUsername",
+            c.code "name",
+            c.containerType "type",
+            c.barcode "barcode",
+            c.beamlineLocation "beamline",
+            c.sampleChangerLocation "location",
+            c.containerStatus "status",
+            c.capacity "capacity",
+            c.storageTemperature "storageTemperature",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            NULL "sessionNumber",
+            
+            c.comments "comments",
+            et.name "experimentType"
+          FROM Container c
+            JOIN Dewar d ON c.dewarId = d.dewarId
+            JOIN Shipping s ON s.shippingId = d.shippingId
+            JOIN Proposal p ON p.proposalId = s.proposalId
+            JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
+            JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
+            JOIN Person per on per.personId = shp.personId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+          WHERE c.barcode = p_barcode AND per.login = p_authLogin;
+
+        ELSE
+
+          SELECT c.containerId "containerId",
+            d.dewarId "dewarId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+            c.ownerId "ownerId",
+            per2.login "ownerUsername",
+            c.code "name",
+            c.containerType "type",
+            c.barcode "barcode",
+            c.beamlineLocation "beamline",
+            c.sampleChangerLocation "location",
+            c.containerStatus "status",
+            c.capacity "capacity",
+            c.storageTemperature "storageTemperature",
+
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            NULL "sessionNumber",
+
+            c.comments "comments",
+            et.name "experimentType"
+          FROM Container c
+            JOIN Dewar d ON c.dewarId = d.dewarId
+            JOIN Shipping s ON s.shippingId = d.shippingId
+            JOIN Proposal p ON p.proposalId = s.proposalId
+            LEFT JOIN Person per2 ON per2.personId = c.ownerId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+          WHERE c.barcode = p_barcode;
+
+        END IF;
+
+      END IF;
+
+    ELSE
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode can not be NULL';
+  END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_scm_sample` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_scm_sample`(p_id int unsigned, p_useContainerSession boolean, p_authLogin varchar(45))
+    READS SQL DATA
+    COMMENT 'Returns a single-row result-set with the sample for the given ID'
+BEGIN
+
+    IF p_id IS NOT NULL THEN
+
+      IF p_useContainerSession = True THEN
+
+        IF p_authLogin IS NOT NULL THEN
+        
+
+          SELECT DISTINCT bls.blSampleId "sampleId",
+            pr.proteinId "materialId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "planId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.volume "sampleVolume",
+            bls.dimension1 "thickness",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+
+            pr.name "materialName",
+            pr.acronym "materialAcronym",
+            pr.sequence "materialFormula",
+            pr.density "materialDensity",
+            pr.safetyLevel "materialSafetyLevel", 
+            pr.description "materialChemicalDescription",
+            pr.molecularMass "materialMolecularMass",
+            compt.name "materialType", 
+            conct.name "materialConcentrationType",
+            pr.isotropy "materialIsotropy",  
+
+            et.name "planExperimentType",
+            pc.name "planPurificationColumn",
+            plan.robotPlateTemperature "planRobotPlateTemperature",
+            plan.exposureTemperature "planExposureTemperature",
+            plan.transmission "planTransmission",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            bs.visit_number "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN BLSession bs ON c.sessionId = bs.sessionId
+            INNER JOIN Proposal p ON p.proposalId = bs.proposalId
+            INNER JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
+            INNER JOIN Session_has_Person shp ON bs2.sessionId = shp.sessionId
+            INNER JOIN Person pe ON pe.personId = shp.personId
+            LEFT JOIN Crystal cr ON cr.crystalId = bls.crystalId
+            LEFT JOIN Protein pr ON pr.proteinId = cr.proteinId
+            LEFT JOIN ComponentType compt ON compt.componentTypeId = pr.componentTypeId
+            LEFT JOIN ConcentrationType conct ON conct.concentrationTypeId = pr.concentrationTypeId
+            LEFT JOIN DiffractionPlan plan ON plan.diffractionPlanId = bls.diffractionPlanId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = plan.experimentTypeId AND et.proposalType = 'scm'
+            LEFT JOIN PurificationColumn pc ON pc.purificationColumnId = plan.purificationColumnId
+          WHERE pe.login = p_authLogin AND	bls.blSampleId = p_id;
+
+        ELSE
+
+          SELECT DISTINCT bls.blSampleId "sampleId",
+            pr.proteinId "materialId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "planId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.volume "sampleVolume",
+            bls.dimension1 "thickness",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+
+            pr.name "materialName",
+            pr.acronym "materialAcronym",
+            pr.sequence "materialFormula",
+            pr.density "materialDensity",
+            pr.safetyLevel "materialSafetyLevel", 
+            pr.description "materialChemicalDescription",
+            pr.molecularMass "materialMolecularMass",
+            compt.name "materialType", 
+            conct.name "materialConcentrationType",
+            pr.isotropy "materialIsotropy",  
+
+            et.name "planExperimentType",
+            pc.name "planPurificationColumn",
+            plan.robotPlateTemperature "planRobotPlateTemperature",
+            plan.exposureTemperature "planExposureTemperature",
+            plan.transmission "planTransmission",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            bs.visit_number "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN BLSession bs ON c.sessionId = bs.sessionId
+            INNER JOIN Proposal p ON p.proposalId = bs.proposalId
+            LEFT JOIN Crystal cr ON cr.crystalId = bls.crystalId
+            LEFT JOIN Protein pr ON pr.proteinId = cr.proteinId
+            LEFT JOIN ComponentType compt ON compt.componentTypeId = pr.componentTypeId
+            LEFT JOIN ConcentrationType conct ON conct.concentrationTypeId = pr.concentrationTypeId
+            LEFT JOIN DiffractionPlan plan ON plan.diffractionPlanId = bls.diffractionPlanId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = plan.experimentTypeId AND et.proposalType = 'scm'
+            LEFT JOIN PurificationColumn pc ON pc.purificationColumnId = plan.purificationColumnId
+          WHERE bls.blSampleId = p_id;
+
+        END IF;
+
+      ELSE
+
+        IF p_authLogin IS NOT NULL THEN
+        
+
+          SELECT DISTINCT bls.blSampleId "sampleId",
+            pr.proteinId "materialId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "planId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.volume "sampleVolume",
+            bls.dimension1 "thickness",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+
+            pr.name "materialName",
+            pr.acronym "materialAcronym",
+            pr.sequence "materialFormula",
+            pr.density "materialDensity",
+            pr.safetyLevel "materialSafetyLevel", 
+            pr.description "materialChemicalDescription",
+            pr.molecularMass "materialMolecularMass",
+            compt.name "materialType", 
+            conct.name "materialConcentrationType",
+            pr.isotropy "materialIsotropy",  
+
+            et.name "planExperimentType",
+            pc.name "planPurificationColumn",
+            plan.robotPlateTemperature "planRobotPlateTemperature",
+            plan.exposureTemperature "planExposureTemperature",
+            plan.transmission "planTransmission",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            NULL "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN Dewar d ON d.dewarId = c.dewarId
+            INNER JOIN Shipping s ON s.shippingId = d.shippingId
+            INNER JOIN Proposal p ON p.proposalId = s.proposalId
+            INNER JOIN BLSession bs ON bs.proposalId = p.proposalId
+            INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
+            INNER JOIN Person pe ON pe.personId = shp.personId
+            LEFT JOIN Crystal cr ON cr.crystalId = bls.crystalId
+            LEFT JOIN Protein pr ON pr.proteinId = cr.proteinId
+            LEFT JOIN ComponentType compt ON compt.componentTypeId = pr.componentTypeId
+            LEFT JOIN ConcentrationType conct ON conct.concentrationTypeId = pr.concentrationTypeId
+            LEFT JOIN DiffractionPlan plan ON plan.diffractionPlanId = bls.diffractionPlanId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = plan.experimentTypeId AND et.proposalType = 'scm'
+            LEFT JOIN PurificationColumn pc ON pc.purificationColumnId = plan.purificationColumnId
+          WHERE pe.login = p_authLogin AND bls.blSampleId = p_id;
+
+        ELSE
+
+          SELECT DISTINCT bls.blSampleId "sampleId",
+            pr.proteinId "materialId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "planId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.volume "sampleVolume",
+            bls.dimension1 "thickness",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+
+            pr.name "materialName",
+            pr.acronym "materialAcronym",
+            pr.sequence "materialFormula",
+            pr.density "materialDensity",
+            pr.safetyLevel "materialSafetyLevel", 
+            pr.description "materialChemicalDescription",
+            pr.molecularMass "materialMolecularMass",
+            compt.name "materialType", 
+            conct.name "materialConcentrationType",
+            pr.isotropy "materialIsotropy",  
+
+            et.name "planExperimentType",
+            pc.name "planPurificationColumn",
+            plan.robotPlateTemperature "planRobotPlateTemperature",
+            plan.exposureTemperature "planExposureTemperature",
+            plan.transmission "planTransmission",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            NULL "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN Dewar d ON d.dewarId = c.dewarId
+            INNER JOIN Shipping s ON s.shippingId = d.shippingId
+            INNER JOIN Proposal p ON p.proposalId = s.proposalId
+            LEFT JOIN Crystal cr ON cr.crystalId = bls.crystalId
+            LEFT JOIN Protein pr ON pr.proteinId = cr.proteinId
+            LEFT JOIN ComponentType compt ON compt.componentTypeId = pr.componentTypeId
+            LEFT JOIN ConcentrationType conct ON conct.concentrationTypeId = pr.concentrationTypeId
+            LEFT JOIN DiffractionPlan plan ON plan.diffractionPlanId = bls.diffractionPlanId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = plan.experimentTypeId AND et.proposalType = 'scm'
+            LEFT JOIN PurificationColumn pc ON pc.purificationColumnId = plan.purificationColumnId
+          WHERE bls.blSampleId = p_id;
+
+        END IF;
+
+      END IF;
+
+    ELSE
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
+  END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_scm_samples_for_container_id` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_scm_samples_for_container_id`(p_containerId int unsigned, p_useContainerSession boolean, p_authLogin varchar(45))
+    READS SQL DATA
+    COMMENT 'Returns a multi-row result-set with the samples for the given container ID'
+BEGIN
+
+    IF p_containerId IS NOT NULL THEN
+
+      IF p_useContainerSession = True THEN
+
+        IF p_authLogin IS NOT NULL THEN
+        
+
+          SELECT DISTINCT bls.blSampleId "sampleId",
+            pr.proteinId "materialId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "planId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.volume "sampleVolume",
+            bls.dimension1 "thickness",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+
+            pr.name "materialName",
+            pr.acronym "materialAcronym",
+            pr.sequence "materialFormula",
+            pr.density "materialDensity",
+            pr.safetyLevel "materialSafetyLevel", 
+            pr.description "materialChemicalDescription",
+            pr.molecularMass "materialMolecularMass",
+            compt.name "materialType", 
+            conct.name "materialConcentrationType",
+            pr.isotropy "materialIsotropy",  
+
+            et.name "planExperimentType",
+            pc.name "planPurificationColumn",
+            plan.robotPlateTemperature "planRobotPlateTemperature",
+            plan.exposureTemperature "planExposureTemperature",
+            plan.transmission "planTransmission",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            bs.visit_number "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN BLSession bs ON c.sessionId = bs.sessionId
+            INNER JOIN Proposal p ON p.proposalId = bs.proposalId
+            INNER JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
+            INNER JOIN Session_has_Person shp ON bs2.sessionId = shp.sessionId
+            INNER JOIN Person pe ON pe.personId = shp.personId
+            LEFT JOIN Crystal cr ON cr.crystalId = bls.crystalId
+            LEFT JOIN Protein pr ON pr.proteinId = cr.proteinId
+            LEFT JOIN ComponentType compt ON compt.componentTypeId = pr.componentTypeId
+            LEFT JOIN ConcentrationType conct ON conct.concentrationTypeId = pr.concentrationTypeId
+            LEFT JOIN DiffractionPlan plan ON plan.diffractionPlanId = bls.diffractionPlanId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = plan.experimentTypeId AND et.proposalType = 'scm'
+            LEFT JOIN PurificationColumn pc ON pc.purificationColumnId = plan.purificationColumnId
+          WHERE pe.login = p_authLogin AND bls.containerId = p_containerId;
+
+        ELSE
+
+          SELECT DISTINCT bls.blSampleId "sampleId",
+            pr.proteinId "materialId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "planId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.volume "sampleVolume",
+            bls.dimension1 "thickness",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+
+            pr.name "materialName",
+            pr.acronym "materialAcronym",
+            pr.sequence "materialFormula",
+            pr.density "materialDensity",
+            pr.safetyLevel "materialSafetyLevel", 
+            pr.description "materialChemicalDescription",
+            pr.molecularMass "materialMolecularMass",
+            compt.name "materialType", 
+            conct.name "materialConcentrationType",
+            pr.isotropy "materialIsotropy",  
+
+            et.name "planExperimentType",
+            pc.name "planPurificationColumn",
+            plan.robotPlateTemperature "planRobotPlateTemperature",
+            plan.exposureTemperature "planExposureTemperature",
+            plan.transmission "planTransmission",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            bs.visit_number "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN BLSession bs ON c.sessionId = bs.sessionId
+            INNER JOIN Proposal p ON p.proposalId = bs.proposalId
+            LEFT JOIN Crystal cr ON cr.crystalId = bls.crystalId
+            LEFT JOIN Protein pr ON pr.proteinId = cr.proteinId
+            LEFT JOIN ComponentType compt ON compt.componentTypeId = pr.componentTypeId
+            LEFT JOIN ConcentrationType conct ON conct.concentrationTypeId = pr.concentrationTypeId
+            LEFT JOIN DiffractionPlan plan ON plan.diffractionPlanId = bls.diffractionPlanId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = plan.experimentTypeId AND et.proposalType = 'scm'
+            LEFT JOIN PurificationColumn pc ON pc.purificationColumnId = plan.purificationColumnId
+          WHERE bls.containerId = p_containerId;
+
+        END IF;
+
+      ELSE
+
+        IF p_authLogin IS NOT NULL THEN
+        
+
+          SELECT DISTINCT bls.blSampleId "sampleId",
+            pr.proteinId "materialId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "planId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.volume "sampleVolume",
+            bls.dimension1 "thickness",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+
+            pr.name "materialName",
+            pr.acronym "materialAcronym",
+            pr.sequence "materialFormula",
+            pr.density "materialDensity",
+            pr.safetyLevel "materialSafetyLevel", 
+            pr.description "materialChemicalDescription",
+            pr.molecularMass "materialMolecularMass",
+            compt.name "materialType", 
+            conct.name "materialConcentrationType",
+            pr.isotropy "materialIsotropy",  
+
+            et.name "planExperimentType",
+            pc.name "planPurificationColumn",
+            plan.robotPlateTemperature "planRobotPlateTemperature",
+            plan.exposureTemperature "planExposureTemperature",
+            plan.transmission "planTransmission",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            NULL "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN Dewar d ON d.dewarId = c.dewarId
+            INNER JOIN Shipping s ON s.shippingId = d.shippingId
+            INNER JOIN Proposal p ON p.proposalId = s.proposalId
+            INNER JOIN BLSession bs ON bs.proposalId = p.proposalId
+            INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
+            INNER JOIN Person pe ON pe.personId = shp.personId
+            LEFT JOIN Crystal cr ON cr.crystalId = bls.crystalId
+            LEFT JOIN Protein pr ON pr.proteinId = cr.proteinId
+            LEFT JOIN ComponentType compt ON compt.componentTypeId = pr.componentTypeId
+            LEFT JOIN ConcentrationType conct ON conct.concentrationTypeId = pr.concentrationTypeId
+            LEFT JOIN DiffractionPlan plan ON plan.diffractionPlanId = bls.diffractionPlanId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = plan.experimentTypeId AND et.proposalType = 'scm'
+            LEFT JOIN PurificationColumn pc ON pc.purificationColumnId = plan.purificationColumnId
+          WHERE pe.login = p_authLogin AND bls.containerId = p_containerId;
+
+        ELSE
+
+          SELECT DISTINCT bls.blSampleId "sampleId",
+            pr.proteinId "materialId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "planId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.volume "sampleVolume",
+            bls.dimension1 "thickness",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+
+            pr.name "materialName",
+            pr.acronym "materialAcronym",
+            pr.sequence "materialFormula",
+            pr.density "materialDensity",
+            pr.safetyLevel "materialSafetyLevel", 
+            pr.description "materialChemicalDescription",
+            pr.molecularMass "materialMolecularMass",
+            compt.name "materialType", 
+            conct.name "materialConcentrationType",
+            pr.isotropy "materialIsotropy",  
+
+            et.name "planExperimentType",
+            pc.name "planPurificationColumn",
+            plan.robotPlateTemperature "planRobotPlateTemperature",
+            plan.exposureTemperature "planExposureTemperature",
+            plan.transmission "planTransmission",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            NULL "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN Dewar d ON d.dewarId = c.dewarId
+            INNER JOIN Shipping s ON s.shippingId = d.shippingId
+            INNER JOIN Proposal p ON p.proposalId = s.proposalId
+            LEFT JOIN Crystal cr ON cr.crystalId = bls.crystalId
+            LEFT JOIN Protein pr ON pr.proteinId = cr.proteinId
+            LEFT JOIN ComponentType compt ON compt.componentTypeId = pr.componentTypeId
+            LEFT JOIN ConcentrationType conct ON conct.concentrationTypeId = pr.concentrationTypeId
+            LEFT JOIN DiffractionPlan plan ON plan.diffractionPlanId = bls.diffractionPlanId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = plan.experimentTypeId AND et.proposalType = 'scm'
+            LEFT JOIN PurificationColumn pc ON pc.purificationColumnId = plan.purificationColumnId
+          WHERE bls.containerId = p_containerId;
+
+        END IF;
+
+      END IF;
+
+    ELSE
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_containerId can not be NULL';
+  END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_scm_sample_for_container_barcode_and_location` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_scm_sample_for_container_barcode_and_location`(p_barcode varchar(45), p_location varchar(45), p_useContainerSession boolean, p_authLogin varchar(45))
+    READS SQL DATA
+    COMMENT 'Returns a single-row result-set (although can be multi-row if multiple samples per location in a container) with the sample for the given container barcode and sample location.'
+BEGIN
+
+    IF p_barcode IS NOT NULL AND p_location IS NOT NULL THEN
+
+      IF p_useContainerSession = True THEN
+
+        IF p_authLogin IS NOT NULL THEN
+        
+
+          SELECT DISTINCT bls.blSampleId "sampleId",
+            pr.proteinId "materialId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "planId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.volume "sampleVolume",
+            bls.dimension1 "thickness",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+
+            pr.name "materialName",
+            pr.acronym "materialAcronym",
+            pr.sequence "materialFormula",
+            pr.density "materialDensity",
+            pr.safetyLevel "materialSafetyLevel", 
+            pr.description "materialChemicalDescription",
+            pr.molecularMass "materialMolecularMass",
+            compt.name "materialType", 
+            conct.name "materialConcentrationType",
+            pr.isotropy "materialIsotropy",  
+
+            et.name "planExperimentType",
+            pc.name "planPurificationColumn",
+            plan.robotPlateTemperature "planRobotPlateTemperature",
+            plan.exposureTemperature "planExposureTemperature",
+            plan.transmission "planTransmission",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            bs.visit_number "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN BLSession bs ON c.sessionId = bs.sessionId
+            INNER JOIN Proposal p ON p.proposalId = bs.proposalId
+            INNER JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
+            INNER JOIN Session_has_Person shp ON bs2.sessionId = shp.sessionId
+            INNER JOIN Person pe ON pe.personId = shp.personId
+            LEFT JOIN Crystal cr ON cr.crystalId = bls.crystalId
+            LEFT JOIN Protein pr ON pr.proteinId = cr.proteinId
+            LEFT JOIN ComponentType compt ON compt.componentTypeId = pr.componentTypeId
+            LEFT JOIN ConcentrationType conct ON conct.concentrationTypeId = pr.concentrationTypeId
+            LEFT JOIN DiffractionPlan plan ON plan.diffractionPlanId = bls.diffractionPlanId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = plan.experimentTypeId AND et.proposalType = 'scm'
+            LEFT JOIN PurificationColumn pc ON pc.purificationColumnId = plan.purificationColumnId
+          WHERE pe.login = p_authLogin AND c.barcode = p_barcode AND bls.location = p_location;
+
+        ELSE
+
+          SELECT DISTINCT bls.blSampleId "sampleId",
+            pr.proteinId "materialId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "planId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.volume "sampleVolume",
+            bls.dimension1 "thickness",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+
+            pr.name "materialName",
+            pr.acronym "materialAcronym",
+            pr.sequence "materialFormula",
+            pr.density "materialDensity",
+            pr.safetyLevel "materialSafetyLevel", 
+            pr.description "materialChemicalDescription",
+            pr.molecularMass "materialMolecularMass",
+            compt.name "materialType", 
+            conct.name "materialConcentrationType",
+            pr.isotropy "materialIsotropy",  
+
+            et.name "planExperimentType",
+            pc.name "planPurificationColumn",
+            plan.robotPlateTemperature "planRobotPlateTemperature",
+            plan.exposureTemperature "planExposureTemperature",
+            plan.transmission "planTransmission",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            bs.visit_number "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN BLSession bs ON c.sessionId = bs.sessionId
+            INNER JOIN Proposal p ON p.proposalId = bs.proposalId
+            LEFT JOIN Crystal cr ON cr.crystalId = bls.crystalId
+            LEFT JOIN Protein pr ON pr.proteinId = cr.proteinId
+            LEFT JOIN ComponentType compt ON compt.componentTypeId = pr.componentTypeId
+            LEFT JOIN ConcentrationType conct ON conct.concentrationTypeId = pr.concentrationTypeId
+            LEFT JOIN DiffractionPlan plan ON plan.diffractionPlanId = bls.diffractionPlanId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = plan.experimentTypeId AND et.proposalType = 'scm'
+            LEFT JOIN PurificationColumn pc ON pc.purificationColumnId = plan.purificationColumnId
+          WHERE c.barcode = p_barcode AND bls.location = p_location;
+
+        END IF;
+
+      ELSE
+
+        IF p_authLogin IS NOT NULL THEN
+        
+
+          SELECT DISTINCT bls.blSampleId "sampleId",
+            pr.proteinId "materialId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "planId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.volume "sampleVolume",
+            bls.dimension1 "thickness",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+
+            pr.name "materialName",
+            pr.acronym "materialAcronym",
+            pr.sequence "materialFormula",
+            pr.density "materialDensity",
+            pr.safetyLevel "materialSafetyLevel", 
+            pr.description "materialChemicalDescription",
+            pr.molecularMass "materialMolecularMass",
+            compt.name "materialType", 
+            conct.name "materialConcentrationType",
+            pr.isotropy "materialIsotropy",  
+
+            et.name "planExperimentType",
+            pc.name "planPurificationColumn",
+            plan.robotPlateTemperature "planRobotPlateTemperature",
+            plan.exposureTemperature "planExposureTemperature",
+            plan.transmission "planTransmission",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            NULL "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN Dewar d ON d.dewarId = c.dewarId
+            INNER JOIN Shipping s ON s.shippingId = d.shippingId
+            INNER JOIN Proposal p ON p.proposalId = s.proposalId
+            INNER JOIN BLSession bs ON bs.proposalId = p.proposalId
+            INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
+            INNER JOIN Person pe ON pe.personId = shp.personId
+            LEFT JOIN Crystal cr ON cr.crystalId = bls.crystalId
+            LEFT JOIN Protein pr ON pr.proteinId = cr.proteinId
+            LEFT JOIN ComponentType compt ON compt.componentTypeId = pr.componentTypeId
+            LEFT JOIN ConcentrationType conct ON conct.concentrationTypeId = pr.concentrationTypeId
+            LEFT JOIN DiffractionPlan plan ON plan.diffractionPlanId = bls.diffractionPlanId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = plan.experimentTypeId AND et.proposalType = 'scm'
+            LEFT JOIN PurificationColumn pc ON pc.purificationColumnId = plan.purificationColumnId
+          WHERE pe.login = p_authLogin AND c.barcode = p_barcode AND bls.location = p_location;
+
+        ELSE
+
+          SELECT DISTINCT bls.blSampleId "sampleId",
+            pr.proteinId "materialId",
+            bls.containerId "containerId",
+            bls.diffractionPlanId "planId",
+            c.sessionId "sessionId",
+            p.proposalId "proposalId",
+
+            bls.name "sampleName",
+            bls.code "sampleCode",
+            bls.volume "sampleVolume",
+            bls.dimension1 "thickness",
+            bls.comments "sampleComments",
+            bls.location "sampleLocation",
+            bls.subLocation "sampleSubLocation",
+            bls.blSampleStatus "sampleStatus",
+
+            pr.name "materialName",
+            pr.acronym "materialAcronym",
+            pr.sequence "materialFormula",
+            pr.density "materialDensity",
+            pr.safetyLevel "materialSafetyLevel", 
+            pr.description "materialChemicalDescription",
+            pr.molecularMass "materialMolecularMass",
+            compt.name "materialType", 
+            conct.name "materialConcentrationType",
+            pr.isotropy "materialIsotropy",  
+
+            et.name "planExperimentType",
+            pc.name "planPurificationColumn",
+            plan.robotPlateTemperature "planRobotPlateTemperature",
+            plan.exposureTemperature "planExposureTemperature",
+            plan.transmission "planTransmission",
+            
+            p.proposalCode "proposalCode",
+            p.proposalNumber "proposalNumber",
+            NULL "sessionNumber"
+          FROM BLSample bls
+            INNER JOIN Container c ON c.containerId = bls.containerId
+            INNER JOIN Dewar d ON d.dewarId = c.dewarId
+            INNER JOIN Shipping s ON s.shippingId = d.shippingId
+            INNER JOIN Proposal p ON p.proposalId = s.proposalId
+            LEFT JOIN Crystal cr ON cr.crystalId = bls.crystalId
+            LEFT JOIN Protein pr ON pr.proteinId = cr.proteinId
+            LEFT JOIN ComponentType compt ON compt.componentTypeId = pr.componentTypeId
+            LEFT JOIN ConcentrationType conct ON conct.concentrationTypeId = pr.concentrationTypeId
+            LEFT JOIN DiffractionPlan plan ON plan.diffractionPlanId = bls.diffractionPlanId
+            LEFT JOIN ExperimentType et ON et.experimentTypeId = plan.experimentTypeId AND et.proposalType = 'scm'
+            LEFT JOIN PurificationColumn pc ON pc.purificationColumnId = plan.purificationColumnId
+          WHERE c.barcode = p_barcode AND bls.location = p_location;
+
+        END IF;
+
+      END IF;
+
+    ELSE
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_barcode and p_location can not be NULL';
+  END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `retrieve_sessions_for_beamline_and_run` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -8252,7 +9514,7 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-01 12:22:39
+-- Dump completed on 2020-12-04 16:35:22
 -- MariaDB dump 10.18  Distrib 10.5.8-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
@@ -8298,4 +9560,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-01 12:22:40
+-- Dump completed on 2020-12-04 16:35:22
