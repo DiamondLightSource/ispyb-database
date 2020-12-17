@@ -7,7 +7,7 @@ This package provides everything needed to create the Diamond flavour of the ISP
 ## Requirements
 
 * We recommend MariaDB 10.3 or later.
-* If binary logging is enabled in the DB system, then execute this before importing the test schema: `SET GLOBAL log_bin_trust_function_creators=ON;``
+* If binary logging is enabled in the DB system, then execute this before importing the test schema: `SET GLOBAL log_bin_trust_function_creators=ON;`
 
 ## Installation
 
