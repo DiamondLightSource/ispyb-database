@@ -11,6 +11,8 @@ This package provides everything needed to create the Diamond flavour of the ISP
 
 ## Installation
 
+In a test environment you can run the `build.sh` file. This creates the database schema and applies the grants as described below.
+
 ### Schema
 
 Run this on the command-line to create a database and import the schema stored in the SQL files:
@@ -24,8 +26,6 @@ mysql ispyb < schema/routines.sql
 ```
 
 Note that the `data.sql` file contains test data, so is only useful in a development environment.
-
-Alternatively, in a test environment you can also run the `build.sh` file. This creates the database, runs the above .sql files and more.
 
 ### Grants
 
