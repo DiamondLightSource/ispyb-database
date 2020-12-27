@@ -9,9 +9,14 @@
 
 # Author: Karl Levik
 
+set -eo pipefail
+
 source bin/functions.sh
 
-db="ispyb_build"
+if [ -z "${db}" ]
+then
+  db="ispyb_build"
+fi
 
 echo "Dropping + creating build database"
 mysql --defaults-file=.my.cnf -e "DROP DATABASE IF EXISTS $db; CREATE DATABASE $db; SET GLOBAL log_bin_trust_function_creators=ON;"
