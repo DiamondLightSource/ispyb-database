@@ -24,10 +24,11 @@ then
 fi
 
 echo "Modifying ${db} database"
+mysql --defaults-file="${project_root}"/.my.cnf -D "${db}" < "${dir}"/tables.sql
+mysql --defaults-file="${project_root}"/.my.cnf -D "${db}" < "${dir}"/data.sql
 mysql --defaults-file="${project_root}"/.my.cnf -D "${db}" < "${dir}"/modify_ispyb.sql
 
-echo "Dropping + creating ${db_analytics} database"
+echo "Re-creating ${db_analytics} database with views"
 mysql --defaults-file="${project_root}"/.my.cnf -e "DROP DATABASE IF EXISTS $db_analytics; CREATE DATABASE IF NOT EXISTS $db_analytics; SET GLOBAL log_bin_trust_function_creators=ON;"
+cat "${dir}"/views.sql | replace "\$ispyb" "${db}" | mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}"
 
-echo "Creating views"
-cat "${dir}"/create_analytics.sql | replace "\$ispyb" "${db}" | mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}"
