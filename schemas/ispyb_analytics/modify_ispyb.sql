@@ -3,20 +3,7 @@ CREATE TABLE Instrument (
   name VARCHAR(10)
 );
 
-INSERT INTO Instrument (instrumentId, name) VALUES 
-  (1, 'i02'),
-  (2, 'i02-1'),
-  (3, 'i02-2'),
-  (4, 'i03'),
-  (5, 'i04'),
-  (6, 'i04-1'),
-  (7, 'i15-1'),
-  (8, 'b21'),
-  (9, 'i22'),
-  (10, 'i23'),
-  (11, 'i24');
-
--- Create and populate permissions tables.
+-- Create permissions tables.
 -- We don't care about foreign key constraints.
 
 CREATE TABLE Instrument_has_Username (
@@ -24,11 +11,6 @@ CREATE TABLE Instrument_has_Username (
   username VARCHAR(45),
   PRIMARY KEY(instrumentId, username)
 );
-
-INSERT INTO Instrument_has_Username (instrumentId, username) VALUES
-  (3, 'karll@localhost'),
-  (4, 'root@localhost');
-
 
 CREATE TABLE Proposal_has_Instrument (
   instrumentId SMALLINT UNSIGNED,
@@ -50,7 +32,6 @@ ALTER TABLE BLSession
 
 INSERT INTO Proposal_has_Instrument (instrumentId, proposalId)
   SELECT DISTINCT instrumentId, proposalId FROM BLSession;
-
 
 
 ALTER TABLE DataCollectionGroup
