@@ -9,8 +9,6 @@
 
 # Author: Karl Levik
 
-set -eo pipefail
-
 source bin/functions.sh
 
 if [ -z "${db}" ]
