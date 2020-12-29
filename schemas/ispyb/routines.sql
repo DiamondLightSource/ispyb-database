@@ -1832,6 +1832,67 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insert_subsample_for_image_full_path` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `insert_subsample_for_image_full_path`(
+     OUT p_id int(11) unsigned,
+     p_imageFullPath varchar(255),
+     p_source varchar(10),
+
+     p_position1x double,
+     p_position1y double,
+     p_position2x double,
+     p_position2y double
+  )
+    MODIFIES SQL DATA
+    COMMENT 'Returns subsample ID in p_id.'
+BEGIN
+  DECLARE l_position1Id, l_position2Id, l_sampleId int unsigned DEFAULT NULL;
+
+  SELECT blSampleId INTO l_sampleId
+  FROM BLSampleImage
+  WHERE imageFullPath = p_imageFullPath
+  ORDER BY blSampleImageId DESC
+  LIMIT 1;
+
+  IF l_sampleId IS NOT NULL AND p_source IS NOT NULL AND p_position1x IS NOT NULL AND p_position1y IS NOT NULL THEN
+
+    START TRANSACTION;
+
+    INSERT INTO Position (posX, posY) VALUES (p_position1x, p_position1y); 
+    SET l_position1Id := LAST_INSERT_ID();
+
+    IF p_position2x IS NOT NULL AND p_position2y IS NOT NULL THEN
+      INSERT INTO Position (posX, posY) VALUES (p_position2x, p_position2y);
+      SET l_position2Id := LAST_INSERT_ID();
+    END IF;
+
+    INSERT INTO BLSubSample (
+      blSampleId,
+      source,
+
+      positionId, 
+      position2Id
+    )
+      VALUES (l_sampleId, p_source,  l_position1Id, l_position2Id);
+    SET p_id := LAST_INSERT_ID();
+
+    COMMIT;
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `retrieve_associated_dc_ids` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -9514,7 +9575,7 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-04 16:35:22
+-- Dump completed on 2020-12-29 17:09:49
 -- MariaDB dump 10.18  Distrib 10.5.8-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
@@ -9560,4 +9621,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-04 16:35:22
+-- Dump completed on 2020-12-29 17:09:49
