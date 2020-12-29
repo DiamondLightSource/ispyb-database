@@ -437,6 +437,7 @@
    ``imgFilePath``,varchar,"url image"
    ``comments``,varchar,"comments"
    ``recordTimeStamp``,timestamp,"Creation or last update date/time"
+   ``source``,enum,""
    **Buffer**,table,""
    ``bufferId``,int,""
    ``BLSESSIONID``,int,""

@@ -184,7 +184,8 @@ CREATE TABLE `AutoProc` (
   `refinedCell_gamma` float DEFAULT NULL COMMENT 'Refined cell',
   `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
   PRIMARY KEY (`autoProcId`),
-  KEY `AutoProc_FKIndex1` (`autoProcProgramId`)
+  KEY `AutoProc_FKIndex1` (`autoProcProgramId`),
+  KEY `AutoProc_refined_unit_cell` (`refinedCell_a`,`refinedCell_b`,`refinedCell_c`,`refinedCell_alpha`,`refinedCell_beta`,`refinedCell_gamma`,`spaceGroup`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -930,6 +931,7 @@ CREATE TABLE `BLSubSample` (
   `imgFilePath` varchar(1024) DEFAULT NULL COMMENT 'url image',
   `comments` varchar(1024) DEFAULT NULL COMMENT 'comments',
   `recordTimeStamp` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Creation or last update date/time',
+  `source` enum('manual','auto') DEFAULT 'manual',
   PRIMARY KEY (`blSubSampleId`),
   KEY `BLSubSample_FKIndex1` (`blSampleId`),
   KEY `BLSubSample_FKIndex2` (`diffractionPlanId`),
@@ -1727,6 +1729,7 @@ CREATE TABLE `DataCollection` (
   KEY `startPositionId` (`startPositionId`),
   KEY `DataCollection_FKIndex0` (`BLSAMPLEID`),
   KEY `DataCollection_FKIndex00` (`SESSIONID`),
+  KEY `DataCollection_dataCollectionGroupId_startTime` (`dataCollectionGroupId`,`startTime`),
   CONSTRAINT `DataCollection_ibfk_1` FOREIGN KEY (`strategySubWedgeOrigId`) REFERENCES `ScreeningStrategySubWedge` (`screeningStrategySubWedgeId`),
   CONSTRAINT `DataCollection_ibfk_2` FOREIGN KEY (`detectorId`) REFERENCES `Detector` (`detectorId`),
   CONSTRAINT `DataCollection_ibfk_3` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`),
@@ -2114,6 +2117,8 @@ CREATE TABLE `DiffractionPlan` (
   `exposureTemperature` float DEFAULT NULL COMMENT 'units: kelvin',
   `experimentTypeId` int(10) unsigned DEFAULT NULL,
   `purificationColumnId` int(10) unsigned DEFAULT NULL,
+  `collectionMode` enum('auto','manual') DEFAULT NULL COMMENT 'The requested collection mode, possible values are auto, manual',
+  `priority` int(4) DEFAULT NULL COMMENT 'The priority of this sample relative to others in the shipment',
   PRIMARY KEY (`diffractionPlanId`),
   KEY `DiffractionPlan_ibfk1` (`presetForProposalId`),
   KEY `DataCollectionPlan_ibfk3` (`detectorId`),
@@ -5827,4 +5832,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-04 16:35:22
+-- Dump completed on 2020-12-29 18:29:32
