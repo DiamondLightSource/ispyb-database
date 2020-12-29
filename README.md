@@ -22,10 +22,10 @@ Run this on the command-line to create a database and import the schema stored i
 
 ```bash
 mysql -e "CREATE DATABASE ispyb"
-mysql ispyb < schema/tables.sql
-mysql ispyb < schema/lookups.sql
-mysql ispyb < schema/data.sql
-mysql ispyb < schema/routines.sql
+mysql ispyb < schemas/ispyb/tables.sql
+mysql ispyb < schemas/ispyb/lookups.sql
+mysql ispyb < schemas/ispyb/data.sql
+mysql ispyb < schemas/ispyb/routines.sql
 ```
 
 Note that the `data.sql` file contains test data, so is only useful in a development environment.
@@ -64,13 +64,13 @@ SHOW PLUGINS SONAME WHERE Name = 'SQL_ERROR_LOG';
 
 In order to update a production database, please follow this procedure:
 
-1. For all .sql files in `schema/updates` that have not already been run, read any comments inside the files to decide if/when you should run them. Run a file e.g. like this:
+1. For all .sql files in `schemas/ispyb/updates` that have not already been run, read any comments inside the files to decide if/when you should run them. Run a file e.g. like this:
 ```bash
-mysql ispyb < schema/updates/2019_03_29_BLSession_archived.sql
+mysql ispyb < schemas/ispyb/updates/2019_03_29_BLSession_archived.sql
 ```
-2. If `schema/routines.sql` has been updated since you installed it, you can simply re-run it. E.g.:
+2. If `schemas/ispyb/routines.sql` has been updated since you installed it, you can simply re-run it. E.g.:
 ```bash
-mysql ispyb < schema/routines.sql
+mysql ispyb < schemas/ispyb/routines.sql
 ```
 3. If you ran the `routines.sql`, then re-apply the grants for the routines. E.g.:
 ```bash
