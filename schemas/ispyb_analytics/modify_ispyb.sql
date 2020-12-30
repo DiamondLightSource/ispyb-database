@@ -11,8 +11,7 @@ ALTER TABLE BLSession
   ADD INDEX BLSession_instrumentId (instrumentId);
 
 INSERT INTO Proposal_has_Instrument (instrumentId, proposalId)
-  SELECT DISTINCT instrumentId, proposalId FROM BLSession;
-
+  SELECT DISTINCT instrumentId, proposalId FROM BLSession WHERE instrumentId IS NOT NULL;
 
 ALTER TABLE DataCollectionGroup
   ADD instrumentId SMALLINT UNSIGNED INVISIBLE;
