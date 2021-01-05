@@ -24,6 +24,7 @@ Unreleased / master
 (This is not a complete list of features for this version)
 
 * Stored procedures for the IspybScmApi interface of gda-ispyb-api:
+
   * `retrieve_scm_sample(p_id int unsigned, p_useContainerSession boolean, p_authLogin varchar(45))`
   * `retrieve_scm_samples_for_container_id(p_containerId int unsigned, p_useContainerSession boolean, p_authLogin varchar(45))`
   * `retrieve_scm_sample_for_container_barcode_and_location(p_barcode varchar(45), p_location varchar(45), p_useContainerSession boolean, p_authLogin varchar(45))`
