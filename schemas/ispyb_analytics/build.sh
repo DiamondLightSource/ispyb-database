@@ -38,3 +38,5 @@ views="${views%a}"
 # Replace occurrences of literal '$ispyb' with the value of var ${db}:
 echo "${views//\$ispyb/${db}}" | mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}"
 
+echo "Creating role and granting permission to access views"
+mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}" < "${dir}"/grants.sql
