@@ -31,12 +31,9 @@ mysql --defaults-file="${project_root}"/.my.cnf -D "${db}" < "${dir}"/modify_isp
 echo "Re-creating ${db_analytics} database with views"
 mysql --defaults-file="${project_root}"/.my.cnf -e "DROP DATABASE IF EXISTS $db_analytics; CREATE DATABASE IF NOT EXISTS $db_analytics; SET GLOBAL log_bin_trust_function_creators=ON;"
 
-# Read views.sql into variable without removing trailing newlines:
-views="$(cat $dir/views.sql; printf a)"
-views="${views%a}"
-
-# Replace occurrences of literal '$ispyb' with the value of var ${db}:
-echo "${views//\$ispyb/${db}}" | mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}"
+# Read views.sql into variable, replace variable
+sql=$(env ispyb="${db}" envsubst < "${dir}"/views.sql)
+echo "${sql}" | mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}"
 
 echo "Creating role and granting permission to access views"
 mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}" < "${dir}"/grants.sql
