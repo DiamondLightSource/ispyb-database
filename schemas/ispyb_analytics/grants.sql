@@ -1,5 +1,5 @@
 -- Create role
-CREATE ROLE data_scientist;
+CREATE ROLE IF NOT EXISTS data_scientist;
 
 -- Grant select on views
 GRANT SELECT ON BLSession TO data_scientist;
