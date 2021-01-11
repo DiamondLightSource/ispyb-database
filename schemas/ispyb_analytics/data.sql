@@ -12,6 +12,6 @@ INSERT INTO Instrument (instrumentId, name) VALUES
   (11, 'i24');
   
 INSERT INTO Instrument_has_Username (instrumentId, username) VALUES
-  (3, 'boaty@localhost'),
-  (4, 'root@localhost');
+  (3, 'boaty'),
+  (4, 'root');
 
