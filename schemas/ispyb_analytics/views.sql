@@ -11,7 +11,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW BLSession AS
   WHERE instrumentId IN (
     SELECT ihu.instrumentId
     FROM $ispyb.Instrument_has_Username ihu
-    WHERE ihu.username = current_user()
+    WHERE ihu.username = user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW DataCollectionGroup AS
@@ -20,7 +20,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW DataCollectionGroup AS
   WHERE instrumentId IN (
     SELECT ihu.instrumentId
     FROM $ispyb.Instrument_has_Username ihu
-    WHERE ihu.username = current_user()
+    WHERE ihu.username = user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW DataCollection AS
@@ -29,7 +29,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW DataCollection AS
   WHERE instrumentId IN (
     SELECT ihu.instrumentId
     FROM $ispyb.Instrument_has_Username ihu
-    WHERE ihu.username = current_user()
+    WHERE ihu.username = user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW EnergyScan AS
@@ -38,7 +38,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW EnergyScan AS
   WHERE instrumentId IN (
     SELECT ihu.instrumentId
     FROM $ispyb.Instrument_has_Username ihu
-    WHERE ihu.username = current_user()
+    WHERE ihu.username = user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW XFEFluorescenceSpectrum AS
@@ -47,7 +47,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW XFEFluorescenceSpectrum AS
   WHERE instrumentId IN (
     SELECT ihu.instrumentId
     FROM $ispyb.Instrument_has_Username ihu
-    WHERE ihu.username = current_user()
+    WHERE ihu.username = user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProcIntegration AS
@@ -56,7 +56,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProcIntegration AS
   WHERE instrumentId IN (
     SELECT ihu.instrumentId
     FROM $ispyb.Instrument_has_Username ihu
-    WHERE ihu.username = current_user()
+    WHERE ihu.username = user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProcProgram AS
@@ -65,7 +65,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProcProgram AS
   WHERE instrumentId IN (
     SELECT ihu.instrumentId
     FROM $ispyb.Instrument_has_Username ihu
-    WHERE ihu.username = current_user()
+    WHERE ihu.username = user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProcProgramAttachment AS
@@ -75,7 +75,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProcProgramAttachment AS
   WHERE app.instrumentId IN (
     SELECT ihu.instrumentId
     FROM $ispyb.Instrument_has_Username ihu
-    WHERE ihu.username = current_user()
+    WHERE ihu.username = user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProcProgramMessage AS
@@ -85,7 +85,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProcProgramMessage AS
   WHERE app.instrumentId IN (
     SELECT ihu.instrumentId
     FROM $ispyb.Instrument_has_Username ihu
-    WHERE ihu.username = current_user()
+    WHERE ihu.username = user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProcScaling_has_Int AS
@@ -94,7 +94,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProcScaling_has_Int AS
   WHERE instrumentId IN (
     SELECT ihu.instrumentId
     FROM $ispyb.Instrument_has_Username ihu
-    WHERE ihu.username = current_user()
+    WHERE ihu.username = user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProcScaling AS
@@ -103,7 +103,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProcScaling AS
   WHERE instrumentId IN (
     SELECT ihu.instrumentId
     FROM $ispyb.Instrument_has_Username ihu
-    WHERE ihu.username = current_user()
+    WHERE ihu.username = user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProcScalingStatistics AS
@@ -112,7 +112,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProcScalingStatistics AS
   WHERE instrumentId IN (
     SELECT ihu.instrumentId
     FROM $ispyb.Instrument_has_Username ihu
-    WHERE ihu.username = current_user()
+    WHERE ihu.username = user()
   );
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProc AS
@@ -121,6 +121,6 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW AutoProc AS
   WHERE instrumentId IN (
     SELECT ihu.instrumentId
     FROM $ispyb.Instrument_has_Username ihu
-    WHERE ihu.username = current_user()
+    WHERE ihu.username = user()
   );
 
