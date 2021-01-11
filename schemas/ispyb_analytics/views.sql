@@ -3,7 +3,17 @@
 -- https://vettabase.com/blog/mariadb-mysql-using-views-to-grant-or-deny-row-level-privileges/
 --
 
--- Recreate database
+-- Recreate views
+
+CREATE OR REPLACE SQL SECURITY DEFINER VIEW Proposal AS
+  SELECT DISTINCT p.*
+  FROM $ispyb.Proposal p
+    JOIN $ispyb.BLSession bs ON bs.proposalId = p.proposalId
+  WHERE bs.instrumentId IN (
+    SELECT ihu.instrumentId
+    FROM $ispyb.Instrument_has_Username ihu
+    WHERE ihu.username = substring_index(user(),'@',1)
+  );
 
 CREATE OR REPLACE SQL SECURITY DEFINER VIEW BLSession AS
   SELECT *
