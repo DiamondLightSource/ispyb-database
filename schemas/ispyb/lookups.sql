@@ -19,7 +19,7 @@
 --
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.17.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.17.1');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 --
@@ -215,4 +215,4 @@ INSERT INTO `PurificationColumn` (`purificationColumnId`, `name`, `active`) VALU
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-13 12:30:37
+-- Dump completed on 2021-01-13 12:53:54
