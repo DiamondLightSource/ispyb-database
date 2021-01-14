@@ -126,5 +126,3 @@ GRANT EXECUTE ON PROCEDURE upsert_sample_image_auto_score TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_container_for_sample_id TO 'ispyb_processing';
 
 GRANT EXECUTE ON PROCEDURE insert_phasing_analysis_results TO 'ispyb_processing';
-
-GRANT EXECUTE ON PROCEDURE insert_subsample_for_image_full_path TO 'ispyb_processing';
