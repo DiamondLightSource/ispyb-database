@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.5.5-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.18  Distrib 10.5.8-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.5.5-MariaDB
+-- Server version	10.5.8-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -184,7 +184,8 @@ CREATE TABLE `AutoProc` (
   `refinedCell_gamma` float DEFAULT NULL COMMENT 'Refined cell',
   `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
   PRIMARY KEY (`autoProcId`),
-  KEY `AutoProc_FKIndex1` (`autoProcProgramId`)
+  KEY `AutoProc_FKIndex1` (`autoProcProgramId`),
+  KEY `AutoProc_refined_unit_cell` (`refinedCell_a`,`refinedCell_b`,`refinedCell_c`,`refinedCell_alpha`,`refinedCell_beta`,`refinedCell_gamma`,`spaceGroup`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -620,10 +621,13 @@ CREATE TABLE `BLSampleGroup_has_BLSample` (
   `blSampleId` int(11) unsigned NOT NULL,
   `groupOrder` mediumint(9) DEFAULT NULL,
   `type` enum('background','container','sample','calibrant') DEFAULT NULL,
+  `blSampleTypeId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`blSampleGroupId`,`blSampleId`),
   KEY `BLSampleGroup_has_BLSample_ibfk2` (`blSampleId`),
+  KEY `BLSampleGroup_has_BLSample_ibfk3` (`blSampleTypeId`),
   CONSTRAINT `BLSampleGroup_has_BLSample_ibfk1` FOREIGN KEY (`blSampleGroupId`) REFERENCES `BLSampleGroup` (`blSampleGroupId`),
-  CONSTRAINT `BLSampleGroup_has_BLSample_ibfk2` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`)
+  CONSTRAINT `BLSampleGroup_has_BLSample_ibfk2` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`),
+  CONSTRAINT `BLSampleGroup_has_BLSample_ibfk3` FOREIGN KEY (`blSampleTypeId`) REFERENCES `BLSampleType` (`blSampleTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -771,6 +775,22 @@ CREATE TABLE `BLSampleImage_has_AutoScoreClass` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `BLSampleType`
+--
+
+DROP TABLE IF EXISTS `BLSampleType`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BLSampleType` (
+  `blSampleTypeId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `proposalType` varchar(10) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
+  PRIMARY KEY (`blSampleTypeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `BLSampleType_has_Component`
 --
 
@@ -911,6 +931,7 @@ CREATE TABLE `BLSubSample` (
   `imgFilePath` varchar(1024) DEFAULT NULL COMMENT 'url image',
   `comments` varchar(1024) DEFAULT NULL COMMENT 'comments',
   `recordTimeStamp` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Creation or last update date/time',
+  `source` enum('manual','auto') DEFAULT 'manual',
   PRIMARY KEY (`blSubSampleId`),
   KEY `BLSubSample_FKIndex1` (`blSampleId`),
   KEY `BLSubSample_FKIndex2` (`diffractionPlanId`),
@@ -1219,6 +1240,8 @@ CREATE TABLE `ComponentSubType` (
   `componentSubTypeId` int(11) unsigned NOT NULL,
   `name` varchar(31) NOT NULL,
   `hasPh` tinyint(1) DEFAULT 0,
+  `proposalType` varchar(10) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`componentSubTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1265,6 +1288,8 @@ CREATE TABLE `ConcentrationType` (
   `concentrationTypeId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(31) NOT NULL,
   `symbol` varchar(8) NOT NULL,
+  `proposalType` varchar(10) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`concentrationTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1300,6 +1325,7 @@ CREATE TABLE `Container` (
   `containerRegistryId` int(11) unsigned DEFAULT NULL,
   `scLocationUpdated` datetime DEFAULT NULL,
   `priorityPipelineId` int(11) unsigned DEFAULT NULL,
+  `experimentTypeId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`containerId`),
   UNIQUE KEY `Container_UNIndex1` (`barcode`),
   KEY `Container_FKIndex` (`beamlineLocation`),
@@ -1313,6 +1339,8 @@ CREATE TABLE `Container` (
   KEY `Container_ibfk8` (`containerRegistryId`),
   KEY `Container_ibfk6` (`sessionId`),
   KEY `Container_ibfk9` (`priorityPipelineId`),
+  KEY `Container_fk_experimentTypeId` (`experimentTypeId`),
+  CONSTRAINT `Container_fk_experimentTypeId` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`),
   CONSTRAINT `Container_ibfk2` FOREIGN KEY (`screenId`) REFERENCES `Screen` (`screenId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Container_ibfk3` FOREIGN KEY (`scheduleId`) REFERENCES `Schedule` (`scheduleId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Container_ibfk4` FOREIGN KEY (`imagerId`) REFERENCES `Imager` (`imagerId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -1701,6 +1729,7 @@ CREATE TABLE `DataCollection` (
   KEY `startPositionId` (`startPositionId`),
   KEY `DataCollection_FKIndex0` (`BLSAMPLEID`),
   KEY `DataCollection_FKIndex00` (`SESSIONID`),
+  KEY `DataCollection_dataCollectionGroupId_startTime` (`dataCollectionGroupId`,`startTime`),
   CONSTRAINT `DataCollection_ibfk_1` FOREIGN KEY (`strategySubWedgeOrigId`) REFERENCES `ScreeningStrategySubWedge` (`screeningStrategySubWedgeId`),
   CONSTRAINT `DataCollection_ibfk_2` FOREIGN KEY (`detectorId`) REFERENCES `Detector` (`detectorId`),
   CONSTRAINT `DataCollection_ibfk_3` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`),
@@ -1775,13 +1804,16 @@ CREATE TABLE `DataCollectionGroup` (
   `workflowId` int(11) unsigned DEFAULT NULL,
   `xtalSnapshotFullPath` varchar(255) DEFAULT NULL,
   `scanParameters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`scanParameters`)),
+  `experimentTypeId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`dataCollectionGroupId`),
   KEY `DataCollectionGroup_FKIndex1` (`blSampleId`),
   KEY `DataCollectionGroup_FKIndex2` (`sessionId`),
   KEY `workflowId` (`workflowId`),
+  KEY `DataCollectionGroup_ibfk_4` (`experimentTypeId`),
   CONSTRAINT `DataCollectionGroup_ibfk_1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `DataCollectionGroup_ibfk_2` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `DataCollectionGroup_ibfk_3` FOREIGN KEY (`workflowId`) REFERENCES `Workflow` (`workflowId`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `DataCollectionGroup_ibfk_3` FOREIGN KEY (`workflowId`) REFERENCES `Workflow` (`workflowId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `DataCollectionGroup_ibfk_4` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='a dataCollectionGroup is a group of dataCollection for a spe';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1885,8 +1917,8 @@ CREATE TABLE `Dewar` (
   `transportValue` int(11) unsigned DEFAULT NULL,
   `trackingNumberToSynchrotron` varchar(30) DEFAULT NULL,
   `trackingNumberFromSynchrotron` varchar(30) DEFAULT NULL,
-  `type` enum('Dewar','Toolbox') NOT NULL DEFAULT 'Dewar',
-  `FACILITYCODE` varchar(20) DEFAULT NULL,
+  `type` enum('Dewar','Toolbox','Parcel') NOT NULL DEFAULT 'Dewar',
+  `facilityCode` varchar(20) DEFAULT NULL,
   `weight` float DEFAULT NULL COMMENT 'dewar weight in kg',
   `deliveryAgent_barcode` varchar(30) DEFAULT NULL COMMENT 'Courier piece barcode (not the airway bill)',
   PRIMARY KEY (`dewarId`),
@@ -2081,11 +2113,21 @@ CREATE TABLE `DiffractionPlan` (
   `monoBandwidth` double DEFAULT NULL,
   `centringMethod` enum('xray','loop','diffraction','optical') DEFAULT NULL,
   `userPath` varchar(100) DEFAULT NULL COMMENT 'User-specified relative "root" path inside the session directory to be used for holding collected data',
+  `robotPlateTemperature` float DEFAULT NULL COMMENT 'units: kelvin',
+  `exposureTemperature` float DEFAULT NULL COMMENT 'units: kelvin',
+  `experimentTypeId` int(10) unsigned DEFAULT NULL,
+  `purificationColumnId` int(10) unsigned DEFAULT NULL,
+  `collectionMode` enum('auto','manual') DEFAULT NULL COMMENT 'The requested collection mode, possible values are auto, manual',
+  `priority` int(4) DEFAULT NULL COMMENT 'The priority of this sample relative to others in the shipment',
   PRIMARY KEY (`diffractionPlanId`),
   KEY `DiffractionPlan_ibfk1` (`presetForProposalId`),
   KEY `DataCollectionPlan_ibfk3` (`detectorId`),
+  KEY `DiffractionPlan_ibfk3` (`experimentTypeId`),
+  KEY `DiffractionPlan_ibfk2` (`purificationColumnId`),
   CONSTRAINT `DataCollectionPlan_ibfk3` FOREIGN KEY (`detectorId`) REFERENCES `Detector` (`detectorId`) ON UPDATE CASCADE,
-  CONSTRAINT `DiffractionPlan_ibfk1` FOREIGN KEY (`presetForProposalId`) REFERENCES `Proposal` (`proposalId`)
+  CONSTRAINT `DiffractionPlan_ibfk1` FOREIGN KEY (`presetForProposalId`) REFERENCES `Proposal` (`proposalId`),
+  CONSTRAINT `DiffractionPlan_ibfk2` FOREIGN KEY (`purificationColumnId`) REFERENCES `PurificationColumn` (`purificationColumnId`),
+  CONSTRAINT `DiffractionPlan_ibfk3` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2201,6 +2243,22 @@ CREATE TABLE `ExperimentKindDetails` (
   KEY `ExperimentKindDetails_FKIndex1` (`diffractionPlanId`),
   CONSTRAINT `EKD_ibfk_1` FOREIGN KEY (`diffractionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ExperimentType`
+--
+
+DROP TABLE IF EXISTS `ExperimentType`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ExperimentType` (
+  `experimentTypeId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `proposalType` varchar(10) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
+  PRIMARY KEY (`experimentTypeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A lookup table for different types of experients';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2335,9 +2393,12 @@ CREATE TABLE `GridInfo` (
   `snapshot_offsetXPixel` float DEFAULT NULL,
   `snapshot_offsetYPixel` float DEFAULT NULL,
   `snaked` tinyint(1) DEFAULT 0 COMMENT 'True: The images associated with the DCG were collected in a snaked pattern',
+  `dataCollectionId` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`gridInfoId`),
   KEY `workflowMeshId` (`workflowMeshId`),
   KEY `GridInfo_ibfk_2` (`dataCollectionGroupId`),
+  KEY `GridInfo_fk_dataCollectionId` (`dataCollectionId`),
+  CONSTRAINT `GridInfo_fk_dataCollectionId` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `GridInfo_ibfk_1` FOREIGN KEY (`workflowMeshId`) REFERENCES `WorkflowMesh` (`workflowMeshId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `GridInfo_ibfk_2` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -3100,7 +3161,7 @@ CREATE TABLE `Phasing` (
   `phasingAnalysisId` int(11) unsigned NOT NULL COMMENT 'Related phasing analysis item',
   `phasingProgramRunId` int(11) unsigned NOT NULL COMMENT 'Related program item',
   `spaceGroupId` int(10) unsigned DEFAULT NULL COMMENT 'Related spaceGroup',
-  `method` enum('solvent flattening','solvent flipping') DEFAULT NULL COMMENT 'phasing method',
+  `method` enum('solvent flattening','solvent flipping','e','SAD','shelxe') DEFAULT NULL COMMENT 'phasing method',
   `solventContent` double DEFAULT NULL,
   `enantiomorph` tinyint(1) DEFAULT NULL COMMENT '0 or 1',
   `lowRes` double DEFAULT NULL,
@@ -3677,6 +3738,7 @@ CREATE TABLE `Protein` (
   `externalId` binary(16) DEFAULT NULL,
   `density` float DEFAULT NULL,
   `abundance` float DEFAULT NULL COMMENT 'Deprecated',
+  `isotropy` enum('isotropic','anisotropic') DEFAULT NULL,
   PRIMARY KEY (`proteinId`),
   KEY `ProteinAcronym_Index` (`proposalId`,`acronym`),
   KEY `Protein_FKIndex1` (`proposalId`),
@@ -3707,6 +3769,21 @@ CREATE TABLE `Protein_has_PDB` (
   CONSTRAINT `Protein_Has_PDB_fk1` FOREIGN KEY (`proteinid`) REFERENCES `Protein` (`proteinId`),
   CONSTRAINT `Protein_Has_PDB_fk2` FOREIGN KEY (`pdbid`) REFERENCES `PDB` (`pdbId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `PurificationColumn`
+--
+
+DROP TABLE IF EXISTS `PurificationColumn`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `PurificationColumn` (
+  `purificationColumnId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
+  PRIMARY KEY (`purificationColumnId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Size exclusion chromotography (SEC) lookup table for BioSAXS';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5755,4 +5832,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-08 16:26:27
+-- Dump completed on 2020-12-29 18:29:32

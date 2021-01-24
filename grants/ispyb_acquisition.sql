@@ -50,3 +50,26 @@ GRANT EXECUTE ON PROCEDURE retrieve_dc_group_v2 TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE retrieve_sleeve TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE retrieve_sleeves TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE upsert_sleeve TO 'ispyb_acquisition';
+
+GRANT EXECUTE ON PROCEDURE retrieve_sample TO 'ispyb_acquisition';
+
+
+CREATE ROLE IF NOT EXISTS ispyb_gda_scm;
+
+GRANT EXECUTE ON PROCEDURE retrieve_scm_sample TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE retrieve_scm_sample_for_container_barcode_and_location TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE retrieve_scm_samples_for_container_id TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE retrieve_scm_container TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE retrieve_scm_container_for_barcode TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE retrieve_scm_containers_for_session TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE retrieve_detector TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE upsert_dc_group_v3 TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE retrieve_dc_group TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE retrieve_dc_group_v2 TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE upsert_dc_main_v3 TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE update_dc_experiment_v2 TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE update_dc_machine TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE upsert_dcg_grid TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE update_dc_position TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE insert_beamline_action TO ispyb_gda_scm;
+

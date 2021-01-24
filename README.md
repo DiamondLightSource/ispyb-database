@@ -2,15 +2,19 @@
 
 # ispyb-database
 
-This package provides all the scripts necessary to create an up-to-date ISPyB
-database.
+This package provides everything needed to create the Diamond flavour of the ISPyB database schema. As we evolve the schema we will publish the update scripts here, so hopefully it should be easy for other users of the schema to stay up-to-date.
 
 ## Requirements
 
-* MariaDB 10.0+ or MySQL 5.6+, but we recommend MariaDB 10.3 or later.
-* If binary logging is enabled in the DB system, then execute this before importing the test schema: set global log_bin_trust_function_creators=ON;
+* We recommend MariaDB 10.3 or later.
+* Linux with bash is assumed, but it's possible to make this work on other OSes.
+* If binary logging is enabled in the DB system, then execute this before importing the test schema: `SET GLOBAL log_bin_trust_function_creators=ON;`
 
 ## Installation
+
+Make sure you have installed the MariaDB server and client, and maybe secured the installation by running `mariadb-secure-installation` (or `mysql_secure_installation` on MariaDB 10.3 or older). You should copy `.my.example.cnf` to `.my.cnf` and then edit that file to set the `user` and `password`, e.g. `user = root` and use the `password` you set when securing.
+
+In a test environment you can then run the `build.sh` file. This creates the database schema and applies the grants as described in the "Schema" and "Grants" sections below.
 
 ### Schema
 
@@ -18,15 +22,13 @@ Run this on the command-line to create a database and import the schema stored i
 
 ```bash
 mysql -e "CREATE DATABASE ispyb"
-mysql ispyb < schema/tables.sql
-mysql ispyb < schema/lookups.sql
-mysql ispyb < schema/data.sql
-mysql ispyb < schema/routines.sql
+mysql ispyb < schemas/ispyb/tables.sql
+mysql ispyb < schemas/ispyb/lookups.sql
+mysql ispyb < schemas/ispyb/data.sql
+mysql ispyb < schemas/ispyb/routines.sql
 ```
 
 Note that the `data.sql` file contains test data, so is only useful in a development environment.
-
-Alternatively, in a test environment you can also run the `build.sh` file. This creates the database, runs the above .sql files and more.
 
 ### Grants
 
@@ -62,13 +64,13 @@ SHOW PLUGINS SONAME WHERE Name = 'SQL_ERROR_LOG';
 
 In order to update a production database, please follow this procedure:
 
-1. For all .sql files in `schema/updates` that have not already been run, read any comments inside the files to decide if you should run them. Run a file e.g. like this:
+1. For all .sql files in `schemas/ispyb/updates` that have not already been run, read any comments inside the files to decide if/when you should run them. Run a file e.g. like this:
 ```bash
-mysql ispyb < schema/updates/2019_03_29_BLSession_archived.sql
+mysql ispyb < schemas/ispyb/updates/2019_03_29_BLSession_archived.sql
 ```
-2. If it's been updated, run `schema/routines.sql`. E.g.:
+2. If `schemas/ispyb/routines.sql` has been updated since you installed it, you can simply re-run it. E.g.:
 ```bash
-mysql ispyb < schema/routines.sql
+mysql ispyb < schemas/ispyb/routines.sql
 ```
 3. If you ran the `routines.sql`, then re-apply the grants for the routines. E.g.:
 ```bash
@@ -83,14 +85,3 @@ mysql ispyb < grants/ispyb_web.sql
 * A complete [```list of tables and columns```](https://github.com/DiamondLightSource/ispyb-database/blob/master/docs/list_of_tables_and_columns.rst) for more details about the tables and columns
 * A complete [```list of stored procedures```](https://github.com/DiamondLightSource/ispyb-database/blob/master/docs/list_of_procs.rst) for more details about the stored procedures
 
-## Naming and type convention
-
-* Table names: UpperCamelCase (i.e. TableName, DataCollection)
-* Column names: lowerCamelCase (i.e. columnName, dataCollectionId)
-* Table names are in singular when a single row in the table contains only one of the items that the name refers to (i.e. Container, but note: ImageQualityIndicators because there are multiple indicators in a single row)
-* Flag indication: 1=yes, 0=no, NULL=unknown
-* Primary key columns are always integer
-* Linker tables used for many-to-many relationships between two entities Entity1 and Entity2 are named according to the pattern 'Entity1_has_Entity2'. If both have the same prefix, then the prefix might be left out of the last one, e.g. 'Component_has_SubType' where 'SubType' refers to the entity 'ComponentSubType'.
-* Sometimes it's justified to use abbreviations to avoid excessively long names.
-
-The schema does have some tables and columns that don't adhere to this convention. Some of those should be corrected, but there could be good reasons to break with the convention in a few cases.
