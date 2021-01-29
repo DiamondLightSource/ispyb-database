@@ -46,7 +46,8 @@ BEGIN
           method2Res = IFNULL(p_method2Res, method2Res),
           totalIntegratedSignal = IFNULL(p_totalIntegratedSignal, totalIntegratedSignal),
           dozor_score = IFNULL(p_dozorScore, dozor_score),
-          driftFactor = IFNULL(p_driftFactor, driftFactor)
+          driftFactor = IFNULL(p_driftFactor, driftFactor),
+          autoProcProgramId = IFNULL(p_autoProcProgramId, autoProcProgramId)
 		WHERE dataCollectionId = p_dataCollectionId AND imageNumber = p_imageNumber;
         SET p_id = 1;
     END IF;
