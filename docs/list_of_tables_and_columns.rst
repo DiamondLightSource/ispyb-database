@@ -221,6 +221,7 @@
    ``boxSizeYMax``,double,"For gridscans, unit: um"
    ``monoBandwidthMin``,double,"unit: percentage"
    ``monoBandwidthMax``,double,"unit: percentage"
+   ``preferredDataCentre``,varchar,"Relevant datacentre to use to process data from this beamline"
    **BeamlineStats**,table,""
    ``beamlineStatsId``,int,""
    ``beamline``,varchar,""
