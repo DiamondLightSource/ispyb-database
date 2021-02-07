@@ -10,11 +10,10 @@ if [ -f ${file} ]; then
 fi
 
 # Substitute $file with its value in the sql file
-export file=${file}
-sql=`envsubst < sql/db_procs_to_tsv.sql`
+sql=$(env file=${file} envsubst < sql/db_procs_to_tsv.sql)
 
 # Execute the sql to generate the csv outfile
-mysql --defaults-file=../.my.cnf -D $db -e "${sql}"
+mysql --defaults-file=../.my.cnf --skip-column-names --batch --raw -D $db -e "${sql}" > ${file}
 
 # Construct rst file with csv table
 echo ".. csv-table:: Procedure signatures with comments"

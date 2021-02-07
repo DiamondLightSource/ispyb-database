@@ -9,7 +9,7 @@ BEGIN
     IF p_id IS NOT NULL THEN
         IF p_authLogin IS NOT NULL THEN
             SELECT
-                appa.autoProcProgramAttachmentId "attachmentId", appa.fileType "fileType", appa.filePath "filePath", appa.fileName "fileName"
+                appa.autoProcProgramAttachmentId "attachmentId", appa.fileType "fileType", appa.filePath "filePath", appa.fileName "fileName", appa.importanceRank "importanceRank"
             FROM AutoProcProgramAttachment appa
                 INNER JOIN AutoProcProgram app ON app.autoProcProgramId = appa.autoProcProgramId
                 INNER JOIN ProcessingJob pj ON pj.processingJobId = app.processingJobId
@@ -18,10 +18,10 @@ BEGIN
                 INNER JOIN Session_has_Person shp ON shp.sessionId = dcg.sessionId
                 INNER JOIN Person per ON per.personId = shp.personId 
             WHERE appa.autoProcProgramId = p_id AND per.login = p_authLogin
-            GROUP BY appa.autoProcProgramAttachmentId, appa.fileType, appa.filePath, appa.fileName;
+            GROUP BY appa.autoProcProgramAttachmentId, appa.fileType, appa.filePath, appa.fileName, appa.importanceRank;
         ELSE
             SELECT
-                appa.autoProcProgramAttachmentId "attachmentId", appa.fileType "fileType", appa.filePath "filePath", appa.fileName "fileName"
+                appa.autoProcProgramAttachmentId "attachmentId", appa.fileType "fileType", appa.filePath "filePath", appa.fileName "fileName", appa.importanceRank "importanceRank"
             FROM AutoProcProgramAttachment appa
             WHERE appa.autoProcProgramId = p_id;
         END IF;
