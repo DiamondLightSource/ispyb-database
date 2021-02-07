@@ -2161,6 +2161,7 @@
    ``colourMap``,varchar,"Colour map for displaying the data"
    ``min``,int,"Min value in the data for histogramming"
    ``max``,int,"Max value in the data for histogramming"
+   ``autoProcProgramId``,int,"Related autoproc programid"
    **XRFFluorescenceMappingROI**,table,""
    ``xrfFluorescenceMappingROIId``,int,""
    ``startEnergy``,float,""

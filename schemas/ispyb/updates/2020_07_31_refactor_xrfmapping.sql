@@ -13,6 +13,7 @@ CREATE TABLE `XRFFluorescenceMapping` (
   `colourMap` VARCHAR(20) DEFAULT NULL COMMENT 'Colour map for displaying the data',
   `min` INT(3) DEFAULT NULL COMMENT 'Min value in the data for histogramming',
   `max` INT(3) DEFAULT NULL COMMENT 'Max value in the data for histogramming',
+  `autoProcProgramId` int(10) unsigned DEFAULT NULL COMMENT 'Related autoproc programid',
   PRIMARY KEY (`xrfFluorescenceMappingId`),
   CONSTRAINT `XRFFluorescenceMapping_ibfk1`
       FOREIGN KEY (`xrfFluorescenceMappingROIId`)
@@ -21,6 +22,10 @@ CREATE TABLE `XRFFluorescenceMapping` (
   CONSTRAINT `XRFFluorescenceMapping_ibfk2`
       FOREIGN KEY (`gridInfoId`)
           REFERENCES `GridInfo` (`gridInfoId`)
+              ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `XRFFluorescenceMapping_ibfk3`
+      FOREIGN KEY (`autoProcProgramId`)
+          REFERENCES `AutoProcProgram` (`autoProcProgramId`)
               ON DELETE RESTRICT ON UPDATE RESTRICT
 )
 COMMENT 'An XRF map generated from an XRF Mapping ROI based on data from a gridscan of a sample'
