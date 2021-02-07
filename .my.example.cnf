@@ -6,4 +6,5 @@
 [client]
 user = root
 password = rootpassword
-
+host = localhost
+port = 3306
