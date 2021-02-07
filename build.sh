@@ -11,24 +11,27 @@
 
 source bin/functions.sh
 
-db="ispyb_build"
+if [ -z "${db}" ]
+then
+  db="ispyb_build"
+fi
 
 echo "Dropping + creating build database"
 mysql --defaults-file=.my.cnf -e "DROP DATABASE IF EXISTS $db; CREATE DATABASE $db; SET GLOBAL log_bin_trust_function_creators=ON;"
 
 if [[ $? -eq 0 ]]
 then
-  mysql --defaults-file=.my.cnf -D $db < schema/tables.sql
-  mysql --defaults-file=.my.cnf -D $db < schema/lookups.sql
-  mysql --defaults-file=.my.cnf -D $db < schema/data.sql
-  mysql --defaults-file=.my.cnf -D $db < schema/routines.sql
+  mysql --defaults-file=.my.cnf -D $db < schemas/ispyb/tables.sql
+  mysql --defaults-file=.my.cnf -D $db < schemas/ispyb/lookups.sql
+  mysql --defaults-file=.my.cnf -D $db < schemas/ispyb/data.sql
+  mysql --defaults-file=.my.cnf -D $db < schemas/ispyb/routines.sql
   mysql --defaults-file=.my.cnf -D $db < grants/ispyb_acquisition.sql
   mysql --defaults-file=.my.cnf -D $db < grants/ispyb_processing.sql
   mysql --defaults-file=.my.cnf -D $db < grants/ispyb_web.sql
   mysql --defaults-file=.my.cnf -D $db < grants/ispyb_import.sql
 
   # Identify update .sql files that haven't been run, and run them
-  all_sql_files=`cd schema/updates && ls *.sql && cd ../..`
+  all_sql_files=`cd schemas/ispyb/updates && ls *.sql && cd ../..`
 
   done_sql_files=`mysql --defaults-file=.my.cnf -D $db --skip-column-names --silent --raw -e "SELECT scriptName FROM SchemaStatus WHERE schemaStatus = 'DONE' ORDER BY recordTimeStamp;"`
 
@@ -38,17 +41,17 @@ then
     if [[ $? -ne 0 ]]
     then
       arr+=("$sql_file")
-      mysql --defaults-file=.my.cnf -D $db < schema/updates/$sql_file
+      mysql --defaults-file=.my.cnf -D $db < schemas/ispyb/updates/$sql_file
     fi
   done <<< "$all_sql_files"
 
   if [ -n "$arr" ]; then
-    echo "The following schema/updates/*.sql files were sourced:"
+    echo "The following schemas/ispyb/updates/*.sql files were sourced:"
     for val in "${arr[@]}"; do
       echo "$val"
     done
   else
-    echo "No new schema/updates/*.sql files."
+    echo "No new schemas/ispyb/updates/*.sql files."
   fi
 
   # Generate table and sproc documentation

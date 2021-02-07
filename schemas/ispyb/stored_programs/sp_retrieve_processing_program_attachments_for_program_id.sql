@@ -5,7 +5,7 @@ COMMENT 'Returns a multi-row result-set with the processing program attachments 
 BEGIN
     IF p_id IS NOT NULL THEN
       SELECT
-        appa.autoProcProgramAttachmentId "attachmentId", appa.fileType "fileType", appa.filePath "filePath", appa.fileName "fileName"
+        appa.autoProcProgramAttachmentId "attachmentId", appa.fileType "fileType", appa.filePath "filePath", appa.fileName "fileName", appa.importanceRank "importanceRank"
       FROM AutoProcProgramAttachment appa
       WHERE appa.autoProcProgramId = p_id;
     ELSE
