@@ -40,7 +40,7 @@ fi
 
 echo "Creating archive file"
 mkdir -p dist
-tar cvfz ${archive} build.sh grants/ispyb_*.sql schema/*.sql schema/updates/*.sql
+tar cvfz ${archive} build.sh grants/ispyb_*.sql schemas/ispyb/*.sql schemas/ispyb/updates/*.sql schemas/ispyb_analytics/*
 
 echo "Creating tag v${schema_version}"
 git tag -a v${schema_version} -m v${schema_version}
