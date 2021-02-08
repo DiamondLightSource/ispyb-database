@@ -439,6 +439,7 @@
    ``comments``,varchar,"comments"
    ``recordTimeStamp``,timestamp,"Creation or last update date/time"
    ``source``,enum,""
+   ``type``,varchar,"The type of subsample, i.e. roi (region), poi (point), loi (line)"
    **Buffer**,table,""
    ``bufferId``,int,""
    ``BLSESSIONID``,int,""
