@@ -338,6 +338,8 @@
    ``blTimeStamp``,datetime,""
    ``containerInspectionId``,int,""
    ``modifiedTimeStamp``,datetime,""
+   ``offsetX``,int,"The x offset of the image relative to the canvas"
+   ``offsetY``,int,"The y offset of the image relative to the canvas"
    **BLSampleImageAnalysis**,table,""
    ``blSampleImageAnalysisId``,int,""
    ``blSampleImageId``,int,""
