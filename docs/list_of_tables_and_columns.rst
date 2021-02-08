@@ -318,6 +318,7 @@
    ``blottingDrainTime``,int,"Time sample left to drain after blotting, Units: sec"
    ``support``,varchar,"Sample support material"
    ``subLocation``,smallint,"Indicates the sample's location on a multi-sample pin, where 1 is closest to the pin base"
+   ``staffComments``,varchar,"Any staff comments on the sample"
    **BLSampleGroup**,table,""
    ``blSampleGroupId``,int,""
    ``name``,varchar,"Human-readable name"
