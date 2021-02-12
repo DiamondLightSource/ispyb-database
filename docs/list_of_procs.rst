@@ -55,6 +55,7 @@
    "**retrieve_dewars_for_proposal_code_number**",	"p_proposalCode varchar(3), p_proposalNumber int unsigned",	"Return multi-row result-set with dewar ID + other dewar info ass"
    "**retrieve_dewars_for_proposal_code_number_v2**",	"p_proposalCode varchar(3),     p_proposalNumber int unsigned,     p_authLogin varchar(45)",	"Return multi-row result-set with dewar ID + other dewar info associated with shipments in a given proposal specified by proposal code, proposal_number"
    "**retrieve_expired_sessions_for_instrument_and_period**",	"IN p_instrument varchar(15), IN p_startDate datetime, IN p_endDate datetime",	"Returns a multi-row result-set with the sessions that ended within the window defined by p_startDate and p_endDate on instrument given by p_instrument (can contain wildcards)"
+   "**retrieve_grid_info_for_dc**",	"IN p_dcId int unsigned, p_authLogin varchar(45)",	"Return multi-row result-set with grid info values for the dc"
    "**retrieve_grid_info_for_dcg**",	"IN p_dcgId int unsigned",	"Return multi-row result-set with grid info values for the dcg"
    "**retrieve_grid_info_for_dcg_v2**",	"IN p_dcgId int unsigned, p_authLogin varchar(45)",	"Return multi-row result-set with grid info values for the dcg"
    "**retrieve_grid_info_for_dc_ids**",	"IN p_dcIds TEXT",	"Return multi-row result-set with dc ID, grid info and some addit"
