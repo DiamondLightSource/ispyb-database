@@ -11,8 +11,10 @@ Unreleased / master
 1.17.1 (2021-01-13)
 -------------------
 * ``ispyb_analytics`` schema:
+
   * Added ``Proposal`` and ``AutoProc*`` views, fixed bugs in view
   * Added data_scientist role and grants
+
 * The script for generating the list of procs now writes the result to the client instead of the server. This way a non-local or Docker MariaDB instance can be used.
 
 1.17.0 (2020-12-30)
