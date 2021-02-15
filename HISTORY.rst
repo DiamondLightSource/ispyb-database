@@ -4,6 +4,9 @@ History
 
 Unreleased / master
 -------------------
+* Add `upsert_dc_grid` and `retrieve_grid_info_for_dc` stored procedures for
+  inserting/retrieving `GridInfo` entries via a `dataCollectionId` rather than
+  `dataCollectionGroupId`.
 
 1.17.1 (2021-01-13)
 -------------------
