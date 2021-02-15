@@ -21,11 +21,11 @@ Unreleased / master
 * Renamed ``schema/`` directory to ``schemas/ispyb/``
 * Added ``schemas/ispyb-analytics/`` with its own ``build.sh`` script and so on.
 * Allow database name ``$db`` to be defined outside of the main ``build.sh`` script.
-* Add a BLSubSample source enum to help us distinguish between sub-samples created by users and by e.g. CHiMP.
-* Stored procedure to populate BLSubSample for a given sample image file - to be used by the Python API.
+* Add a ``BLSubSample`` source enum to help us distinguish between sub-samples created by users and by e.g. CHiMP.
+* Stored procedure to populate ``BLSubSample`` for a given sample image file - to be used by the Python API.
 * Add ``collectionMode`` and ``priority`` to ``DiffractionPlan`` table.
 * Add missing ``experimentTypeId`` foreign key to ``Container`` table.
-* Updated ``README.md` and ``CONTRIBUTING.md``.
+* Updated ``README.md`` and ``CONTRIBUTING.md``.
 * Create new indexes on ``AutoProc table`` to improve unit cell search
 
 1.16.0 (2020-12-04)
