@@ -109,6 +109,7 @@ GRANT EXECUTE ON PROCEDURE retrieve_processing_job_parameters_v2 TO 'ispyb_proce
 GRANT EXECUTE ON PROCEDURE retrieve_processing_job_image_sweeps_v2 TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_processing_job_v2 TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_grid_info_for_dcg_v2 TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE retrieve_grid_info_for_dc TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_dewars_for_proposal_code_number_v2 TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_dc_main_v2 TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_dc TO 'ispyb_processing';
