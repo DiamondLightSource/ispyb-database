@@ -14,8 +14,8 @@ CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `upsert_fluo_mapping_roi`(
     MODIFIES SQL DATA
     COMMENT 'Inserts or updates info about a fluorescence spectrum mapping region of interest (p_id).\nMandatory columns:\nFor update: p_id \nReturns: Record ID in p_id.'
 BEGIN
-    INSERT INTO XRFFluorescenceMappingROI (startEnergy, endEnergy, element, edge, r, g, b, blSampleId, scalar)
-        VALUES (p_startEnergy, p_endEnergy, p_element, p_edge, p_r, p_g, p_b, p_blSampleId, p_scalar)
+    INSERT INTO XRFFluorescenceMappingROI (xrfFluorescenceMappingROIId, startEnergy, endEnergy, element, edge, r, g, b, blSampleId, scalar)
+        VALUES (p_id, p_startEnergy, p_endEnergy, p_element, p_edge, p_r, p_g, p_b, p_blSampleId, p_scalar)
     
     ON DUPLICATE KEY UPDATE
         startEnergy = IFNULL(p_startEnergy, startEnergy),
