@@ -4,9 +4,26 @@ History
 
 Unreleased / master
 -------------------
+
+1.18.0 (2021-02-22)
+-------------------
+
 * Add ``upsert_dc_grid`` and ``retrieve_grid_info_for_dc`` stored procedures for
   inserting/retrieving ``GridInfo`` entries via a ``dataCollectionId`` rather than
   ``dataCollectionGroupId``.
+* Add ``staffComments`` to ``BLSample`` table.
+* Add ``offsetX`` and ``offsetY`` to ``BLSampleImage`` table.
+* Add ``type`` to ``BLSubSample`` table.
+* Add ``preferredDataCentre`` to ``BeamLineSetup`` table.
+* Add ``params`` option to ``fileType`` enum in ``DataCollectionFileAttachment`` table.
+* Add ``XRF map``, ``Energy scan``, ``XRF spectrum`` and ``XRF map xas`` options to ``experimentType`` enum in ``DataCollectionGroup`` table.
+* Modify ``strategyOption`` column in ``DiffractionPlan`` table to make it a varchar(200) with json_valid check.
+* Add ``MOSAIC`` option to ``actionType`` enum in ``RobotAction`` table.
+* Re-design unused tables ``XRFFluorescenceMapping`` and ``XRFFluorescenceMappingROI``.
+* Add new table ``XFEFluorescenceComposite``.
+* Re-create ``upsert_fluo_mapping`` and ``upsert_fluo_mapping_roi`` to work with the re-designed tables.
+* Modify ``upsert_quality_indicators`` stored procedure so that the ``p_autoProcProgramId`` parameter is used.
+
 
 1.17.1 (2021-01-13)
 -------------------
