@@ -28,10 +28,10 @@ BEGIN
     SELECT dataCollectionId, imageNumber INTO row_DataCollectionId, row_imageNumber FROM ImageQualityIndicators WHERE dataCollectionId = p_dataCollectionId AND imageNumber = p_imageNumber;
     IF row_DataCollectionId IS NULL THEN
         INSERT INTO ImageQualityIndicators (
-          dataCollectionId, imageNumber, spotTotal, goodBraggCandidates,  
+          dataCollectionId, imageNumber, autoProcProgramId, spotTotal, goodBraggCandidates,  
 	      method1Res, method2Res, totalIntegratedSignal, dozor_score, driftFactor) 
         VALUES (
-          p_dataCollectionId, p_imageNumber, p_spotTotal, p_goodBraggCandidates, 
+          p_dataCollectionId, p_imageNumber, p_autoProcProgramId, p_spotTotal, p_goodBraggCandidates, 
           p_method1Res, p_method2Res, p_totalIntegratedSignal, p_dozorScore, p_driftFactor
         );
         SET p_id = 1;
@@ -46,7 +46,8 @@ BEGIN
           method2Res = IFNULL(p_method2Res, method2Res),
           totalIntegratedSignal = IFNULL(p_totalIntegratedSignal, totalIntegratedSignal),
           dozor_score = IFNULL(p_dozorScore, dozor_score),
-          driftFactor = IFNULL(p_driftFactor, driftFactor)
+          driftFactor = IFNULL(p_driftFactor, driftFactor),
+          autoProcProgramId = IFNULL(p_autoProcProgramId, autoProcProgramId)
 		WHERE dataCollectionId = p_dataCollectionId AND imageNumber = p_imageNumber;
         SET p_id = 1;
     END IF;
