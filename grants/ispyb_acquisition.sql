@@ -32,6 +32,7 @@ GRANT EXECUTE ON PROCEDURE update_dc_experiment TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE update_dc_machine TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE upsert_sample_image_analysis TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE upsert_dcg_grid TO 'ispyb_acquisition';
+GRANT EXECUTE ON PROCEDURE upsert_dc_grid TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE update_dc_position TO 'ispyb_acquisition';
 
 GRANT EXECUTE ON PROCEDURE `update_dc_experiment_v2` TO 'ispyb_acquisition';
@@ -70,6 +71,7 @@ GRANT EXECUTE ON PROCEDURE upsert_dc_main_v3 TO ispyb_gda_scm;
 GRANT EXECUTE ON PROCEDURE update_dc_experiment_v2 TO ispyb_gda_scm;
 GRANT EXECUTE ON PROCEDURE update_dc_machine TO ispyb_gda_scm;
 GRANT EXECUTE ON PROCEDURE upsert_dcg_grid TO ispyb_gda_scm;
+GRANT EXECUTE ON PROCEDURE upsert_dc_grid TO ispyb_gda_scm;
 GRANT EXECUTE ON PROCEDURE update_dc_position TO ispyb_gda_scm;
 GRANT EXECUTE ON PROCEDURE insert_beamline_action TO ispyb_gda_scm;
 
