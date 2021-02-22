@@ -1,8 +1,8 @@
 -- MariaDB dump 10.18  Distrib 10.5.8-MariaDB, for Linux (x86_64)
 --
--- Host: localhost    Database: ispyb_build
+-- Host: 10.88.0.5    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.5.8-MariaDB
+-- Server version	10.4.17-MariaDB-1:10.4.17+maria~bionic
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -3323,6 +3323,81 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_grid_info_for_dc` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_grid_info_for_dc`(IN p_dcId int unsigned, p_authLogin varchar(45))
+    READS SQL DATA
+    COMMENT 'Return multi-row result-set with grid info values for the dc'
+BEGIN
+    IF NOT (p_dcId IS NULL) THEN
+        IF p_authLogin IS NOT NULL THEN
+            SELECT
+                gi.gridInfoId,
+                gi.dx_mm,
+                gi.dy_mm,
+                gi.steps_x,
+                gi.steps_y,
+                gi.meshAngle,
+                gi.pixelsPerMicronX,
+                gi.pixelsPerMicronY,
+                gi.snapshot_offsetXPixel,
+                gi.snapshot_offsetYPixel,
+                gi.orientation,
+                gi.snaked
+            FROM GridInfo gi
+                INNER JOIN DataCollection dc ON gi.dataCollectionId = dc.dataCollectionId
+                INNER JOIN DataCollectionGroup dcg ON dc.dataCollectionGroupId = dcg.dataCollectionGroupId
+                INNER JOIN Session_has_Person shp ON dcg.sessionId = shp.sessionId
+                INNER JOIN Person per ON per.personId = shp.personId
+            WHERE per.login = p_authLogin AND gi.dataCollectionGroupId = p_dcId
+            GROUP BY gi.gridInfoId,
+                gi.dx_mm,
+                gi.dy_mm,
+                gi.steps_x,
+                gi.steps_y,
+                gi.meshAngle,
+                gi.pixelsPerMicronX,
+                gi.pixelsPerMicronY,
+                gi.snapshot_offsetXPixel,
+                gi.snapshot_offsetYPixel,
+                gi.orientation,
+                gi.snaked
+            ORDER BY gi.gridInfoId ASC;
+        ELSE
+            SELECT
+                gi.gridInfoId,
+                gi.dx_mm,
+                gi.dy_mm,
+                gi.steps_x,
+                gi.steps_y,
+                gi.meshAngle,
+                gi.pixelsPerMicronX,
+                gi.pixelsPerMicronY,
+                gi.snapshot_offsetXPixel,
+                gi.snapshot_offsetYPixel,
+                gi.orientation,
+                gi.snaked
+            FROM GridInfo gi
+            WHERE gi.dataCollectionId = p_dcId
+            ORDER BY gi.gridInfoId ASC;
+        END IF;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_dcId is NULL';
+    END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `retrieve_grid_info_for_dcg` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -3430,81 +3505,6 @@ BEGIN
         END IF;
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_dcgId is NULL';
-    END IF;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `retrieve_grid_info_for_dc` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE PROCEDURE `retrieve_grid_info_for_dc`(IN p_dcId int unsigned, p_authLogin varchar(45))
-    READS SQL DATA
-    COMMENT 'Return multi-row result-set with grid info values for the dc'
-BEGIN
-    IF NOT (p_dcId IS NULL) THEN
-        IF p_authLogin IS NOT NULL THEN
-            SELECT
-                gi.gridInfoId,
-                gi.dx_mm,
-                gi.dy_mm,
-                gi.steps_x,
-                gi.steps_y,
-                gi.meshAngle,
-                gi.pixelsPerMicronX,
-                gi.pixelsPerMicronY,
-                gi.snapshot_offsetXPixel,
-                gi.snapshot_offsetYPixel,
-                gi.orientation,
-                gi.snaked
-            FROM GridInfo gi
-                INNER JOIN DataCollection dc ON gi.dataCollectionId = dc.dataCollectionId
-                INNER JOIN DataCollectionGroup dcg ON dc.dataCollectionGroupId = dcg.dataCollectionGroupId
-                INNER JOIN Session_has_Person shp ON dcg.sessionId = shp.sessionId
-                INNER JOIN Person per ON per.personId = shp.personId
-            WHERE per.login = p_authLogin AND gi.dataCollectionGroupId = p_dcId
-            GROUP BY gi.gridInfoId,
-                gi.dx_mm,
-                gi.dy_mm,
-                gi.steps_x,
-                gi.steps_y,
-                gi.meshAngle,
-                gi.pixelsPerMicronX,
-                gi.pixelsPerMicronY,
-                gi.snapshot_offsetXPixel,
-                gi.snapshot_offsetYPixel,
-                gi.orientation,
-                gi.snaked
-            ORDER BY gi.gridInfoId ASC;
-        ELSE
-            SELECT
-                gi.gridInfoId,
-                gi.dx_mm,
-                gi.dy_mm,
-                gi.steps_x,
-                gi.steps_y,
-                gi.meshAngle,
-                gi.pixelsPerMicronX,
-                gi.pixelsPerMicronY,
-                gi.snapshot_offsetXPixel,
-                gi.snapshot_offsetYPixel,
-                gi.orientation,
-                gi.snaked
-            FROM GridInfo gi
-            WHERE gi.dataCollectionId = p_dcId
-            ORDER BY gi.gridInfoId ASC;
-        END IF;
-    ELSE
-        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_dcId is NULL';
     END IF;
 END ;;
 DELIMITER ;
@@ -7129,6 +7129,46 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `upsert_dc_file_attachment` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `upsert_dc_file_attachment`(
+	 INOUT p_id int(11) unsigned,
+     p_dataCollectionId int(11) unsigned,
+     p_fileFullPath varchar(255),
+     p_fileType varchar(45)
+	)
+    MODIFIES SQL DATA
+    COMMENT 'Inserts or updates info about a file attachmet for a data collection. Returns: The PK value in p_id.'
+BEGIN
+	IF p_id IS NOT NULL OR p_dataCollectionId IS NOT NULL THEN
+
+      INSERT INTO DataCollectionFileAttachment (dataCollectionFileAttachmentId, dataCollectionId, fileFullPath, fileType)
+        VALUES (p_id, p_dataCollectionId, p_fileFullPath, p_fileType)
+	    ON DUPLICATE KEY UPDATE
+		  dataCollectionId = IFNULL(p_dataCollectionId, dataCollectionId),
+          fileFullPath = IFNULL(p_fileFullPath, fileFullPath),
+          fileType = IFNULL(p_fileType, fileType);
+
+	  IF p_id IS NULL THEN
+		  SET p_id = LAST_INSERT_ID();
+      END IF;
+    ELSE
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_id OR p_dataCollectionId must be non-NULL.';
+    END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `upsert_dc_grid` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -7178,46 +7218,6 @@ BEGIN
 		  SET p_id = LAST_INSERT_ID();
       END IF;
 	END IF;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `upsert_dc_file_attachment` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
-DELIMITER ;;
-CREATE PROCEDURE `upsert_dc_file_attachment`(
-	 INOUT p_id int(11) unsigned,
-     p_dataCollectionId int(11) unsigned,
-     p_fileFullPath varchar(255),
-     p_fileType varchar(45)
-	)
-    MODIFIES SQL DATA
-    COMMENT 'Inserts or updates info about a file attachmet for a data collection. Returns: The PK value in p_id.'
-BEGIN
-	IF p_id IS NOT NULL OR p_dataCollectionId IS NOT NULL THEN
-
-      INSERT INTO DataCollectionFileAttachment (dataCollectionFileAttachmentId, dataCollectionId, fileFullPath, fileType)
-        VALUES (p_id, p_dataCollectionId, p_fileFullPath, p_fileType)
-	    ON DUPLICATE KEY UPDATE
-		  dataCollectionId = IFNULL(p_dataCollectionId, dataCollectionId),
-          fileFullPath = IFNULL(p_fileFullPath, fileFullPath),
-          fileType = IFNULL(p_fileType, fileType);
-
-	  IF p_id IS NULL THEN
-		  SET p_id = LAST_INSERT_ID();
-      END IF;
-    ELSE
-      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_id OR p_dataCollectionId must be non-NULL.';
-    END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -8035,46 +8035,42 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `upsert_fluo_mapping`(
-	 INOUT p_id int(11) unsigned,
-	 p_roiId int(11) unsigned,
-	 p_roiStartEnergy float,
-	 p_roiEndEnergy float,
-	 p_dcId int(11) unsigned,
-	 p_imgNumber int(10) unsigned,
-	 p_counts int(10) unsigned
- )
+    INOUT p_id int(11) unsigned,
+    p_xrfFluorescenceMappingROIId int(11),
+    p_gridInfoId int(11) unsigned,
+    p_dataFormat varchar(15),
+    p_data longblob,
+    p_points int(11),
+    p_opacity float,
+    p_colourMap varchar(20),
+    p_min int(3),
+    p_max int(3),
+    p_autoProcProgramId int(10) unsigned
+)
     MODIFIES SQL DATA
-    COMMENT 'Inserts or updates info about a fluorescence spectrum mapping (p_id).\nMandatory columns:\nFor insert: (p_roiId OR (p_roiStartEnergy AND p_roiEndEnergy)) AND p_dcId\nFor update: p_id \nReturns: Record ID in p_id.'
+    COMMENT 'Inserts or updates info about a fluorescence spectrum mapping (p_id).\nMandatory columns:\nFor insert: \nFor update: p_id \nReturns: Record ID in p_id.'
 BEGIN
-  DECLARE row_xrfFluorescenceMappingROIId int(10) unsigned DEFAULT NULL;
-
-	IF p_id IS NOT NULL OR ((p_roiId IS NOT NULL OR (p_roiStartEnergy IS NOT NULL AND p_roiEndEnergy IS NOT NULL)) AND p_dcId IS NOT NULL) THEN
-
-    IF p_roiId IS NULL THEN
-      SELECT MAX(xrfFluorescenceMappingROIId) INTO row_xrfFluorescenceMappingROIId
-			FROM XRFFluorescenceMappingROI
-			WHERE p_roiStartEnergy >= startEnergy AND p_roiEndEnergy <= endEnergy;
-		ELSE
-		  SET row_xrfFluorescenceMappingROIId = p_roiId;
+    INSERT INTO XRFFluorescenceMapping (xrfFluorescenceMappingId, xrfFluorescenceMappingROIId, gridInfoId, dataFormat, data, points, opacity, colourMap, min, max, autoProcProgramId)
+        VALUES (p_id, p_xrfFluorescenceMappingROIId, p_gridInfoId, p_dataFormat, UNHEX(p_data), p_points, p_opacity, p_colourMap, p_min, p_max, p_autoProcProgramId)
+    
+    ON DUPLICATE KEY UPDATE
+        xrfFluorescenceMappingROIId = IFNULL(p_xrfFluorescenceMappingROIId, xrfFluorescenceMappingROIId),
+        gridInfoId = IFNULL(p_gridInfoId, gridInfoId),
+        dataFormat = IFNULL(p_dataFormat, dataFormat),
+        data = IFNULL(UNHEX(p_data), data),
+        points = IFNULL(p_points, points),
+        opacity = IFNULL(p_opacity, opacity),
+        colourMap = IFNULL(p_colourMap, colourMap),
+        min = IFNULL(p_min, min),
+        max = IFNULL(p_max, max),
+        autoProcProgramId = IFNULL(p_autoProcProgramId, autoProcProgramId);
+    
+    IF p_id IS NULL THEN
+        SET p_id = LAST_INSERT_ID();
     END IF;
-
-  	INSERT INTO XRFFluorescenceMapping (xrfFluorescenceMappingId, xrfFluorescenceMappingROIId, dataCollectionId, imageNumber, counts)
-	  	VALUES (p_id, row_xrfFluorescenceMappingROIId, p_dcId, p_imgNumber, p_counts)
-	  	ON DUPLICATE KEY UPDATE
-				xrfFluorescenceMappingROIId = IFNULL(row_xrfFluorescenceMappingROIId, xrfFluorescenceMappingROIId),
-				dataCollectionId = IFNULL(p_dcId, dataCollectionId),
-				imageNumber = IFNULL(p_imgNumber, imageNumber),
-				counts = IFNULL(p_counts, counts);
-
-		IF p_id IS NULL THEN
-			SET p_id = LAST_INSERT_ID();
-		END IF;
-	ELSE
-		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR (p_roiId OR (p_roiStartEnergy AND p_roiEndEnergy)) AND p_dcId) must be non-NULL.';
-	END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -8089,36 +8085,40 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `upsert_fluo_mapping_roi`(
-	 INOUT p_id int(11) unsigned,
-	 p_startEnergy float,
-	 p_endEnergy float,
-	 p_element varchar(2),
-   p_edge varchar(2),
-   p_r tinyint unsigned,
-   p_g tinyint unsigned,
-   p_b tinyint unsigned
- )
+    INOUT p_id int(11) unsigned,
+    p_startEnergy float,
+    p_endEnergy float,
+    p_element varchar(2),
+    p_edge varchar(15),
+    p_r tinyint(3) unsigned,
+    p_g tinyint(3) unsigned,
+    p_b tinyint(3) unsigned,
+    p_blSampleId int(10) unsigned,
+    p_scalar varchar(50)
+)
     MODIFIES SQL DATA
-    COMMENT 'Inserts or updates info about a fluorescence spectrum mapping re'
+    COMMENT 'Inserts or updates info about a fluorescence spectrum mapping region of interest (p_id).\nMandatory columns:\nFor update: p_id \nReturns: Record ID in p_id.'
 BEGIN
-
-  INSERT INTO XRFFluorescenceMappingROI (xrfFluorescenceMappingROIId, startEnergy, endEnergy, element, edge, r, g, b)
-	  VALUES (p_id, p_startEnergy, p_endEnergy, p_element, p_edge, p_r, p_g, p_b)
-	  ON DUPLICATE KEY UPDATE
-			startEnergy = IFNULL(p_startEnergy, startEnergy),
-			endEnergy = IFNULL(p_endEnergy, endEnergy),
-			element = IFNULL(p_element, element),
-			edge = IFNULL(p_edge, edge),
-			r = IFNULL(p_r, r),
-			g = IFNULL(p_g, g),
-			b = IFNULL(p_b, b);
-
-	IF p_id IS NULL THEN
-		SET p_id = LAST_INSERT_ID();
-	END IF;
+    INSERT INTO XRFFluorescenceMappingROI (xrfFluorescenceMappingROIId, startEnergy, endEnergy, element, edge, r, g, b, blSampleId, scalar)
+        VALUES (p_id, p_startEnergy, p_endEnergy, p_element, p_edge, p_r, p_g, p_b, p_blSampleId, p_scalar)
+    
+    ON DUPLICATE KEY UPDATE
+        startEnergy = IFNULL(p_startEnergy, startEnergy),
+        endEnergy = IFNULL(p_endEnergy, endEnergy),
+        element = IFNULL(p_element, element),
+        edge = IFNULL(p_edge, edge),
+        r = IFNULL(p_r, r),
+        g = IFNULL(p_g, g),
+        b = IFNULL(p_b, b),
+        blSampleId = IFNULL(p_blSampleId, blSampleId),
+        scalar = IFNULL(p_scalar, scalar);
+    
+    IF p_id IS NULL THEN
+        SET p_id = LAST_INSERT_ID();
+    END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -9013,12 +9013,12 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `upsert_quality_indicators`(
   OUT p_id int(11) unsigned,
-  p_dataCollectionId int(11) unsigned,
-  p_autoProcProgramId int(10) unsigned,
+  p_dataCollectionId int(11) unsigned, 
+  p_autoProcProgramId int(10) unsigned, 
   p_imageNumber mediumint(8) unsigned,
   p_spotTotal int(10),
   p_inResTotal int(10),
@@ -9039,22 +9039,22 @@ CREATE PROCEDURE `upsert_quality_indicators`(
 BEGIN
   DECLARE row_DataCollectionId int(11) unsigned DEFAULT NULL;
   DECLARE row_imageNumber mediumint(8) unsigned DEFAULT NULL;
-
+  
   IF (p_dataCollectionId IS NOT NULL AND p_imageNumber IS NOT NULL) THEN
     SELECT dataCollectionId, imageNumber INTO row_DataCollectionId, row_imageNumber FROM ImageQualityIndicators WHERE dataCollectionId = p_dataCollectionId AND imageNumber = p_imageNumber;
     IF row_DataCollectionId IS NULL THEN
         INSERT INTO ImageQualityIndicators (
-          dataCollectionId, imageNumber, autoProcProgramId, spotTotal, goodBraggCandidates,
-	      method1Res, method2Res, totalIntegratedSignal, dozor_score, driftFactor)
+          dataCollectionId, imageNumber, autoProcProgramId, spotTotal, goodBraggCandidates,  
+	      method1Res, method2Res, totalIntegratedSignal, dozor_score, driftFactor) 
         VALUES (
-          p_dataCollectionId, p_imageNumber, p_autoProcProgramId, p_spotTotal, p_goodBraggCandidates,
+          p_dataCollectionId, p_imageNumber, p_autoProcProgramId, p_spotTotal, p_goodBraggCandidates, 
           p_method1Res, p_method2Res, p_totalIntegratedSignal, p_dozorScore, p_driftFactor
         );
         SET p_id = 1;
     ELSE
-
-
-        UPDATE ImageQualityIndicators
+        
+        
+        UPDATE ImageQualityIndicators 
         SET
           spotTotal = IFNULL(p_spotTotal, spotTotal),
           goodBraggCandidates = IFNULL(p_goodBraggCandidates, goodBraggCandidates),
@@ -9068,7 +9068,7 @@ BEGIN
         SET p_id = 1;
     END IF;
   ELSE
-	SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_dataCollectionId and/or p_imageNumber are NULL';
+	SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_dataCollectionId and/or p_imageNumber are NULL';  
   END IF;
 END ;;
 DELIMITER ;
@@ -9706,12 +9706,12 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-29 17:09:49
+-- Dump completed on 2021-02-22 15:32:37
 -- MariaDB dump 10.18  Distrib 10.5.8-MariaDB, for Linux (x86_64)
 --
--- Host: localhost    Database: ispyb_build
+-- Host: 10.88.0.5    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.5.8-MariaDB
+-- Server version	10.4.17-MariaDB-1:10.4.17+maria~bionic
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -9752,4 +9752,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-29 17:09:49
+-- Dump completed on 2021-02-22 15:32:39

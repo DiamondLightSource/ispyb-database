@@ -1,8 +1,8 @@
 -- MariaDB dump 10.18  Distrib 10.5.8-MariaDB, for Linux (x86_64)
 --
--- Host: localhost    Database: ispyb_build
+-- Host: 10.88.0.5    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.5.8-MariaDB
+-- Server version	10.4.17-MariaDB-1:10.4.17+maria~bionic
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -578,6 +578,7 @@ CREATE TABLE `BLSample` (
   `blottingDrainTime` int(11) unsigned DEFAULT NULL COMMENT 'Time sample left to drain after blotting, Units: sec',
   `support` varchar(50) DEFAULT NULL COMMENT 'Sample support material',
   `subLocation` smallint(5) unsigned DEFAULT NULL COMMENT 'Indicates the sample''s location on a multi-sample pin, where 1 is closest to the pin base',
+  `staffComments` varchar(255) DEFAULT NULL COMMENT 'Any staff comments on the sample',
   PRIMARY KEY (`blSampleId`),
   KEY `BLSample_FKIndex1` (`containerId`),
   KEY `BLSample_FKIndex2` (`crystalId`),
@@ -649,6 +650,8 @@ CREATE TABLE `BLSampleImage` (
   `blTimeStamp` datetime DEFAULT NULL,
   `containerInspectionId` int(11) unsigned DEFAULT NULL,
   `modifiedTimeStamp` datetime DEFAULT NULL,
+  `offsetX` int(11) NOT NULL DEFAULT 0 COMMENT 'The x offset of the image relative to the canvas',
+  `offsetY` int(11) NOT NULL DEFAULT 0 COMMENT 'The y offset of the image relative to the canvas',
   PRIMARY KEY (`blSampleImageId`),
   KEY `BLSampleImage_idx1` (`blSampleId`),
   KEY `BLSampleImage_fk2` (`containerInspectionId`),
@@ -932,6 +935,7 @@ CREATE TABLE `BLSubSample` (
   `comments` varchar(1024) DEFAULT NULL COMMENT 'comments',
   `recordTimeStamp` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Creation or last update date/time',
   `source` enum('manual','auto') DEFAULT 'manual',
+  `type` varchar(10) DEFAULT NULL COMMENT 'The type of subsample, i.e. roi (region), poi (point), loi (line)',
   PRIMARY KEY (`blSubSampleId`),
   KEY `BLSubSample_FKIndex1` (`blSampleId`),
   KEY `BLSubSample_FKIndex2` (`diffractionPlanId`),
@@ -1058,6 +1062,7 @@ CREATE TABLE `BeamLineSetup` (
   `boxSizeYMax` double DEFAULT NULL COMMENT 'For gridscans, unit: um',
   `monoBandwidthMin` double DEFAULT NULL COMMENT 'unit: percentage',
   `monoBandwidthMax` double DEFAULT NULL COMMENT 'unit: percentage',
+  `preferredDataCentre` varchar(30) DEFAULT NULL COMMENT 'Relevant datacentre to use to process data from this beamline',
   PRIMARY KEY (`beamLineSetupId`),
   KEY `BeamLineSetup_ibfk_1` (`detectorId`),
   CONSTRAINT `BeamLineSetup_ibfk_1` FOREIGN KEY (`detectorId`) REFERENCES `Detector` (`detectorId`)
@@ -1772,7 +1777,7 @@ CREATE TABLE `DataCollectionFileAttachment` (
   `dataCollectionFileAttachmentId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `dataCollectionId` int(11) unsigned NOT NULL,
   `fileFullPath` varchar(255) NOT NULL,
-  `fileType` enum('snapshot','log','xy','recip','pia','warning') DEFAULT NULL,
+  `fileType` enum('snapshot','log','xy','recip','pia','warning','params') DEFAULT NULL,
   `createTime` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`dataCollectionFileAttachmentId`),
   KEY `_dataCollectionFileAttachmentId_fk1` (`dataCollectionId`),
@@ -1792,7 +1797,7 @@ CREATE TABLE `DataCollectionGroup` (
   `sessionId` int(10) unsigned NOT NULL COMMENT 'references Session table',
   `comments` varchar(1024) DEFAULT NULL COMMENT 'comments',
   `blSampleId` int(10) unsigned DEFAULT NULL COMMENT 'references BLSample table',
-  `experimentType` enum('SAD','SAD - Inverse Beam','OSC','Collect - Multiwedge','MAD','Helical','Multi-positional','Mesh','Burn','MAD - Inverse Beam','Characterization','Dehydration','tomo','experiment','EM','PDF','PDF+Bragg','Bragg','single particle','Serial Fixed','Serial Jet','Standard','Time Resolved','Diamond Anvil High Pressure','Custom') DEFAULT NULL COMMENT 'Standard: Routine structure determination experiment. Time Resolved: Investigate the change of a system over time. Custom: Special or non-standard data collection.',
+  `experimentType` enum('SAD','SAD - Inverse Beam','OSC','Collect - Multiwedge','MAD','Helical','Multi-positional','Mesh','Burn','MAD - Inverse Beam','Characterization','Dehydration','tomo','experiment','EM','PDF','PDF+Bragg','Bragg','single particle','Serial Fixed','Serial Jet','Standard','Time Resolved','Diamond Anvil High Pressure','Custom','XRF map','Energy scan','XRF spectrum','XRF map xas') DEFAULT NULL COMMENT 'Standard: Routine structure determination experiment. Time Resolved: Investigate the change of a system over time. Custom: Special or non-standard data collection.',
   `startTime` datetime DEFAULT NULL COMMENT 'Start time of the dataCollectionGroup',
   `endTime` datetime DEFAULT NULL COMMENT 'end time of the dataCollectionGroup',
   `crystalClass` varchar(20) DEFAULT NULL COMMENT 'Crystal Class for industrials users',
@@ -2087,7 +2092,7 @@ CREATE TABLE `DiffractionPlan` (
   `requiredCompleteness` double DEFAULT NULL,
   `requiredMultiplicity` double DEFAULT NULL,
   `requiredResolution` double DEFAULT NULL,
-  `strategyOption` varchar(45) DEFAULT NULL,
+  `strategyOption` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`strategyOption`)),
   `kappaStrategyOption` varchar(45) DEFAULT NULL,
   `numberOfPositions` int(11) DEFAULT NULL,
   `minDimAccrossSpindleAxis` double DEFAULT NULL COMMENT 'minimum dimension accross the spindle axis',
@@ -3797,7 +3802,7 @@ CREATE TABLE `RobotAction` (
   `robotActionId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `blsessionId` int(11) unsigned NOT NULL,
   `blsampleId` int(11) unsigned DEFAULT NULL,
-  `actionType` enum('LOAD','UNLOAD','DISPOSE','STORE','WASH','ANNEAL') DEFAULT NULL,
+  `actionType` enum('LOAD','UNLOAD','DISPOSE','STORE','WASH','ANNEAL','MOSAIC') DEFAULT NULL,
   `startTimestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `endTimestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `status` enum('SUCCESS','ERROR','CRITICAL','WARNING','EPICSFAIL','COMMANDNOTSENT') DEFAULT NULL,
@@ -4897,6 +4902,32 @@ CREATE TABLE `WorkflowType` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `XFEFluorescenceComposite`
+--
+
+DROP TABLE IF EXISTS `XFEFluorescenceComposite`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `XFEFluorescenceComposite` (
+  `xfeFluorescenceCompositeId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `r` int(10) unsigned NOT NULL COMMENT 'Red layer',
+  `g` int(10) unsigned NOT NULL COMMENT 'Green layer',
+  `b` int(10) unsigned NOT NULL COMMENT 'Blue layer',
+  `rOpacity` float NOT NULL DEFAULT 1 COMMENT 'Red layer opacity',
+  `bOpacity` float NOT NULL DEFAULT 1 COMMENT 'Red layer opacity',
+  `gOpacity` float NOT NULL DEFAULT 1 COMMENT 'Red layer opacity',
+  `opacity` float NOT NULL DEFAULT 1 COMMENT 'Total map opacity',
+  PRIMARY KEY (`xfeFluorescenceCompositeId`),
+  KEY `XFEFluorescenceComposite_ibfk1` (`r`),
+  KEY `XFEFluorescenceComposite_ibfk2` (`g`),
+  KEY `XFEFluorescenceComposite_ibfk3` (`b`),
+  CONSTRAINT `XFEFluorescenceComposite_ibfk1` FOREIGN KEY (`r`) REFERENCES `XRFFluorescenceMapping` (`xrfFluorescenceMappingId`),
+  CONSTRAINT `XFEFluorescenceComposite_ibfk2` FOREIGN KEY (`g`) REFERENCES `XRFFluorescenceMapping` (`xrfFluorescenceMappingId`),
+  CONSTRAINT `XFEFluorescenceComposite_ibfk3` FOREIGN KEY (`b`) REFERENCES `XRFFluorescenceMapping` (`xrfFluorescenceMappingId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A composite XRF map composed of three XRFFluorescenceMapping entries creating r, g, b layers';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `XFEFluorescenceSpectrum`
 --
 
@@ -4946,15 +4977,23 @@ DROP TABLE IF EXISTS `XRFFluorescenceMapping`;
 CREATE TABLE `XRFFluorescenceMapping` (
   `xrfFluorescenceMappingId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `xrfFluorescenceMappingROIId` int(11) unsigned NOT NULL,
-  `dataCollectionId` int(11) unsigned NOT NULL,
-  `imageNumber` int(10) unsigned NOT NULL,
-  `counts` int(10) unsigned NOT NULL,
+  `gridInfoId` int(11) unsigned NOT NULL,
+  `dataFormat` varchar(15) NOT NULL COMMENT 'Description of format and any compression, i.e. json+gzip for gzipped json',
+  `data` longblob NOT NULL COMMENT 'The actual data',
+  `points` int(11) unsigned DEFAULT NULL COMMENT 'The number of points available, for realtime feedback',
+  `opacity` float NOT NULL DEFAULT 1 COMMENT 'Display opacity',
+  `colourMap` varchar(20) DEFAULT NULL COMMENT 'Colour map for displaying the data',
+  `min` int(3) DEFAULT NULL COMMENT 'Min value in the data for histogramming',
+  `max` int(3) DEFAULT NULL COMMENT 'Max value in the data for histogramming',
+  `autoProcProgramId` int(10) unsigned DEFAULT NULL COMMENT 'Related autoproc programid',
   PRIMARY KEY (`xrfFluorescenceMappingId`),
   KEY `XRFFluorescenceMapping_ibfk1` (`xrfFluorescenceMappingROIId`),
-  KEY `_XRFFluorescenceMapping_ibfk2` (`dataCollectionId`),
+  KEY `XRFFluorescenceMapping_ibfk2` (`gridInfoId`),
+  KEY `XRFFluorescenceMapping_ibfk3` (`autoProcProgramId`),
   CONSTRAINT `XRFFluorescenceMapping_ibfk1` FOREIGN KEY (`xrfFluorescenceMappingROIId`) REFERENCES `XRFFluorescenceMappingROI` (`xrfFluorescenceMappingROIId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `_XRFFluorescenceMapping_ibfk2` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `XRFFluorescenceMapping_ibfk2` FOREIGN KEY (`gridInfoId`) REFERENCES `GridInfo` (`gridInfoId`),
+  CONSTRAINT `XRFFluorescenceMapping_ibfk3` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='An XRF map generated from an XRF Mapping ROI based on data from a gridscan of a sample';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4969,11 +5008,15 @@ CREATE TABLE `XRFFluorescenceMappingROI` (
   `startEnergy` float NOT NULL,
   `endEnergy` float NOT NULL,
   `element` varchar(2) DEFAULT NULL,
-  `edge` varchar(2) DEFAULT NULL COMMENT 'In future may be changed to enum(K, L)',
+  `edge` varchar(15) DEFAULT NULL COMMENT 'Edge type i.e. Ka1, could be a custom edge in case of overlap Ka1-noCa',
   `r` tinyint(3) unsigned DEFAULT NULL COMMENT 'R colour component',
   `g` tinyint(3) unsigned DEFAULT NULL COMMENT 'G colour component',
   `b` tinyint(3) unsigned DEFAULT NULL COMMENT 'B colour component',
-  PRIMARY KEY (`xrfFluorescenceMappingROIId`)
+  `blSampleId` int(10) unsigned DEFAULT NULL COMMENT 'ROIs can be created within the context of a sample',
+  `scalar` varchar(50) DEFAULT NULL COMMENT 'For ROIs that are not an element, i.e. could be a scan counter instead',
+  PRIMARY KEY (`xrfFluorescenceMappingROIId`),
+  KEY `XRFFluorescenceMappingROI_FKblSampleId` (`blSampleId`),
+  CONSTRAINT `XRFFluorescenceMappingROI_FKblSampleId` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -5832,4 +5875,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-29 18:29:32
+-- Dump completed on 2021-02-22 15:32:37
