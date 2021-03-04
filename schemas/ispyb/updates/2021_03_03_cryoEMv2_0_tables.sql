@@ -2,13 +2,18 @@ INSERT IGNORE INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2021_03_03_c
 
 CREATE TABLE ParticlePicker (
   particlePickerId int unsigned auto_increment PRIMARY KEY,
-  autoProcProgramId int unsigned,
+  particlePickerProgramId int unsigned,
+  particleClassificationProgramId int unsigned,
   firstMotionCorrectionId int unsigned,
   particlePickingTemplate varchar(255) COMMENT 'Cryolo model',
   particleDiameter float COMMENT 'Unit: nm',
   numberOfParticles int unsigned,
-  CONSTRAINT `ParticlePicker_fk_autoProcProgramId`
-    FOREIGN KEY (`autoProcProgramId`)
+  CONSTRAINT `ParticlePicker_fk_particlePickerProgramId`
+    FOREIGN KEY (`particlePickerProgramId`)
+      REFERENCES `AutoProcProgram` (`autoProcProgramId`)
+        ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `ParticlePicker_fk_particleClassificationProgramId`
+    FOREIGN KEY (`particleClassificationProgramId`)
       REFERENCES `AutoProcProgram` (`autoProcProgramId`)
         ON DELETE NO ACTION ON UPDATE CASCADE,
     CONSTRAINT `ParticlePicker_fk_motionCorrectionId`
@@ -26,6 +31,7 @@ CREATE TABLE ParticleClassification (
   type enum('2D', '3D') COMMENT 'Indicates the type of particle classification',
   batchNumber int unsigned COMMENT 'Corresponding to batch number',
   classNumber int unsigned COMMENT 'Identified of the class. A unique ID given by Relion',
+  classImageFullPath varchar(255) COMMENT 'The PNG of the class',
   numberOfParticlesPerBatch int unsigned COMMENT 'total number of particles per batch (a large integer)',
   numberOfClassesPerBatch int unsigned,
   particlesPerClass int unsigned COMMENT 'Number of particles within the selected class, can then be used together with the total number above to calculate the percentage', -- is this just numberOfParticlesPerBatch * numberOfClassesPerBatch ? If so, this column is unnecessary.
