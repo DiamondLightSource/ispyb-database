@@ -5,6 +5,19 @@ History
 Unreleased / master
 -------------------
 
+1.19.0 (2021-03-05)
+-------------------
+
+* Add new tables for CryoEM - note that these are still subject to potentially significant change:
+  * ``ParticlePicker``
+  * ``ParticleClassification``: Results of 2D or 2D classification
+  * ``CryoemInitialModel``: Initial cryo-EM model generation results
+  * ``ParticleClassification_has_CryoemInitialModel``
+* Add old tables that exist in prod database, but not yet in repo:
+  * ``BF_automationFault``: Software faults, stacktrace, severity etc.
+  * ``BF_automationError``: Lookup table used by ``BF_automationFault``
+* Add ``ContainerType`` table and foreign key referencing it in ``Container`` table
+
 1.18.0 (2021-02-22)
 -------------------
 

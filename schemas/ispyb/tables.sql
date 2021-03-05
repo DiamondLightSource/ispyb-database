@@ -1,4 +1,4 @@
--- MariaDB dump 10.18  Distrib 10.5.8-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.19  Distrib 10.5.9-MariaDB, for Linux (x86_64)
 --
 -- Host: 10.88.0.5    Database: ispyb_build
 -- ------------------------------------------------------
@@ -390,6 +390,44 @@ CREATE TABLE `AutoProcStatus` (
   KEY `AutoProcStatus_FKIndex1` (`autoProcIntegrationId`),
   CONSTRAINT `AutoProcStatus_ibfk_1` FOREIGN KEY (`autoProcIntegrationId`) REFERENCES `AutoProcIntegration` (`autoProcIntegrationId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='AutoProcStatus table is linked to AutoProcIntegration';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `BF_automationError`
+--
+
+DROP TABLE IF EXISTS `BF_automationError`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BF_automationError` (
+  `automationErrorId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `errorType` varchar(40) NOT NULL,
+  `solution` text DEFAULT NULL,
+  PRIMARY KEY (`automationErrorId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `BF_automationFault`
+--
+
+DROP TABLE IF EXISTS `BF_automationFault`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BF_automationFault` (
+  `automationFaultId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `automationErrorId` int(10) unsigned DEFAULT NULL,
+  `containerId` int(10) unsigned DEFAULT NULL,
+  `severity` enum('1','2','3') DEFAULT NULL,
+  `stacktrace` text DEFAULT NULL,
+  `resolved` tinyint(1) DEFAULT NULL,
+  `faultTimeStamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`automationFaultId`),
+  KEY `BF_automationFault_ibfk1` (`automationErrorId`),
+  KEY `BF_automationFault_ibfk2` (`containerId`),
+  CONSTRAINT `BF_automationFault_ibfk1` FOREIGN KEY (`automationErrorId`) REFERENCES `BF_automationError` (`automationErrorId`),
+  CONSTRAINT `BF_automationFault_ibfk2` FOREIGN KEY (`containerId`) REFERENCES `Container` (`containerId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1326,11 +1364,12 @@ CREATE TABLE `Container` (
   `requestedReturn` tinyint(1) DEFAULT 0 COMMENT 'True for requesting return, False means container will be disposed',
   `comments` varchar(255) DEFAULT NULL,
   `experimentType` varchar(20) DEFAULT NULL,
-  `storageTemperature` float DEFAULT NULL,
+  `storageTemperature` float DEFAULT NULL COMMENT 'NULL=ambient',
   `containerRegistryId` int(11) unsigned DEFAULT NULL,
   `scLocationUpdated` datetime DEFAULT NULL,
   `priorityPipelineId` int(11) unsigned DEFAULT NULL,
   `experimentTypeId` int(10) unsigned DEFAULT NULL,
+  `containerTypeId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`containerId`),
   UNIQUE KEY `Container_UNIndex1` (`barcode`),
   KEY `Container_FKIndex` (`beamlineLocation`),
@@ -1345,7 +1384,9 @@ CREATE TABLE `Container` (
   KEY `Container_ibfk6` (`sessionId`),
   KEY `Container_ibfk9` (`priorityPipelineId`),
   KEY `Container_fk_experimentTypeId` (`experimentTypeId`),
+  KEY `Container_ibfk10` (`containerTypeId`),
   CONSTRAINT `Container_fk_experimentTypeId` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`),
+  CONSTRAINT `Container_ibfk10` FOREIGN KEY (`containerTypeId`) REFERENCES `ContainerType` (`containerTypeId`),
   CONSTRAINT `Container_ibfk2` FOREIGN KEY (`screenId`) REFERENCES `Screen` (`screenId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Container_ibfk3` FOREIGN KEY (`scheduleId`) REFERENCES `Schedule` (`scheduleId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Container_ibfk4` FOREIGN KEY (`imagerId`) REFERENCES `Imager` (`imagerId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -1512,6 +1553,31 @@ CREATE TABLE `ContainerReport` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `ContainerType`
+--
+
+DROP TABLE IF EXISTS `ContainerType`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ContainerType` (
+  `containerTypeId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `proposalType` varchar(10) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
+  `capacity` int(11) DEFAULT NULL,
+  `wellPerRow` smallint(6) DEFAULT NULL,
+  `dropPerWellX` smallint(6) DEFAULT NULL,
+  `dropPerWellY` smallint(6) DEFAULT NULL,
+  `dropHeight` float DEFAULT NULL,
+  `dropWidth` float DEFAULT NULL,
+  `dropOffsetX` float DEFAULT NULL,
+  `dropOffsetY` float DEFAULT NULL,
+  `wellDrop` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`containerTypeId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A lookup table for different types of containers';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `CourierTermsAccepted`
 --
 
@@ -1533,6 +1599,21 @@ CREATE TABLE `CourierTermsAccepted` (
   CONSTRAINT `CourierTermsAccepted_ibfk_2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`),
   CONSTRAINT `CourierTermsAccepted_ibfk_3` FOREIGN KEY (`shippingId`) REFERENCES `Shipping` (`shippingId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Records acceptances of the courier T and C';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `CryoemInitialModel`
+--
+
+DROP TABLE IF EXISTS `CryoemInitialModel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `CryoemInitialModel` (
+  `cryoemInitialModelId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resolution` float DEFAULT NULL COMMENT 'Unit: Angstroms',
+  `numberOfParticles` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`cryoemInitialModelId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Initial cryo-EM model generation results';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3106,6 +3187,76 @@ CREATE TABLE `Particle` (
   KEY `Particle_FKIND1` (`dataCollectionId`),
   CONSTRAINT `Particle_FK1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ParticleClassification`
+--
+
+DROP TABLE IF EXISTS `ParticleClassification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ParticleClassification` (
+  `particleClassificationId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `particlePickerId` int(10) unsigned DEFAULT NULL,
+  `type` enum('2D','3D') DEFAULT NULL COMMENT 'Indicates the type of particle classification',
+  `batchNumber` int(10) unsigned DEFAULT NULL COMMENT 'Corresponding to batch number',
+  `classNumber` int(10) unsigned DEFAULT NULL COMMENT 'Identified of the class. A unique ID given by Relion',
+  `classImageFullPath` varchar(255) DEFAULT NULL COMMENT 'The PNG of the class',
+  `numberOfParticlesPerBatch` int(10) unsigned DEFAULT NULL COMMENT 'total number of particles per batch (a large integer)',
+  `numberOfClassesPerBatch` int(10) unsigned DEFAULT NULL,
+  `particlesPerClass` int(10) unsigned DEFAULT NULL COMMENT 'Number of particles within the selected class, can then be used together with the total number above to calculate the percentage',
+  `rotationAccuracy` int(10) unsigned DEFAULT NULL COMMENT '???',
+  `translationAccuracy` float DEFAULT NULL COMMENT 'Unit: Angstroms',
+  `estimatedResolution` float DEFAULT NULL COMMENT '???, Unit: Angstroms',
+  `overallFourierCompleteness` float DEFAULT NULL,
+  `symmetry` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`particleClassificationId`),
+  KEY `ParticleClassification_fk_particlePickerId` (`particlePickerId`),
+  CONSTRAINT `ParticleClassification_fk_particlePickerId` FOREIGN KEY (`particlePickerId`) REFERENCES `ParticlePicker` (`particlePickerId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Results of 2D or 2D classification';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ParticleClassification_has_CryoemInitialModel`
+--
+
+DROP TABLE IF EXISTS `ParticleClassification_has_CryoemInitialModel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ParticleClassification_has_CryoemInitialModel` (
+  `particleClassificationId` int(10) unsigned NOT NULL,
+  `cryoemInitialModelId` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`particleClassificationId`,`cryoemInitialModelId`),
+  KEY `ParticleClassification_has_InitialModel_fk2` (`cryoemInitialModelId`),
+  CONSTRAINT `ParticleClassification_has_CryoemInitialModel_fk1` FOREIGN KEY (`particleClassificationId`) REFERENCES `ParticleClassification` (`particleClassificationId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ParticleClassification_has_InitialModel_fk2` FOREIGN KEY (`cryoemInitialModelId`) REFERENCES `CryoemInitialModel` (`cryoemInitialModelId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ParticlePicker`
+--
+
+DROP TABLE IF EXISTS `ParticlePicker`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ParticlePicker` (
+  `particlePickerId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `particlePickerProgramId` int(10) unsigned DEFAULT NULL,
+  `particleClassificationProgramId` int(10) unsigned DEFAULT NULL,
+  `firstMotionCorrectionId` int(10) unsigned DEFAULT NULL,
+  `particlePickingTemplate` varchar(255) DEFAULT NULL COMMENT 'Cryolo model',
+  `particleDiameter` float DEFAULT NULL COMMENT 'Unit: nm',
+  `numberOfParticles` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`particlePickerId`),
+  KEY `ParticlePicker_fk_particlePickerProgramId` (`particlePickerProgramId`),
+  KEY `ParticlePicker_fk_particleClassificationProgramId` (`particleClassificationProgramId`),
+  KEY `ParticlePicker_fk_motionCorrectionId` (`firstMotionCorrectionId`),
+  CONSTRAINT `ParticlePicker_fk_motionCorrectionId` FOREIGN KEY (`firstMotionCorrectionId`) REFERENCES `MotionCorrection` (`motionCorrectionId`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `ParticlePicker_fk_particleClassificationProgramId` FOREIGN KEY (`particleClassificationProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `ParticlePicker_fk_particlePickerProgramId` FOREIGN KEY (`particlePickerProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='An instance of a particle picker program that was run';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5875,4 +6026,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-22 15:32:37
+-- Dump completed on 2021-03-05 16:06:13
