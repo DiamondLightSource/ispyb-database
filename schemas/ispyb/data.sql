@@ -619,7 +619,7 @@ INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `activ
 --
 
 /*!40000 ALTER TABLE `GridInfo` DISABLE KEYS */;
-INSERT INTO `GridInfo` (`gridInfoId`, `dataCollectionGroupId`, `xOffset`, `yOffset`, `dx_mm`, `dy_mm`, `steps_x`, `steps_y`, `meshAngle`, `pixelsPerMicronX`, `pixelsPerMicronY`, `snapshot_offsetXPixel`, `snapshot_offsetYPixel`, `recordTimeStamp`, `orientation`, `workflowMeshId`, `snaked`, `dataCollectionId`) VALUES (1281212,5440739,NULL,NULL,0.02,0.02,30,16,NULL,0.83,0.83,304,229.75,'2021-02-25 10:15:06','horizontal',NULL,1,NULL);
+INSERT INTO `GridInfo` (`gridInfoId`, `dataCollectionGroupId`, `xOffset`, `yOffset`, `dx_mm`, `dy_mm`, `steps_x`, `steps_y`, `meshAngle`, `pixelsPerMicronX`, `pixelsPerMicronY`, `snapshot_offsetXPixel`, `snapshot_offsetYPixel`, `recordTimeStamp`, `orientation`, `workflowMeshId`, `snaked`, `dataCollectionId`) VALUES (1281212,5440739,NULL,NULL,0.02,0.02,30,16,NULL,0.83,0.83,304,229.75,'2021-02-25 10:15:06','horizontal',NULL,1,6017405);
 /*!40000 ALTER TABLE `GridInfo` ENABLE KEYS */;
 
 --
