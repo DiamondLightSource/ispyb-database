@@ -15,6 +15,17 @@ CREATE OR REPLACE SQL SECURITY DEFINER VIEW Proposal AS
     WHERE ihu.username = substring_index(user(),'@',1)
   );
 
+CREATE OR REPLACE SQL SECURITY DEFINER VIEW Protein AS
+  SELECT DISTINCT pr.*
+  FROM $ispyb.Protein pr
+    JOIN $ispyb.Proposal p ON p.proposalId = pr.proposalId
+    JOIN $ispyb.BLSession bs ON bs.proposalId = p.proposalId
+  WHERE bs.instrumentId IN (
+    SELECT ihu.instrumentId
+    FROM $ispyb.Instrument_has_Username ihu
+    WHERE ihu.username = substring_index(user(),'@',1)
+  );
+
 CREATE OR REPLACE SQL SECURITY DEFINER VIEW BLSession AS
   SELECT *
   FROM $ispyb.BLSession

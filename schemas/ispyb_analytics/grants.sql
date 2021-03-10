@@ -2,6 +2,8 @@
 CREATE ROLE IF NOT EXISTS data_scientist;
 
 -- Grant select on views
+GRANT SELECT ON Proposal TO data_scientist;
+GRANT SELECT ON Protein TO data_scientist;
 GRANT SELECT ON BLSession TO data_scientist;
 GRANT SELECT ON DataCollectionGroup TO data_scientist;
 GRANT SELECT ON DataCollection TO data_scientist;

@@ -12,6 +12,9 @@ project_root=$(dirname $(dirname "${dir}"))
 # Load some function definitions in case we need them
 source ${project_root}/bin/functions.sh
 
+# Get a list + string with the names of the lookup tables
+source ${project_root}/bin/lookup_tables.sh
+
 # Unless already defined, set default values for database names
 if [ -z "${db}" ]
 then
@@ -37,3 +40,11 @@ echo "${sql}" | mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analyti
 
 echo "Creating role and granting permission to access views"
 mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}" < "${dir}"/grants.sql
+
+# Create views and grants for the lookup tables
+for TABLE in "${LOOKUP_TABLES[@]}"
+do :
+    mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}" -e "CREATE OR REPLACE SQL SECURITY DEFINER VIEW ${TABLE} AS SELECT * FROM $ispyb.${TABLE}"
+    mysql --defaults-file="${project_root}"/.my.cnf -e "GRANT SELECT ON ${TABLE} TO data_scientist"
+done
+
