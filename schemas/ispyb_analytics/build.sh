@@ -45,6 +45,6 @@ mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}" < "${dir}"/
 for TABLE in "${LOOKUP_TABLES[@]}"
 do :
     mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}" -e "CREATE OR REPLACE SQL SECURITY DEFINER VIEW ${TABLE} AS SELECT * FROM $ispyb.${TABLE}"
-    mysql --defaults-file="${project_root}"/.my.cnf -e "GRANT SELECT ON ${TABLE} TO data_scientist"
+    mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}" -e "GRANT SELECT ON ${TABLE} TO data_scientist"
 done
 
