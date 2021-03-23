@@ -24,7 +24,8 @@ BEGIN
       micronsPerPixelX = IFNULL(p_micronsPerPixelX, micronsPerPixelX),
       micronsPerPixelY = IFNULL(p_micronsPerPixelY, micronsPerPixelY),
       imageFullPath = IFNULL(p_imageFullPath, imageFullPath),
-      comments = IFNULL(p_comments, comments)
+      comments = IFNULL(p_comments, comments),
+      modifiedTimeStamp = current_timestamp
     WHERE blSampleImageId = p_id;
   END IF;
 END;;
