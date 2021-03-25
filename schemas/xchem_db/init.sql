@@ -274,3 +274,12 @@ ALTER TABLE `xchem_db_lab` ADD CONSTRAINT `xchem_db_lab_batch_id_6f16e012_fk_xch
 ALTER TABLE `xchem_db_dimple` ADD CONSTRAINT `xchem_db_dimple_pdb_path_mtz_path_639bfee5_uniq` UNIQUE (`pdb_path`, `mtz_path`);
 ALTER TABLE `xchem_db_dimple` ADD CONSTRAINT `xchem_db_dimple_crystal_name_id_834a3404_fk_xchem_db_crystal_id` FOREIGN KEY (`crystal_name_id`) REFERENCES `xchem_db_crystal` (`id`);
 ALTER TABLE `xchem_db_dimple` ADD CONSTRAINT `xchem_db_dimple_reference_id_d39e71b9_fk_xchem_db_reference_id` FOREIGN KEY (`reference_id`) REFERENCES `xchem_db_reference` (`id`);
+--
+-- Add field active to sourcewell
+--
+ALTER TABLE `xchem_db_sourcewell` ADD COLUMN `active` bool DEFAULT True NOT NULL;
+ALTER TABLE `xchem_db_sourcewell` ALTER COLUMN `active` DROP DEFAULT;
+--
+-- Add field deactivation_date to sourcewell
+--
+ALTER TABLE `xchem_db_sourcewell` ADD COLUMN `deactivation_date` date NULL;
