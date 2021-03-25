@@ -32,7 +32,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            (SELECT ct.name FROM ContainerType ct WHERE c.containerTypeId = ct.containerTypeId) "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -52,6 +52,7 @@ BEGIN
             JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
             JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
             JOIN Person per on per.personId = shp.personId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber AND c.containerStatus = p_status AND per.login = p_authLogin;
@@ -65,7 +66,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            (SELECT ct.name FROM ContainerType ct WHERE c.containerTypeId = ct.containerTypeId) "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -82,6 +83,7 @@ BEGIN
           FROM Container c
             JOIN BLSession bs ON bs.sessionId = c.sessionId
             JOIN Proposal p ON p.proposalId = bs.proposalId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber AND c.containerStatus = p_status;
@@ -101,7 +103,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            (SELECT ct.name FROM ContainerType ct WHERE c.containerTypeId = ct.containerTypeId) "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -122,6 +124,7 @@ BEGIN
             JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
             JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
             JOIN Person per on per.personId = shp.personId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND c.containerStatus = p_status AND per.login = p_authLogin;
@@ -135,7 +138,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            (SELECT ct.name FROM ContainerType ct WHERE c.containerTypeId = ct.containerTypeId) "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -153,6 +156,7 @@ BEGIN
             JOIN Dewar d ON c.dewarId = d.dewarId
             JOIN Shipping s ON s.shippingId = d.shippingId
             JOIN Proposal p ON p.proposalId = s.proposalId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND c.containerStatus = p_status;
