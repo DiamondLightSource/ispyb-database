@@ -71,6 +71,15 @@ CREATE OR REPLACE SQL SECURITY DEFINER VIEW XFEFluorescenceSpectrum AS
     WHERE ihu.username = substring_index(user(),'@',1)
   );
 
+CREATE OR REPLACE SQL SECURITY DEFINER VIEW RobotAction AS
+  SELECT *
+  FROM $ispyb.RobotAction
+  WHERE instrumentId IN (
+    SELECT ihu.instrumentId
+    FROM $ispyb.Instrument_has_Username ihu
+    WHERE ihu.username = substring_index(user(),'@',1)
+  );
+
 CREATE OR REPLACE SQL SECURITY DEFINER VIEW ProcessingJob AS
   SELECT pj.*
   FROM $ispyb.ProcessingJob pj
