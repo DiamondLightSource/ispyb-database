@@ -46,7 +46,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  -- enum('isotropic','anisotropic')
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
@@ -100,7 +100,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  -- enum('isotropic','anisotropic')
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
@@ -156,7 +156,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  -- enum('isotropic','anisotropic')
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
@@ -211,7 +211,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  -- enum('isotropic','anisotropic')
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
