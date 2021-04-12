@@ -42,4 +42,10 @@ ALTER TABLE `ParticleClassification`
   DROP numberOfClassesPerBatch,
   DROP symmetry;
 
+ALTER TABLE `ParticleClassification`
+  ADD CONSTRAINT `ParticleClassification_fk_particleClassificationGroupId`
+      FOREIGN KEY (`particleClassificationGroupId`)
+        REFERENCES `ParticleClassificationGroup` (`particleClassificationGroupId`)
+          ON DELETE CASCADE ON UPDATE CASCADE;
+
 UPDATE SchemaStatus SET schemaStatus = 'DONE' where scriptName = '2021_04_12_cryoEMv2_1.sql';
