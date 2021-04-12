@@ -21,7 +21,16 @@ CREATE TABLE `ParticleClassificationGroup` (
 
 ALTER TABLE `ParticlePicker`
   DROP CONSTRAINT `ParticlePicker_fk_particleClassificationProgramId`,
-  DROP particleClassificationProgramId;
+  DROP particleClassificationProgramId,
+  CHANGE `particlePickerProgramId` `programId` int(10) unsigned DEFAULT NULL,
+  DROP CONSTRAINT `ParticlePicker_fk_particlePickerProgramId`;
+
+ALTER TABLE ParticlePicker
+  ADD CONSTRAINT `ParticlePicker_fk_programId` 
+    FOREIGN KEY (`programId`)
+      REFERENCES `AutoProcProgram` (`autoProcProgramId`)
+        ON DELETE NO ACTION ON UPDATE CASCADE;
+
 
 ALTER TABLE `ParticleClassification`
   ADD particleClassificationGroupId int unsigned,
