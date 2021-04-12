@@ -18,7 +18,7 @@ mysqldump --defaults-file=../.my.cnf ${OPTIONS} --skip-triggers --no-data "${DB}
 
 mysqldump --defaults-file=../.my.cnf ${OPTIONS} --skip-triggers --routines --no-create-info --no-data "${DB}" | sed -e 's/DEFINER=[^*]*\*/SQL SECURITY INVOKER \*/' | sed -e 's/CREATE .* PROCEDURE/CREATE PROCEDURE/' | sed -e 's/CREATE .* FUNCTION/CREATE FUNCTION/' > ${OUT_DIR}/routines.sql
 
-mysqldump --defaults-file=../.my.cnf ${OPTIONS} --no-create-info --no-data "${DB}" | sed -e 's/DEFINER=[^*]*\*/\*/' >> ${OUT_DIR}/routines.sql
+mysqldump --defaults-file=../.my.cnf ${OPTIONS} --no-create-info --no-data --add-drop-trigger "${DB}" | sed -e 's/DEFINER=[^*]*\*/\*/' >> ${OUT_DIR}/routines.sql
 
 source lookup_tables.sh
 
