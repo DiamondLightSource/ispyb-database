@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 db=$1
 mysql --defaults-file=../.my.cnf -D $db --skip-column-names --batch --raw < sql/db_tables_to_tsv.sql > /tmp/tmp1.tsv
