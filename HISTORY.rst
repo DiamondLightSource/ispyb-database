@@ -5,6 +5,43 @@ History
 Unreleased / master
 -------------------
 
+1.20.0 (2021-04-13)
+-------------------
+
+* Tables, views and indices:
+
+  * New cryoEM table `ParticleClassificationGroup`. Some columns were moved to this table from `ParticlePicker` and `ParticleClassification`.
+  * Add `capillary` as enum option to `BLSampleGroup_has_BLSample.type`
+  * XChem DB: First version of schema for production (not part of release)
+  * Analytics schema: Add access to all lookup tables, `RobotAction`, `ProcessingJob*`, `Protein` tables through views (not part of release)
+  * Drop duplicate indices, add missing indices that existed only in DLS prod
+
+* Data in lookup tables:
+
+  * Add additional container types: some historical, some new
+  * Update `ExperimentType.proposalType`: Change scm to saxs, MX to mx
+  * Update `ContainerType.proposalType`: Change scm to saxs
+  * Update `SpaceGroup` table: Remove newlines in names. Set `MX_used` = 1 for all SGs.
+  
+* Stored procedures:
+
+  * `retrieve_scm_*``: Preferentially get experiement type and container type+capacity from new lookup tables `ExperimentType` and `ContainerType`, otherwise fall-back to `experimentType` and `containerType`+`capacity` columns in the `Container` table.
+  * `upsert_sample_image`: set `BLSampleImage.modifiedTimeStamp` if the upsert is an update
+
+* Tools and documentation:
+
+  * New script `bin/missed_updates.sh` to identify update .sql files that haven't been run
+  * `bin/backup.sh`: Use `--add-drop-trigger` flag to drop trigger if exists before creation
+  * `CONTRIBUTING.md`: Simplify pull request procedure for table changes
+  * Updated simplified MX database diagram files
+  * Move list + string with lookup tables to separate file so it can be reused
+  * All bash scripts have been given new shebang lines to run on systems where bash is not at `/bin/bash`.
+  
+* Users, roles and grants:
+
+  * More `INSERT` grants for `ispyb_web` role: DC, DCG, `ProcessingJob`, `ProcessingJobParameter`
+  * New `ispyb_ro_nopii` role (read-only-except-PII)
+
 1.19.0 (2021-03-05)
 -------------------
 
