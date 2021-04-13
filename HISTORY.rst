@@ -21,6 +21,7 @@ Unreleased / master
   * Add additional container types: some historical, some new
   * Update `ExperimentType.proposalType`: Change scm to saxs, MX to mx
   * Update `ContainerType.proposalType`: Change scm to saxs
+  * Add two XPDF and five MX container types
   * Update `SpaceGroup` table: Remove newlines in names. Set `MX_used` = 1 for all SGs.
   
 * Stored procedures:
