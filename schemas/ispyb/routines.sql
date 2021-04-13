@@ -1,4 +1,4 @@
--- MariaDB dump 10.18  Distrib 10.5.8-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.19  Distrib 10.5.9-MariaDB, for Linux (x86_64)
 --
 -- Host: 10.88.0.5    Database: ispyb_build
 -- ------------------------------------------------------
@@ -4629,7 +4629,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            c.containerType "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -4642,13 +4642,14 @@ BEGIN
             bs.visit_number "sessionNumber",
             
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN BLSession bs ON bs.sessionId = c.sessionId
             JOIN Proposal p ON p.proposalId = bs.proposalId
             JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
             JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
             JOIN Person per on per.personId = shp.personId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE c.containerId = p_id AND per.login = p_authLogin;
@@ -4662,7 +4663,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            c.containerType "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -4675,10 +4676,11 @@ BEGIN
             bs.visit_number "sessionNumber",
             
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN BLSession bs ON bs.sessionId = c.sessionId
             JOIN Proposal p ON p.proposalId = bs.proposalId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE c.containerId = p_id;
@@ -4698,7 +4700,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            c.containerType "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -4711,7 +4713,7 @@ BEGIN
             NULL "sessionNumber",
             
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN Dewar d ON c.dewarId = d.dewarId
             JOIN Shipping s ON s.shippingId = d.shippingId
@@ -4719,6 +4721,7 @@ BEGIN
             JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
             JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
             JOIN Person per on per.personId = shp.personId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE c.containerId = p_id AND per.login = p_authLogin;
@@ -4732,7 +4735,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            c.containerType "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -4745,11 +4748,12 @@ BEGIN
             NULL "sessionNumber",
 
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN Dewar d ON c.dewarId = d.dewarId
             JOIN Shipping s ON s.shippingId = d.shippingId
             JOIN Proposal p ON p.proposalId = s.proposalId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE c.containerId = p_id;
@@ -4803,7 +4807,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            c.containerType "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -4816,13 +4820,14 @@ BEGIN
             bs.visit_number "sessionNumber",
             
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN BLSession bs ON bs.sessionId = c.sessionId
             JOIN Proposal p ON p.proposalId = bs.proposalId
             JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
             JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
             JOIN Person per on per.personId = shp.personId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber AND c.containerStatus = p_status AND per.login = p_authLogin;
@@ -4836,7 +4841,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            c.containerType "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -4849,10 +4854,11 @@ BEGIN
             bs.visit_number "sessionNumber",
             
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN BLSession bs ON bs.sessionId = c.sessionId
             JOIN Proposal p ON p.proposalId = bs.proposalId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber AND c.containerStatus = p_status;
@@ -4872,7 +4878,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            c.containerType "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -4885,7 +4891,7 @@ BEGIN
             NULL "sessionNumber",
             
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN Dewar d ON c.dewarId = d.dewarId
             JOIN Shipping s ON s.shippingId = d.shippingId
@@ -4893,6 +4899,7 @@ BEGIN
             JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
             JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
             JOIN Person per on per.personId = shp.personId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND c.containerStatus = p_status AND per.login = p_authLogin;
@@ -4906,7 +4913,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            c.containerType "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -4919,11 +4926,12 @@ BEGIN
             NULL "sessionNumber",
 
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN Dewar d ON c.dewarId = d.dewarId
             JOIN Shipping s ON s.shippingId = d.shippingId
             JOIN Proposal p ON p.proposalId = s.proposalId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND c.containerStatus = p_status;
@@ -4971,7 +4979,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            c.containerType "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -4984,13 +4992,14 @@ BEGIN
             bs.visit_number "sessionNumber",
             
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN BLSession bs ON bs.sessionId = c.sessionId
             JOIN Proposal p ON p.proposalId = bs.proposalId
             JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
             JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
             JOIN Person per on per.personId = shp.personId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE c.barcode = p_barcode AND per.login = p_authLogin;
@@ -5004,7 +5013,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            c.containerType "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -5017,10 +5026,11 @@ BEGIN
             bs.visit_number "sessionNumber",
             
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN BLSession bs ON bs.sessionId = c.sessionId
             JOIN Proposal p ON p.proposalId = bs.proposalId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE c.barcode = p_barcode;
@@ -5039,7 +5049,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            c.containerType "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -5052,7 +5062,7 @@ BEGIN
             NULL "sessionNumber",
             
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN Dewar d ON c.dewarId = d.dewarId
             JOIN Shipping s ON s.shippingId = d.shippingId
@@ -5060,6 +5070,7 @@ BEGIN
             JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
             JOIN Session_has_Person shp ON shp.sessionId = bs2.sessionId
             JOIN Person per on per.personId = shp.personId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE c.barcode = p_barcode AND per.login = p_authLogin;
@@ -5073,7 +5084,7 @@ BEGIN
             c.ownerId "ownerId",
             per2.login "ownerUsername",
             c.code "name",
-            c.containerType "type",
+            IFNULL(ct.name, c.containerType) "type",
             c.barcode "barcode",
             c.beamlineLocation "beamline",
             c.sampleChangerLocation "location",
@@ -5086,11 +5097,12 @@ BEGIN
             NULL "sessionNumber",
 
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN Dewar d ON c.dewarId = d.dewarId
             JOIN Shipping s ON s.shippingId = d.shippingId
             JOIN Proposal p ON p.proposalId = s.proposalId
+            LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
           WHERE c.barcode = p_barcode;
@@ -5158,7 +5170,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
@@ -5212,7 +5224,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
@@ -5268,7 +5280,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
@@ -5323,7 +5335,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
@@ -5409,7 +5421,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
@@ -5463,7 +5475,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
@@ -5519,7 +5531,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
@@ -5574,7 +5586,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
@@ -5660,7 +5672,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
@@ -5714,7 +5726,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
@@ -5770,7 +5782,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
@@ -5825,7 +5837,7 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
@@ -9304,7 +9316,8 @@ BEGIN
       micronsPerPixelX = IFNULL(p_micronsPerPixelX, micronsPerPixelX),
       micronsPerPixelY = IFNULL(p_micronsPerPixelY, micronsPerPixelY),
       imageFullPath = IFNULL(p_imageFullPath, imageFullPath),
-      comments = IFNULL(p_comments, comments)
+      comments = IFNULL(p_comments, comments),
+      modifiedTimeStamp = current_timestamp
     WHERE blSampleImageId = p_id;
   END IF;
 END ;;
@@ -9706,8 +9719,8 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-22 15:32:37
--- MariaDB dump 10.18  Distrib 10.5.8-MariaDB, for Linux (x86_64)
+-- Dump completed on 2021-04-13 17:10:05
+-- MariaDB dump 10.19  Distrib 10.5.9-MariaDB, for Linux (x86_64)
 --
 -- Host: 10.88.0.5    Database: ispyb_build
 -- ------------------------------------------------------
@@ -9730,6 +9743,7 @@ DELIMITER ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50032 DROP TRIGGER IF EXISTS Container_sc_loc_update */;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER Container_sc_loc_update BEFORE UPDATE ON Container
 FOR EACH ROW
@@ -9752,4 +9766,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-22 15:32:39
+-- Dump completed on 2021-04-13 17:10:05
