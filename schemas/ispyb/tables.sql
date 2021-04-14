@@ -366,7 +366,6 @@ CREATE TABLE `AutoProcScaling_has_Int` (
   PRIMARY KEY (`autoProcScaling_has_IntId`),
   KEY `AutoProcScalingHasInt_FKIndex3` (`autoProcScalingId`,`autoProcIntegrationId`),
   KEY `AutoProcScal_has_IntIdx2` (`autoProcIntegrationId`),
-  KEY `AutoProcScl_has_IntIdx1` (`autoProcScalingId`),
   CONSTRAINT `AutoProcScaling_has_IntFk1` FOREIGN KEY (`autoProcScalingId`) REFERENCES `AutoProcScaling` (`autoProcScalingId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `AutoProcScaling_has_IntFk2` FOREIGN KEY (`autoProcIntegrationId`) REFERENCES `AutoProcIntegration` (`autoProcIntegrationId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -619,7 +618,6 @@ CREATE TABLE `BLSample` (
   `staffComments` varchar(255) DEFAULT NULL COMMENT 'Any staff comments on the sample',
   PRIMARY KEY (`blSampleId`),
   KEY `BLSample_FKIndex1` (`containerId`),
-  KEY `BLSample_FKIndex2` (`crystalId`),
   KEY `BLSample_FKIndex3` (`diffractionPlanId`),
   KEY `BLSample_FKIndex_Status` (`blSampleStatus`),
   KEY `BLSample_Index1` (`name`),
@@ -659,7 +657,7 @@ CREATE TABLE `BLSampleGroup_has_BLSample` (
   `blSampleGroupId` int(11) unsigned NOT NULL,
   `blSampleId` int(11) unsigned NOT NULL,
   `groupOrder` mediumint(9) DEFAULT NULL,
-  `type` enum('background','container','sample','calibrant') DEFAULT NULL,
+  `type` enum('background','container','sample','calibrant','capillary') DEFAULT NULL,
   `blSampleTypeId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`blSampleGroupId`,`blSampleId`),
   KEY `BLSampleGroup_has_BLSample_ibfk2` (`blSampleId`),
@@ -921,8 +919,8 @@ CREATE TABLE `BLSession` (
   `externalId` binary(16) DEFAULT NULL,
   `archived` tinyint(1) DEFAULT 0 COMMENT 'The data for the session is archived and no longer available on disk',
   PRIMARY KEY (`sessionId`),
+  UNIQUE KEY `proposalId` (`proposalId`,`visit_number`),
   KEY `BLSession_FKIndexOperatorSiteNumber` (`operatorSiteNumber`),
-  KEY `Session_FKIndex1` (`proposalId`),
   KEY `Session_FKIndex2` (`beamLineSetupId`),
   KEY `Session_FKIndexBeamLineName` (`beamLineName`),
   KEY `Session_FKIndexEndDate` (`endDate`),
@@ -1440,10 +1438,10 @@ CREATE TABLE `ContainerInspection` (
   `scheduledTimeStamp` datetime DEFAULT NULL,
   `completedTimeStamp` datetime DEFAULT NULL,
   PRIMARY KEY (`containerInspectionId`),
-  KEY `ContainerInspection_idx1` (`containerId`),
   KEY `ContainerInspection_idx2` (`inspectionTypeId`),
   KEY `ContainerInspection_idx3` (`imagerId`),
   KEY `ContainerInspection_fk4` (`scheduleComponentid`),
+  KEY `ContainerInspection_idx4` (`containerId`,`scheduleComponentid`,`state`,`manual`),
   CONSTRAINT `ContainerInspection_fk1` FOREIGN KEY (`containerId`) REFERENCES `Container` (`containerId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ContainerInspection_fk2` FOREIGN KEY (`inspectionTypeId`) REFERENCES `InspectionType` (`inspectionTypeId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `ContainerInspection_fk3` FOREIGN KEY (`imagerId`) REFERENCES `Imager` (`imagerId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -3198,23 +3196,42 @@ DROP TABLE IF EXISTS `ParticleClassification`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ParticleClassification` (
   `particleClassificationId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `particlePickerId` int(10) unsigned DEFAULT NULL,
-  `type` enum('2D','3D') DEFAULT NULL COMMENT 'Indicates the type of particle classification',
-  `batchNumber` int(10) unsigned DEFAULT NULL COMMENT 'Corresponding to batch number',
   `classNumber` int(10) unsigned DEFAULT NULL COMMENT 'Identified of the class. A unique ID given by Relion',
   `classImageFullPath` varchar(255) DEFAULT NULL COMMENT 'The PNG of the class',
-  `numberOfParticlesPerBatch` int(10) unsigned DEFAULT NULL COMMENT 'total number of particles per batch (a large integer)',
-  `numberOfClassesPerBatch` int(10) unsigned DEFAULT NULL,
   `particlesPerClass` int(10) unsigned DEFAULT NULL COMMENT 'Number of particles within the selected class, can then be used together with the total number above to calculate the percentage',
   `rotationAccuracy` int(10) unsigned DEFAULT NULL COMMENT '???',
   `translationAccuracy` float DEFAULT NULL COMMENT 'Unit: Angstroms',
   `estimatedResolution` float DEFAULT NULL COMMENT '???, Unit: Angstroms',
   `overallFourierCompleteness` float DEFAULT NULL,
-  `symmetry` varchar(20) DEFAULT NULL,
+  `particleClassificationGroupId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`particleClassificationId`),
-  KEY `ParticleClassification_fk_particlePickerId` (`particlePickerId`),
-  CONSTRAINT `ParticleClassification_fk_particlePickerId` FOREIGN KEY (`particlePickerId`) REFERENCES `ParticlePicker` (`particlePickerId`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `ParticleClassification_fk_particleClassificationGroupId` (`particleClassificationGroupId`),
+  CONSTRAINT `ParticleClassification_fk_particleClassificationGroupId` FOREIGN KEY (`particleClassificationGroupId`) REFERENCES `ParticleClassificationGroup` (`particleClassificationGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Results of 2D or 2D classification';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ParticleClassificationGroup`
+--
+
+DROP TABLE IF EXISTS `ParticleClassificationGroup`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ParticleClassificationGroup` (
+  `particleClassificationGroupId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `particlePickerId` int(10) unsigned DEFAULT NULL,
+  `programId` int(10) unsigned DEFAULT NULL,
+  `type` enum('2D','3D') DEFAULT NULL COMMENT 'Indicates the type of particle classification',
+  `batchNumber` int(10) unsigned DEFAULT NULL COMMENT 'Corresponding to batch number',
+  `numberOfParticlesPerBatch` int(10) unsigned DEFAULT NULL COMMENT 'total number of particles per batch (a large integer)',
+  `numberOfClassesPerBatch` int(10) unsigned DEFAULT NULL,
+  `symmetry` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`particleClassificationGroupId`),
+  KEY `ParticleClassificationGroup_fk_particlePickerId` (`particlePickerId`),
+  KEY `ParticleClassificationGroup_fk_programId` (`programId`),
+  CONSTRAINT `ParticleClassificationGroup_fk_particlePickerId` FOREIGN KEY (`particlePickerId`) REFERENCES `ParticlePicker` (`particlePickerId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ParticleClassificationGroup_fk_programId` FOREIGN KEY (`programId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3243,19 +3260,16 @@ DROP TABLE IF EXISTS `ParticlePicker`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ParticlePicker` (
   `particlePickerId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `particlePickerProgramId` int(10) unsigned DEFAULT NULL,
-  `particleClassificationProgramId` int(10) unsigned DEFAULT NULL,
+  `programId` int(10) unsigned DEFAULT NULL,
   `firstMotionCorrectionId` int(10) unsigned DEFAULT NULL,
   `particlePickingTemplate` varchar(255) DEFAULT NULL COMMENT 'Cryolo model',
   `particleDiameter` float DEFAULT NULL COMMENT 'Unit: nm',
   `numberOfParticles` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`particlePickerId`),
-  KEY `ParticlePicker_fk_particlePickerProgramId` (`particlePickerProgramId`),
-  KEY `ParticlePicker_fk_particleClassificationProgramId` (`particleClassificationProgramId`),
+  KEY `ParticlePicker_fk_particlePickerProgramId` (`programId`),
   KEY `ParticlePicker_fk_motionCorrectionId` (`firstMotionCorrectionId`),
   CONSTRAINT `ParticlePicker_fk_motionCorrectionId` FOREIGN KEY (`firstMotionCorrectionId`) REFERENCES `MotionCorrection` (`motionCorrectionId`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `ParticlePicker_fk_particleClassificationProgramId` FOREIGN KEY (`particleClassificationProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `ParticlePicker_fk_particlePickerProgramId` FOREIGN KEY (`particlePickerProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE
+  CONSTRAINT `ParticlePicker_fk_programId` FOREIGN KEY (`programId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='An instance of a particle picker program that was run';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3897,7 +3911,6 @@ CREATE TABLE `Protein` (
   `isotropy` enum('isotropic','anisotropic') DEFAULT NULL,
   PRIMARY KEY (`proteinId`),
   KEY `ProteinAcronym_Index` (`proposalId`,`acronym`),
-  KEY `Protein_FKIndex1` (`proposalId`),
   KEY `Protein_FKIndex2` (`personId`),
   KEY `Protein_Index2` (`acronym`),
   KEY `protein_fk3` (`componentTypeId`),
@@ -4599,7 +4612,6 @@ CREATE TABLE `Session_has_Person` (
   `role` enum('Local Contact','Local Contact 2','Staff','Team Leader','Co-Investigator','Principal Investigator','Alternate Contact','Data Access','Team Member','ERA Admin') DEFAULT NULL,
   `remote` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`sessionId`,`personId`),
-  KEY `Session_has_Person_FKIndex1` (`sessionId`),
   KEY `Session_has_Person_FKIndex2` (`personId`),
   CONSTRAINT `Session_has_Person_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Session_has_Person_ibfk_2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -4672,7 +4684,6 @@ CREATE TABLE `ShippingHasSession` (
   `shippingId` int(10) unsigned NOT NULL,
   `sessionId` int(10) unsigned NOT NULL,
   PRIMARY KEY (`shippingId`,`sessionId`),
-  KEY `ShippingHasSession_FKIndex1` (`shippingId`),
   KEY `ShippingHasSession_FKIndex2` (`sessionId`),
   CONSTRAINT `ShippingHasSession_ibfk_1` FOREIGN KEY (`shippingId`) REFERENCES `Shipping` (`shippingId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ShippingHasSession_ibfk_2` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -6026,4 +6037,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-03-05 16:06:13
+-- Dump completed on 2021-04-13 17:10:05

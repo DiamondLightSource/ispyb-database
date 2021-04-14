@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Script to make a release from code currently in the repo if none exists for
 # the current schema version.

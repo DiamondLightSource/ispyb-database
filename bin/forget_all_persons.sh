@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Caution: This script attempts to remove all Personally Identifiable
 # Information (PII) in the given ispyb database for the given proposal

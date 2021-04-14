@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Exit on first error incl. pipeline errors
 set -eo pipefail

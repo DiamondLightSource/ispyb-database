@@ -4,6 +4,8 @@ SchemaStatus
 ComponentType
 ComponentSubType
 ConcentrationType
+ContainerType
+ExperimentType
 InspectionType
 PlateType
 SessionType

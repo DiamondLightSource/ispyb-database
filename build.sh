@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Script to create the database from the schema .sql files and identify any
 # update .sql files that haven't been run. Also generate documentation from
@@ -11,44 +11,32 @@
 
 source bin/functions.sh
 
-if [ -z "${db}" ]
+if [ -z "${DB}" ]
 then
-  db="ispyb_build"
+  DB="ispyb_build"
 fi
 
 echo "Dropping + creating build database"
-mysql --defaults-file=.my.cnf -e "DROP DATABASE IF EXISTS $db; CREATE DATABASE $db; SET GLOBAL log_bin_trust_function_creators=ON;"
+mysql --defaults-file=.my.cnf -e "DROP DATABASE IF EXISTS $DB; CREATE DATABASE $DB; SET GLOBAL log_bin_trust_function_creators=ON;"
 
 if [[ $? -eq 0 ]]
 then
-  mysql --defaults-file=.my.cnf -D $db < schemas/ispyb/tables.sql
-  mysql --defaults-file=.my.cnf -D $db < schemas/ispyb/lookups.sql
-  mysql --defaults-file=.my.cnf -D $db < schemas/ispyb/data.sql
-  mysql --defaults-file=.my.cnf -D $db < schemas/ispyb/routines.sql
-  mysql --defaults-file=.my.cnf -D $db < grants/ispyb_acquisition.sql
-  mysql --defaults-file=.my.cnf -D $db < grants/ispyb_processing.sql
-  mysql --defaults-file=.my.cnf -D $db < grants/ispyb_web.sql
-  mysql --defaults-file=.my.cnf -D $db < grants/ispyb_import.sql
+  mysql --defaults-file=.my.cnf -D $DB < schemas/ispyb/tables.sql
+  mysql --defaults-file=.my.cnf -D $DB < schemas/ispyb/lookups.sql
+  mysql --defaults-file=.my.cnf -D $DB < schemas/ispyb/data.sql
+  mysql --defaults-file=.my.cnf -D $DB < schemas/ispyb/routines.sql
+  mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_acquisition.sql
+  mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_processing.sql
+  mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_web.sql
+  mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_import.sql
 
-  # Identify update .sql files that haven't been run, and run them
-  all_sql_files=`cd schemas/ispyb/updates && ls *.sql && cd ../..`
-
-  done_sql_files=`mysql --defaults-file=.my.cnf -D $db --skip-column-names --silent --raw -e "SELECT scriptName FROM SchemaStatus WHERE schemaStatus = 'DONE' ORDER BY recordTimeStamp;"`
-
-  arr=()
-  while read -r sql_file; do
-    contains "$done_sql_files" "$sql_file"
-    if [[ $? -ne 0 ]]
-    then
-      arr+=("$sql_file")
-      mysql --defaults-file=.my.cnf -D $db < schemas/ispyb/updates/$sql_file
-    fi
-  done <<< "$all_sql_files"
+  arr=$(bin/missed_updates.sh)
 
   if [ -n "$arr" ]; then
-    echo "The following schemas/ispyb/updates/*.sql files were sourced:"
-    for val in "${arr[@]}"; do
-      echo "$val"
+    echo "Running schemas/ispyb/updates/*.sql files that haven't yet been run:"
+    for sql_file in ${arr[@]}; do
+      echo "$sql_file"
+      mysql --defaults-file=.my.cnf -D ${DB} < "schemas/ispyb/updates/${sql_file}"
     done
   else
     echo "No new schemas/ispyb/updates/*.sql files."
@@ -57,8 +45,8 @@ then
   # Generate table and sproc documentation
   if [ -d "bin" ] && [ -d "docs" ]; then
     cd bin
-    ./db_procs_to_rst.sh $db > ../docs/list_of_procs.rst
-    ./db_tables_to_rst.sh $db > ../docs/list_of_tables_and_columns.rst
+    ./db_procs_to_rst.sh $DB > ../docs/list_of_procs.rst
+    ./db_tables_to_rst.sh $DB > ../docs/list_of_tables_and_columns.rst
     cd ..
   fi
 

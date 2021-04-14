@@ -423,14 +423,6 @@ INSERT INTO `ContainerRegistry` (`containerRegistryId`, `barcode`, `comments`, `
 /*!40000 ALTER TABLE `ContainerReport` ENABLE KEYS */;
 
 --
--- Dumping data for table `ContainerType`
---
-
-/*!40000 ALTER TABLE `ContainerType` DISABLE KEYS */;
-INSERT INTO `ContainerType` (`containerTypeId`, `name`, `proposalType`, `active`, `capacity`, `wellPerRow`, `dropPerWellX`, `dropPerWellY`, `dropHeight`, `dropWidth`, `dropOffsetX`, `dropOffsetY`, `wellDrop`) VALUES (1,'B21_8+1','scm',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,'B21_96','scm',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,'B21_1tube','scm',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(4,'I22_Capillary_Rack_20','scm',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(5,'I22_Grid_100','scm',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(6,'I22_Grid_45','scm',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(7,'P38_Capillary_Rack_27','scm',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(8,'P38_Solids','scm',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(9,'P38_Powder','scm',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(10,'B22_6','scm',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(11,'I11_Capillary_Rack_6','scm',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(12,'Puck','mx',1,16,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(13,'ReferencePlate','mx',1,16,2,1,1,1,1,0,0,-1),(14,'CrystalQuickX','mx',1,192,12,2,1,0.5,1,0,0,-1),(15,'MitegenInSitu','mx',1,192,12,2,1,0.5,1,0,0,-1),(16,'FilmBatch','mx',1,96,12,1,1,1,1,0,0,-1),(17,'MitegenInSitu_3_Drop','mx',1,288,12,3,1,0.5,1,0,0,-1),(18,'Greiner 3 Drop','mx',1,288,12,3,1,0.5,1,0,0,-1),(19,'MRC Maxi','mx',1,48,6,1,1,1,0.5,0,0,-1),(20,'MRC 2 Drop','mx',1,192,12,1,2,1,0.5,0.5,0,-1),(21,'Griener 1536','mx',1,1536,12,4,4,1,1,0,0,-1),(22,'3 Drop Square','mx',1,288,12,2,2,1,1,0,0,3),(23,'SWISSCI 3 Drop','mx',1,288,12,2,2,1,1,0,0,1),(24,'1 drop','mx',1,96,12,1,1,0.5,0.5,0,0,-1),(25,'LCP Glass','mx',1,96,12,1,1,1,1,0,0,-1),(26,'PCRStrip','scm',1,9,9,1,1,1,1,0,0,-1);
-/*!40000 ALTER TABLE `ContainerType` ENABLE KEYS */;
-
---
 -- Dumping data for table `CourierTermsAccepted`
 --
 
@@ -590,14 +582,6 @@ INSERT INTO `EnergyScan` (`energyScanId`, `sessionId`, `blSampleId`, `fluorescen
 
 /*!40000 ALTER TABLE `ExperimentKindDetails` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ExperimentKindDetails` ENABLE KEYS */;
-
---
--- Dumping data for table `ExperimentType`
---
-
-/*!40000 ALTER TABLE `ExperimentType` DISABLE KEYS */;
-INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `active`) VALUES (1,'Default',NULL,1),(2,'MXPressE','mx',1),(3,'MXPressO','mx',1),(4,'MXPressE_SAD','mx',1),(5,'MXScore','mx',1),(6,'MXPressM','mx',1),(7,'MAD','mx',1),(8,'SAD','mx',1),(9,'Fixed','mx',1),(10,'Ligand binding','mx',1),(11,'Refinement','mx',1),(12,'OSC','MX',1),(13,'MAD - Inverse Beam','mx',1),(14,'SAD - Inverse Beam','mx',1),(15,'MESH','mx',1),(16,'XFE','mx',1),(17,'Stepped transmission','mx',1),(18,'XChem High Symmetry','mx',1),(19,'XChem Low Symmetry','mx',1),(20,'Commissioning','mx',1),(21,'HPLC','scm',1),(22,'Robot','scm',1),(23,'Rack','scm',1),(24,'Grid','scm',1),(25,'Solids','scm',1),(26,'Powder','scm',1),(27,'Peltier','scm',1),(28,'Spectroscopy','scm',1),(29,'CD Spectroscopy','scm',1),(30,'Microscopy','scm',1),(31,'Imaging','scm',1),(32,'CD Thermal Melt','scm',1),(33,'Fixed Energy At Ambient With Robot','scm',1);
-/*!40000 ALTER TABLE `ExperimentType` ENABLE KEYS */;
 
 --
 -- Dumping data for table `Frame`
@@ -869,6 +853,13 @@ INSERT INTO `PDB` (`pdbId`, `name`, `contents`, `code`) VALUES (6,'ceo2','\r\nda
 
 /*!40000 ALTER TABLE `ParticleClassification` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ParticleClassification` ENABLE KEYS */;
+
+--
+-- Dumping data for table `ParticleClassificationGroup`
+--
+
+/*!40000 ALTER TABLE `ParticleClassificationGroup` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ParticleClassificationGroup` ENABLE KEYS */;
 
 --
 -- Dumping data for table `ParticleClassification_has_CryoemInitialModel`
@@ -1457,4 +1448,4 @@ INSERT INTO `v_run` (`runId`, `run`, `startDate`, `endDate`) VALUES (1,'2008-01'
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-03-05 16:12:02
+-- Dump completed on 2021-04-13 17:47:06
