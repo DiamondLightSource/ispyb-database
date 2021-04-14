@@ -13,7 +13,7 @@ Unreleased / master
   * New cryoEM table `ParticleClassificationGroup`. Some columns were moved to this table from `ParticlePicker` and `ParticleClassification`.
   * Add `capillary` as enum option to `BLSampleGroup_has_BLSample.type`
   * XChem DB: First version of schema for production (not part of release)
-  * Analytics schema: Add access to all lookup tables, `RobotAction`, `ProcessingJob*`, `Protein` tables through views (not part of release)
+  * Analytics schema: Add access to all lookup tables, `RobotAction`, `ProcessingJob*`, `Protein` tables through views
   * Drop duplicate indices, add missing indices that existed only in DLS prod
 
 * Data in lookup tables:
