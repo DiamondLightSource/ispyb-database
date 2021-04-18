@@ -1,19 +1,23 @@
 #!/usr/bin/env bash
 
 # Usage:
-# export_session.sh <.cnf file> <db_name> <proposalCode><proposalNumber> <session number> <output dir>
+# export_session.sh <proposalCode><proposalNumber> <session number> <output dir>
 # Usage example:
-# export_session.sh ~/.my.cnf ispyb cm14451 2 /tmp/cm14451-2
+# export_session.sh cm14451 2 /tmp/cm14451-2
 # Author: Karl Levik
 # Date: 2020-02-14
 
 
-HOST=localhost
-MYCNF=$1
-DB=$2
-PROPOSAL=$3
-SESSNUM=$4
-OUT_DIR=$5
+MYCNF=../.my.cnf
+PROPOSAL=$1
+SESSNUM=$2
+OUT_DIR=$3
+
+if [ -z "${DB}" ]
+then
+  DB="ispyb_build"
+fi
+
 
 GLOBALS_FILE=globals_data.sql
 PROPOSAL_DIR=${OUT_DIR}/proposal
@@ -36,25 +40,25 @@ fi
 mkdir -p ${OUT_DIR}/proposal
 mkdir -p ${OUT_DIR}/session
 
-OPTIONS="--defaults-file=${MYCNF} --add-drop-table --create-options --disable-keys --skip-add-locks --quick --set-charset --single-transaction --max_allowed_packet=1G --skip-triggers --no-create-info --complete-insert --host=${HOST} --port=3306 --default-character-set=utf8 ${DB}"
+OPTIONS="--defaults-file=${MYCNF} --add-drop-table --create-options --disable-keys --skip-add-locks --quick --set-charset --single-transaction --max_allowed_packet=1G --skip-triggers --no-create-info --complete-insert --default-character-set=utf8 ${DB}"
 
 # Global level data
 
-mysqldump ${OPTIONS} Detector Imager ComponentType ComponentSubType InspectionType ConcentrationType SpaceGroup v_run UserGroup Permission UserGroup_has_Permission Schedule ScheduleComponent ScanParametersService ProcessingPipelineCategory ProcessingPipeline | grep 'INSERT INTO' > ${OUT_DIR}/${GLOBALS_FILE}
+source lookup_tables.sh
+
+mysqldump ${OPTIONS} ${LOOKUP_TABLES_STRING} v_run BeamLineSetup | grep 'INSERT INTO' > ${OUT_DIR}/${GLOBALS_FILE}
+
+# Proposal level data
 
 mysqldump ${OPTIONS} --where="diffractionPlanId IN (SELECT dataCollectionPlanId FROM ScanParametersModel)" DiffractionPlan > ${PROPOSAL_DIR}/DiffractionPlan0.sql
 
 mysqldump ${OPTIONS} ScanParametersModel > ${PROPOSAL_DIR}/ScanParametersModel.sql
-
-# Proposal level data
 
 mysqldump ${OPTIONS} --where="laboratoryId=${LABID}   OR   laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN LabContact lc USING(personId) WHERE lc.proposalId=${PID})   OR   laboratoryId IN (SELECT laboratoryId FROM Person p INNER JOIN Session_has_Person shp USING(personId) WHERE shp.sessionId=${SID})   OR   laboratoryId IN (SELECT laboratoryId FROM Person p INNER JOIN ProposalHasPerson php USING(personId) WHERE php.proposalId=${PID})   OR   laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN Container c ON c.ownerId=p.personId WHERE c.sessionId=${SID})   OR   laboratoryId IN (SELECT p.laboratoryId FROM Person p INNER JOIN Container c ON c.ownerId=p.personId INNER JOIN Dewar d USING(dewarId) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID})   OR   laboratoryId IN (SELECT pe.laboratoryId FROM Person pe INNER JOIN Container c ON c.ownerId=pe.personId INNER JOIN BLSample bls USING(containerId) INNER JOIN Crystal USING(crystalId) INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})   OR  laboratoryId IN (SELECT pe.laboratoryId FROM Person pe INNER JOIN Shipping s ON pe.personId=s.deliveryAgent_flightCodePersonId WHERE s.proposalId=${PID}   UNION   SELECT pe.laboratoryId FROM Person pe JOIN LabContact lc USING(personId) WHERE lc.labContactId IN (SELECT  sendingLabContactId FROM Shipping WHERE proposalId=${PID}   UNION   SELECT returnLabContactId FROM Shipping WHERE proposalId=${PID}))" Laboratory > ${PROPOSAL_DIR}/Laboratory.sql
 
 mysqldump ${OPTIONS} --where="personId=${PERSID}   OR   personId IN (SELECT personId FROM LabContact WHERE proposalId=${PID})   OR   personId IN (SELECT personId FROM Session_has_Person WHERE sessionId=${SID})   OR   personId IN (SELECT personId FROM ProposalHasPerson WHERE proposalId=${PID})   OR   personId IN (SELECT ownerId FROM Container WHERE sessionId=${SID})   OR   personId IN (SELECT c.ownerId FROM Container c INNER JOIN Dewar d USING(dewarId) INNER JOIN Shipping s USING(shippingId) WHERE s.proposalId=${PID})   OR   personId IN (SELECT c.ownerId FROM Container c INNER JOIN BLSample bls USING(containerId) INNER JOIN Crystal USING(crystalId) INNER JOIN Protein p USING(proteinId) WHERE p.proposalId=${PID})   OR   personId IN (SELECT s.deliveryAgent_flightCodePersonId FROM Shipping s WHERE s.proposalId=${PID}   UNION   SELECT personId FROM LabContact WHERE labContactId IN (SELECT  sendingLabContactId FROM Shipping WHERE proposalId=${PID}   UNION   SELECT returnLabContactId FROM Shipping WHERE proposalId=${PID}))" Person > ${PROPOSAL_DIR}/Person.sql
 
 mysqldump ${OPTIONS} --where="proposalId=${PID}" Proposal > ${PROPOSAL_DIR}/Proposal.sql
-
-mysqldump ${OPTIONS} --where="beamLineSetupId IN (SELECT beamLineSetupId FROM BLSession WHERE sessionId=${SID})" BeamLineSetup > ${PROPOSAL_DIR}/BeamLineSetup.sql
 
 mysqldump ${OPTIONS} --where="sessionId=${SID}" BLSession > ${PROPOSAL_DIR}/BLSession.sql
 
