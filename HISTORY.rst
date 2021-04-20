@@ -5,6 +5,15 @@ History
 Unreleased / master
 -------------------
 
+1.20.1 (2021-04-20)
+-------------------
+
+- `xchem_db` schema is now part of the release archive file
+- `retrieve_dc_plans_for_sample` sproc: add `sampleOrderInPlan` field to result-set
+- Redefined which tables are lookup tables
+- Code refactoring of `bin/backup.sh` and `bin/export_session.sh`
+- `schemas/ispyb/data.sql`: Set `planOrder` for rows in `BLSample_has_DataCollectionPlan` table
+
 1.20.0 (2021-04-13)
 -------------------
 
