@@ -86,13 +86,6 @@ INSERT INTO `InspectionType` (`inspectionTypeId`, `name`) VALUES (1,'Visible'),(
 /*!40000 ALTER TABLE `PlateType` ENABLE KEYS */;
 
 --
--- Dumping data for table `SessionType`
---
-
-/*!40000 ALTER TABLE `SessionType` DISABLE KEYS */;
-/*!40000 ALTER TABLE `SessionType` ENABLE KEYS */;
-
---
 -- Dumping data for table `WorkflowType`
 --
 
@@ -106,6 +99,14 @@ INSERT INTO `InspectionType` (`inspectionTypeId`, `name`) VALUES (1,'Visible'),(
 /*!40000 ALTER TABLE `Schedule` DISABLE KEYS */;
 INSERT INTO `Schedule` (`scheduleId`, `name`) VALUES (1,'Daily - 1 week'),(2,'Schedule 2'),(11,'Fibonacci'),(15,'3 Hour Interval');
 /*!40000 ALTER TABLE `Schedule` ENABLE KEYS */;
+
+--
+-- Dumping data for table `ScheduleComponent`
+--
+
+/*!40000 ALTER TABLE `ScheduleComponent` DISABLE KEYS */;
+INSERT INTO `ScheduleComponent` (`scheduleComponentId`, `scheduleId`, `offset_hours`, `inspectionTypeId`) VALUES (1,1,0,1),(2,1,12,1),(3,1,24,1),(4,1,96,1),(5,1,48,1),(6,1,72,1),(8,2,24,1),(11,2,48,2),(14,11,0,1),(17,11,12,1),(20,11,24,1),(23,11,36,1),(26,11,60,1),(29,11,96,1),(32,11,156,1),(35,11,252,1),(38,11,408,1),(41,11,660,1),(44,11,1068,1),(47,11,1728,1),(50,11,2796,1),(54,15,3,1),(57,15,6,1),(60,15,9,1),(63,15,12,1),(66,15,18,1),(69,15,24,1),(72,15,30,1),(75,15,36,1),(78,15,42,1),(81,15,48,1),(84,1,120,1),(87,1,144,1),(90,1,168,1),(93,1,336,1),(96,1,504,1);
+/*!40000 ALTER TABLE `ScheduleComponent` ENABLE KEYS */;
 
 --
 -- Dumping data for table `Imager`
@@ -131,14 +132,6 @@ INSERT INTO `Detector` (`detectorId`, `detectorType`, `detectorManufacturer`, `d
 /*!40000 ALTER TABLE `DewarLocationList` ENABLE KEYS */;
 
 --
--- Dumping data for table `BeamLineSetup`
---
-
-/*!40000 ALTER TABLE `BeamLineSetup` DISABLE KEYS */;
-INSERT INTO `BeamLineSetup` (`beamLineSetupId`, `detectorId`, `synchrotronMode`, `undulatorType1`, `undulatorType2`, `undulatorType3`, `focalSpotSizeAtSample`, `focusingOptic`, `beamDivergenceHorizontal`, `beamDivergenceVertical`, `polarisation`, `monochromatorType`, `setupDate`, `synchrotronName`, `maxExpTimePerDataCollection`, `maxExposureTimePerImage`, `minExposureTimePerImage`, `goniostatMaxOscillationSpeed`, `goniostatMaxOscillationWidth`, `goniostatMinOscillationWidth`, `maxTransmission`, `minTransmission`, `recordTimeStamp`, `CS`, `beamlineName`, `beamSizeXMin`, `beamSizeXMax`, `beamSizeYMin`, `beamSizeYMax`, `energyMin`, `energyMax`, `omegaMin`, `omegaMax`, `kappaMin`, `kappaMax`, `phiMin`, `phiMax`, `active`, `numberOfImagesMax`, `numberOfImagesMin`, `boxSizeXMin`, `boxSizeXMax`, `boxSizeYMin`, `boxSizeYMax`, `monoBandwidthMin`, `monoBandwidthMax`, `preferredDataCentre`) VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2007-04-26 00:00:00','Diamond Light Source',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-19 22:56:25',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-/*!40000 ALTER TABLE `BeamLineSetup` ENABLE KEYS */;
-
---
 -- Dumping data for table `BF_component`
 --
 
@@ -158,14 +151,6 @@ INSERT INTO `BeamLineSetup` (`beamLineSetupId`, `detectorId`, `synchrotronMode`,
 
 /*!40000 ALTER TABLE `BF_system` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_system` ENABLE KEYS */;
-
---
--- Dumping data for table `Permission`
---
-
-/*!40000 ALTER TABLE `Permission` DISABLE KEYS */;
-INSERT INTO `Permission` (`permissionId`, `type`, `description`) VALUES (1,'mx_admin','MX Administrator'),(2,'manage_groups','Manage User Groups'),(4,'manage_perms','Manage User Group Permissions'),(5,'global_stats','View Global Statistics'),(6,'fault_view','View Fault Reports'),(7,'saxs_admin','SAXS Administrator'),(8,'em_admin','EM Administrator'),(9,'gen_admin','Powder Admin'),(10,'tomo_admin','Tomo Admin'),(11,'super_admin','Site Admin'),(12,'fault_global','Globally edit all faults'),(13,'schedules','Manage Imaging Schedules'),(15,'schedule_comps','Manage Imaging Schedule Components'),(16,'imaging_dash','Imaging Dashboard'),(17,'vmxi_queue','VMXi Data Collection Queue'),(18,'sm_admin','Small Molecule Admin'),(20,'pow_admin','Power Admin'),(23,'all_dewars','View All Dewars'),(26,'all_prop_stats','View All Proposal Stats'),(29,'all_breakdown','View Aggregated Visit Breakdown Stats'),(32,'disp_cont','VMXi Dispose Container'),(37,'view_manifest','View Shipping Manifest'),(43,'schedule_comp','typo fill in'),(49,'xpdf_admin','XPDF Admin'),(55,'edit_presets','Edit Beamline DC Presets'),(58,'manage_params','Edit Beamline Parameter Limits'),(64,'manage_detector','Manage Beamline Detector Limits'),(69,'auto_dash','AutoCollect Dashboard'),(77,'fault_admin','Edit Fault Categories'),(80,'fault_add','Add New Fault Reports');
-/*!40000 ALTER TABLE `Permission` ENABLE KEYS */;
 
 --
 -- Dumping data for table `BLSampleImageAutoScoreSchema`
@@ -192,20 +177,20 @@ INSERT INTO `SpaceGroup` (`spaceGroupId`, `spaceGroupNumber`, `spaceGroupShortNa
 /*!40000 ALTER TABLE `SpaceGroup` ENABLE KEYS */;
 
 --
--- Dumping data for table `ProcessingPipeline`
---
-
-/*!40000 ALTER TABLE `ProcessingPipeline` DISABLE KEYS */;
-INSERT INTO `ProcessingPipeline` (`processingPipelineId`, `processingPipelineCategoryId`, `name`, `discipline`, `pipelineStatus`, `reprocessing`) VALUES (1,1,'Mosflm','MX','automatic',0),(2,1,'EDNA','MX','automatic',0),(3,2,'Fast DP','MX','automatic',1),(4,2,'xia2/3dii','MX','deprecated',0),(5,2,'xia2/Multiplex','MX','automatic',1),(6,2,'xia2/DIALS','MX','optional',1),(7,2,'xia2/XDS','MX','optional',1),(8,2,'autoPROC','MX','optional',1),(9,3,'Fast EP','MX','automatic',0),(10,3,'Dimple','MX','automatic',0),(11,3,'MrBUMP','MX','automatic',0),(12,3,'Big EP/XDS','MX','automatic',0),(13,3,'Big EP/DIALS','MX','automatic',0);
-/*!40000 ALTER TABLE `ProcessingPipeline` ENABLE KEYS */;
-
---
 -- Dumping data for table `ProcessingPipelineCategory`
 --
 
 /*!40000 ALTER TABLE `ProcessingPipelineCategory` DISABLE KEYS */;
 INSERT INTO `ProcessingPipelineCategory` (`processingPipelineCategoryId`, `name`) VALUES (1,'screening'),(2,'processing'),(3,'post processing');
 /*!40000 ALTER TABLE `ProcessingPipelineCategory` ENABLE KEYS */;
+
+--
+-- Dumping data for table `ProcessingPipeline`
+--
+
+/*!40000 ALTER TABLE `ProcessingPipeline` DISABLE KEYS */;
+INSERT INTO `ProcessingPipeline` (`processingPipelineId`, `processingPipelineCategoryId`, `name`, `discipline`, `pipelineStatus`, `reprocessing`) VALUES (1,1,'Mosflm','MX','automatic',0),(2,1,'EDNA','MX','automatic',0),(3,2,'Fast DP','MX','automatic',1),(4,2,'xia2/3dii','MX','deprecated',0),(5,2,'xia2/Multiplex','MX','automatic',1),(6,2,'xia2/DIALS','MX','optional',1),(7,2,'xia2/XDS','MX','optional',1),(8,2,'autoPROC','MX','optional',1),(9,3,'Fast EP','MX','automatic',0),(10,3,'Dimple','MX','automatic',0),(11,3,'MrBUMP','MX','automatic',0),(12,3,'Big EP/XDS','MX','automatic',0),(13,3,'Big EP/DIALS','MX','automatic',0);
+/*!40000 ALTER TABLE `ProcessingPipeline` ENABLE KEYS */;
 
 --
 -- Dumping data for table `BLSampleType`
@@ -222,6 +207,38 @@ INSERT INTO `BLSampleType` (`blSampleTypeId`, `name`, `proposalType`, `active`) 
 /*!40000 ALTER TABLE `PurificationColumn` DISABLE KEYS */;
 INSERT INTO `PurificationColumn` (`purificationColumnId`, `name`, `active`) VALUES (1,'user supplied',1),(2,'s75',1),(3,'s200',1),(4,'superose6',1),(5,'kw402.5',1),(6,'kw403',1),(7,'kw404',1),(8,'kw405',1);
 /*!40000 ALTER TABLE `PurificationColumn` ENABLE KEYS */;
+
+--
+-- Dumping data for table `UserGroup`
+--
+
+/*!40000 ALTER TABLE `UserGroup` DISABLE KEYS */;
+INSERT INTO `UserGroup` (`userGroupId`, `name`) VALUES (39,'autocollect'),(17,'bag_stats'),(20,'bl_stats'),(8,'developers'),(9,'ehc'),(6,'em_admin'),(10,'fault_admin'),(2,'mx_admin'),(14,'pdb_stats'),(4,'powder_admin'),(3,'saxs_admin'),(28,'ship_manage'),(12,'sm_admin'),(1,'super_admin'),(24,'temp_mx_admin'),(5,'tomo_admin'),(11,'vmxi'),(34,'xpdf_admin');
+/*!40000 ALTER TABLE `UserGroup` ENABLE KEYS */;
+
+--
+-- Dumping data for table `Permission`
+--
+
+/*!40000 ALTER TABLE `Permission` DISABLE KEYS */;
+INSERT INTO `Permission` (`permissionId`, `type`, `description`) VALUES (1,'mx_admin','MX Administrator'),(2,'manage_groups','Manage User Groups'),(4,'manage_perms','Manage User Group Permissions'),(5,'global_stats','View Global Statistics'),(6,'fault_view','View Fault Reports'),(7,'saxs_admin','SAXS Administrator'),(8,'em_admin','EM Administrator'),(9,'gen_admin','Powder Admin'),(10,'tomo_admin','Tomo Admin'),(11,'super_admin','Site Admin'),(12,'fault_global','Globally edit all faults'),(13,'schedules','Manage Imaging Schedules'),(15,'schedule_comps','Manage Imaging Schedule Components'),(16,'imaging_dash','Imaging Dashboard'),(17,'vmxi_queue','VMXi Data Collection Queue'),(18,'sm_admin','Small Molecule Admin'),(20,'pow_admin','Power Admin'),(23,'all_dewars','View All Dewars'),(26,'all_prop_stats','View All Proposal Stats'),(29,'all_breakdown','View Aggregated Visit Breakdown Stats'),(32,'disp_cont','VMXi Dispose Container'),(37,'view_manifest','View Shipping Manifest'),(43,'schedule_comp','typo fill in'),(49,'xpdf_admin','XPDF Admin'),(55,'edit_presets','Edit Beamline DC Presets'),(58,'manage_params','Edit Beamline Parameter Limits'),(64,'manage_detector','Manage Beamline Detector Limits'),(69,'auto_dash','AutoCollect Dashboard'),(77,'fault_admin','Edit Fault Categories'),(80,'fault_add','Add New Fault Reports');
+/*!40000 ALTER TABLE `Permission` ENABLE KEYS */;
+
+--
+-- Dumping data for table `UserGroup_has_Permission`
+--
+
+/*!40000 ALTER TABLE `UserGroup_has_Permission` DISABLE KEYS */;
+INSERT INTO `UserGroup_has_Permission` (`userGroupId`, `permissionId`) VALUES (1,1),(1,7),(1,8),(1,9),(1,10),(1,11),(1,18),(1,20),(1,23),(1,49),(2,1),(2,6),(2,23),(2,80),(3,7),(3,23),(4,20),(5,10),(6,8),(6,23),(8,1),(8,2),(8,4),(8,6),(8,7),(8,8),(8,9),(8,10),(8,11),(8,18),(8,20),(8,23),(8,26),(8,29),(8,37),(8,49),(9,1),(9,6),(10,12),(10,77),(11,13),(11,15),(11,16),(11,17),(11,32),(11,43),(11,55),(11,58),(11,64),(12,18),(14,1),(17,26),(20,29),(24,1),(28,23),(28,37),(34,49),(39,69);
+/*!40000 ALTER TABLE `UserGroup_has_Permission` ENABLE KEYS */;
+
+--
+-- Dumping data for table `ScanParametersService`
+--
+
+/*!40000 ALTER TABLE `ScanParametersService` DISABLE KEYS */;
+INSERT INTO `ScanParametersService` (`scanParametersServiceId`, `name`, `description`) VALUES (4,'Temperature','Temperature in Celsius'),(7,'Pressure','Pressure in pascal (Pa)');
+/*!40000 ALTER TABLE `ScanParametersService` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -231,4 +248,4 @@ INSERT INTO `PurificationColumn` (`purificationColumnId`, `name`, `active`) VALU
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-13 17:47:06
+-- Dump completed on 2021-04-20 17:53:54
