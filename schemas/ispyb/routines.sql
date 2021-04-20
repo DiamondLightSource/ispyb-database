@@ -3088,14 +3088,14 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `retrieve_dc_plans_for_sample`(IN p_sampleId int unsigned)
     READS SQL DATA
     COMMENT 'Return multi-row result-set with info about data collection plan'
 BEGIN
     IF NOT (p_sampleId IS NULL) THEN
-    SELECT dp.diffractionPlanId "dcPlanId", dp.name "name", dp.experimentKind "experimentKind",
+    SELECT dp.diffractionPlanId "dcPlanId", dp.name "name", bhd.planOrder "sampleOrderInPlan", dp.experimentKind "experimentKind",
       dp.preferredBeamSizeX "preferredBeamSizeX", dp.preferredBeamSizeY "preferredBeamSizeY", dp.requiredResolution "requiredResolution",
       dp.monoBandwidth "monoBandwidth", dp.energy "energy",
       dhd.detectorId "detectorId", dhd.exposureTime "exposureTime", dhd.distance "distance", dhd.roll "roll",
@@ -9719,7 +9719,7 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-13 17:10:05
+-- Dump completed on 2021-04-20 17:53:53
 -- MariaDB dump 10.19  Distrib 10.5.9-MariaDB, for Linux (x86_64)
 --
 -- Host: 10.88.0.5    Database: ispyb_build
@@ -9766,4 +9766,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-13 17:10:05
+-- Dump completed on 2021-04-20 17:53:54
