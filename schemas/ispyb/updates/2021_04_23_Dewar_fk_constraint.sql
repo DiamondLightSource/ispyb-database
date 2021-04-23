@@ -1,5 +1,10 @@
 INSERT IGNORE INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2021_04_23_Dewar_fk_constraint.sql', 'ONGOING');
 
+UPDATE Dewar d 
+  LEFT JOIN BLSession s ON d.firstExperimentId = s.sessionId 
+SET firstExperimentId=NULL 
+WHERE d.firstExperimentId IS NOT NULL AND s.sessionId IS NULL;
+
 ALTER TABLE Dewar
   DROP CONSTRAINT Dewar_ibfk_2;
 ALTER TABLE Dewar
