@@ -1,5 +1,5 @@
 DELIMITER ;;
-CREATE OR REPLACE PROCEDURE `retrieve_apertures_using_size`(p_sizeX double)
+CREATE OR REPLACE DEFINER= `ispyb_root`@`%` PROCEDURE `retrieve_apertures_using_size`(p_sizeX double)
 READS SQL DATA
 COMMENT 'Return a multi-row result set with info about Apertures identified by aperture size.'
 BEGIN
