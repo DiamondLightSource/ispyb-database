@@ -18,8 +18,6 @@ CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `insert_crystal` (
 	p_cell_beta long,
 	p_cell_gamma long,
 	p_comments varchar(255),
-	p_pdbFileName varchar(255),
-	p_pdbFilePath varchar(1024),
 	p_recordTimeStamp varchar(1024),
 	p_abundance float,
 	p_theoreticalDensity float)

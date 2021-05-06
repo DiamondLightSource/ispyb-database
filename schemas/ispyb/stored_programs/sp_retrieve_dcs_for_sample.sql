@@ -1,5 +1,5 @@
 DELIMITER ;;
-CREATE OR REPLACE DEFINIER=`ispyb_root`@`%` PROCEDURE `retrieve_data_collections_for_sample`(p_sampleId int unsigned)
+CREATE OR REPLACE DEFINIER=`ispyb_root`@`%` PROCEDURE `retrieve_dcs_for_sample` int unsigned)
 READS SQL DATA
 COMMENT 'Return a multi-row result-set with the data-collection-main compatible records for the given sample ID'
 BEGIN

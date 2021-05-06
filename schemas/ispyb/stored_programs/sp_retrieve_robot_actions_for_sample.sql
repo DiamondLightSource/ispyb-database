@@ -29,8 +29,8 @@ BEGIN
 				ra.containerLocation "location",
 				ra.dewarLocation "dewarLocation",
 				ra.sampleBarcode "sampleBarcode",
-				xtalSnapshotBefore "xtalSnapshotBefore",
-				xtalSnapshotAfter "xtalSnapshotAfter"
+				ra.xtalSnapshotBefore "xtalSnapshotBefore",
+				ra.xtalSnapshotAfter "xtalSnapshotAfter"
 				FROM BLSample bls
 				  INNER JOIN RobotAction ra ON bls.blSampleId = ra.blSampleId
 				  INNER JOIN BLSession bs ON ra.blsessionId = bs.sessionId
@@ -38,7 +38,7 @@ BEGIN
 				  INNER JOIN BLSession bs2 on p.proposalID = bs2.proposalID
 				  INNER JOIN Session_has_Person shp ON bs2.sessionId = shp.sessionId
 				  INNER JOIN Person pe ON pe.personID = shp.personId
-				WHERE pe.login = p_authLogin;
+				WHERE pe.login = p_authLogin AND bls.blSampleId = p_id;
 
 			ELSE
 			-- no p_authLogin
@@ -54,13 +54,13 @@ BEGIN
 				ra.containerLocation "location",
 				ra.dewarLocation "dewarLocation",
 				ra.sampleBarcode "sampleBarcode",
-				xtalSnapshotBefore "xtalSnapshotBefore",
-				xtalSnapshotAfter "xtalSnapshotAfter"
+				ra.xtalSnapshotBefore "xtalSnapshotBefore",
+				ra.xtalSnapshotAfter "xtalSnapshotAfter"
 				FROM BLSample bls
 				  INNER JOIN RobotAction ra ON bls.blSampleID = ra.blSampleId
 				  INNER JOIN BLSession bs ON ra.blsessionId = bs.sessionId
 				  INNER JOIN Proposal p ON bs.proposalId = p.proposalId
-				WHERE bls.blSampleId = p_id;
+				WHERE bls.blSampleId = p_id AND bls.blSampleId = p_id;
 			END IF;
 
 		ELSE
@@ -81,8 +81,8 @@ BEGIN
 				ra.containerLocation "location",
 				ra.dewarLocation "dewarLocation",
 				ra.sampleBarcode "sampleBarcode",
-				xtalSnapshotBefore "xtalSnapshotBefore",
-				xtalSnapshotAfter "xtalSnapshotAfter"
+				ra.xtalSnapshotBefore "xtalSnapshotBefore",
+				ra.xtalSnapshotAfter "xtalSnapshotAfter"
 				FROM BLSample bls
 				  INNER JOIN RobotAction ra ON bls.blSampleId = ra.blSampleId
 				  INNER JOIN BLSession bs ON ra.blsessionId = bs.sessionId
@@ -106,8 +106,8 @@ BEGIN
 				ra.containerLocation "location",
 				ra.dewarLocation "dewarLocation",
 				ra.sampleBarcode "sampleBarcode",
-				xtalSnapshotBefore "xtalSnapshotBefore",
-				xtalSnapshotAfter "xtalSnapshotAfter"
+				ra.xtalSnapshotBefore "xtalSnapshotBefore",
+				ra.xtalSnapshotAfter "xtalSnapshotAfter"
 				FROM BLSample bls
 				  INNER JOIN RobotAction ra ON bls.blSampleId = ra.blSampleId
 				  INNER JOIN BLSession bs ON ra.blsessionId = bs.sessionId

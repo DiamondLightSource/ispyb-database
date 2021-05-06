@@ -14,8 +14,7 @@ BEGIN
 		  scr.dataCollectionGroupId "dataCollectionGroupId",
 		  scr.xmlSampleInformation "xmlSampleInformation"
 		FROM BLSample bls
-		  INNER JOIN BLSubSample bss ON bls.blSampleId = bss.blSampleID
-		  INNER JOIN DataCollection dc ON bss.blSubSampleId = dc.blSubSampleID
+		  INNER JOIN DataCollection dc ON bls.blSubSampleId = dc.BLSAMPLEID
 		  INNER JOIN Screening scr ON dc.dataCollectionId = scr.dataCollectionId
 		WHERE bls.blSampleId = p_id;
 	ELSE

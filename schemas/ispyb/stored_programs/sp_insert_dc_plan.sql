@@ -1,5 +1,5 @@
 DELIMITER ;;
-CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `insert_diffraction_plan`(
+CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `insert_dc_plan`(
 	OUT p_id int(11) unsigned,
 	p_diffactionPlanId int(10),
 	p_name varchar(20),
