@@ -16,7 +16,7 @@ BEGIN
 	    dc.numberOfImages "numberOfImages",
 	    dc.startImageNumber "startImageNumber",
 	    dc.numberOfPasses "numberOfPasses",
-	    dc.imageDirectory "imageDirectort",
+	    dc.imageDirectory "imageDirectory",
 	    dc.imagePrefix "imagePrefix",
 	    dc.imageSuffix "imageSuffix",
 	    dc.imageContainerSubPath "imageContainerSubPath",
