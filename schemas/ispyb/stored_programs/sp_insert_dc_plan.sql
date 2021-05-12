@@ -2,7 +2,7 @@ DELIMITER ;;
 CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `insert_dc_plan`(
 	OUT p_id int(11) unsigned,
 	p_name varchar(20),
-	p_experimentKind enum('Default','MXPressE','MXPressO','MXPressE_SAD','MXScore','MXPressM','MAD','SAD','Fixed','Ligand binding','Refinement','OSC','MAD - Inverse Beam','SAD - Inverse Beam','MESH','XFE','Stepped transmission','XChem High Symmetry','XChem Low Symmetry','Commissioning'),
+	p_experimentKind varchar(25),
 	p_observedResolution float,
 	p_minimalResolution float,
 	p_exposuretime float,
