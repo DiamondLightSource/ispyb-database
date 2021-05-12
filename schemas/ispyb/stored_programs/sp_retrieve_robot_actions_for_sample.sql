@@ -1,6 +1,6 @@
 DELIMITER ;;
 
-CREATE OR REPLACE DEFINER `ispyb_root`@`%` PROCEDURE `retrieve_robot_actions_for_sample`(
+CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `retrieve_robot_actions_for_sample`(
 	p_id int unsigned,
 	p_useRobotActionSession boolean,
 	p_authLogin varchar(45)

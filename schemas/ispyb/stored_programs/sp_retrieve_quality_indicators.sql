@@ -4,8 +4,8 @@ p_imageNumber int unsigned)
 READS SQL DATA
 COMMENT 'Returns a single-row result set with the image quality indicators for a given data collection id and image number.'
 BEGIN
-	IF dataCollectionId IS NOT NULL THEN
-		IF imageNumber IS NOT NULL THEN
+	IF p_dataCollectionId IS NOT NULL THEN
+		IF p_imageNumber IS NOT NULL THEN
 
 			SELECT
 			  dataCollectionId,
@@ -32,7 +32,7 @@ BEGIN
 
 		ELSE
 		  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
-		    MESSAGE_TEXT='Mandatory arguments imageNumber can not be NULL';
+		    MESSAGE_TEXT='Mandatory arguments p_imageNumber can not be NULL';
 		END IF;
 
 	ELSE

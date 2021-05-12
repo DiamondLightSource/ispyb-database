@@ -1,5 +1,5 @@
 DELIMITER ;;
-CREATE OR REPLACE DEFINIER=`ispyb_root`@`%` PROCEDURE `retrieve_container`(p_containerId int unsigned, p_useContainerSession boolean, p_authLogin varchar(45))
+CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `retrieve_container`(p_containerId int unsigned, p_useContainerSession boolean, p_authLogin varchar(45))
 READS SQL DATA
 COMMENT 'Returns a single-row result-set with the container for the given Id'
 BEGIN
@@ -34,7 +34,7 @@ BEGIN
 		    c.scLocationUpdated "scLocationUpdated",
 		    c.priorityPipelineId "priorityPipelineId",
 		    c.experimentTypeId "experimentTypeId",
-		    c.containerTypeId "containerTypeId"
+		    c.containerTypeId "containerTypeId",
 			p.proposalCode "proposalCode",
 			p.proposalNumber "proposalNumber",
 			bs.visitNumber "visitNumber"
@@ -75,7 +75,7 @@ BEGIN
 		    c.scLocationUpdated "scLocationUpdated",
 		    c.priorityPipelineId "priorityPipelineId",
 		    c.experimentTypeId "experimentTypeId",
-		    c.containerTypeId "containerTypeId"
+		    c.containerTypeId "containerTypeId",
 			p.proposalCode "proposalCode",
 			p.proposalNumber "proposalNumber",
 			bs.visitNumber "visitNumber"
@@ -117,7 +117,7 @@ BEGIN
 		    c.scLocationUpdated "scLocationUpdated",
 		    c.priorityPipelineId "priorityPipelineId",
 		    c.experimentTypeId "experimentTypeId",
-		    c.containerTypeId "containerTypeId"
+		    c.containerTypeId "containerTypeId",
 			p.proposalCode "proposalCode",
 			p.proposalNumber "proposalNumber",
 			bs.visitNumber "visitNumber"
@@ -159,7 +159,7 @@ BEGIN
 		    c.scLocationUpdated "scLocationUpdated",
 		    c.priorityPipelineId "priorityPipelineId",
 		    c.experimentTypeId "experimentTypeId",
-		    c.containerTypeId "containerTypeId"
+		    c.containerTypeId "containerTypeId",
 			p.proposalCode "proposalCode",
 			p.proposalNumber "proposalNumber",
 			bs.visitNumber "visitNumber"

@@ -1,5 +1,5 @@
 DELIMITER ;;
-CREATE OR REPlACE DEFINIER=`ispyb_root`@`%` PROCEDURE `insert_aperture`(OUT p_id int(10) unsigned, p_sizeX float)
+CREATE OR REPlACE DEFINER=`ispyb_root`@`%` PROCEDURE `insert_aperture`(OUT p_id int(10) unsigned, p_sizeX float)
 MODIFIES SQL DATA
 COMMENT 'Inserts a row into the Aperture table'
 BEGIN

@@ -1,5 +1,5 @@
 DELIMITER ;;
-CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `retrieve_xfe_fluo_ids_for_sample` int unsigned)
+CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `retrieve_xfe_fluo_ids_for_sample`(p_id int unsigned)
 READS SQL DATA
 COMMENT 'Returns a multi-row result-set with the fluorescence spectrum ids for the given sample id.'
 BEGIN

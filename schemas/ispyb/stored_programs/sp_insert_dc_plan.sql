@@ -58,37 +58,43 @@ CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `insert_dc_plan`(
 	p_priority int(4))
 MODIFIES SQL DATA
 COMMENT 'Inserts a row into the DiffractionPlan table.\nReturns Record ID in p_id.'
-BEGIN	       
-	INSERT INTO DiffractionPlan
-		(name, experimentKind, observedResolution, minimalResolution, exposureTime,
-		oscillationRange, maximalResolution, screeningResolution, radiationSensitivity,
-		anomalousScatterer, preferredBeamSizeX, preferredBeamSizeY, preferredBeamDiameter,
-		comments, DIFFRACTIONPLANUUID, aimedCompleteness, aimedIOverSigmaAtHighestRes,
-		aimedMultiplicity, aimedResolution, anomalousData, complexity,
-		estimateRadiationDamage, forcedSpaceGroup, requiredCompleteness,
-		requiredMultiplicity, requiredResolution, strategyOption, kappaStrategyOption,
-		numberOfPositions, minDimAccrossSpindleAxis, maxDimAccrossSpindleAxis,
-		radiationSensitivityBeta, radiationSensitivityGamma, minOscWidth,
-		recordTimeStamp, monochromator, energy, transmission, boxSizeX, boxSizeY,
-		kappaStart, axisStart, axisRange, numberOfImages,
-		beamLineName, detectorId, distance, orientation, monoBandwidth, centringMethod,
-		userPath, robotPlateTemperature, exposureTemperature, experimentTypeId,
-		collectionMode, priority)
-	VALUES
-	    (p_name, p_experimentKind, p_observedResolution, p_minimalResolution, p_exposureTime,
-	    p_oscillationRange, p_maximalResolution, p_screeningResolution, p_radiationSensitivity,
-	    p_anomalousScatterer, p_preferredBeamSizeX, p_preferredBeamSizeY, p_preferredBeamDiameter,
-	    p_comments, p_DiffractionPlanUUID, p_aimedCompleteness, p_aimedIOverSigmaAtHighestRes,
-	    p_aimedMultiplicity, p_aimedResolution, p_anomalousData, p_complexity,
-	    p_estimateRadiationDamage, p_forcedSpaceGroup, p_requiredCompleteness,
-	    p_requiredMultiplicity, p_requiredResolution, p_strategyOption, p_kappaStrategyOption,
-	    p_numberOfPositions, p_minDimAccrossSpindleAxis, p_maxDimAccrossSpindleAxis,
-	    p_radiationSensitivityBeta, p_radiationSensitivityGamma, p_minOscWidth,
-	    p_recordTimeStamp, p_monochromator, p_energy, p_transmission, p_boxSizeX, p_boxSizeY,
-	    p_kappaStart, p_axisStart, p_axisRange, p_numberOfImages,
-	    p_beamLineName, p_detectorId, p_distance, p_orientation, p_monoBandwidth,
-	    p_centringMethod, p_userPath, p_robotPlateTemperature, p_exposureTemperature,
-	    p_experimentTypeId, p_collectionMode, p_priority);
+BEGIN
+	DECLARE v_experimentTypeId unsigned int DEFAULT NULL;
+
+	SELECT experimentTypeId INTO v_experimentTypeId
+	FROM ExperimentType WHERE name = p_experimentKind;
+	
+	IF v_experimentTypeId IS NOT NULL THEN
+		INSERT INTO DiffractionPlan
+			(name, experimentKind, observedResolution, minimalResolution, exposureTime,
+			oscillationRange, maximalResolution, screeningResolution, radiationSensitivity,
+			anomalousScatterer, preferredBeamSizeX, preferredBeamSizeY, preferredBeamDiameter,
+			comments, DIFFRACTIONPLANUUID, aimedCompleteness, aimedIOverSigmaAtHighestRes,
+			aimedMultiplicity, aimedResolution, anomalousData, complexity,
+			estimateRadiationDamage, forcedSpaceGroup, requiredCompleteness,
+			requiredMultiplicity, requiredResolution, strategyOption, kappaStrategyOption,
+			numberOfPositions, minDimAccrossSpindleAxis, maxDimAccrossSpindleAxis,
+			radiationSensitivityBeta, radiationSensitivityGamma, minOscWidth,
+			recordTimeStamp, monochromator, energy, transmission, boxSizeX, boxSizeY,
+			kappaStart, axisStart, axisRange, numberOfImages,
+			beamLineName, detectorId, distance, orientation, monoBandwidth, centringMethod,
+			userPath, robotPlateTemperature, exposureTemperature, experimentTypeId,
+			collectionMode, priority)
+		VALUES
+			(p_name, p_experimentKind, p_observedResolution, p_minimalResolution, p_exposureTime,
+			p_oscillationRange, p_maximalResolution, p_screeningResolution, p_radiationSensitivity,
+			p_anomalousScatterer, p_preferredBeamSizeX, p_preferredBeamSizeY, p_preferredBeamDiameter,
+			p_comments, p_DiffractionPlanUUID, p_aimedCompleteness, p_aimedIOverSigmaAtHighestRes,
+			p_aimedMultiplicity, p_aimedResolution, p_anomalousData, p_complexity,
+			p_estimateRadiationDamage, p_forcedSpaceGroup, p_requiredCompleteness,
+			p_requiredMultiplicity, p_requiredResolution, p_strategyOption, p_kappaStrategyOption,
+			p_numberOfPositions, p_minDimAccrossSpindleAxis, p_maxDimAccrossSpindleAxis,
+			p_radiationSensitivityBeta, p_radiationSensitivityGamma, p_minOscWidth,
+			p_recordTimeStamp, p_monochromator, p_energy, p_transmission, p_boxSizeX, p_boxSizeY,
+			p_kappaStart, p_axisStart, p_axisRange, p_numberOfImages,
+			p_beamLineName, p_detectorId, p_distance, p_orientation, p_monoBandwidth,
+			p_centringMethod, p_userPath, p_robotPlateTemperature, p_exposureTemperature,
+			p_experimentTypeId, p_collectionMode, p_priority);
 
 	SET p_id = LAST_INSERT_ID();
 END;;

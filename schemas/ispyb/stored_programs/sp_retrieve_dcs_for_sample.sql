@@ -1,9 +1,9 @@
 DELIMITER ;;
-CREATE OR REPLACE DEFINIER=`ispyb_root`@`%` PROCEDURE `retrieve_dcs_for_sample` int unsigned)
+CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `retrieve_dcs_for_sample`(p_id int unsigned)
 READS SQL DATA
 COMMENT 'Return a multi-row result-set with the data-collection-main compatible records for the given sample ID'
 BEGIN
-    IF p_sampleId IS NOT NULL THEN
+    IF p_id IS NOT NULL THEN
 
 	SELECT DISTINCT dc.dataCollectionId "dataCollectionId",
 	    dc.dataCollectionGroupId "dataCollectionGroupId",
@@ -30,11 +30,11 @@ BEGIN
 	    LEFT OUTER JOIN BLSubSample bss ON bls.blSampleId = bss.blSampleId
 	    INNER JOIN DataCollection dc ON bls.blSampleId = dc.BLSAMPLEID
 		OR bss.blSubSampleId = dc.blSubSampleId
-	WHERE bls.blSampleId = p_sampleId;
+	WHERE bls.blSampleId = p_id;
 
     ELSE
 	 SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
-	 MESSAGE_TEXT='Mandatory argument p_sampleId can not be NULL';
+	 MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
     END IF;
 
 END;;
