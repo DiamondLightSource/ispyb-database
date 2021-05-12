@@ -22,7 +22,7 @@ CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `upsert_particle_classifica
   p_classNumber int unsigned,
   p_classImageFullPath varchar(255),
   p_particlesPerClass int unsigned,
-  p_rotationAccuracy int unsigned,
+  p_rotationAccuracy float,
   p_translationAccuracy float,
   p_estimatedResolution float,
   p_overallFourierCompleteness float
