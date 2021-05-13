@@ -59,7 +59,7 @@ CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `insert_dc_plan`(
 MODIFIES SQL DATA
 COMMENT 'Inserts a row into the DiffractionPlan table.\nReturns Record ID in p_id.'
 BEGIN
-	DECLARE v_experimentTypeId unsigned int DEFAULT NULL;
+	DECLARE v_experimentTypeId int unsigned DEFAULT NULL;
 
 	SELECT experimentTypeId INTO v_experimentTypeId
 	FROM ExperimentType WHERE name = p_experimentKind;
@@ -94,8 +94,13 @@ BEGIN
 			p_kappaStart, p_axisStart, p_axisRange, p_numberOfImages,
 			p_beamLineName, p_detectorId, p_distance, p_orientation, p_monoBandwidth,
 			p_centringMethod, p_userPath, p_robotPlateTemperature, p_exposureTemperature,
-			p_experimentTypeId, p_collectionMode, p_priority);
+			v_experimentTypeId, p_collectionMode, p_priority);
 
-	SET p_id = LAST_INSERT_ID();
+		SET p_id = LAST_INSERT_ID();
+	ELSE
+		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
+		 MESSAGE_TEXT="Invalid value for p_experimentType";
+	END IF;
+	
 END;;
 DELIMITER ;
