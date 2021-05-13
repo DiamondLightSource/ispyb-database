@@ -11,8 +11,8 @@ CALL retrieve_scm_samples_for_container_id(34888, True, 'boaty')\G
 DELIMITER ;;
 
 CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `retrieve_scm_samples_for_container_id`(p_containerId int unsigned, p_useContainerSession boolean, p_authLogin varchar(45)) 
-READS SQL DATA
-COMMENT 'Returns a multi-row result-set with the samples for the given container ID'
+	READS SQL DATA
+	COMMENT 'Returns a multi-row result-set with the samples for the given container ID'
 BEGIN
 
     IF p_containerId IS NOT NULL THEN

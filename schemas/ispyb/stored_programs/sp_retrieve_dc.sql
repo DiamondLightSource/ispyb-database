@@ -8,7 +8,8 @@ BEGIN
     	IF p_authLogin IS NOT NULL THEN
     	-- Authorise only if the person (p_authLogin) is a member of a session on the proposal.
 
-				SELECT dc.dataCollectionGroupId "groupId",
+				SELECT dc.dataCollectionId "id",
+					dc.dataCollectionGroupId "groupId",
 					dc.detectorId "detectorId",
 					dc.blSubSampleId "blSubSampleId",
 					dc.dataCollectionNumber "dcNumber",
