@@ -26,9 +26,8 @@ BEGIN
 	    dc.xtalSnapshotFullPath3 "snapshot3",
 	    dc.xtalSnapshotFullPath4 "snapshot4",
 	    dc.comments "comments"
-	FROM BLSample bls
-	    INNER JOIN DataCollection dc ON bls.blSampleId = dc.BLSAMPLEID
-	WHERE bls.blSampleId = p_id;
+	FROM DataCollection dc
+	WHERE dc.BLSAMPLEID = p_id;
 
     ELSE
 	 SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
