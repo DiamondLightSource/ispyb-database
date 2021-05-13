@@ -27,9 +27,7 @@ BEGIN
 	    dc.xtalSnapshotFullPath4 "xtalSnapshotFullPath4",
 	    dc.comments "comments"
 	FROM BLSample bls
-	    LEFT OUTER JOIN BLSubSample bss ON bls.blSampleId = bss.blSampleId
 	    INNER JOIN DataCollection dc ON bls.blSampleId = dc.BLSAMPLEID
-		OR bss.blSubSampleId = dc.blSubSampleId
 	WHERE bls.blSampleId = p_id;
 
     ELSE
