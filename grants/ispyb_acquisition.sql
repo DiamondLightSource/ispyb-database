@@ -75,3 +75,18 @@ GRANT EXECUTE ON PROCEDURE upsert_dc_grid TO ispyb_gda_scm;
 GRANT EXECUTE ON PROCEDURE update_dc_position TO ispyb_gda_scm;
 GRANT EXECUTE ON PROCEDURE insert_beamline_action TO ispyb_gda_scm;
 
+CREATE ROLE IF NOT EXISTS ispyb_gda_mxcx;
+
+GRANT EXECUTE ON PROCEDURE insert_aperture TO ispyb_gda_mxcx;
+GRANT EXECUTE ON PROCEDURE insert_crystal TO ispyb_gda_mxcx;
+GRANT EXECUTE ON PROCEDURE insert_dc_plan TO ispyb_gda_mxcx;
+GRANT EXECUTE ON PROCEDURE insert_position TO ispyb_gda_mxcx;
+GRANT EXECUTE ON PROCEDURE retrieve_apertures_using_size TO ispyb_gda_mxcx;
+GRANT EXECUTE ON PROCEDURE retrieve_container TO ispyb_gda_mxcx;
+GRANT EXECUTE ON PROCEDURE retrieve_dcs_for_sample TO ispyb_gda_mxcx;
+GRANT EXECUTE ON PROCEDURE retrieve_quality_indicators TO ispyb_gda_mxcx;
+GRANT EXECUTE ON PROCEDURE retrieve_robot_actions_for_sample TO ispyb_gda_mxcx;
+GRANT EXECUTE ON PROCEDURE retrieve_screenings_for_sample TO ispyb_gda_mxcx;
+GRANT EXECUTE ON PROCEDURE retrieve_xfe_fluo_ids_for_sample TO ispyb_gda_mxcx;
+GRANT EXECUTE ON PROCEDURE retrieve_dc TO ispyb_gda_mxcx;
+
