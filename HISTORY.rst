@@ -5,6 +5,44 @@ History
 Unreleased / master
 -------------------
 
+1.21.0 (2021-05-14)
+-------------------
+
+* Table changes:
+
+  * The FK constraint for Dewar.firstExperimentId has been changed to `ON DELETE SET NULL ON UPDATE CASCADE`.
+  * The data type of the `ParticleClassification.rotationAccuracy` column has been changed from `int unsigned` to `float`.
+  * In `DataCollection`: Added new column `dataCollectionPlanId` with FK constraint referencing the table currently known as `DiffractionPlan`. 
+  * In `ContainerQueueSample`: Added new columns `status`, `startTime`, `endTime`, `dataCollectionPlanId` and `blSampleId` with FK constraints for the two latter ones.
+
+* New stored procedures for cryo EM:
+
+  * `upsert_particle_picker`
+  * `upsert_particle_classification_group`
+  * `upsert_particle_classification`
+  * `insert_cryoem_initial_model`
+  * Grants for these have been added to the `grants/ispyb_processing.sql` file.
+
+* New stored procedures for MX and other disciplines:
+
+  * `insert_aperture`
+  * `insert_crystal`
+  * `insert_dc_plan`
+  * `insert_position`
+  * `retrieve_apertures_using_size`
+  * `retrieve_container`
+  * `retrieve_dcs_for_sample`
+  * `retrieve_quality_indicators`
+  * `retrieve_robot_actions_for_sample`
+  * `retrieve_screenings_for_sample`
+  * `retrieve_xfe_fluo_ids_for_sample`
+  * A new role ispyb_gda_mxcx has been created with execute grants on these procedures.
+
+* Modified stored procedures:
+
+  * `retrieve_dc`: Added extra column `id` (which is an alias for the primary key).
+  * `retrieve_scm_samples_for_container_id`: Only indentation changes, no real changes.
+
 1.20.1 (2021-04-20)
 -------------------
 
