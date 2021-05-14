@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.5.9-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.19  Distrib 10.5.10-MariaDB, for Linux (x86_64)
 --
 -- Host: 10.88.0.5    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.4.17-MariaDB-1:10.4.17+maria~bionic
+-- Server version	10.4.19-MariaDB-1:10.4.19+maria~bionic
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -1481,9 +1481,18 @@ CREATE TABLE `ContainerQueueSample` (
   `containerQueueSampleId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `containerQueueId` int(11) unsigned DEFAULT NULL,
   `blSubSampleId` int(11) unsigned DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL COMMENT 'The status of the queued item, i.e. skipped, reinspect. Completed / failed should be inferred from related DataCollection',
+  `startTime` datetime DEFAULT NULL COMMENT 'Start time of processing the queue item',
+  `endTime` datetime DEFAULT NULL COMMENT 'End time of processing the queue item',
+  `dataCollectionPlanId` int(10) unsigned DEFAULT NULL,
+  `blSampleId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`containerQueueSampleId`),
   KEY `ContainerQueueSample_ibfk1` (`containerQueueId`),
   KEY `ContainerQueueSample_ibfk2` (`blSubSampleId`),
+  KEY `ContainerQueueSample_dataCollectionPlanId` (`dataCollectionPlanId`),
+  KEY `ContainerQueueSample_blSampleId` (`blSampleId`),
+  CONSTRAINT `ContainerQueueSample_blSampleId` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `ContainerQueueSample_dataCollectionPlanId` FOREIGN KEY (`dataCollectionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `ContainerQueueSample_ibfk1` FOREIGN KEY (`containerQueueId`) REFERENCES `ContainerQueue` (`containerQueueId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ContainerQueueSample_ibfk2` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1800,6 +1809,7 @@ CREATE TABLE `DataCollection` (
   `imageSizeY` mediumint(8) unsigned DEFAULT NULL COMMENT 'Image size in y, Units: pixels',
   `pixelSizeOnImage` float DEFAULT NULL COMMENT 'Pixel size on image, calculated from magnification, duplicate? Units: um?',
   `phasePlate` tinyint(1) DEFAULT NULL COMMENT 'Whether the phase plate was used',
+  `dataCollectionPlanId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`dataCollectionId`),
   KEY `blSubSampleId` (`blSubSampleId`),
   KEY `DataCollection_FKIndex1` (`dataCollectionGroupId`),
@@ -1814,6 +1824,8 @@ CREATE TABLE `DataCollection` (
   KEY `DataCollection_FKIndex0` (`BLSAMPLEID`),
   KEY `DataCollection_FKIndex00` (`SESSIONID`),
   KEY `DataCollection_dataCollectionGroupId_startTime` (`dataCollectionGroupId`,`startTime`),
+  KEY `DataCollection_dataCollectionPlanId` (`dataCollectionPlanId`),
+  CONSTRAINT `DataCollection_dataCollectionPlanId` FOREIGN KEY (`dataCollectionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `DataCollection_ibfk_1` FOREIGN KEY (`strategySubWedgeOrigId`) REFERENCES `ScreeningStrategySubWedge` (`screeningStrategySubWedgeId`),
   CONSTRAINT `DataCollection_ibfk_2` FOREIGN KEY (`detectorId`) REFERENCES `Detector` (`detectorId`),
   CONSTRAINT `DataCollection_ibfk_3` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`),
@@ -2011,8 +2023,8 @@ CREATE TABLE `Dewar` (
   KEY `Dewar_FKIndex2` (`firstExperimentId`),
   KEY `Dewar_FKIndexCode` (`code`),
   KEY `Dewar_FKIndexStatus` (`dewarStatus`),
-  CONSTRAINT `Dewar_ibfk_1` FOREIGN KEY (`shippingId`) REFERENCES `Shipping` (`shippingId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `Dewar_ibfk_2` FOREIGN KEY (`firstExperimentId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `Dewar_fk_firstExperimentId` FOREIGN KEY (`firstExperimentId`) REFERENCES `BLSession` (`sessionId`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `Dewar_ibfk_1` FOREIGN KEY (`shippingId`) REFERENCES `Shipping` (`shippingId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3199,7 +3211,7 @@ CREATE TABLE `ParticleClassification` (
   `classNumber` int(10) unsigned DEFAULT NULL COMMENT 'Identified of the class. A unique ID given by Relion',
   `classImageFullPath` varchar(255) DEFAULT NULL COMMENT 'The PNG of the class',
   `particlesPerClass` int(10) unsigned DEFAULT NULL COMMENT 'Number of particles within the selected class, can then be used together with the total number above to calculate the percentage',
-  `rotationAccuracy` int(10) unsigned DEFAULT NULL COMMENT '???',
+  `rotationAccuracy` float DEFAULT NULL COMMENT '???',
   `translationAccuracy` float DEFAULT NULL COMMENT 'Unit: Angstroms',
   `estimatedResolution` float DEFAULT NULL COMMENT '???, Unit: Angstroms',
   `overallFourierCompleteness` float DEFAULT NULL,
@@ -6037,4 +6049,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-13 17:10:05
+-- Dump completed on 2021-05-14 17:23:07

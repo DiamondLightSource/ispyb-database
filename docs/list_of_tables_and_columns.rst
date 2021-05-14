@@ -1326,7 +1326,7 @@
    ``classNumber``,int,"Identified of the class. A unique ID given by Relion"
    ``classImageFullPath``,varchar,"The PNG of the class"
    ``particlesPerClass``,int,"Number of particles within the selected class, can then be used together with the total number above to calculate the percentage"
-   ``rotationAccuracy``,int,"???"
+   ``rotationAccuracy``,float,"???"
    ``translationAccuracy``,float,"Unit: Angstroms"
    ``estimatedResolution``,float,"???, Unit: Angstroms"
    ``overallFourierCompleteness``,float,""

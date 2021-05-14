@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.5.9-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.19  Distrib 10.5.10-MariaDB, for Linux (x86_64)
 --
 -- Host: 10.88.0.5    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.4.17-MariaDB-1:10.4.17+maria~bionic
+-- Server version	10.4.19-MariaDB-1:10.4.19+maria~bionic
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -954,6 +954,30 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insert_aperture` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `insert_aperture`(OUT p_id int(10) unsigned, p_sizeX float)
+    MODIFIES SQL DATA
+    COMMENT 'Inserts a row into the Aperture table'
+BEGIN
+	INSERT INTO Aperture (sizeX)
+	VALUES (p_sizeX);
+
+	SET p_id = LAST_INSERT_ID();
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `insert_beamline_action` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1074,6 +1098,223 @@ BEGIN
     END WHILE;
 
 	CLOSE schedule_component_cursor;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insert_cryoem_initial_model` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `insert_cryoem_initial_model`(
+  OUT p_id int unsigned,
+  p_particleClassificationId int unsigned,
+  p_resolution float,
+  p_numberOfParticles int unsigned
+ )
+    MODIFIES SQL DATA
+    COMMENT 'Inserts or updates info about a (cryoEM) initial model for a given particle classification (p_particleClassificationId).\nMandatory columns: p_particleClassificationId\nReturns: Record ID in p_id.'
+BEGIN
+  IF p_particleClassificationId IS NOT NULL THEN
+    START TRANSACTION;
+
+    INSERT INTO CryoemInitialModel (resolution, numberOfParticles)
+      VALUES (p_resolution, p_numberOfParticles);
+
+    SET p_id = LAST_INSERT_ID();
+
+    INSERT INTO ParticleClassification_has_CryoemInitialModel (
+      particleClassificationId, cryoemInitialModelId
+    ) 
+    VALUES (
+      p_particleClassificationId, p_id
+    );
+
+    COMMIT;
+
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: particleClassificationId must be non-NULL.';
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insert_crystal` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `insert_crystal`(
+	OUT p_id int(11) unsigned,
+	p_diffractionPlanId int(11) unsigned,
+	p_proteinId int(11) unsigned,
+	p_crystalUUID varchar(45),
+	p_name varchar(255),
+	p_spaceGroup varchar(20),
+	p_morphology varchar(255),
+	p_color varchar(45),
+	p_size_x long,
+	p_size_y long,
+	p_size_z long,
+	p_cell_a long,
+	p_cell_b long,
+	p_cell_c long,
+	p_cell_alpha long,
+	p_cell_beta long,
+	p_cell_gamma long,
+	p_comments varchar(255),
+	p_recordTimeStamp varchar(1024),
+	p_abundance float,
+	p_theoreticalDensity float)
+    MODIFIES SQL DATA
+    COMMENT 'Inserts information into the Crystal table.\nReturns Record ID in p_id.'
+BEGIN
+	INSERT INTO Crystal
+		(diffractionPlanId, proteinId, crystalUUID, name, spaceGroup,
+		morphology, color, size_X, size_Y, size_Z, cell_a, cell_b, cell_c,
+		cell_alpha, cell_beta, cell_gamma, comments, pdbFileName, pdbFilePath,
+		recordTimeStamp, abundance, theoreticalDensity)
+	VALUES
+		(p_diffractionPlanId, p_proteinId, p_crystalUUID, p_name, p_spaceGroup,
+		p_morphology, p_color, p_size_x, p_size_y, p_size_z, p_cell_a, p_cell_b, p_cell_c,
+		p_cell_alpha, p_cell_beta, p_cell_gamma, p_comments, p_pdbFileName, p_pdbFilePath,
+		p_recordTimeStamp, p_abundance, p_theoreticalDensity);
+
+	SET p_id = LAST_INSERT_ID();
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insert_dc_plan` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `insert_dc_plan`(
+	OUT p_id int(11) unsigned,
+	p_name varchar(20),
+	p_experimentKind varchar(25),
+	p_observedResolution float,
+	p_minimalResolution float,
+	p_exposuretime float,
+	p_oscillationRange float,
+	p_maximalResolution float,
+	p_screeningResolution float,
+	p_radiationSensitivity float,
+	p_anomalousScatterer varchar(255),
+	p_preferredBeamSizeX float,
+	p_preferredBeamSizeY float,
+	p_preferredBeamDiameter float,
+	p_comments varchar(1024),
+	p_DiffractionPlanUUID varchar(1000),
+	p_aimedCompleteness double,
+	p_aimedIOverSigmaAtHighestRes double,
+	p_aimedMultiplicity double,
+	p_aimedResolution double,
+	p_anomalousData tinyint(1),
+	p_complexity varchar(45),
+	p_estimateRadiationDamage tinyint(1),
+	p_forcedSpaceGroup varchar(45),
+	p_requiredCompleteness double,
+	p_requiredMultiplicity double,
+	p_requiredResolution double,
+	p_strategyOption varchar(200),
+	p_kappaStrategyOption varchar(45),
+	p_numberOfPositions int(11),
+	p_minDimAccrossSpindleAxis double,
+	p_maxDimAccrossSpindleAxis double,
+	p_radiationSensitivityBeta double,
+	p_radiationSensitivityGamma double,
+	p_minOscWidth float,
+	p_recordTimeStamp timestamp,
+	p_monochromator varchar(8),
+	p_energy float,
+	p_transmission float,
+	p_boxSizeX float,
+	p_boxSizeY float,
+	p_kappaStart float,
+	p_axisStart float,
+	p_axisRange float,
+	p_numberOfImages mediumint(9),
+	p_beamLineName varchar(45),
+	p_detectorId int(11),
+	p_distance double,
+	p_orientation double,
+	p_monoBandwidth double,
+	p_centringMethod varchar(20),
+	p_userPath varchar(100),
+	p_robotPlateTemperature float,
+	p_exposureTemperature float,
+	p_collectionMode varchar(10),
+	p_priority int(4))
+    MODIFIES SQL DATA
+    COMMENT 'Inserts a row into the DiffractionPlan table.\nReturns Record ID in p_id.'
+BEGIN
+	DECLARE v_experimentTypeId int unsigned DEFAULT NULL;
+
+	SELECT experimentTypeId INTO v_experimentTypeId
+	FROM ExperimentType WHERE name = p_experimentKind;
+	
+	IF v_experimentTypeId IS NOT NULL THEN
+		INSERT INTO DiffractionPlan
+			(name, experimentKind, observedResolution, minimalResolution, exposureTime,
+			oscillationRange, maximalResolution, screeningResolution, radiationSensitivity,
+			anomalousScatterer, preferredBeamSizeX, preferredBeamSizeY, preferredBeamDiameter,
+			comments, DIFFRACTIONPLANUUID, aimedCompleteness, aimedIOverSigmaAtHighestRes,
+			aimedMultiplicity, aimedResolution, anomalousData, complexity,
+			estimateRadiationDamage, forcedSpaceGroup, requiredCompleteness,
+			requiredMultiplicity, requiredResolution, strategyOption, kappaStrategyOption,
+			numberOfPositions, minDimAccrossSpindleAxis, maxDimAccrossSpindleAxis,
+			radiationSensitivityBeta, radiationSensitivityGamma, minOscWidth,
+			recordTimeStamp, monochromator, energy, transmission, boxSizeX, boxSizeY,
+			kappaStart, axisStart, axisRange, numberOfImages,
+			beamLineName, detectorId, distance, orientation, monoBandwidth, centringMethod,
+			userPath, robotPlateTemperature, exposureTemperature, experimentTypeId,
+			collectionMode, priority)
+		VALUES
+			(p_name, p_experimentKind, p_observedResolution, p_minimalResolution, p_exposureTime,
+			p_oscillationRange, p_maximalResolution, p_screeningResolution, p_radiationSensitivity,
+			p_anomalousScatterer, p_preferredBeamSizeX, p_preferredBeamSizeY, p_preferredBeamDiameter,
+			p_comments, p_DiffractionPlanUUID, p_aimedCompleteness, p_aimedIOverSigmaAtHighestRes,
+			p_aimedMultiplicity, p_aimedResolution, p_anomalousData, p_complexity,
+			p_estimateRadiationDamage, p_forcedSpaceGroup, p_requiredCompleteness,
+			p_requiredMultiplicity, p_requiredResolution, p_strategyOption, p_kappaStrategyOption,
+			p_numberOfPositions, p_minDimAccrossSpindleAxis, p_maxDimAccrossSpindleAxis,
+			p_radiationSensitivityBeta, p_radiationSensitivityGamma, p_minOscWidth,
+			p_recordTimeStamp, p_monochromator, p_energy, p_transmission, p_boxSizeX, p_boxSizeY,
+			p_kappaStart, p_axisStart, p_axisRange, p_numberOfImages,
+			p_beamLineName, p_detectorId, p_distance, p_orientation, p_monoBandwidth,
+			p_centringMethod, p_userPath, p_robotPlateTemperature, p_exposureTemperature,
+			v_experimentTypeId, p_collectionMode, p_priority);
+
+		SET p_id = LAST_INSERT_ID();
+	ELSE
+		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
+		 MESSAGE_TEXT="Invalid value for p_experimentType";
+	END IF;
+	
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1234,6 +1475,35 @@ BEGIN
   SET p_id := v_phasingAnalysisId;
   COMMIT;
 END `proc_body` ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insert_position` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `insert_position`(
+	OUT p_id int(11) unsigned,
+	p_posX long,
+	p_posY long,
+	p_posZ long,
+	p_scale long)
+    MODIFIES SQL DATA
+    COMMENT 'Inserts information into the Position table.\nReturns Record ID in p_id.'
+BEGIN
+	INSERT INTO Position (posX, posY, posZ, scale)
+	VALUES (p_posX, p_posY, p_posZ, p_scale);
+
+	SET p_id = LAST_INSERT_ID();
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1893,6 +2163,31 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_apertures_using_size` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_apertures_using_size`(p_sizeX double)
+    READS SQL DATA
+    COMMENT 'Return a multi-row result set with info about Apertures identified by aperture size.'
+BEGIN
+	SELECT 
+		a.apertureId,
+		a.sizeX
+	FROM Aperture a
+	WHERE a.sizeX = p_sizeX;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `retrieve_associated_dc_ids` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -2020,6 +2315,203 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_componentId is NULL';
     END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_container` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_container`(p_id int unsigned, p_useContainerSession boolean, p_authLogin varchar(45))
+    READS SQL DATA
+    COMMENT 'Returns a single-row result-set with the container for the given Id'
+BEGIN
+
+    IF p_id IS NOT NULL THEN
+
+	IF p_useContainerSession = True THEN
+
+	    IF p_authLogin IS NOT NULL THEN
+
+		SELECT DISTINCT c.containerId "containerId",
+		    c.dewarId "dewarId",
+		    c.code "code",
+		    IFNULL(ct.name, c.containerType) "containerType",
+		    c.capacity "capacity",
+		    c.sampleChangerLocation "sampleChangerLocation",
+		    c.containerStatus "containerStatus",
+		    c.blTimeStamp "blTimeStamp",
+		    c.beamlineLocation "beamlineLocation",
+		    c.screenId "screenId",
+		    c.scheduleId "scheduleId",
+		    c.barcode "barcode",
+		    c.imagerId "imagerId",
+		    c.sessionId "sessionId",
+		    c.ownerId "ownerId",
+		    c.requestedImagerId "requestedImagerId",
+		    c.requestedReturn "requestedReturn",
+		    c.comments "comments",
+		    IFNULL(et.name, c.experimentType) "experimentType",
+		    c.storageTemperature "storageTemperature",
+		    c.containerRegistryId "containerRegistryId",
+		    c.scLocationUpdated "scLocationUpdated",
+		    c.priorityPipelineId "priorityPipelineId",
+		    c.experimentTypeId "experimentTypeId",
+		    c.containerTypeId "containerTypeId",
+			p.proposalCode "proposalCode",
+			p.proposalNumber "proposalNumber",
+			bs.visitNumber "visitNumber"
+		FROM Container c
+		    INNER JOIN BLSession bs ON bs.sessionId = c.sessionId
+		    INNER JOIN Proposal p ON p.proposalId = bs.proposalId
+		    INNER JOIN BLSession bs2 ON bs2.proposalId = p.proposalId
+		    INNER JOIN Session_has_Person shp ON shp.sessionId = shp.bs2.sessionId
+		    INNER JOIN Person per on per.personId = shp.personId
+		    LEFT OUTER JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
+		    LEFT OUTER JOIN Person per2 ON per2.personId = c.ownerId
+		    LEFT OUTER JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+		WHERE c.containerId = p_id AND per.login = p_authLogin;
+
+	    ELSE
+
+	        SELECT DISTINCT c.containerId "containerId",
+		    c.dewarId "dewarId",
+		    c.code "code",
+		    IFNULL(ct.name, c.containerType) "containerType",
+		    c.capacity "capacity",
+		    c.sampleChangerLocation "sampleChangerLocation",
+		    c.containerStatus "containerStatus",
+		    c.blTimeStamp "blTimeStamp",
+		    c.beamlineLocation "beamlineLocation",
+		    c.screenId "screenId",
+		    c.scheduleId "scheduleId",
+		    c.barcode "barcode",
+		    c.imagerId "imagerId",
+		    c.sessionId "sessionId",
+		    c.ownerId "ownerId",
+		    c.requestedImagerId "requestedImagerId",
+		    c.requestedReturn "requestedReturn",
+		    c.comments "comments",
+		    IFNULL(et.name, c.experimentType) "experimentType",
+		    c.storageTemperature "storageTemperature",
+		    c.containerRegistryId "containerRegistryId",
+		    c.scLocationUpdated "scLocationUpdated",
+		    c.priorityPipelineId "priorityPipelineId",
+		    c.experimentTypeId "experimentTypeId",
+		    c.containerTypeId "containerTypeId",
+			p.proposalCode "proposalCode",
+			p.proposalNumber "proposalNumber",
+			bs.visitNumber "visitNumber"
+		FROM Container c
+		    INNER JOIN BLSession bs ON bs.sessionId = c.sessionId
+		    INNER JOIN Proposal p ON p.proposalId = bs.proposalId
+		    LEFT OUTER JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
+		    LEFT OUTER JOIN Person per2 ON per2.personId = c.ownerId
+		    LEFT OUTER JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+		WHERE c.containerId = p_id AND per.login = p_authLogin;
+
+	END IF;
+    
+    ELSE
+
+	IF p_authLogin IS NOT NULL THEN
+
+	    SELECT DISTINCT c.containerId "containerId",
+		    c.dewarId "dewarId",
+		    c.code "code",
+		    IFNULL(ct.name, c.containerType) "containerType",
+		    c.capacity "capacity",
+		    c.sampleChangerLocation "sampleChangerLocation",
+		    c.containerStatus "containerStatus",
+		    c.blTimeStamp "blTimeStamp",
+		    c.beamlineLocation "beamlineLocation",
+		    c.screenId "screenId",
+		    c.scheduleId "scheduleId",
+		    c.barcode "barcode",
+		    c.imagerId "imagerId",
+		    NULL "sessionId",
+		    c.ownerId "ownerId",
+		    c.requestedImagerId "requestedImagerId",
+		    c.requestedReturn "requestedReturn",
+		    c.comments "comments",
+		    IFNULL(et.name, c.experimentType) "experimentType",
+		    c.storageTemperature "storageTemperature",
+		    c.containerRegistryId "containerRegistryId",
+		    c.scLocationUpdated "scLocationUpdated",
+		    c.priorityPipelineId "priorityPipelineId",
+		    c.experimentTypeId "experimentTypeId",
+		    c.containerTypeId "containerTypeId",
+			p.proposalCode "proposalCode",
+			p.proposalNumber "proposalNumber",
+			bs.visitNumber "visitNumber"
+		FROM Container c
+		    INNER JOIN Dewar d on d.dewarId = c.dewarId
+		    INNER JOIN Shipping s ON s.shippingId = d.shippingId
+		    INNER JOIN Proposal p ON p.proposalId = s.proposalId
+		    INNER JOIN BLSession bs ON bs.proposalId = p.proposalId
+		    INNER JOIN Session_has_Person shp ON shp.sessionId = shp.bs.sessionId
+		    INNER JOIN Person per on per.personId = shp.personId
+		    LEFT OUTER JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
+		    LEFT OUTER JOIN Person per2 ON per2.personId = c.ownerId
+		    LEFT OUTER JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+		WHERE c.containerId = p_id AND per.login = p_authLogin;
+	
+	ELSE
+
+		SELECT DISTINCT c.containerId "containerId",
+		    d.dewarId "dewarId",
+		    c.code "code",
+		    IFNULL(ct.name, c.containerType) "containerType",
+		    c.capacity "capacity",
+		    c.sampleChangerLocation "sampleChangerLocation",
+		    c.containerStatus "containerStatus",
+		    c.blTimeStamp "blTimeStamp",
+		    c.beamlineLocation "beamlineLocation",
+		    c.screenId "screenId",
+		    c.scheduleId "scheduleId",
+		    c.barcode "barcode",
+		    c.imagerId "imagerId",
+		    NULL "sessionId",
+		    c.ownerId "ownerId",
+		    c.requestedImagerId "requestedImagerId",
+		    c.requestedReturn "requestedReturn",
+		    c.comments "comments",
+		    IFNULL(et.name, c.experimentType) "experimentType",
+		    c.storageTemperature "storageTemperature",
+		    c.containerRegistryId "containerRegistryId",
+		    c.scLocationUpdated "scLocationUpdated",
+		    c.priorityPipelineId "priorityPipelineId",
+		    c.experimentTypeId "experimentTypeId",
+		    c.containerTypeId "containerTypeId",
+			p.proposalCode "proposalCode",
+			p.proposalNumber "proposalNumber",
+			NULL "visitNumber"
+		FROM Container c
+		    INNER JOIN Dewar d on d.dewarId = c.dewarId
+		    INNER JOIN Shipping s ON s.shippingId = d.shippingId
+		    INNER JOIN Proposal p ON p.proposalId = s.proposalId
+		    LEFT OUTER JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
+		    LEFT OUTER JOIN Person per2 ON per2.personId = c.ownerId
+		    LEFT OUTER JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
+		WHERE c.containerId = p_id;
+	END IF;
+
+    END IF;
+
+    ELSE
+	SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
+	    MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
+    END IF;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -2690,12 +3182,15 @@ BEGIN
     IF p_id IS NOT NULL THEN
 
     	IF p_authLogin IS NOT NULL THEN
+    	
 
-
-				SELECT dc.dataCollectionGroupId "groupId",
+				SELECT dc.dataCollectionId "id",
+					dc.dataCollectionGroupId "groupId",
 					dc.detectorId "detectorId",
 					dc.blSubSampleId "blSubSampleId",
 					dc.dataCollectionNumber "dcNumber",
+					dc.APERTUREID "apertureId",
+					dc.POSITIONID "positionId",
 					dc.startTime "startTime",
 					dc.endTime "endTime",
 					dc.runStatus "status",
@@ -2707,6 +3202,7 @@ BEGIN
 					dc.imageSuffix "imgSuffix",
 					dc.imageContainerSubPath "imgContainerSubPath",
 					dc.fileTemplate "fileTemplate",
+					dc.printableForReport "printableForReport",
 					dc.xtalSnapshotFullPath1 "snapshot1",
 					dc.xtalSnapshotFullPath2 "snapshot2",
 					dc.xtalSnapshotFullPath3 "snapshot3",
@@ -2746,18 +3242,21 @@ BEGIN
 					dc.undulatorGap3 "undulatorGap3"
 				FROM DataCollection dc
 					INNER JOIN DataCollectionGroup dcg ON dc.dataCollectionGroupId = dcg.dataCollectionGroupId
-        	INNER JOIN BLSession bs ON dcg.sessionId = bs.sessionId
+        	INNER JOIN BLSession bs ON dcg.sessionId = bs.sessionId 
         	INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
         	INNER JOIN Person p ON p.personId = shp.personId
 					LEFT OUTER JOIN Aperture a ON dc.apertureId = a.apertureId
 	  		WHERE p.login = p_authLogin AND	dc.dataCollectionId = p_id;
 
-    	ELSE
+    	ELSE 
 
-				SELECT dc.dataCollectionGroupId "groupId",
+				SELECT dc.dataCollectionId "id",
+					dc.dataCollectionGroupId "groupId",
 					dc.detectorId "detectorId",
 					dc.blSubSampleId "blSubSampleId",
 					dc.dataCollectionNumber "dcNumber",
+					dc.APERTUREID "apertureId",
+					dc.POSITIONID "positionId",
 					dc.startTime "startTime",
 					dc.endTime "endTime",
 					dc.runStatus "status",
@@ -2769,6 +3268,7 @@ BEGIN
 					dc.imageSuffix "imgSuffix",
 					dc.imageContainerSubPath "imgContainerSubPath",
 					dc.fileTemplate "fileTemplate",
+					dc.printableForReport "printableForReport",
 					dc.xtalSnapshotFullPath1 "snapshot1",
 					dc.xtalSnapshotFullPath2 "snapshot2",
 					dc.xtalSnapshotFullPath3 "snapshot3",
@@ -2815,6 +3315,57 @@ BEGIN
     ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_id can not be NULL';
 	END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_dcs_for_sample` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_dcs_for_sample`(p_id int unsigned)
+    READS SQL DATA
+    COMMENT 'Return a multi-row result-set with the data-collection-main compatible records for the given sample ID'
+BEGIN
+    IF p_id IS NOT NULL THEN
+
+	SELECT DISTINCT dc.dataCollectionId "id",
+	    dc.dataCollectionGroupId "groupId",
+	    dc.detectorId "detectorId",
+	    dc.blSubSampleId "blSubSampleId",
+	    dc.dataCollectionNumber "dcNumber",
+	    dc.startTime "startTime",
+	    dc.endTime "endTime",
+	    dc.runStatus "status",
+	    dc.numberOfImages "noImages",
+	    dc.startImageNumber "startImgNumber",
+	    dc.numberOfPasses "noPasses",
+	    dc.imageDirectory "imgDir",
+	    dc.imagePrefix "imgPrefix",
+	    dc.imageSuffix "imgSuffix",
+	    dc.imageContainerSubPath "imgContainerSubPath",
+	    dc.fileTemplate "fileTemplate",
+	    dc.xtalSnapshotFullPath1 "snapshot1",
+	    dc.xtalSnapshotFullPath2 "snapshot2",
+	    dc.xtalSnapshotFullPath3 "snapshot3",
+	    dc.xtalSnapshotFullPath4 "snapshot4",
+	    dc.comments "comments"
+	FROM DataCollection dc
+	WHERE dc.BLSAMPLEID = p_id;
+
+    ELSE
+	 SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
+	 MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
+    END IF;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4213,6 +4764,62 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_quality_indicators` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_quality_indicators`(p_dataCollectionId int unsigned,
+p_imageNumber int unsigned)
+    READS SQL DATA
+    COMMENT 'Returns a single-row result set with the image quality indicators for a given data collection id and image number.'
+BEGIN
+	IF p_dataCollectionId IS NOT NULL THEN
+		IF p_imageNumber IS NOT NULL THEN
+
+			SELECT
+			  dataCollectionId,
+			  imageNumber,
+			  imageId,
+			  autoProcProgramId,
+			  spotTotal,
+			  inResTotal,
+			  goodBraggCandidates,
+			  iceRings,
+			  method1Res,
+			  method2Res,
+			  maxUnitCell,
+			  pctSaturationTop50Peaks,
+			  inResolutionOvrlSpots,
+			  binPopCutOffMethod2Res,
+			  recordTimeStamp,
+			  totalIntegratedSignal,
+			  dozor_score,
+			  driftFactor
+			FROM ImageQualityIndicators
+			WHERE dataCollectionId = p_dataCollectionId
+			  AND imageNumber = p_imageNumber;
+
+		ELSE
+		  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
+		    MESSAGE_TEXT='Mandatory arguments p_imageNumber can not be NULL';
+		END IF;
+
+	ELSE
+	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
+	  MESSAGE_TEXT='Mandatory arguments dataCollectionId can not be NULL';
+	END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `retrieve_reprocessing_by_dc` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -4249,6 +4856,142 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_dcId is NULL';
     END IF;
 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_robot_actions_for_sample` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_robot_actions_for_sample`(
+	p_id int unsigned,
+	p_useRobotActionSession boolean,
+	p_authLogin varchar(45)
+)
+    READS SQL DATA
+    COMMENT 'Returns a multi-row result-set with the robot actions for the given sample ID.'
+BEGIN
+
+	IF p_id IS NOT NULL THEN
+
+		IF p_useRobotActionSession = True THEN
+
+			IF p_authlogin IS NOT NULL THEN
+			
+
+				SELECT DISTINCT 
+				ra.robotActionId "robotActionId",
+				ra.blsessionId "sessionId",
+				ra.blSampleId "sampleId",
+				ra.actionType "actionType",
+				ra.startTimeStamp "startTimeStamp",
+				ra.endTimeStamp "endTimeStamp",
+				ra.status "status",
+				ra.message "message",
+				ra.containerLocation "location",
+				ra.dewarLocation "dewarLocation",
+				ra.sampleBarcode "sampleBarcode",
+				ra.xtalSnapshotBefore "xtalSnapshotBefore",
+				ra.xtalSnapshotAfter "xtalSnapshotAfter"
+				FROM BLSample bls
+				  INNER JOIN RobotAction ra ON bls.blSampleId = ra.blSampleId
+				  INNER JOIN BLSession bs ON ra.blsessionId = bs.sessionId
+				  INNER JOIN Proposal p ON bs.proposalId = p.proposalId
+				  INNER JOIN BLSession bs2 on p.proposalID = bs2.proposalID
+				  INNER JOIN Session_has_Person shp ON bs2.sessionId = shp.sessionId
+				  INNER JOIN Person pe ON pe.personID = shp.personId
+				WHERE pe.login = p_authLogin AND bls.blSampleId = p_id;
+
+			ELSE
+			
+				SELECT
+				ra.robotActionId "robotActionId",
+				NULL "sessionId",
+				ra.blSampleId "sampleId",
+				ra.actionType "actionType",
+				ra.startTimeStamp "startTimeStamp",
+				ra.endTimeStamp "endTimeStamp",
+				ra.status "status",
+				ra.message "message",
+				ra.containerLocation "location",
+				ra.dewarLocation "dewarLocation",
+				ra.sampleBarcode "sampleBarcode",
+				ra.xtalSnapshotBefore "xtalSnapshotBefore",
+				ra.xtalSnapshotAfter "xtalSnapshotAfter"
+				FROM BLSample bls
+				  INNER JOIN RobotAction ra ON bls.blSampleID = ra.blSampleId
+				  INNER JOIN BLSession bs ON ra.blsessionId = bs.sessionId
+				  INNER JOIN Proposal p ON bs.proposalId = p.proposalId
+				WHERE bls.blSampleId = p_id AND bls.blSampleId = p_id;
+			END IF;
+
+		ELSE
+		
+
+			IF p_authLogin IS NOT NULL THEN
+			 
+				
+				SELECT DISTINCT
+				ra.robotActionId "robotActionId",
+				ra.blsessionId "sessionId",
+				ra.blSampleId "sampleId",
+				ra.actionType "actionType",
+				ra.startTimeStamp "startTimeStamp",
+				ra.endTimeStamp "endTimeStamp",
+				ra.status "status",
+				ra.message "message",
+				ra.containerLocation "location",
+				ra.dewarLocation "dewarLocation",
+				ra.sampleBarcode "sampleBarcode",
+				ra.xtalSnapshotBefore "xtalSnapshotBefore",
+				ra.xtalSnapshotAfter "xtalSnapshotAfter"
+				FROM BLSample bls
+				  INNER JOIN RobotAction ra ON bls.blSampleId = ra.blSampleId
+				  INNER JOIN BLSession bs ON ra.blsessionId = bs.sessionId
+				  INNER JOIN Proposal p ON bs.proposalId = p.proposalId
+				  INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
+				  INNER JOIN Person pe ON pe.personID = shp.personId
+				WHERE pe.login = p_authLogin AND bls.blSampleId = p_id;
+			
+			ELSE
+			
+				
+				SELECT 
+				ra.robotActionId "robotActionId",
+				NULL "sessionId",
+				ra.blSampleId "sampleId",
+				ra.actionType "actionType",
+				ra.startTimeStamp "startTimeStamp",
+				ra.endTimeStamp "endTimeStamp",
+				ra.status "status",
+				ra.message "message",
+				ra.containerLocation "location",
+				ra.dewarLocation "dewarLocation",
+				ra.sampleBarcode "sampleBarcode",
+				ra.xtalSnapshotBefore "xtalSnapshotBefore",
+				ra.xtalSnapshotAfter "xtalSnapshotAfter"
+				FROM BLSample bls
+				  INNER JOIN RobotAction ra ON bls.blSampleId = ra.blSampleId
+				  INNER JOIN BLSession bs ON ra.blsessionId = bs.sessionId
+				  INNER JOIN Proposal p ON bs.proposalId = p.proposalId
+				WHERE bls.blSampleId = p_id;
+			END IF;
+
+		END IF;
+	
+	ELSE
+	
+		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
+	END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -5874,6 +6617,44 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_screenings_for_sample` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_screenings_for_sample`(p_id int unsigned)
+    COMMENT 'Returns multi-row result set with the screening for the given sampleId'
+BEGIN
+	IF p_id IS NOT NULL THEN
+		SELECT DISTINCT
+		  scr.screeningId "screeningId",
+		  scr.dataCollectionId "dataCollectionId",
+		  scr.bltimeStamp "bltimeStamp",
+		  scr.programVersion "programVersion",
+		  scr.comments "comments",
+		  scr.shortComments "shortComments",
+		  scr.diffractionPlanId "diffractionPlanId",
+		  scr.dataCollectionGroupId "dataCollectionGroupId",
+		  scr.xmlSampleInformation "xmlSampleInformation"
+		FROM BLSample bls
+		  INNER JOIN DataCollection dc ON bls.blSampleId = dc.BLSAMPLEID
+		  INNER JOIN Screening scr ON dc.dataCollectionId = scr.dataCollectionId
+		WHERE bls.blSampleId = p_id;
+	ELSE
+		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
+		  MESSAGE_TEXT='Mandatory arguments p_id can not be NULL';
+	END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `retrieve_sessions_for_beamline_and_run` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -6083,6 +6864,37 @@ CREATE PROCEDURE `retrieve_test`()
     COMMENT 'For testing the connection'
 BEGIN
   SELECT now() as "curr_ts", '2016-10-07 14:02:58' as "curr_ts2", '2' as "2_1", 2 as "2_2", '2.0' as "20_1", 2.0 as "20_2";
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_xfe_fluo_ids_for_sample` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_xfe_fluo_ids_for_sample`(p_id int unsigned)
+    READS SQL DATA
+    COMMENT 'Returns a multi-row result-set with the fluorescence spectrum ids for the given sample id.'
+BEGIN
+	IF p_id IS NOT NULL THEN
+
+	SELECT DISTINCT
+	  xfeFluorescenceSpectrumId
+	FROM XFEFluorescenceSpectrum
+	WHERE blSampleId = p_id;
+	
+	ELSE
+	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
+	    MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
+	END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -8409,6 +9221,152 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `upsert_particle_classification` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `upsert_particle_classification`(
+  INOUT p_id int unsigned,
+  p_particleClassificationGroupId int unsigned,
+  p_classNumber int unsigned,
+  p_classImageFullPath varchar(255),
+  p_particlesPerClass int unsigned,
+  p_rotationAccuracy float,
+  p_translationAccuracy float,
+  p_estimatedResolution float,
+  p_overallFourierCompleteness float
+ )
+    MODIFIES SQL DATA
+    COMMENT 'Inserts or updates info about a particle classification (p_id).\nMandatory columns:\nFor insert: p_particleClassificationGroupId\nFor update: p_id \nReturns: Record ID in p_id.'
+BEGIN
+  IF p_id IS NOT NULL OR p_particleClassificationGroupId IS NOT NULL THEN
+    INSERT INTO ParticleClassification (particleClassificationId, 
+      particleClassificationGroupId, classNumber, classImageFullPath, 
+      particlesPerClass, rotationAccuracy, translationAccuracy, 
+      estimatedResolution, overallFourierCompleteness)
+      VALUES (p_id, p_particleClassificationGroupId, p_classNumber, 
+        p_classImageFullPath, 
+        p_particlesPerClass, p_rotationAccuracy, p_translationAccuracy, 
+        p_estimatedResolution, p_overallFourierCompleteness)
+      ON DUPLICATE KEY UPDATE
+        particleClassificationGroupId = IFNULL(p_particleClassificationGroupId, particleClassificationGroupId),
+        classNumber = IFNULL(p_classNumber, classNumber),
+        classImageFullPath = IFNULL(p_classImageFullPath, classImageFullPath),
+        particlesPerClass = IFNULL(p_particlesPerClass, particlesPerClass),
+        rotationAccuracy = IFNULL(p_rotationAccuracy, rotationAccuracy),
+        translationAccuracy = IFNULL(p_translationAccuracy, translationAccuracy),
+        estimatedResolution = IFNULL(p_estimatedResolution, estimatedResolution),
+        overallFourierCompleteness = IFNULL(p_overallFourierCompleteness, overallFourierCompleteness);
+
+    IF p_id IS NULL THEN
+      SET p_id = LAST_INSERT_ID();
+    END IF;
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_particleClassificationGroupId must be non-NULL.';
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `upsert_particle_classification_group` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `upsert_particle_classification_group`(
+  INOUT p_id int(11) unsigned,
+  p_particlePickerId int(11) unsigned,
+  p_programId int(11) unsigned,
+  p_type varchar(10),
+  p_batchNumber int unsigned,
+  p_numberOfParticlesPerBatch int unsigned,
+  p_numberOfClassesPerBatch int unsigned,
+  p_symmetry varchar(20)
+ )
+    MODIFIES SQL DATA
+    COMMENT 'Inserts or updates info about a particle classification group (p_id).\nMandatory columns:\nFor insert: p_particlePickerId\nFor update: p_id \nReturns: Record ID in p_id.'
+BEGIN
+  IF p_id IS NOT NULL OR p_particlePickerId IS NOT NULL THEN
+    INSERT INTO ParticleClassificationGroup (particleClassificationGroupId, particlePickerId, programId, type, batchNumber, numberOfParticlesPerBatch,
+      numberOfClassesPerBatch, symmetry)
+      VALUES (p_id, p_particlePickerId, p_programId, p_type, p_batchNumber, p_numberOfParticlesPerBatch, p_numberOfClassesPerBatch, p_symmetry)
+      ON DUPLICATE KEY UPDATE
+        particlePickerId = IFNULL(p_particlePickerId, particlePickerId),
+        programId = IFNULL(p_programId, programId),
+        type = IFNULL(p_type, type),
+        batchNumber = IFNULL(p_batchNumber, batchNumber),
+        numberOfParticlesPerBatch = IFNULL(p_numberOfParticlesPerBatch, numberOfParticlesPerBatch),
+        numberOfClassesPerBatch = IFNULL(p_numberOfClassesPerBatch, numberOfClassesPerBatch),
+        symmetry = IFNULL(p_symmetry, symmetry);
+
+    IF p_id IS NULL THEN
+      SET p_id = LAST_INSERT_ID();
+    END IF;
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_particlePickerId must be non-NULL.';
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `upsert_particle_picker` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `upsert_particle_picker`(
+  INOUT p_id int(11) unsigned,
+  p_firstMotionCorrectionId int(11) unsigned,
+  p_programId int(11) unsigned,
+  p_particlePickingTemplate varchar(255),
+  p_particleDiameter float,
+  p_numberOfParticles int unsigned
+ )
+    MODIFIES SQL DATA
+    COMMENT 'Inserts or updates info about a particle picker (p_id).\nMandatory columns:\nFor insert: p_firstMotionCorrectionId\nFor update: p_id \nReturns: Record ID in p_id.'
+BEGIN
+  IF p_id IS NOT NULL OR p_firstMotionCorrectionId IS NOT NULL THEN
+    INSERT INTO ParticlePicker (particlePickerId, firstMotionCorrectionId, programId, particlePickingTemplate, particleDiameter, numberOfParticles)
+      VALUES (p_id, p_firstMotionCorrectionId, p_programId, p_particlePickingTemplate, p_particleDiameter, p_numberOfParticles)
+      ON DUPLICATE KEY UPDATE
+        firstMotionCorrectionId = IFNULL(p_firstMotionCorrectionId, firstMotionCorrectionId),
+        programId = IFNULL(p_programId, programId),
+        particlePickingTemplate = IFNULL(p_particlePickingTemplate, particlePickingTemplate),
+        particleDiameter = IFNULL(p_particleDiameter, particleDiameter),
+        numberOfParticles = IFNULL(p_numberOfParticles, numberOfParticles);
+
+    IF p_id IS NULL THEN
+      SET p_id = LAST_INSERT_ID();
+    END IF;
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_firstMotionCorrectionId must be non-NULL.';
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `upsert_person` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -9719,12 +10677,12 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-20 17:53:53
--- MariaDB dump 10.19  Distrib 10.5.9-MariaDB, for Linux (x86_64)
+-- Dump completed on 2021-05-14 17:16:20
+-- MariaDB dump 10.19  Distrib 10.5.10-MariaDB, for Linux (x86_64)
 --
 -- Host: 10.88.0.5    Database: ispyb_build
 -- ------------------------------------------------------
--- Server version	10.4.17-MariaDB-1:10.4.17+maria~bionic
+-- Server version	10.4.19-MariaDB-1:10.4.19+maria~bionic
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -9766,4 +10724,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-20 17:53:54
+-- Dump completed on 2021-05-14 17:16:20
