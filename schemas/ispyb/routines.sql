@@ -3187,10 +3187,12 @@ BEGIN
 				SELECT dc.dataCollectionId "id",
 					dc.dataCollectionGroupId "groupId",
 					dc.detectorId "detectorId",
+					dc.BLSAMPLEID "blSampleId",
 					dc.blSubSampleId "blSubSampleId",
 					dc.dataCollectionNumber "dcNumber",
 					dc.APERTUREID "apertureId",
 					dc.POSITIONID "positionId",
+					dc.screeningOrigId "screeningOrigId",
 					dc.startTime "startTime",
 					dc.endTime "endTime",
 					dc.runStatus "status",
@@ -3214,6 +3216,7 @@ BEGIN
 					dc.exposureTime "exposureTime",
 					dc.xBeam "xBeam",
 					dc.yBeam "yBeam",
+					dc.beamShape "beamShape",
 					dc.axisStart "axisStart",
 					dc.axisEnd "axisEnd",
 					dc.axisRange "axisRange",
@@ -3235,6 +3238,9 @@ BEGIN
 					dc.beamSizeAtSampleY "beamSizeAtSampleY",
 					dc.focalSpotSizeAtSampleX "focalSpotSizeAtSampleX",
 					dc.focalSpotSizeAtSampleY "focalSpotSizeAtSampleY",
+					dc.POLARISATION "polarisation",
+					dc.actualCenteringPosition "actualCentringPosition",
+					dc.printableForReport "printableForReport",
 					a.sizeX "apertureSizeX",
 					dc.synchrotronMode "synchrotronMode",
 					dc.undulatorGap1 "undulatorGap1",
@@ -3253,10 +3259,12 @@ BEGIN
 				SELECT dc.dataCollectionId "id",
 					dc.dataCollectionGroupId "groupId",
 					dc.detectorId "detectorId",
+					dc.BLSAMPLEID "blSampleId",
 					dc.blSubSampleId "blSubSampleId",
 					dc.dataCollectionNumber "dcNumber",
 					dc.APERTUREID "apertureId",
 					dc.POSITIONID "positionId",
+					dc.screeningOrigId "screeningOrigId",
 					dc.startTime "startTime",
 					dc.endTime "endTime",
 					dc.runStatus "status",
@@ -3280,6 +3288,7 @@ BEGIN
 					dc.exposureTime "exposureTime",
 					dc.xBeam "xBeam",
 					dc.yBeam "yBeam",
+					dc.beamShape "beamShape",
 					dc.axisStart "axisStart",
 					dc.axisEnd "axisEnd",
 					dc.axisRange "axisRange",
@@ -3301,6 +3310,9 @@ BEGIN
 					dc.beamSizeAtSampleY "beamSizeAtSampleY",
 					dc.focalSpotSizeAtSampleX "focalSpotSizeAtSampleX",
 					dc.focalSpotSizeAtSampleY "focalSpotSizeAtSampleY",
+					dc.POLARISATION "polarisation",
+					dc.actualCenteringPosition "actualCentringPosition",
+					dc.printableForReport "printableForReport",
 					a.sizeX "apertureSizeX",
 					dc.synchrotronMode "synchrotronMode",
 					dc.undulatorGap1 "undulatorGap1",
@@ -10677,7 +10689,7 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-14 17:16:20
+-- Dump completed on 2021-05-19 17:02:06
 -- MariaDB dump 10.19  Distrib 10.5.10-MariaDB, for Linux (x86_64)
 --
 -- Host: 10.88.0.5    Database: ispyb_build
@@ -10724,4 +10736,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-14 17:16:20
+-- Dump completed on 2021-05-19 17:02:07
