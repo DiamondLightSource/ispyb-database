@@ -5,6 +5,13 @@ History
 Unreleased / master
 -------------------
 
+1.21.1 (2021-05-19)
+-------------------
+
+* Stored procedure changes:
+
+  * Additional `DataCollection` columns are returned by the `retrieve_dc` procedure.
+
 1.21.0 (2021-05-14)
 -------------------
 
