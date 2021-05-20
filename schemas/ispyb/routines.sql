@@ -5034,12 +5034,24 @@ BEGIN
           SELECT DISTINCT bls.blSampleId "sampleId",
             bls.containerId "containerId",
             bls.diffractionPlanId "dataCollectionPlanId",
+			bls.crystalId "crystalId",
             bls.name "sampleName",
+			bls.positionId "positionId",
             bls.code "sampleCode",
             bls.comments "sampleComments",
+			bls.publicationComments "publicationComments",
             bls.location "sampleLocation",
             bls.subLocation "sampleSubLocation",
+			bls.isInSampleChanger "isInSampleChanger",
+			bls.lastKnownCenteringPosition "lastKnownCenteringPosition",
+			bls.holderLength "holderLength",
+			bls.loopLength "loopLength",
+			bls.loopType "loopType",
+			bls.wireWidth "wireWidth",
             bls.blSampleStatus "sampleStatus",
+			bls.completionStage "completionStage",
+			bls.structureStage "structureStage",
+			bls.publicationStage "publicationStage",
             p.proposalId "proposalId",
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
@@ -5056,20 +5068,33 @@ BEGIN
 
         ELSE
 
-          SELECT bls.blSampleId "sampleId",
+          SELECT DISTINCT bls.blSampleId "sampleId",
             bls.containerId "containerId",
             bls.diffractionPlanId "dataCollectionPlanId",
+			bls.crystalId "crystalId",
             bls.name "sampleName",
+			bls.positionId "positionId",
             bls.code "sampleCode",
             bls.comments "sampleComments",
+			bls.publicationComments "publicationComments",
             bls.location "sampleLocation",
             bls.subLocation "sampleSubLocation",
+			bls.isInSampleChanger "isInSampleChanger",
+			bls.lastKnownCenteringPosition "lastKnownCenteringPosition",
+			bls.holderLength "holderLength",
+			bls.loopLength "loopLength",
+			bls.loopType "loopType",
+			bls.wireWidth "wireWidth",
             bls.blSampleStatus "sampleStatus",
+			bls.completionStage "completionStage",
+			bls.structureStage "structureStage",
+			bls.publicationStage "publicationStage",
             p.proposalId "proposalId",
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.sessionId "sessionId",
             bs.visit_number "sessionNumber"
+
           FROM BLSample bls
             INNER JOIN Container c ON c.containerId = bls.containerId
             INNER JOIN BLSession bs ON c.sessionId = bs.sessionId
@@ -5083,15 +5108,28 @@ BEGIN
         IF p_authLogin IS NOT NULL THEN
         
 
+          
           SELECT DISTINCT bls.blSampleId "sampleId",
             bls.containerId "containerId",
             bls.diffractionPlanId "dataCollectionPlanId",
+			bls.crystalId "crystalId",
             bls.name "sampleName",
+			bls.positionId "positionId",
             bls.code "sampleCode",
             bls.comments "sampleComments",
+			bls.publicationComments "publicationComments",
             bls.location "sampleLocation",
             bls.subLocation "sampleSubLocation",
+			bls.isInSampleChanger "isInSampleChanger",
+			bls.lastKnownCenteringPosition "lastKnownCenteringPosition",
+			bls.holderLength "holderLength",
+			bls.loopLength "loopLength",
+			bls.loopType "loopType",
+			bls.wireWidth "wireWidth",
             bls.blSampleStatus "sampleStatus",
+			bls.completionStage "completionStage",
+			bls.structureStage "structureStage",
+			bls.publicationStage "publicationStage",
             p.proposalId "proposalId",
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
@@ -5109,15 +5147,28 @@ BEGIN
 
         ELSE
 
-          SELECT bls.blSampleId "sampleId",
+          
+          SELECT DISTINCT bls.blSampleId "sampleId",
             bls.containerId "containerId",
             bls.diffractionPlanId "dataCollectionPlanId",
+			bls.crystalId "crystalId",
             bls.name "sampleName",
+			bls.positionId "positionId",
             bls.code "sampleCode",
             bls.comments "sampleComments",
+			bls.publicationComments "publicationComments",
             bls.location "sampleLocation",
             bls.subLocation "sampleSubLocation",
+			bls.isInSampleChanger "isInSampleChanger",
+			bls.lastKnownCenteringPosition "lastKnownCenteringPosition",
+			bls.holderLength "holderLength",
+			bls.loopLength "loopLength",
+			bls.loopType "loopType",
+			bls.wireWidth "wireWidth",
             bls.blSampleStatus "sampleStatus",
+			bls.completionStage "completionStage",
+			bls.structureStage "structureStage",
+			bls.publicationStage "publicationStage",
             p.proposalId "proposalId",
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
@@ -10689,7 +10740,7 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-19 17:02:06
+-- Dump completed on 2021-05-20 11:30:42
 -- MariaDB dump 10.19  Distrib 10.5.10-MariaDB, for Linux (x86_64)
 --
 -- Host: 10.88.0.5    Database: ispyb_build
@@ -10736,4 +10787,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-19 17:02:07
+-- Dump completed on 2021-05-20 11:30:42
