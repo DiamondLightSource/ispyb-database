@@ -8,99 +8,99 @@ Unreleased / master
 1.21.2 (2021-05-20)
 -------------------
 
-* Updated `schemas/ispyb/routines.sql` with the changes to stored procedure `retrieve_sample sproc`.
+* Updated ``schemas/ispyb/routines.sql`` with the changes to stored procedure ``retrieve_sample sproc``.
 
 1.21.1 (2021-05-19)
 -------------------
 
 * Stored procedure changes:
 
-  * Additional `DataCollection` columns are returned by the `retrieve_dc` procedure.
+  * Additional ``DataCollection`` columns are returned by the ``retrieve_dc`` procedure.
 
 1.21.0 (2021-05-14)
 -------------------
 
 * Table changes:
 
-  * The FK constraint for Dewar.firstExperimentId has been changed to `ON DELETE SET NULL ON UPDATE CASCADE`.
-  * The data type of the `ParticleClassification.rotationAccuracy` column has been changed from `int unsigned` to `float`.
-  * In `DataCollection`: Added new column `dataCollectionPlanId` with FK constraint referencing the table currently known as `DiffractionPlan`. 
-  * In `ContainerQueueSample`: Added new columns `status`, `startTime`, `endTime`, `dataCollectionPlanId` and `blSampleId` with FK constraints for the two latter ones.
+  * The FK constraint for Dewar.firstExperimentId has been changed to ``ON DELETE SET NULL ON UPDATE CASCADE``.
+  * The data type of the ``ParticleClassification.rotationAccuracy`` column has been changed from ``int unsigned`` to ``float``.
+  * In ``DataCollection``: Added new column ``dataCollectionPlanId`` with FK constraint referencing the table currently known as ``DiffractionPlan``. 
+  * In ``ContainerQueueSample``: Added new columns ``status``, ``startTime``, ``endTime``, ``dataCollectionPlanId`` and ``blSampleId`` with FK constraints for the two latter ones.
 
 * New stored procedures for cryo EM:
 
-  * `upsert_particle_picker`
-  * `upsert_particle_classification_group`
-  * `upsert_particle_classification`
-  * `insert_cryoem_initial_model`
-  * Grants for these have been added to the `grants/ispyb_processing.sql` file.
+  * ``upsert_particle_picker``
+  * ``upsert_particle_classification_group``
+  * ``upsert_particle_classification``
+  * ``insert_cryoem_initial_model``
+  * Grants for these have been added to the ``grants/ispyb_processing.sql`` file.
 
 * New stored procedures for MX and other disciplines:
 
-  * `insert_aperture`
-  * `insert_crystal`
-  * `insert_dc_plan`
-  * `insert_position`
-  * `retrieve_apertures_using_size`
-  * `retrieve_container`
-  * `retrieve_dcs_for_sample`
-  * `retrieve_quality_indicators`
-  * `retrieve_robot_actions_for_sample`
-  * `retrieve_screenings_for_sample`
-  * `retrieve_xfe_fluo_ids_for_sample`
+  * ``insert_aperture``
+  * ``insert_crystal``
+  * ``insert_dc_plan``
+  * ``insert_position``
+  * ``retrieve_apertures_using_size``
+  * ``retrieve_container``
+  * ``retrieve_dcs_for_sample``
+  * ``retrieve_quality_indicators``
+  * ``retrieve_robot_actions_for_sample``
+  * ``retrieve_screenings_for_sample``
+  * ``retrieve_xfe_fluo_ids_for_sample``
   * A new role ispyb_gda_mxcx has been created with execute grants on these procedures.
 
 * Modified stored procedures:
 
-  * `retrieve_dc`: Added extra column `id` (which is an alias for the primary key).
-  * `retrieve_scm_samples_for_container_id`: Only indentation changes, no real changes.
+  * ``retrieve_dc``: Added extra column ``id`` (which is an alias for the primary key).
+  * ``retrieve_scm_samples_for_container_id``: Only indentation changes, no real changes.
 
 1.20.1 (2021-04-20)
 -------------------
 
-- `xchem_db` schema is now part of the release archive file
-- `retrieve_dc_plans_for_sample` sproc: add `sampleOrderInPlan` field to result-set
+- ``xchem_db`` schema is now part of the release archive file
+- ``retrieve_dc_plans_for_sample`` sproc: add ``sampleOrderInPlan`` field to result-set
 - Redefined which tables are lookup tables
-- Code refactoring of `bin/backup.sh` and `bin/export_session.sh`
-- `schemas/ispyb/data.sql`: Set `planOrder` for rows in `BLSample_has_DataCollectionPlan` table
+- Code refactoring of ``bin/backup.sh`` and ``bin/export_session.sh``
+- ``schemas/ispyb/data.sql``: Set ``planOrder`` for rows in ``BLSample_has_DataCollectionPlan`` table
 
 1.20.0 (2021-04-13)
 -------------------
 
 * Tables, views and indices:
 
-  * New cryoEM table `ParticleClassificationGroup`. Some columns were moved to this table from `ParticlePicker` and `ParticleClassification`.
-  * Add `capillary` as enum option to `BLSampleGroup_has_BLSample.type`
+  * New cryoEM table ``ParticleClassificationGroup``. Some columns were moved to this table from ``ParticlePicker`` and ``ParticleClassification``.
+  * Add ``capillary`` as enum option to ``BLSampleGroup_has_BLSample.type``
   * XChem DB: First version of schema for production (not part of release)
-  * Analytics schema: Add access to all lookup tables, `RobotAction`, `ProcessingJob*`, `Protein` tables through views
+  * Analytics schema: Add access to all lookup tables, ``RobotAction``, ``ProcessingJob*``, ``Protein`` tables through views
   * Drop duplicate indices, add missing indices that existed only in DLS prod
 
 * Data in lookup tables:
 
   * Add additional container types: some historical, some new
-  * Update `ExperimentType.proposalType`: Change scm to saxs, MX to mx
-  * Update `ContainerType.proposalType`: Change scm to saxs
+  * Update ``ExperimentType.proposalType``: Change scm to saxs, MX to mx
+  * Update ``ContainerType.proposalType``: Change scm to saxs
   * Add two XPDF and five MX container types
-  * Update `SpaceGroup` table: Remove newlines in names. Set `MX_used` = 1 for all SGs.
+  * Update ``SpaceGroup`` table: Remove newlines in names. Set ``MX_used`` = 1 for all SGs.
   
 * Stored procedures:
 
-  * `retrieve_scm_*``: Preferentially get experiement type and container type+capacity from new lookup tables `ExperimentType` and `ContainerType`, otherwise fall-back to `experimentType` and `containerType`+`capacity` columns in the `Container` table.
-  * `upsert_sample_image`: set `BLSampleImage.modifiedTimeStamp` if the upsert is an update
+  * ``retrieve_scm_*``: Preferentially get experiement type and container type+capacity from new lookup tables ``ExperimentType`` and ``ContainerType``, otherwise fall-back to ``experimentType`` and ``containerType``+``capacity`` columns in the ``Container`` table.
+  * ``upsert_sample_image``: set ``BLSampleImage.modifiedTimeStamp`` if the upsert is an update
 
 * Tools and documentation:
 
-  * New script `bin/missed_updates.sh` to identify update .sql files that haven't been run
-  * `bin/backup.sh`: Use `--add-drop-trigger` flag to drop trigger if exists before creation
-  * `CONTRIBUTING.md`: Simplify pull request procedure for table changes
+  * New script ``bin/missed_updates.sh`` to identify update .sql files that haven't been run
+  * ``bin/backup.sh``: Use ``--add-drop-trigger`` flag to drop trigger if exists before creation
+  * ``CONTRIBUTING.md``: Simplify pull request procedure for table changes
   * Updated simplified MX database diagram files
   * Move list + string with lookup tables to separate file so it can be reused
-  * All bash scripts have been given new shebang lines to run on systems where bash is not at `/bin/bash`.
+  * All bash scripts have been given new shebang lines to run on systems where bash is not at ``/bin/bash``.
   
 * Users, roles and grants:
 
-  * More `INSERT` grants for `ispyb_web` role: DC, DCG, `ProcessingJob`, `ProcessingJobParameter`
-  * New `ispyb_ro_nopii` role (read-only-except-PII)
+  * More ``INSERT`` grants for ``ispyb_web`` role: DC, DCG, ``ProcessingJob``, ``ProcessingJobParameter``
+  * New ``ispyb_ro_nopii`` role (read-only-except-PII)
 
 1.19.0 (2021-03-05)
 -------------------
