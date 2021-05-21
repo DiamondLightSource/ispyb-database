@@ -5,6 +5,11 @@ History
 Unreleased / master
 -------------------
 
+1.21.2 (2021-05-20)
+-------------------
+
+* Updated `schemas/ispyb/routines.sql` with the changes to stored procedure `retrieve_sample sproc`.
+
 1.21.1 (2021-05-19)
 -------------------
 
