@@ -1,9 +1,9 @@
 -- Example calls:
--- CALL update_dc_plans(NULL, NULL, NULL, 398810, '{"strategy": "yes"}', 5, 2.0, 'SAD', 3.0, 'Sulphur', 'optical', 1, 'mx');
--- CALL update_dc_plans(NULL, NULL, NULL, 398810, '{"strategy": "no"}', NULL, NULL, NULL, NULL, NULL, NULL, 0, 'mx');
--- CALL update_dc_plans(NULL, NULL, 34864, NULL, '{"strategy": "maybe"}', NULL, NULL, NULL, NULL, NULL, NULL, 0, 'mx');
--- CALL update_dc_plans(NULL, 8572, NULL, NULL, '{"strategy": "shoot first, ask questions later"}', NULL, NULL, NULL, NULL, NULL, NULL, 0, 'mx');
--- CALL update_dc_plans(7227, NULL, NULL, NULL, '{"strategy": "divide and conquer"}', NULL, NULL, NULL, NULL, NULL, NULL, 0, 'mx');
+-- CALL update_dc_plans(NULL, NULL, NULL, 398810, '{"strategy": "yes"}', 5, 2.0, 2.0, 'SAD', 3.0, 'Sulphur', 'optical', 1, 'mx');
+-- CALL update_dc_plans(NULL, NULL, NULL, 398810, '{"strategy": "no"}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'mx');
+-- CALL update_dc_plans(NULL, NULL, 34864, NULL, '{"strategy": "maybe"}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'mx');
+-- CALL update_dc_plans(NULL, 8572, NULL, NULL, '{"strategy": "shoot first, ask questions later"}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'mx');
+-- CALL update_dc_plans(7227, NULL, NULL, NULL, '{"strategy": "divide and conquer"}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'mx');
 
 DELIMITER ;;
 CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `update_dc_plans` (
@@ -13,6 +13,7 @@ CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `update_dc_plans` (
     IN p_sampleId int unsigned,
     IN p_strategyOption varchar(200),
     IN p_priority int,
+    IN p_minimalResolution float,
     IN p_requiredResolution double,
     IN p_experimentKind varchar(20), 
     IN p_energy float, 
@@ -53,6 +54,7 @@ BEGIN
     SET
       dp.strategyOption = nvl2(v_null, p_strategyOption, ifnull(p_strategyOption, dp.strategyOption) ),
       dp.priority = nvl2(v_null, p_priority, ifnull(p_priority, dp.priority) ),
+      dp.minimalResolution = nvl2(v_null, p_minimalResolution, ifnull(p_minimalResolution, dp.minimalResolution) ),
       dp.requiredResolution = nvl2(v_null, p_requiredResolution, ifnull(p_requiredResolution, dp.requiredResolution) ),
       dp.experimentKind = nvl2(v_null, p_experimentKind, ifnull(p_experimentKind, dp.experimentKind) ),
       dp.experimentTypeId = nvl2(v_null, v_experimentTypeId, ifnull(v_experimentTypeId, dp.experimentTypeId) ),
@@ -69,6 +71,7 @@ BEGIN
     SET
       dp.strategyOption = nvl2(v_null, p_strategyOption, ifnull(p_strategyOption, dp.strategyOption) ),
       dp.priority = nvl2(v_null, p_priority, ifnull(p_priority, dp.priority) ),
+      dp.minimalResolution = nvl2(v_null, p_minimalResolution, ifnull(p_minimalResolution, dp.minimalResolution) ),
       dp.requiredResolution = nvl2(v_null, p_requiredResolution, ifnull(p_requiredResolution, dp.requiredResolution) ),
       dp.experimentKind = nvl2(v_null, p_experimentKind, ifnull(p_experimentKind, dp.experimentKind) ),
       dp.experimentTypeId = nvl2(v_null, v_experimentTypeId, ifnull(v_experimentTypeId, dp.experimentTypeId) ),
@@ -84,6 +87,7 @@ BEGIN
     SET
       dp.strategyOption = nvl2(v_null, p_strategyOption, ifnull(p_strategyOption, dp.strategyOption) ),
       dp.priority = nvl2(v_null, p_priority, ifnull(p_priority, dp.priority) ),
+      dp.minimalResolution = nvl2(v_null, p_minimalResolution, ifnull(p_minimalResolution, dp.minimalResolution) ),
       dp.requiredResolution = nvl2(v_null, p_requiredResolution, ifnull(p_requiredResolution, dp.requiredResolution) ),
       dp.experimentKind = nvl2(v_null, p_experimentKind, ifnull(p_experimentKind, dp.experimentKind) ),
       dp.experimentTypeId = nvl2(v_null, v_experimentTypeId, ifnull(v_experimentTypeId, dp.experimentTypeId) ),
@@ -99,6 +103,7 @@ BEGIN
     SET
       dp.strategyOption = nvl2(v_null, p_strategyOption, ifnull(p_strategyOption, dp.strategyOption) ),
       dp.priority = nvl2(v_null, p_priority, ifnull(p_priority, dp.priority) ),
+      dp.minimalResolution = nvl2(v_null, p_minimalResolution, ifnull(p_minimalResolution, dp.minimalResolution) ),
       dp.requiredResolution = nvl2(v_null, p_requiredResolution, ifnull(p_requiredResolution, dp.requiredResolution) ),
       dp.experimentKind = nvl2(v_null, p_experimentKind, ifnull(p_experimentKind, dp.experimentKind) ),
       dp.experimentTypeId = nvl2(v_null, v_experimentTypeId, ifnull(v_experimentTypeId, dp.experimentTypeId) ),
