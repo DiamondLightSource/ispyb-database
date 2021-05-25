@@ -24,7 +24,7 @@ CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `upsert_mx_sample`(
 	p_publicationStage varchar(45)
 )
 MODIFIES SQL DATA
-COMMENT 'Inserts or updates info about a sample using an MxSample bean'
+COMMENT 'Inserts or updates info about a sample.'
 BEGIN
 
 	DECLARE row_count int unsigned DEFAULT 0;
