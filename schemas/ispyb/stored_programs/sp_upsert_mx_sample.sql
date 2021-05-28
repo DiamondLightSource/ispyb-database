@@ -34,7 +34,7 @@ BEGIN
 	-- Authorise only if the person (p_authLogin) is a member of a session on the proposal of the shipping that the sample belings to.
 	-- If the sample doesn't have a container, ot the container doesn't have a dewar then this will fail.
 
-	SELECT count(*) INTO Row_count
+	SELECT count(*) INTO row_count
 	FROM Container c
 	  INNER JOIN Dewar d ON d.dewarId = c.dewarId
 	  INNER JOIN Shipping s ON s.shippingId = d.shippingId
@@ -47,7 +47,7 @@ BEGIN
 	
 	SELECT count(*) INTO row_count2
 	FROM Container c
-	  INNER JOIN BLSession bs ON bs.proposalId = c.sessionId
+	  INNER JOIN BLSession bs ON bs.sessionId = c.sessionId
 	  INNER JOIN BLSession bs2 ON bs.proposalId = bs2.proposalId
 	  INNER JOIN Session_has_Person shp ON bs2.sessionId = shp.sessionId
 	  INNER JOIN Person p ON p.personId = shp.personId
