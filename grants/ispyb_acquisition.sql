@@ -90,3 +90,6 @@ GRANT EXECUTE ON PROCEDURE retrieve_screenings_for_sample TO ispyb_gda_mxcx;
 GRANT EXECUTE ON PROCEDURE retrieve_xfe_fluo_ids_for_sample TO ispyb_gda_mxcx;
 GRANT EXECUTE ON PROCEDURE retrieve_dc TO ispyb_gda_mxcx;
 
+GRANT EXECUTE ON PROCEDURE upsert_mx_sample TO ispyb_gda_mxcx;
+GRANT EXECUTE ON FUNCTION retrieve_proposal_title_v2 TO ispyb_gda_mxcx;
+
