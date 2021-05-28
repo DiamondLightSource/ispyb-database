@@ -1,6 +1,6 @@
 DELIMITER ;;
 CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `upsert_mx_sample`(
-	INOUT p_id int(10) unsigned,
+	INOUT p_sampleId int(10) unsigned,
 	p_authLogin varchar(45),
 	p_containerId int(10) unsigned,
 	p_dataCollectionPlanId int(10) unsigned,
@@ -30,7 +30,7 @@ BEGIN
 	DECLARE row_count int unsigned DEFAULT 0;
 	DECLARE row_count2 int unsigned DEFAULT 0;
 
-	IF p_authLogin IS NOT NULL AND (p_containerId IS NOT NULL OR p_id IS NOT NULL) THEN
+	IF p_authLogin IS NOT NULL AND (p_containerId IS NOT NULL OR p_sampleId IS NOT NULL) THEN
 	-- Authorise only if the person (p_authLogin) is a member of a session on the proposal of the shipping that the sample belings to.
 	-- If the sample doesn't have a container, ot the container doesn't have a dewar then this will fail.
 
@@ -39,7 +39,7 @@ BEGIN
 	  INNER JOIN Dewar d ON d.dewarId = c.dewarId
 	  INNER JOIN Shipping s ON s.shippingId = d.shippingId
 	  INNER JOIN BLSession bs ON bs.proposalId = s.proposalId
-	  INNER JOIN Session_has_Person ON bs.sessionId = shp.sessionId
+	  INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
 	  INNER JOIN Person p ON p.personId = shp.personId
 	WHERE p.login = p_authLogin AND c.containerId = p_containerId;
 	
@@ -49,7 +49,7 @@ BEGIN
 	FROM Container c
 	  INNER JOIN BLSession bs ON bs.proposalId = c.sessionId
 	  INNER JOIN BLSession bs2 ON bs.proposalId = bs2.proposalId
-	  INNER JOIN Session_has_Person ON bs2.sessionId = shp.sessionId
+	  INNER JOIN Session_has_Person shp ON bs2.sessionId = shp.sessionId
 	  INNER JOIN Person p ON p.personId = shp.personId
 	WHERE p.login = p_authLogin AND c.containerId = p_containerId;
 
@@ -60,15 +60,15 @@ BEGIN
 	END IF;
 	END IF;
 
-IF p_containerId IS NOT NULL OR p_id IS NOT NULL THEN
+IF p_containerId IS NOT NULL OR p_sampleId IS NOT NULL THEN
 
 	INSERT INTO BLSample (blSampleId, containerId, diffractionPlanId, crystalId,
 		POSITIONID, name, code, comments, publicationComments, location,
 		subLocation, isInSampleChanger, lastKnownCenteringPosition,
 		holderLength, loopLength, loopType, wireWidth, blSampleStatus,
 		completionStage, structureStage, publicationStage)
-	VALUES (p_id, p_containerId, p_dataCollectionPlanId, p_crystalId,
-		p_positionId, p_name, p_code, p_comments, p_publicationComments,
+	VALUES (p_sampleId, p_containerId, p_dataCollectionPlanId, p_crystalId,
+		p_positionId, p_sampleName, p_sampleCode, p_sampleComments, p_publicationComments,
 		p_sampleLocation, p_sampleSubLocation, p_isInSampleChanger,
 		p_lastKnownCenteringPosition, p_holderLength, p_loopLength,
 		p_loopType, p_wireWidth, p_sampleStatus, p_completionStage,
@@ -78,30 +78,30 @@ IF p_containerId IS NOT NULL OR p_id IS NOT NULL THEN
 		diffractionPlanId = IFNULL(p_dataCollectionPlanId, diffractionPlanId),
 		crystalId = IFNULL(p_crystalId, crystalId),
 		POSITIONID = IFNULL(p_positionId, POSITIONID),
-		`name` = IFNULL(p_name, `name`),
-		`code` = IFNULL(p_code, `code`),
-		comments = IFNULL(p_comments, comments),
+		`name` = IFNULL(p_sampleName, `name`),
+		`code` = IFNULL(p_sampleCode, `code`),
+		comments = IFNULL(p_sampleComments, comments),
 		publicationComments = IFNULL(p_publicationComments, publicationComments),
-		location = IFNULL(p_location, location),
-		subLocation = IFNULL(p_subLocation, subLocation),
+		location = IFNULL(p_sampleLocation, location),
+		subLocation = IFNULL(p_sampleSubLocation, subLocation),
 		isInSampleChanger = IFNULL(p_isInSampleChanger, isInSampleChanger),
 		lastKnownCenteringPosition = IFNULL(p_lastKnownCenteringPosition, lastKnownCenteringPosition),
 		holderLength = IFNULL(p_holderLength, holderLength),
 		loopLength = IFNULL(p_loopLength, loopLength),
 		loopType = IFNULL(p_loopType, loopType),
 		wireWidth = IFNULL(p_wireWidth, wireWidth),
-		blSampleStatus, = IFNULL(p_sampleStatus, blSampleStatus),
+		blSampleStatus = IFNULL(p_sampleStatus, blSampleStatus),
 		completionStage = IFNULL(p_completionStage, completionStage),
 		structureStage = IFNULL(p_structureStage, structureStage),
 		publicationStage = IFNULL(p_publicationStage, publicationStage);
 
-	IF p_id IS NULL THEN
-		SET p_id = LAST_INSERT_ID();
+	IF p_sampleId IS NULL THEN
+		SET p_sampleId = LAST_INSERT_ID();
 	END IF;
 
 ELSE
 	SIGNAL SQLSTATE '45000'
-		SET MYSQL_ERRNO=1644, MESSAGE_TEXT-'Mandatory argument is NULL: p_id or p_containerId must be non-NULL.';
+		SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_sampleId or p_containerId must be non-NULL.';
 
   END IF;
 END ;;
