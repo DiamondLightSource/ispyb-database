@@ -4,6 +4,13 @@ History
 
 Unreleased / master
 -------------------
+1.22.0 (2021-05-28)
+-------------------
+
+New stored programs:
+
+* Function retrieve_proposal_title_v2
+* Procedure upsert_mx_sample
 
 1.21.2 (2021-05-20)
 -------------------
