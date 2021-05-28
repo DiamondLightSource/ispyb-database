@@ -1,5 +1,5 @@
 DELIMITER ;;
-CREATE FUNCTION `retrieve_proposal_title_v2`(p_proposalCode varchar(5), p_proposalNumber int) RETURNS varchar(255) CHARSET latin1
+CREATE OR REPLACE FUNCTION `retrieve_proposal_title_v2`(p_proposalCode varchar(5), p_proposalNumber int) RETURNS varchar(255) CHARSET latin1
 READS SQL DATA
 COMMENT 'Retrieve the title for a given proposal code and number.'
 BEGIN
