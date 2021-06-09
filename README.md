@@ -6,15 +6,14 @@ This package provides everything needed to create the Diamond flavour of the ISP
 
 ## Requirements
 
-* We recommend MariaDB 10.3 or later. You'll need both a MariaDB server and a client.
-* Linux with bash is assumed, but it's possible to make this work on other OSes.
+* MariaDB 10.3 or later, both a server and a client. See the Wiki for ideas on how to install in a particular environment.
+* A Unix-like OS with `bash` shell is assumed.
 * If binary logging is enabled in the DB system, then execute this before importing the test schema: `SET GLOBAL log_bin_trust_function_creators=ON;`
 
 ## Installation
 
-1. After installing the MariaDB server and client, consider securing the installation by running `mariadb-secure-installation` (or `mysql_secure_installation` on MariaDB 10.3 or older). 
-2. Copy `.my.example.cnf` to `.my.cnf` and then edit that file to set the `user` and `password`, e.g. `user = root` and use the `password` you set when securing. Optionally, you can also set e.g. `host` and `port`.
-3. In a test environment run the `build.sh` file. This creates the database schema and applies the grants as described in the "Schema" and "Grants" sections below.
+1. Copy `.my.example.cnf` to `.my.cnf` and then edit that file to set the `user` and `password`, e.g. `user = root` and use the `password` you set when securing. Optionally, you can also set e.g. `host` and `port`.
+2. In a test environment run the `build.sh` file. This creates the database schema and applies the grants as described in the "Schema" and "Grants" sections below.
 
 ### Schema
 
