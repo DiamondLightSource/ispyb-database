@@ -6,16 +6,21 @@ This package provides everything needed to create the Diamond flavour of the ISP
 
 ## Requirements
 
-* MariaDB 10.3 or later, both a server and a client. See the Wiki for ideas on how to install in a particular environment.
-* A Unix-like OS with `bash` shell is assumed.
+* Server and a client packages of MariaDB 10.3 or later.
+* A Unix-like OS with `bash` shell.
 * If binary logging is enabled in the DB system, then execute this before importing the test schema: `SET GLOBAL log_bin_trust_function_creators=ON;`
 
 ## Installation
 
-1. Copy `.my.example.cnf` to `.my.cnf` and then edit that file to set the `user` and `password`, e.g. `user = root` and use the `password` you set when securing. Optionally, you can also set e.g. `host` and `port`.
-2. In a test environment run the `build.sh` file. This creates the database schema and applies the grants as described in the "Schema" and "Grants" sections below.
+1. Install MariaDB. See the Wiki for ideas on how to install in a particular environment.
+2. Copy `.my.example.cnf` to `.my.cnf` and then edit that file to set the `user` and `password`, e.g. `user = root` and use the `password` you set when securing. Optionally, you can also set e.g. `host` and `port`.
+3. In a test environment run the `build.sh` file. This creates the database schema and applies the grants as described in the "Schema" and "Grants" sections below.
 
 ### Schema
+
+Tip: Execute `./build.sh` to create a development `ispyb_build` database and import all the schema and grants files into it.
+
+Alternatively, do it manually:
 
 Run this on the command-line to create a database and import the schema stored in the SQL files:
 
@@ -89,6 +94,14 @@ This procedure requires write permission to the repository and a valid `.github-
 5. Copy `/tmp/lookups.sh` to `schemas/ispyb/`. If other changes have been made since the previous release, then you might need to copy other files to the same folder: If any changes to the tables or views, then also copy `/tmp/tables.sql`. If any changes to the stored programs, then also copy `/tmp/routines.sql`. If any changes to the test data, then also copy `/tmp/data.sql`.
 6. Commit and push your changes to master.
 7. Finally, run the `release.sh` script to create a tag and create a Github release against that tag. The new release should then become available on the project's Github page.
+
+## Useful scripts
+
+* `build.sh`: Creates a development `ispyb_build` database and import all the schema and grants files into it.
+* `release.sh`: Makes a release, see the Releasing section.
+* `bin/backup.sh`: Makes a backup of the development database.
+* `bin/missed_updates.sh`: Generates a list of files in the `schemas/ispyb/updates/` folder that haven't been applied.
+* `bin/export_session.sh`: Exports a given session's database rows to SQL files. These can then easily be imported into an empty ispyb database. This can be used e.g. to create a single-session ISPyB/SynchWeb instance if combined with all the relevant data files and processing files for the session, and an instance of SynchWeb.
 
 ## Documentation
 
