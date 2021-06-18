@@ -82,13 +82,13 @@ mysql ispyb < grants/ispyb_web.sql
 
 This procedure requires write permission to the repository and a valid `.github-api-token` file.
 
-1. Create a file 'yyyy_mm_dd_AdminVar_bump_version.sql' (replace 'yyyy_mm_dd' with today's date) in the `updates/` folder.
+1. Create a file 'yyyy_mm_dd_AdminVar_bump_version.sql' (replace 'yyyy_mm_dd' with today's date) in the `updates/` folder. As is convention with all updates files, it should start with `INSERT INTO SchemaStatus`, and end with `UPDATE SchemaStatus`. Between these statements should be a statement to set the version, e.g. `UPDATE AdminVar SET \`value\` = '1.22.0' WHERE \`name\` = 'schemaVersion';`
 2. Run `./build.sh`: This will create a clean development database from the schema files in `schemas/ispyb/` and import any `updates/` files not yet imported.
 3. Manually import any stored programs you've made.
 4. Create a backup: `cd bin && ./backup.sh /tmp/`.
-5. Copy `/tmp/lookups.sh` to `schemas/ispyb/`. If you've made changes to the tables, also copy /tmp/tables.sql. If you've made changes to the stored programs, then also copy `/tmp/routines.sql`. If you've made changes to the test data, then also copy `/tmp/data.sql`.
+5. Copy `/tmp/lookups.sh` to `schemas/ispyb/`. If other changes have been made since the previous release, then you might need to copy other files to the same folder: If any changes to the tables or views, then also copy `/tmp/tables.sql`. If any changes to the stored programs, then also copy `/tmp/routines.sql`. If any changes to the test data, then also copy `/tmp/data.sql`.
 6. Commit and push your changes to master.
-7. Finally, run the `release.sh` script to create a tag and create a Github release against that tag.
+7. Finally, run the `release.sh` script to create a tag and create a Github release against that tag. The new release should then become available on the project's Github page.
 
 ## Documentation
 
