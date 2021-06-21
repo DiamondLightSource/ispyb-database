@@ -2,12 +2,7 @@
 
 db=$1
 
-# find the highest number, increase by one, use that
-file=/tmp/procs-001.csv
-if [ -f ${file} ]; then
-  LAST=`exec ls /tmp/procs-*.csv | sed 's/\/tmp\/procs-\([0-9]\+\)\.csv/\1/g' | sort -n | tail -1`
-  file=$(printf "/tmp/procs-%03d" `expr 1 + $LAST`).csv
-fi
+file=$(mktemp /tmp/tsv.XXXXXX)
 
 # Substitute $file with its value in the sql file
 sql=$(env file=${file} envsubst < sql/db_procs_to_tsv.sql)
@@ -24,3 +19,5 @@ echo ""
 while read p; do
   echo "   $p"
 done <$file
+
+rm ${file}

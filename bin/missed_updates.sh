@@ -7,7 +7,7 @@ then
 fi
 
 # Get this scripts dir
-dir=$(dirname $(realpath -e ${0}))
+dir=$(dirname $(realpath ${0}))
 
 # Get the project'r root dir
 project_root=$(dirname "${dir}")
