@@ -642,7 +642,10 @@ DROP TABLE IF EXISTS `BLSampleGroup`;
 CREATE TABLE `BLSampleGroup` (
   `blSampleGroupId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL COMMENT 'Human-readable name',
-  PRIMARY KEY (`blSampleGroupId`)
+  `proposalId` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`blSampleGroupId`),
+  KEY `BLSampleGroup_fk_proposalId` (`proposalId`),
+  CONSTRAINT `BLSampleGroup_fk_proposalId` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1888,7 +1891,7 @@ CREATE TABLE `DataCollectionGroup` (
   `sessionId` int(10) unsigned NOT NULL COMMENT 'references Session table',
   `comments` varchar(1024) DEFAULT NULL COMMENT 'comments',
   `blSampleId` int(10) unsigned DEFAULT NULL COMMENT 'references BLSample table',
-  `experimentType` enum('SAD','SAD - Inverse Beam','OSC','Collect - Multiwedge','MAD','Helical','Multi-positional','Mesh','Burn','MAD - Inverse Beam','Characterization','Dehydration','tomo','experiment','EM','PDF','PDF+Bragg','Bragg','single particle','Serial Fixed','Serial Jet','Standard','Time Resolved','Diamond Anvil High Pressure','Custom','XRF map','Energy scan','XRF spectrum','XRF map xas') DEFAULT NULL COMMENT 'Standard: Routine structure determination experiment. Time Resolved: Investigate the change of a system over time. Custom: Special or non-standard data collection.',
+  `experimentType` enum('SAD','SAD - Inverse Beam','OSC','Collect - Multiwedge','MAD','Helical','Multi-positional','Mesh','Burn','MAD - Inverse Beam','Characterization','Dehydration','tomo','experiment','EM','PDF','PDF+Bragg','Bragg','single particle','Serial Fixed','Serial Jet','Standard','Time Resolved','Diamond Anvil High Pressure','Custom','XRF map','Energy scan','XRF spectrum','XRF map xas','Mesh3D','Screening') DEFAULT NULL COMMENT 'Standard: Routine structure determination experiment. Time Resolved: Investigate the change of a system over time. Custom: Special or non-standard data collection.',
   `startTime` datetime DEFAULT NULL COMMENT 'Start time of the dataCollectionGroup',
   `endTime` datetime DEFAULT NULL COMMENT 'end time of the dataCollectionGroup',
   `crystalClass` varchar(20) DEFAULT NULL COMMENT 'Crystal Class for industrials users',
@@ -2215,6 +2218,9 @@ CREATE TABLE `DiffractionPlan` (
   `purificationColumnId` int(10) unsigned DEFAULT NULL,
   `collectionMode` enum('auto','manual') DEFAULT NULL COMMENT 'The requested collection mode, possible values are auto, manual',
   `priority` int(4) DEFAULT NULL COMMENT 'The priority of this sample relative to others in the shipment',
+  `qMin` float DEFAULT NULL COMMENT 'minimum in qRange, unit: nm^-1, needed for SAXS',
+  `qMax` float DEFAULT NULL COMMENT 'maximum in qRange, unit: nm^-1, needed for SAXS',
+  `reductionParametersAveraging` enum('All','Fastest Dimension','1D') DEFAULT NULL COMMENT 'Post processing params for SAXS',
   PRIMARY KEY (`diffractionPlanId`),
   KEY `DiffractionPlan_ibfk1` (`presetForProposalId`),
   KEY `DataCollectionPlan_ibfk3` (`detectorId`),
@@ -3216,6 +3222,7 @@ CREATE TABLE `ParticleClassification` (
   `estimatedResolution` float DEFAULT NULL COMMENT '???, Unit: Angstroms',
   `overallFourierCompleteness` float DEFAULT NULL,
   `particleClassificationGroupId` int(10) unsigned DEFAULT NULL,
+  `classDistribution` float DEFAULT NULL COMMENT 'Provides a figure of merit for the class, higher number is better',
   PRIMARY KEY (`particleClassificationId`),
   KEY `ParticleClassification_fk_particleClassificationGroupId` (`particleClassificationGroupId`),
   CONSTRAINT `ParticleClassification_fk_particleClassificationGroupId` FOREIGN KEY (`particleClassificationGroupId`) REFERENCES `ParticleClassificationGroup` (`particleClassificationGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -3277,6 +3284,7 @@ CREATE TABLE `ParticlePicker` (
   `particlePickingTemplate` varchar(255) DEFAULT NULL COMMENT 'Cryolo model',
   `particleDiameter` float DEFAULT NULL COMMENT 'Unit: nm',
   `numberOfParticles` int(10) unsigned DEFAULT NULL,
+  `summaryImageFullPath` varchar(255) DEFAULT NULL COMMENT 'Generated summary micrograph image with highlighted particles',
   PRIMARY KEY (`particlePickerId`),
   KEY `ParticlePicker_fk_particlePickerProgramId` (`programId`),
   KEY `ParticlePicker_fk_motionCorrectionId` (`firstMotionCorrectionId`),
@@ -5604,6 +5612,22 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Table structure for table `zc_ZocaloBuffer`
+--
+
+DROP TABLE IF EXISTS `zc_ZocaloBuffer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `zc_ZocaloBuffer` (
+  `AutoProcProgramID` int(10) unsigned NOT NULL COMMENT 'Reference to an existing AutoProcProgram',
+  `UUID` int(10) unsigned NOT NULL COMMENT 'AutoProcProgram-specific unique identifier',
+  `Reference` int(10) unsigned DEFAULT NULL COMMENT 'Context-dependent reference to primary key IDs in other ISPyB tables',
+  PRIMARY KEY (`AutoProcProgramID`,`UUID`),
+  CONSTRAINT `AutoProcProgram_fk_AutoProcProgramId` FOREIGN KEY (`AutoProcProgramID`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Final view structure for view `v_Log4Stat`
 --
 
@@ -6049,4 +6073,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-14 17:23:07
+-- Dump completed on 2021-07-07 11:36:18

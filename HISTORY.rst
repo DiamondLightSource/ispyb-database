@@ -4,6 +4,28 @@ History
 
 Unreleased / master
 -------------------
+
+1.23.0 (2021-07-07)
+-------------------
+
+New columns:
+
+* ``DiffractionPlan``: ``qMin``, ``qMax``, ``reductionParametersAveraging``
+* ``ParticleClassification``: ``classDistribution``
+* ``ParticlePicker``: ``summaryImageFullPath``
+* ``BLSampleGroup``: ``proposalId`` (and populate it based on ``BLSampleGroup_has_BLSample -> BLSample -> Crystal -> Protein.proposalId``)
+
+New tables:
+
+* ``zc_ZocaloBuffer``: A table for temporary Zocalo data. 
+
+Lookup table data changes:
+
+* ``SpaceGroup``: Changed a few ``spaceGroupShortName`` values for common spacegroups, and set ``MX_used = 0`` for less commonly used spacegroups. 
+* ``UserGroup``: Add groups ``detector_admin``, ``prop_admin``, ``goods_handling``, ``imaging_admin``, ``spectroscopy_admin``, ``mm_admin``.
+
+Additionally, new enum options have been added to DataCollectionGroup.experimentType: Mesh3D, Screening.
+
 1.22.0 (2021-05-28)
 -------------------
 
