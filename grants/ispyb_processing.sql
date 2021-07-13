@@ -56,6 +56,7 @@ GRANT EXECUTE ON PROCEDURE upsert_processing_program_attachment_v2 TO 'ispyb_pro
 GRANT EXECUTE ON PROCEDURE upsert_processing_program_message TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `upsert_processing` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `insert_processing_scaling` TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE `insert_processing_scaling_v2` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `upsert_processing_integration` TO 'ispyb_processing';
 
 GRANT EXECUTE ON PROCEDURE `insert_quality_indicators` TO 'ispyb_processing';
