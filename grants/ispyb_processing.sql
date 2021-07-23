@@ -8,7 +8,12 @@ CREATE ROLE IF NOT EXISTS ispyb_processing;
 
 -- Grants for ispyb_processing
 GRANT SELECT ON AdminVar TO 'ispyb_processing'; -- Hack TO allow ispyb_processing to connect through MaxScale
-GRANT INSERT ON ImageQualityIndicators TO 'ispyb_processing'; -- Needed for bulk insertion of aggregated IQIs
+GRANT SELECT,INSERT ON ImageQualityIndicators TO 'ispyb_processing'; -- Needed for bulk insertion of aggregated IQIs
+GRANT SELECT,INSERT,UPDATE ON BLSampleImage TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON BLSampleImageAnalysis TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON BLSampleImageMeasurement TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON BLSampleImage_has_AutoScoreClass TO 'ispyb_processing';
+
 GRANT EXECUTE ON FUNCTION retrieve_visit_id TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `retrieve_dc_main` TO 'ispyb_processing';
 GRANT EXECUTE ON FUNCTION upsert_sample TO 'ispyb_processing';
