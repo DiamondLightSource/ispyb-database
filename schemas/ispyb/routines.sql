@@ -1655,6 +1655,128 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insert_processing_scaling_v2` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `insert_processing_scaling_v2`(
+     OUT p_id integer unsigned,
+     p_parentId integer unsigned,
+
+     p_Type1 enum('overall','innerShell','outerShell'),
+     p_Comments1 varchar(255),
+     p_ResolutionLimitLow1 float ,
+     p_ResolutionLimitHigh1 float ,
+     p_rMerge1 float ,
+     p_rMeasWithinIPlusIMinus1 float ,
+     p_rMeasAllIPlusIMinus1 float,
+     p_rPimWithinIPlusIMinus1 float,
+     p_rPimAllIPlusIMinus1 float,
+     p_fractionalPartialBias1 float,
+     p_nTotalObservations1 integer,
+     p_nTotalUniqueObservations1 integer,
+     p_meanIOverSigI1 float,
+     p_resIOverSigI21 float,
+     p_completeness1 float,
+     p_multiplicity1 float,
+     p_anomalous1 boolean,
+     p_anomalousCompleteness1 float,
+     p_anomalousMultiplicity1 float,
+     p_ccHalf1 float,
+     p_ccAnomalous1 float,
+
+     p_Type2 enum('overall','innerShell','outerShell'),
+     p_Comments2 varchar(255),
+     p_ResolutionLimitLow2 float,
+     p_ResolutionLimitHigh2 float,
+     p_rMerge2 float,
+     p_rMeasWithinIPlusIMinus2 float,
+     p_rMeasAllIPlusIMinus2 float,
+     p_rPimWithinIPlusIMinus2 float,
+     p_rPimAllIPlusIMinus2 float,
+     p_fractionalPartialBias2 float,
+     p_nTotalObservations2 integer,
+     p_nTotalUniqueObservations2 integer,
+     p_meanIOverSigI2 float,
+     p_resIOverSigI22 float,
+     p_completeness2 float,
+     p_multiplicity2 float,
+     p_anomalous2 boolean,
+     p_anomalousCompleteness2 float,
+     p_anomalousMultiplicity2 float,
+     p_ccHalf2 float,
+     p_ccAnomalous2 float,
+
+     p_Type3 enum('overall','innerShell','outerShell'),
+     p_Comments3 varchar(255),
+     p_ResolutionLimitLow3 float,
+     p_ResolutionLimitHigh3 float,
+     p_rMerge3 float,
+     p_rMeasWithinIPlusIMinus3 float,
+     p_rMeasAllIPlusIMinus3 float,
+     p_rPimWithinIPlusIMinus3 float,
+     p_rPimAllIPlusIMinus3 float,
+     p_fractionalPartialBias3 float,
+     p_nTotalObservations3 integer,
+     p_nTotalUniqueObservations3 integer,
+     p_meanIOverSigI3 float,
+     p_resIOverSigI23 float,
+     p_completeness3 float,
+     p_multiplicity3 float,
+     p_anomalous3 boolean,
+     p_anomalousCompleteness3 float,
+     p_anomalousMultiplicity3 float,
+     p_ccHalf3 float,
+     p_ccAnomalous3 float
+  )
+    MODIFIES SQL DATA
+    COMMENT 'Inserts 1 row in AutoProcScaling, 3 rows in AutoProcScalingStatistics. Returns: autoProcScalingId value in p_id'
+BEGIN
+    IF p_parentid IS NULL THEN
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_parentid is NULL';
+	ELSE
+
+	  START TRANSACTION;
+	  INSERT INTO AutoProcScaling (autoProcId, recordTimeStamp)
+        VALUES (p_parentId, now());
+
+	  SET p_id = LAST_INSERT_ID();
+
+      INSERT INTO AutoProcScalingStatistics (autoProcScalingId, scalingStatisticsType, comments, resolutionLimitLow, resolutionLimitHigh, rMerge,
+        rMeasWithinIPlusIMinus, rMeasAllIPlusIMinus, rPimWithinIPlusIMinus, rPimAllIPlusIMinus, fractionalPartialBias, nTotalObservations, nTotalUniqueObservations,
+        meanIOverSigI, resIOverSigI2, completeness, multiplicity, anomalous, anomalousCompleteness, anomalousMultiplicity, ccHalf, ccAnomalous, recordTimeStamp)
+        VALUES (p_id, p_Type1, p_Comments1, p_ResolutionLimitLow1, p_ResolutionLimitHigh1, p_rMerge1, p_rMeasWithinIPlusIMinus1, p_rMeasAllIPlusIMinus1,
+          p_rPimWithinIPlusIMinus1, p_rPimAllIPlusIMinus1, p_fractionalPartialBias1, p_nTotalObservations1, p_nTotalUniqueObservations1, p_meanIOverSigI1,
+          p_resIOverSigI21, p_completeness1, p_multiplicity1, p_anomalous1, p_anomalousCompleteness1, p_anomalousMultiplicity1, p_ccHalf1, p_ccAnomalous1, now());
+
+      INSERT INTO AutoProcScalingStatistics (autoProcScalingId, scalingStatisticsType, comments, resolutionLimitLow, resolutionLimitHigh, rMerge,
+        rMeasWithinIPlusIMinus, rMeasAllIPlusIMinus, rPimWithinIPlusIMinus, rPimAllIPlusIMinus, fractionalPartialBias, nTotalObservations, nTotalUniqueObservations,
+        meanIOverSigI, resIOverSigI2, completeness, multiplicity, anomalous, anomalousCompleteness, anomalousMultiplicity, ccHalf, ccAnomalous, recordTimeStamp)
+        VALUES (p_id, p_Type2, p_Comments2, p_ResolutionLimitLow2, p_ResolutionLimitHigh2, p_rMerge2, p_rMeasWithinIPlusIMinus2, p_rMeasAllIPlusIMinus2,
+          p_rPimWithinIPlusIMinus2, p_rPimAllIPlusIMinus2, p_fractionalPartialBias2, p_nTotalObservations2, p_nTotalUniqueObservations2, p_meanIOverSigI2,
+          p_resIOverSigI22, p_completeness2, p_multiplicity2, p_anomalous2, p_anomalousCompleteness2, p_anomalousMultiplicity2, p_ccHalf2, p_ccAnomalous2, now());
+
+      INSERT INTO AutoProcScalingStatistics (autoProcScalingId, scalingStatisticsType, comments, resolutionLimitLow, resolutionLimitHigh, rMerge,
+        rMeasWithinIPlusIMinus, rMeasAllIPlusIMinus, rPimWithinIPlusIMinus, rPimAllIPlusIMinus, fractionalPartialBias, nTotalObservations, nTotalUniqueObservations,
+        meanIOverSigI, resIOverSigI2, completeness, multiplicity, anomalous, anomalousCompleteness, anomalousMultiplicity, ccHalf, ccAnomalous, recordTimeStamp)
+        VALUES (p_id, p_Type3, p_Comments3, p_ResolutionLimitLow3, p_ResolutionLimitHigh3, p_rMerge3, p_rMeasWithinIPlusIMinus3, p_rMeasAllIPlusIMinus3,
+          p_rPimWithinIPlusIMinus3, p_rPimAllIPlusIMinus3, p_fractionalPartialBias3, p_nTotalObservations3, p_nTotalUniqueObservations3, p_meanIOverSigI3,
+          p_resIOverSigI23, p_completeness3, p_multiplicity3, p_anomalous3, p_anomalousCompleteness3, p_anomalousMultiplicity3, p_ccHalf3, p_ccAnomalous3, now());
+	  COMMIT;
+
+    END IF;
+  END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `insert_quality_indicators` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -10616,7 +10738,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE PROCEDURE `upsert_session_for_proposal_code_number`(
 	 INOUT p_id int(11) unsigned,
@@ -10637,41 +10759,58 @@ CREATE PROCEDURE `upsert_session_for_proposal_code_number`(
 	 p_externalPkUUID varchar(32)
  )
     MODIFIES SQL DATA
-    COMMENT 'Inserts or updates a session for a proposal with given code and'
+    COMMENT 'Inserts or updates a session for a proposal with given code and number.\nMandatory columns: p_id OR (p_proposalCode and p_proposalNumber)\nReturns: Record ID in p_id.'
 BEGIN
-	DECLARE row_proposal_id int(10) unsigned DEFAULT NULL;
-	IF p_id IS NOT NULL OR (p_proposalCode IS NOT NULL AND p_proposalNumber IS NOT NULL) THEN
-		SELECT min(proposalId) INTO row_proposal_id FROM Proposal WHERE proposalCode=p_proposalCode AND proposalNumber=p_proposalNumber;
-
-	  IF p_id IS NULL THEN
-		  INSERT INTO BLSession(sessionId, proposalId, visit_number, beamLineSetupId, startDate, endDate,
-			  beamLineName, sessionTitle, beamLineOperator, nbShifts, scheduled, usedFlag, comments, expSessionPk, externalId)
-			  VALUES (p_id, row_proposal_id, p_visitNumber, p_beamLineSetupId, p_startDate, p_endDate,
-				  p_beamlineName, p_title, p_beamlineOperator, p_nbShifts, p_scheduled, p_usedFlag, p_comments, p_externalPkId, unhex(p_externalPkUUID));
-		  SET p_id = LAST_INSERT_ID();
-
-	  ELSEIF p_id IS NOT NULL THEN
-	    UPDATE BLSession
-			SET
-				proposalId = IFNULL(row_proposal_id, proposalId),
-				visit_number = IFNULL(p_visitNumber, visit_number),
-				beamLineSetupId = IFNULL(p_beamLineSetupId, beamLineSetupId),
-				startDate = IFNULL(p_startDate, startDate),
-				endDate = IFNULL(p_endDate, endDate),
-				beamLineName = IFNULL(p_beamlineName, beamLineName),
-				sessionTitle = IFNULL(p_title, sessionTitle),
-				beamLineOperator = IFNULL(p_beamlineOperator, beamLineOperator),
-				nbShifts = IFNULL(p_nbShifts, nbShifts),
-				scheduled = IFNULL(p_scheduled, scheduled),
-				usedFlag = IFNULL(p_usedFlag, usedFlag),
-				comments = IFNULL(p_comments, comments),
-				expSessionPk = IFNULL(p_externalPkId, expSessionPk),
-				externalId = IFNULL(unhex(p_externalPkUUID), externalId)
-		  WHERE sessionId = p_id;
+  DECLARE row_proposal_id int(10) unsigned DEFAULT NULL;
+  DECLARE row_session_id int(10) unsigned DEFAULT NULL;
+  
+  IF p_id IS NOT NULL OR (p_proposalCode IS NOT NULL AND p_proposalNumber IS NOT NULL) THEN
+    
+    IF p_proposalCode IS NOT NULL AND p_proposalNumber IS NOT NULL THEN
+      SELECT min(proposalId) INTO row_proposal_id FROM Proposal WHERE proposalCode=p_proposalCode AND proposalNumber=p_proposalNumber;
+      IF row_proposal_id IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Proposal given by p_proposalCode + p_proposalNumber does not exist.';
+      END IF;
     END IF;
-	ELSE
-		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR (p_proposalCode AND p_proposalNumber) must be non-NULL.';
-	END IF;
+    
+    IF p_id IS NULL AND row_proposal_id IS NOT NULL THEN
+      SELECT sessionId INTO row_session_id FROM BLSession WHERE proposalId = row_proposal_id AND visit_number = p_visitNumber;
+    ELSEIF p_id IS NOT NULL THEN
+      SET row_session_id := p_id;
+    END IF;
+
+    IF row_session_id IS NULL THEN
+      INSERT INTO BLSession(sessionId, proposalId, visit_number, beamLineSetupId, startDate, endDate,
+        beamLineName, sessionTitle, beamLineOperator, nbShifts, scheduled, usedFlag, comments, expSessionPk, externalId)
+        VALUES (p_id, row_proposal_id, p_visitNumber, p_beamLineSetupId, p_startDate, p_endDate,
+          p_beamlineName, p_title, p_beamlineOperator, p_nbShifts, p_scheduled, p_usedFlag, p_comments, p_externalPkId, unhex(p_externalPkUUID));
+      SET p_id = LAST_INSERT_ID();
+
+    ELSE
+
+      UPDATE BLSession
+      SET
+        proposalId = IFNULL(row_proposal_id, proposalId),
+        visit_number = IFNULL(p_visitNumber, visit_number),
+        beamLineSetupId = IFNULL(p_beamLineSetupId, beamLineSetupId),
+        startDate = IFNULL(p_startDate, startDate),
+        endDate = IFNULL(p_endDate, endDate),
+        beamLineName = IFNULL(p_beamlineName, beamLineName),
+        sessionTitle = IFNULL(p_title, sessionTitle),
+        beamLineOperator = IFNULL(p_beamlineOperator, beamLineOperator),
+        nbShifts = IFNULL(p_nbShifts, nbShifts),
+        scheduled = IFNULL(p_scheduled, scheduled),
+        usedFlag = IFNULL(p_usedFlag, usedFlag),
+        comments = IFNULL(p_comments, comments),
+        expSessionPk = IFNULL(p_externalPkId, expSessionPk),
+        externalId = IFNULL(unhex(p_externalPkUUID), externalId)
+      WHERE sessionId = row_session_id;
+      SET p_id := row_session_id;
+
+    END IF;
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR (p_proposalCode AND p_proposalNumber) must be non-NULL.';
+  END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -10888,7 +11027,7 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-28 15:50:24
+-- Dump completed on 2021-07-23 18:38:10
 -- MariaDB dump 10.19  Distrib 10.5.10-MariaDB, for Linux (x86_64)
 --
 -- Host: 10.88.0.5    Database: ispyb_build
@@ -10935,4 +11074,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-28 15:50:24
+-- Dump completed on 2021-07-23 18:38:11

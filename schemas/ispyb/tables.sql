@@ -245,12 +245,9 @@ CREATE TABLE `AutoProcProgram` (
   `processingEnvironment` varchar(255) DEFAULT NULL COMMENT 'Cpus, Nodes,...',
   `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
   `processingJobId` int(11) unsigned DEFAULT NULL,
-  `dataCollectionId` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`autoProcProgramId`),
   KEY `AutoProcProgram_FK2` (`processingJobId`),
-  KEY `AutoProcProgram_fk3` (`dataCollectionId`),
-  CONSTRAINT `AutoProcProgram_FK2` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`),
-  CONSTRAINT `AutoProcProgram_fk3` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
+  CONSTRAINT `AutoProcProgram_FK2` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -344,6 +341,7 @@ CREATE TABLE `AutoProcScalingStatistics` (
   `anomalous` tinyint(1) DEFAULT 0 COMMENT 'boolean type:0 noanoum - 1 anoum',
   `ccHalf` float DEFAULT NULL COMMENT 'information from XDS',
   `ccAnomalous` float DEFAULT NULL,
+  `resIOverSigI2` float DEFAULT NULL COMMENT 'Resolution where I/Sigma(I) equals 2',
   PRIMARY KEY (`autoProcScalingStatisticsId`),
   KEY `AutoProcScalingStatistics_FKindexType` (`scalingStatisticsType`),
   KEY `AutoProcScalingStatistics_scalingId_statisticsType` (`autoProcScalingId`,`scalingStatisticsType`),
@@ -888,6 +886,25 @@ CREATE TABLE `BLSample_has_EnergyScan` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `BLSample_has_Positioner`
+--
+
+DROP TABLE IF EXISTS `BLSample_has_Positioner`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BLSample_has_Positioner` (
+  `blSampleHasPositioner` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `blSampleId` int(10) unsigned NOT NULL,
+  `positionerId` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`blSampleHasPositioner`),
+  KEY `BLSampleHasPositioner_ibfk1` (`blSampleId`),
+  KEY `BLSampleHasPositioner_ibfk2` (`positionerId`),
+  CONSTRAINT `BLSampleHasPositioner_ibfk1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`),
+  CONSTRAINT `BLSampleHasPositioner_ibfk2` FOREIGN KEY (`positionerId`) REFERENCES `Positioner` (`positionerId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `BLSession`
 --
 
@@ -988,6 +1005,25 @@ CREATE TABLE `BLSubSample` (
   CONSTRAINT `BLSubSample_motorPositionfk_1` FOREIGN KEY (`motorPositionId`) REFERENCES `MotorPosition` (`motorPositionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSubSample_positionfk_1` FOREIGN KEY (`positionId`) REFERENCES `Position` (`positionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSubSample_positionfk_2` FOREIGN KEY (`position2Id`) REFERENCES `Position` (`positionId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `BLSubSample_has_Positioner`
+--
+
+DROP TABLE IF EXISTS `BLSubSample_has_Positioner`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BLSubSample_has_Positioner` (
+  `blSubSampleHasPositioner` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `blSubSampleId` int(10) unsigned NOT NULL,
+  `positionerId` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`blSubSampleHasPositioner`),
+  KEY `BLSubSampleHasPositioner_ibfk1` (`blSubSampleId`),
+  KEY `BLSubSampleHasPositioner_ibfk2` (`positionerId`),
+  CONSTRAINT `BLSubSampleHasPositioner_ibfk1` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`),
+  CONSTRAINT `BLSubSampleHasPositioner_ibfk2` FOREIGN KEY (`positionerId`) REFERENCES `Positioner` (`positionerId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3565,6 +3601,21 @@ CREATE TABLE `Position` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `Positioner`
+--
+
+DROP TABLE IF EXISTS `Positioner`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Positioner` (
+  `positionerId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `positioner` varchar(50) NOT NULL,
+  `value` float NOT NULL,
+  PRIMARY KEY (`positionerId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='An arbitrary positioner and its value, could be e.g. a motor. Allows for instance to store some positions with a sample or subsample';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `PreparePhasingData`
 --
 
@@ -3890,7 +3941,7 @@ CREATE TABLE `ProposalHasPerson` (
   `proposalHasPersonId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `proposalId` int(10) unsigned NOT NULL,
   `personId` int(10) unsigned NOT NULL,
-  `role` enum('Co-Investigator','Principal Investigator','Alternate Contact','ERA Admin') DEFAULT NULL,
+  `role` enum('Co-Investigator','Principal Investigator','Alternate Contact','ERA Admin','Associate') DEFAULT NULL,
   PRIMARY KEY (`proposalHasPersonId`),
   KEY `fk_ProposalHasPerson_Proposal` (`proposalId`),
   KEY `fk_ProposalHasPerson_Personal` (`personId`),
@@ -4372,10 +4423,13 @@ CREATE TABLE `Screening` (
   `diffractionPlanId` int(10) unsigned DEFAULT NULL COMMENT 'references DiffractionPlan',
   `dataCollectionGroupId` int(11) DEFAULT NULL,
   `xmlSampleInformation` longblob DEFAULT NULL,
+  `autoProcProgramId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`screeningId`),
   KEY `Screening_FKIndexDiffractionPlanId` (`diffractionPlanId`),
   KEY `dcgroupId` (`dataCollectionGroupId`),
   KEY `_Screening_ibfk2` (`dataCollectionId`),
+  KEY `Screening_fk_autoProcProgramId` (`autoProcProgramId`),
+  CONSTRAINT `Screening_fk_autoProcProgramId` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `Screening_ibfk_1` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `_Screening_ibfk2` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -4629,7 +4683,7 @@ DROP TABLE IF EXISTS `Session_has_Person`;
 CREATE TABLE `Session_has_Person` (
   `sessionId` int(10) unsigned NOT NULL DEFAULT 0,
   `personId` int(10) unsigned NOT NULL DEFAULT 0,
-  `role` enum('Local Contact','Local Contact 2','Staff','Team Leader','Co-Investigator','Principal Investigator','Alternate Contact','Data Access','Team Member','ERA Admin') DEFAULT NULL,
+  `role` enum('Local Contact','Local Contact 2','Staff','Team Leader','Co-Investigator','Principal Investigator','Alternate Contact','Data Access','Team Member','ERA Admin','Associate') DEFAULT NULL,
   `remote` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`sessionId`,`personId`),
   KEY `Session_has_Person_FKIndex2` (`personId`),
@@ -6073,4 +6127,4 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-07 11:36:18
+-- Dump completed on 2021-07-23 18:38:10
