@@ -5,6 +5,30 @@ History
 Unreleased / master
 -------------------
 
+1.24.0 (2021-07-23)
+-------------------
+
+Column changes:
+
+* In ``Screening``: new column ``autoProcProgramId``
+* In ``AutoProcScalingStatistics``: new column ``resIOverSigI2`` (resolution where I/Sigma(I) equals 2)
+* In ``AutoProcProgram``: removed column ``dataCollectionId`` and its foreign key constraint
+* In ``ProposalHasPerson``: added enum option 'Associate' to the role column
+* In ``Session_has_Person``: added enum option 'Associate' to the role column
+
+Added tables:
+
+* ``Positioner``: An arbitrary positioner and its value, could be e.g. a motor. Allows for instance to store some positions with a sample or subsample
+* ``BLSample_has_Positioner``
+* ``BLSubSample_has_Positioner``
+
+Stored procedure changes:
+
+* ``upsert_session_for_proposal_code_number``: This is now truly an "upsert" procedure, as it allows specifying an existing session either through p_id OR through p_proposalCode + p_proposalNumber + p_visitNumber.
+* ``insert_processing_scaling_v2``: Version 2 of ``insert_processing_scaling`` which allows writing to the new ``AutoProcScalingStatistics.resIOverSigI2`` column.
+
+Grants for the new stored procedure and some table grants have also been added.
+
 1.23.0 (2021-07-07)
 -------------------
 
