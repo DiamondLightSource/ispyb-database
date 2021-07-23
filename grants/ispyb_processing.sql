@@ -11,7 +11,7 @@ GRANT SELECT ON AdminVar TO 'ispyb_processing'; -- Hack TO allow ispyb_processin
 GRANT SELECT,INSERT ON ImageQualityIndicators TO 'ispyb_processing'; -- Needed for bulk insertion of aggregated IQIs
 GRANT SELECT,INSERT,UPDATE ON BLSampleImage TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON BLSampleImageAnalysis TO 'ispyb_processing';
-GRANT SELECT,INSERT,UPDATE ON BLSampleImageMeasurement TO 'ispyb_processing';
+-- GRANT SELECT,INSERT,UPDATE ON BLSampleImageMeasurement TO 'ispyb_processing'; -- unused table
 GRANT SELECT,INSERT,UPDATE ON BLSampleImage_has_AutoScoreClass TO 'ispyb_processing';
 
 GRANT EXECUTE ON FUNCTION retrieve_visit_id TO 'ispyb_processing';
