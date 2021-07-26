@@ -136,5 +136,8 @@ GRANT EXECUTE ON PROCEDURE insert_phasing_analysis_results TO 'ispyb_processing'
 
 GRANT EXECUTE ON PROCEDURE insert_cryoem_initial_model TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE upsert_particle_classification TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE upsert_particle_classification_v2 TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE upsert_particle_classification_group TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE upsert_particle_picker TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE upsert_particle_picker_v2 TO 'ispyb_processing';
+
