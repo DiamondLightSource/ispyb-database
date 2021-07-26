@@ -5,6 +5,16 @@ History
 Unreleased / master
 -------------------
 
+1.25.0 (2021-07-26)
+-------------------
+
+New versions of stored procedures:
+
+* ``upsert_particle_picker_v2`` - new parameter ``p_summaryImageFullPath``
+* ``upsert_particle_classification_v2`` - new parameter ``p_classDistribution``
+
+
+
 1.24.0 (2021-07-23)
 -------------------
 

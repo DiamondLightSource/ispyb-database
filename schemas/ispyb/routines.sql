@@ -9657,6 +9657,64 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `upsert_particle_classification_v2` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `upsert_particle_classification_v2`(
+  INOUT p_id int unsigned,
+  p_particleClassificationGroupId int unsigned,
+  p_classNumber int unsigned,
+  p_classImageFullPath varchar(255),
+  p_particlesPerClass int unsigned,
+  p_classDistribution float,
+  p_rotationAccuracy float,
+  p_translationAccuracy float,
+  p_estimatedResolution float,
+  p_overallFourierCompleteness float
+ )
+    MODIFIES SQL DATA
+    COMMENT 'Inserts or updates info about a particle classification (p_id).\nMandatory columns:\nFor insert: p_particleClassificationGroupId\nFor update: p_id \nReturns: Record ID in p_id.'
+BEGIN
+  IF p_id IS NOT NULL OR p_particleClassificationGroupId IS NOT NULL THEN
+    INSERT INTO ParticleClassification (particleClassificationId, 
+      particleClassificationGroupId, classNumber, classImageFullPath, 
+      particlesPerClass, classDistribution, rotationAccuracy, 
+      translationAccuracy, estimatedResolution, overallFourierCompleteness)
+      VALUES (p_id, p_particleClassificationGroupId, p_classNumber, 
+        p_classImageFullPath, 
+        p_particlesPerClass, p_classDistribution, p_rotationAccuracy, 
+        p_translationAccuracy, p_estimatedResolution, 
+        p_overallFourierCompleteness)
+      ON DUPLICATE KEY UPDATE
+        particleClassificationGroupId = IFNULL(p_particleClassificationGroupId, particleClassificationGroupId),
+        classNumber = IFNULL(p_classNumber, classNumber),
+        classImageFullPath = IFNULL(p_classImageFullPath, classImageFullPath),
+        particlesPerClass = IFNULL(p_particlesPerClass, particlesPerClass),
+        classDistribution = IFNULL(p_classDistribution, classDistribution),
+        rotationAccuracy = IFNULL(p_rotationAccuracy, rotationAccuracy),
+        translationAccuracy = IFNULL(p_translationAccuracy, translationAccuracy),
+        estimatedResolution = IFNULL(p_estimatedResolution, estimatedResolution),
+        overallFourierCompleteness = IFNULL(p_overallFourierCompleteness, overallFourierCompleteness);
+
+    IF p_id IS NULL THEN
+      SET p_id = LAST_INSERT_ID();
+    END IF;
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_particleClassificationGroupId must be non-NULL.';
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `upsert_particle_picker` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -9687,6 +9745,51 @@ BEGIN
         particlePickingTemplate = IFNULL(p_particlePickingTemplate, particlePickingTemplate),
         particleDiameter = IFNULL(p_particleDiameter, particleDiameter),
         numberOfParticles = IFNULL(p_numberOfParticles, numberOfParticles);
+
+    IF p_id IS NULL THEN
+      SET p_id = LAST_INSERT_ID();
+    END IF;
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_firstMotionCorrectionId must be non-NULL.';
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `upsert_particle_picker_v2` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `upsert_particle_picker_v2`(
+  INOUT p_id int(11) unsigned,
+  p_firstMotionCorrectionId int(11) unsigned,
+  p_programId int(11) unsigned,
+  p_particlePickingTemplate varchar(255),
+  p_particleDiameter float,
+  p_numberOfParticles int unsigned,
+  p_summaryImageFullPath varchar(255)
+ )
+    MODIFIES SQL DATA
+    COMMENT 'Inserts or updates info about a particle picker (p_id).\nMandatory columns:\nFor insert: p_firstMotionCorrectionId\nFor update: p_id \nReturns: Record ID in p_id.'
+BEGIN
+  IF p_id IS NOT NULL OR p_firstMotionCorrectionId IS NOT NULL THEN
+    INSERT INTO ParticlePicker (particlePickerId, firstMotionCorrectionId, programId, particlePickingTemplate, particleDiameter, numberOfParticles, summaryImageFullPath)
+      VALUES (p_id, p_firstMotionCorrectionId, p_programId, p_particlePickingTemplate, p_particleDiameter, p_numberOfParticles, p_summaryImageFullPath)
+      ON DUPLICATE KEY UPDATE
+        firstMotionCorrectionId = IFNULL(p_firstMotionCorrectionId, firstMotionCorrectionId),
+        programId = IFNULL(p_programId, programId),
+        particlePickingTemplate = IFNULL(p_particlePickingTemplate, particlePickingTemplate),
+        particleDiameter = IFNULL(p_particleDiameter, particleDiameter),
+        numberOfParticles = IFNULL(p_numberOfParticles, numberOfParticles),
+        summaryImageFullPath = IFNULL(p_summaryImageFullPath, summaryImageFullPath);
 
     IF p_id IS NULL THEN
       SET p_id = LAST_INSERT_ID();
@@ -11027,7 +11130,7 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-23 18:38:10
+-- Dump completed on 2021-07-26 11:38:57
 -- MariaDB dump 10.19  Distrib 10.5.10-MariaDB, for Linux (x86_64)
 --
 -- Host: 10.88.0.5    Database: ispyb_build
@@ -11074,4 +11177,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-23 18:38:11
+-- Dump completed on 2021-07-26 11:38:57
