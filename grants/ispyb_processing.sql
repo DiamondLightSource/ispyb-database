@@ -12,6 +12,8 @@ GRANT SELECT,INSERT ON ImageQualityIndicators TO 'ispyb_processing'; -- Needed f
 GRANT SELECT,INSERT,UPDATE ON BLSampleImage TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON BLSampleImageAnalysis TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON BLSampleImage_has_AutoScoreClass TO 'ispyb_processing';
+GRANT SELECT,INSERT ON PDB TO 'ispyb_processing';
+GRANT SELECT,INSERT ON Protein_has_PDB TO 'ispyb_processing';
 
 GRANT EXECUTE ON FUNCTION retrieve_visit_id TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `retrieve_dc_main` TO 'ispyb_processing';
