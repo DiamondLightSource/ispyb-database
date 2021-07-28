@@ -6130,7 +6130,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber"
@@ -6184,7 +6187,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber"
@@ -6240,7 +6246,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             NULL "sessionNumber"
@@ -6295,7 +6304,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             NULL "sessionNumber"
@@ -6381,7 +6393,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber"
@@ -6435,7 +6450,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber"
@@ -6491,7 +6509,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             NULL "sessionNumber"
@@ -6546,7 +6567,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             NULL "sessionNumber"
@@ -6632,7 +6656,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber"
@@ -6686,7 +6713,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber"
@@ -6742,7 +6772,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             NULL "sessionNumber"
@@ -6797,7 +6830,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             NULL "sessionNumber"
@@ -11130,7 +11166,7 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-26 11:38:57
+-- Dump completed on 2021-07-28 12:13:38
 -- MariaDB dump 10.19  Distrib 10.5.10-MariaDB, for Linux (x86_64)
 --
 -- Host: 10.88.0.5    Database: ispyb_build
@@ -11177,4 +11213,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-26 11:38:57
+-- Dump completed on 2021-07-28 12:13:38

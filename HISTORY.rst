@@ -5,6 +5,15 @@ History
 Unreleased / master
 -------------------
 
+1.25.1 (2021-07-28)
+-------------------
+
+Return additional columns in the ``retrieve_scm_sample*`` stored procedures:
+
+* qMin
+* qMax
+* reductionParametersAveraging
+
 1.25.0 (2021-07-26)
 -------------------
 
