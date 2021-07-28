@@ -51,7 +51,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber"
@@ -105,7 +108,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber"
@@ -161,7 +167,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             NULL "sessionNumber"
@@ -216,7 +225,10 @@ BEGIN
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "qMin",
+            plan.qMax "qMax",
+            plan.reductionParametersAveraging "reductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             NULL "sessionNumber"
