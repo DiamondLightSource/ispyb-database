@@ -10,7 +10,8 @@ ALTER TABLE MXMRRunBlob
   ADD `nearestAtomChainId` varchar(2) DEFAULT NULL COMMENT 'Chain identifier of nearest atom',
   ADD `nearestAtomResName` varchar(4) DEFAULT NULL COMMENT 'Residue name of nearest atom',
   ADD `nearestAtomResSeq` mediumint unsigned DEFAULT NULL COMMENT 'Residue sequence number of nearest atom',
-  ADD `nearestAtomDistance` float DEFAULT NULL COMMENT 'Distance in Angstrom to nearest atom'
+  ADD `nearestAtomDistance` float DEFAULT NULL COMMENT 'Distance in Angstrom to nearest atom',
+  ADD `mapType` enum('anomalous', 'difference') DEFAULT NULL COMMENT 'Type of electron density map corresponding to this blob'
 ;
 
 UPDATE SchemaStatus SET schemaStatus = 'DONE' WHERE scriptName = '2021_08_05_MXMRRunBlob_update.sql';
