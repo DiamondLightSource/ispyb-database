@@ -22,7 +22,7 @@ BEGIN NOT ATOMIC
   DECLARE mxmr_pipeline varchar(255);
   DECLARE mxmr_success tinyint(1);
   DECLARE mxmr_starttime, mxmr_endtime datetime;
-  DECLARE mxmr_inputCoordFile, mxmr_outputCoordFile, mxmr_inputMTZFile, mxmr_outputMTZFile, mxmr_runDirectory, mxmr_logFile varchar(255);
+  DECLARE mxmr_inputCoordFile, mxmr_outputCoordFile, mxmr_inputMTZFile, mxmr_outputMTZFile, mxmr_runDirectory, mxmr_runDirectory_tmp, mxmr_logFile varchar(255);
 
   DECLARE cur1 CURSOR FOR
     SELECT
@@ -48,29 +48,35 @@ BEGIN NOT ATOMIC
 
     SET app_id := LAST_INSERT_ID();
  
+    -- mxmr_runDirectory with trailing space for use with REPLACE below
+    SET mxmr_runDirectory_tmp = mxmr_runDirectory;
+    IF mxmr_runDirectory_tmp IS NOT NULL AND RIGHT(mxmr_runDirectory_tmp, 1) != '/' THEN
+      SET mxmr_runDirectory_tmp = CONCAT(mxmr_runDirectory_tmp, '/') ;
+    END IF;
+
     IF mxmr_inputCoordFile IS NOT NULL THEN
       INSERT INTO AutoProcProgramAttachment (autoProcProgramId, fileType, filePath, fileName, recordTimeStamp)
-        VALUES (app_id, "Input", mxmr_runDirectory, mxmr_inputCoordFile, mxmr_endtime);
+        VALUES (app_id, "Input", mxmr_runDirectory, REPLACE(mxmr_inputCoordFile, mxmr_runDirectory_tmp, ''), mxmr_endtime);
     END IF;
 
     IF mxmr_inputMTZFile IS NOT NULL THEN
       INSERT INTO AutoProcProgramAttachment (autoProcProgramId, fileType, filePath, fileName, recordTimeStamp)
-        VALUES (app_id, "Input", mxmr_runDirectory, mxmr_inputMTZFile, mxmr_endtime);
+        VALUES (app_id, "Input", mxmr_runDirectory, REPLACE(mxmr_inputMTZFile, mxmr_runDirectory_tmp, ''), mxmr_endtime);
     END IF;
 
     IF mxmr_outputCoordFile IS NOT NULL THEN
       INSERT INTO AutoProcProgramAttachment (autoProcProgramId, fileType, filePath, fileName, recordTimeStamp)
-        VALUES (app_id, "Result", mxmr_runDirectory, mxmr_outputCoordFile, mxmr_endtime);
+        VALUES (app_id, "Result", mxmr_runDirectory, REPLACE(mxmr_outputCoordFile, mxmr_runDirectory_tmp, ''), mxmr_endtime);
     END IF;
 
     IF mxmr_outputMTZFile IS NOT NULL THEN
     INSERT INTO AutoProcProgramAttachment (autoProcProgramId, fileType, filePath, fileName, recordTimeStamp)
-      VALUES (app_id, "Result", mxmr_runDirectory, mxmr_outputMTZFile, mxmr_endtime);
+      VALUES (app_id, "Result", mxmr_runDirectory, REPLACE(mxmr_outputMTZFile, mxmr_runDirectory_tmp, ''), mxmr_endtime);
     END IF;
 
     IF mxmr_logFile IS NOT NULL THEN
     INSERT INTO AutoProcProgramAttachment (autoProcProgramId, fileType, filePath, fileName, recordTimeStamp, importanceRank)
-      VALUES (app_id, "Log", mxmr_runDirectory, mxmr_logFile, mxmr_endtime, 0);
+      VALUES (app_id, "Log", mxmr_runDirectory, REPLACE(mxmr_logFile, mxmr_runDirectory_tmp, ''), mxmr_endtime, 0);
     END IF;
 
   END LOOP;
