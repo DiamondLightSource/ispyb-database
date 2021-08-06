@@ -1,5 +1,5 @@
 DELIMITER ;;
-CREATE PROCEDURE `upsert_mrrun`(
+CREATE OR REPLACE PROCEDURE `upsert_mrrun`(
      INOUT p_id integer,
      p_parentId integer,
      p_success boolean,

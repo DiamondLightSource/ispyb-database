@@ -1,5 +1,5 @@
 DELIMITER ;;
-CREATE FUNCTION `upsert_mrrun`(
+CREATE OR REPLACE FUNCTION `upsert_mrrun`(
      p_id integer,
      p_parentId integer,
      p_success boolean,
