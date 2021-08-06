@@ -13,11 +13,27 @@ ALTER TABLE MXMRRun
   ADD CONSTRAINT mxMRRun_FK2 FOREIGN KEY (autoProcProgramId) REFERENCES AutoProcProgram(autoProcProgramId)
 ;
 
+ALTER TABLE MXMRRunBlob
+  ADD `filePath` varchar(255) DEFAULT NULL COMMENT 'File path corresponding to the filenames in the view* columns',
+  ADD `x` float DEFAULT NULL COMMENT 'Fractional x coordinate of blob in range [-1, 1]',
+  ADD `y` float DEFAULT NULL COMMENT 'Fractional y coordinate of blob in range [-1, 1]',
+  ADD `z` float DEFAULT NULL COMMENT 'Fractional z coordinate of blob in range [-1, 1]',
+  ADD `height` float DEFAULT NULL COMMENT 'Blob height (sigmas)',
+  ADD `occupancy` float DEFAULT NULL COMMENT 'Site occupancy factor in range [0, 1]',
+  ADD `nearestAtomName` varchar(4) DEFAULT NULL COMMENT 'Name of nearest atom',
+  ADD `nearestAtomChainId` varchar(2) DEFAULT NULL COMMENT 'Chain identifier of nearest atom',
+  ADD `nearestAtomResName` varchar(4) DEFAULT NULL COMMENT 'Residue name of nearest atom',
+  ADD `nearestAtomResSeq` mediumint unsigned DEFAULT NULL COMMENT 'Residue sequence number of nearest atom',
+  ADD `nearestAtomDistance` float DEFAULT NULL COMMENT 'Distance in Angstrom to nearest atom',
+  ADD `mapType` enum('anomalous', 'difference') DEFAULT NULL COMMENT 'Type of electron density map corresponding to this blob'
+;
+
 -- Copy relevant columns from MXMRRun table to new entries in the AutoProcProgram and AutoProcProgramAttachment tables
 DELIMITER ;;
 BEGIN NOT ATOMIC
   DECLARE done INT DEFAULT FALSE;
   DECLARE app_id int unsigned;
+  DECLARE mxmrrunid int(11) unsigned;
   DECLARE mxmr_commandLine, mxmr_message varchar(255);
   DECLARE mxmr_pipeline varchar(255);
   DECLARE mxmr_success tinyint(1);
@@ -26,7 +42,7 @@ BEGIN NOT ATOMIC
 
   DECLARE cur1 CURSOR FOR
     SELECT
-      commandLine, pipeline, success, message, starttime, endtime, 
+      mxMRRunId, commandLine, pipeline, success, message, starttime, endtime,
       inputCoordFile, outputCoordFile, inputMTZFile, outputMTZFile, runDirectory, logFile
     FROM MXMRRun;
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
@@ -34,7 +50,7 @@ BEGIN NOT ATOMIC
   OPEN cur1;
   read_loop: LOOP
     FETCH cur1 INTO
-      mxmr_commandLine, mxmr_pipeline, mxmr_success, mxmr_message, mxmr_starttime, mxmr_endtime,
+      mxmrrunid, mxmr_commandLine, mxmr_pipeline, mxmr_success, mxmr_message, mxmr_starttime, mxmr_endtime,
       mxmr_inputCoordFile, mxmr_outputCoordFile, mxmr_inputMTZFile, mxmr_outputMTZFile, mxmr_runDirectory, mxmr_logFile
     ;
     IF done THEN
@@ -48,6 +64,12 @@ BEGIN NOT ATOMIC
 
     SET app_id := LAST_INSERT_ID();
  
+    IF mxmr_runDirectory IS NOT NULL THEN
+      UPDATE MXMRRunBlob
+      SET filePath = mxmr_runDirectory
+      WHERE mxMRRunId = mxmrrunid;
+    END IF;
+
     -- mxmr_runDirectory with trailing space for use with REPLACE below
     SET mxmr_runDirectory_tmp = mxmr_runDirectory;
     IF mxmr_runDirectory_tmp IS NOT NULL AND RIGHT(mxmr_runDirectory_tmp, 1) != '/' THEN
