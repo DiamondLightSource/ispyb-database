@@ -33,7 +33,7 @@ DELIMITER ;;
 BEGIN NOT ATOMIC
   DECLARE done INT DEFAULT FALSE;
   DECLARE app_id int unsigned;
-  DECLARE mxmrrunid int(11) unsigned;
+  DECLARE mxmr_runid int(11) unsigned;
   DECLARE mxmr_commandLine, mxmr_message varchar(255);
   DECLARE mxmr_pipeline varchar(255);
   DECLARE mxmr_success tinyint(1);
@@ -50,7 +50,7 @@ BEGIN NOT ATOMIC
   OPEN cur1;
   read_loop: LOOP
     FETCH cur1 INTO
-      mxmrrunid, mxmr_commandLine, mxmr_pipeline, mxmr_success, mxmr_message, mxmr_starttime, mxmr_endtime,
+      mxmr_runid, mxmr_commandLine, mxmr_pipeline, mxmr_success, mxmr_message, mxmr_starttime, mxmr_endtime,
       mxmr_inputCoordFile, mxmr_outputCoordFile, mxmr_inputMTZFile, mxmr_outputMTZFile, mxmr_runDirectory, mxmr_logFile
     ;
     IF done THEN
@@ -63,11 +63,16 @@ BEGIN NOT ATOMIC
       VALUES (mxmr_commandLine, mxmr_pipeline, mxmr_success, mxmr_message, mxmr_starttime, mxmr_endtime, mxmr_endtime);
 
     SET app_id := LAST_INSERT_ID();
- 
+
+    -- Set the MXMRRun.autoProcProgramId column to point to the newly-created AutoProcProgram entry
+    UPDATE MXMRRun
+    SET autoProcProgramId = app_id
+    WHERE mxMRRunId = mxmr_runid;
+
     IF mxmr_runDirectory IS NOT NULL THEN
       UPDATE MXMRRunBlob
       SET filePath = mxmr_runDirectory
-      WHERE mxMRRunId = mxmrrunid;
+      WHERE mxMRRunId = mxmr_runid;
     END IF;
 
     -- mxmr_runDirectory with trailing space for use with REPLACE below
