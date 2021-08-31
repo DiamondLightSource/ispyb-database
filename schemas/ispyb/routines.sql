@@ -7608,6 +7608,40 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_dewar_comments_json_merge` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `update_dewar_comments_json_merge`(
+  IN p_id int(10) unsigned,
+  p_comments JSON
+)
+    MODIFIES SQL DATA
+    COMMENT 'Merges in additional JSON into the comments column on a dewar/parcel (p_id).\nMandatory columns: p_id \nReturns: Nothing'
+BEGIN
+  IF p_id IS NOT NULL THEN
+    IF JSON_VALID(p_comments) THEN
+      UPDATE Dewar
+        SET comments = JSON_MERGE_PRESERVE(IFNULL(comments, '{}'), p_comments)
+      WHERE dewarId = p_id;
+    ELSE
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_comments is invalid JSON';
+    END IF;
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id is NULL';
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `update_processing_program_for_id_range` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -11166,7 +11200,7 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-28 12:13:38
+-- Dump completed on 2021-08-31 16:30:17
 -- MariaDB dump 10.19  Distrib 10.5.10-MariaDB, for Linux (x86_64)
 --
 -- Host: 10.88.0.5    Database: ispyb_build
@@ -11213,4 +11247,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-28 12:13:38
+-- Dump completed on 2021-08-31 16:30:17

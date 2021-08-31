@@ -5,6 +5,23 @@ History
 Unreleased / master
 -------------------
 
+1.26.0 (2021-08-31)
+-------------------
+
+Column changes:
+
+* Add a source column to the PDB table
+
+Stored procedure changes:
+
+* New stored procedure ``update_dewar_comments_json_merge`` to JSON merge the Dewar comments with a parameter
+* Add 'plan' prefix to new DCPlan column aliases in ``retrieve_scm_sample*`` stored procedures (bug)
+
+Lookup table data changes:
+
+* Fill in some missing properties for container types
+
+
 1.25.1 (2021-07-28)
 -------------------
 
@@ -21,7 +38,6 @@ New versions of stored procedures:
 
 * ``upsert_particle_picker_v2`` - new parameter ``p_summaryImageFullPath``
 * ``upsert_particle_classification_v2`` - new parameter ``p_classDistribution``
-
 
 
 1.24.0 (2021-07-23)

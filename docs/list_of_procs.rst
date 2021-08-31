@@ -208,7 +208,17 @@
    For insert: p_particlePickerId
    For update: p_id
    Returns: Record ID in p_id."
+   "**upsert_particle_classification_v2**",	"INOUT p_id int unsigned,   p_particleClassificationGroupId int unsigned,   p_classNumber int unsigned,   p_classImageFullPath varchar(255),   p_particlesPerClass int unsigned,   p_classDistribution float,   p_rotationAccuracy float,   p_translationAccuracy float,   p_estimatedResolution float,   p_overallFourierCompleteness float",	"Inserts or updates info about a particle classification (p_id).
+   Mandatory columns:
+   For insert: p_particleClassificationGroupId
+   For update: p_id
+   Returns: Record ID in p_id."
    "**upsert_particle_picker**",	"INOUT p_id int(11) unsigned,   p_firstMotionCorrectionId int(11) unsigned,   p_programId int(11) unsigned,   p_particlePickingTemplate varchar(255),   p_particleDiameter float,   p_numberOfParticles int unsigned",	"Inserts or updates info about a particle picker (p_id).
+   Mandatory columns:
+   For insert: p_firstMotionCorrectionId
+   For update: p_id
+   Returns: Record ID in p_id."
+   "**upsert_particle_picker_v2**",	"INOUT p_id int(11) unsigned,   p_firstMotionCorrectionId int(11) unsigned,   p_programId int(11) unsigned,   p_particlePickingTemplate varchar(255),   p_particleDiameter float,   p_numberOfParticles int unsigned,   p_summaryImageFullPath varchar(255)",	"Inserts or updates info about a particle picker (p_id).
    Mandatory columns:
    For insert: p_firstMotionCorrectionId
    For update: p_id

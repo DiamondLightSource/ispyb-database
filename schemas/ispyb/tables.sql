@@ -3150,6 +3150,7 @@ CREATE TABLE `PDB` (
   `name` varchar(255) DEFAULT NULL,
   `contents` mediumtext DEFAULT NULL,
   `code` varchar(4) DEFAULT NULL,
+  `source` varchar(30) DEFAULT NULL COMMENT 'Could be e.g. AlphaFold or RoseTTAFold',
   PRIMARY KEY (`pdbId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -6127,4 +6128,4 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-23 18:38:10
+-- Dump completed on 2021-08-31 11:30:55
