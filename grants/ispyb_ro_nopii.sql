@@ -217,4 +217,9 @@ GRANT SELECT ON XFEFluorescenceSpectrum TO ispyb_ro_nopii;
 GRANT SELECT ON XrayCentringResult TO ispyb_ro_nopii;
 GRANT SELECT ON XRFFluorescenceMapping TO ispyb_ro_nopii;
 GRANT SELECT ON XRFFluorescenceMappingROI TO ispyb_ro_nopii;
+GRANT SELECT ON ParticleClassificationGroup TO ispyb_ro_nopii;
+GRANT SELECT ON ParticleClassification TO ispyb_ro_nopii;
+GRANT SELECT ON ParticlePicker TO ispyb_ro_nopii;
+GRANT SELECT ON CryoemInitialModel TO ispyb_ro_nopii;
+GRANT SELECT ON ParticleClassification_has_CryoemInitialModel TO ispyb_ro_nopii;
 
