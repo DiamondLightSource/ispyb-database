@@ -15,6 +15,19 @@ GRANT SELECT,INSERT,UPDATE ON BLSampleImage_has_AutoScoreClass TO 'ispyb_process
 GRANT SELECT,INSERT ON PDB TO 'ispyb_processing';
 GRANT SELECT,INSERT ON Protein_has_PDB TO 'ispyb_processing';
 
+GRANT SELECT,INSERT,UPDATE ON AutoProcProgram TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON AutoProcProgramAttachment TO 'ispyb_processing';
+
+GRANT SELECT,INSERT,UPDATE ON CryoemInitialModel TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON ParticleClassification TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON ParticleClassificationGroup TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON ParticlePicker TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON ParticleClassification_has_CryoemInitialModel TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON MotionCorrection TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON MotionCorrectionDrift TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON CTF TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON Movie TO 'ispyb_processing';
+
 GRANT EXECUTE ON FUNCTION retrieve_visit_id TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `retrieve_dc_main` TO 'ispyb_processing';
 GRANT EXECUTE ON FUNCTION upsert_sample TO 'ispyb_processing';
