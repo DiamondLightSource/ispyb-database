@@ -222,4 +222,4 @@ GRANT SELECT ON ParticleClassification TO ispyb_ro_nopii;
 GRANT SELECT ON ParticlePicker TO ispyb_ro_nopii;
 GRANT SELECT ON CryoemInitialModel TO ispyb_ro_nopii;
 GRANT SELECT ON ParticleClassification_has_CryoemInitialModel TO ispyb_ro_nopii;
-
+GRANT SELECT ON RelativeIceThickness TO ispyb_ro_nopii;
