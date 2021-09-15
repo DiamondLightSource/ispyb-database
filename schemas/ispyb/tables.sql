@@ -4028,6 +4028,30 @@ CREATE TABLE `PurificationColumn` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `RelativeIceThickness`
+--
+
+DROP TABLE IF EXISTS `RelativeIceThickness`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `RelativeIceThickness` (
+  `relativeIceThicknessId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `motionCorrectionId` int(11) unsigned DEFAULT NULL,
+  `autoProcProgramId` int(11) unsigned DEFAULT NULL,
+  `minimum` float DEFAULT NULL COMMENT 'Minimum relative ice thickness, Unitless',
+  `q1` float DEFAULT NULL COMMENT 'Quartile 1, unitless',
+  `median` float DEFAULT NULL COMMENT 'Median relative ice thickness, Unitless',
+  `q3` float DEFAULT NULL COMMENT 'Quartile 3, unitless',
+  `maximum` float DEFAULT NULL COMMENT 'Minimum relative ice thickness, Unitless',
+  PRIMARY KEY (`relativeIceThicknessId`),
+  KEY `RelativeIceThickness_fk_programId` (`autoProcProgramId`),
+  KEY `RelativeIceThickness_fk_motionCorrectionId` (`motionCorrectionId`),
+  CONSTRAINT `RelativeIceThickness_fk_motionCorrectionId` FOREIGN KEY (`motionCorrectionId`) REFERENCES `MotionCorrection` (`motionCorrectionId`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `RelativeIceThickness_fk_programId` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `RobotAction`
 --
 
@@ -6128,4 +6152,4 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-08-31 11:30:55
+-- Dump completed on 2021-09-14 13:27:38

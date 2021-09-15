@@ -5,6 +5,14 @@ History
 Unreleased / master
 -------------------
 
+1.27.0 (2021-09-15)
+-------------------
+
+Added cryoEM table ``RelativeIceThickness`` to record relative ice thickness values per micrograph.
+
+Grants for this table have been added to the relevant scripts.
+
+
 1.26.0 (2021-08-31)
 -------------------
 
