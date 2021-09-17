@@ -7275,6 +7275,93 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_container_session_id` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `update_container_session_id`(
+    IN p_containerId int unsigned,
+    IN p_proposalCode varchar(10),
+    IN p_proposalNumber int,
+    IN p_sessionNumber int,
+    IN p_authLogin varchar(45)
+)
+    MODIFIES SQL DATA
+    COMMENT 'Updates sessionId in the Container (given by p_containerId). If p_authLogin is given, it must be authorised.'
+BEGIN
+
+  DECLARE v_sessionId int unsigned DEFAULT NULL;
+  DECLARE v_rows int unsigned DEFAULT 0;
+  DECLARE v_containerId int unsigned DEFAULT NULL;
+  DECLARE v_oldSessionId int unsigned DEFAULT NULL;
+
+  IF p_authLogin IS NOT NULL THEN 
+
+    
+    SELECT count(*)
+      INTO v_rows
+    FROM UserGroup_has_Person ughp
+      JOIN Person p ON p.personId = ughp.personId
+      JOIN UserGroup ug ON ug.userGroupId = ughp.userGroupId
+      WHERE p.login = p_authLogin AND ug.name ='autocollect';
+
+  END IF;
+
+  IF p_authLogin IS NOT NULL AND v_rows = 0 THEN
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Not authorised';
+  END IF;
+  
+  IF p_proposalCode IS NOT NULL AND p_proposalNumber IS NOT NULL AND 
+    p_sessionNumber IS NOT NULL THEN
+
+    SELECT bs.sessionId INTO v_sessionId
+    FROM BLSession bs 
+      JOIN Proposal p ON p.proposalId = bs.proposalId
+    WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber;
+
+  END IF;
+
+  IF p_containerId IS NOT NULL THEN
+
+    
+    
+    IF (p_proposalCode IS NULL AND p_proposalNumber IS NULL AND 
+      p_sessionNumber IS NULL) OR NOT (v_sessionId IS NULL) THEN
+
+        SELECT containerId, c.sessionId INTO v_containerId, v_oldSessionId 
+        FROM Container c
+        WHERE containerId = p_containerId;
+
+        IF NOT (v_containerId IS NULL) THEN
+          UPDATE Container
+          SET sessionId = v_sessionId
+          WHERE containerId = p_containerId;
+
+          SELECT v_oldSessionId;
+        ELSE
+          SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Container p_containerId not found';
+        END IF;
+
+    ELSE
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Invalid or not found session';
+    END IF;
+
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='p_containerId is NULL.';
+
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `update_container_status` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -7560,6 +7647,126 @@ BEGIN
 		WHERE
 			dataCollectionId = p_id;
 	END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_dc_plans` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `update_dc_plans`(
+    IN p_shippingId int unsigned,
+    IN p_dewarId int unsigned,
+    IN p_containerId int unsigned,
+    IN p_sampleId int unsigned,
+    IN p_strategyOption varchar(200),
+    IN p_priority int,
+    IN p_minimalResolution float,
+    IN p_requiredResolution double,
+    IN p_experimentKind varchar(20), 
+    IN p_energy float, 
+    IN p_anomalousScatterer varchar(255),
+    IN p_centringMethod varchar(20),
+    IN p_useNulls boolean,
+    IN p_useProposalType varchar(10)
+)
+    MODIFIES SQL DATA
+    COMMENT 'Updates the DiffractionPlan strategyOption and priority for a given shipment.\nIf p_shippingId is set, then update for all plans in the shipment.\nIf p_dewarId is set, then update for all plans in the dewar.\nIf p_containerId is set, then update for all plans in the container.\nIf p_sampleId is set, then update for all plans in the sample.\nIf p_useNulls is true, then use plan parameter values as given, otherwise only set them if they are not-null.\np_useProposalType should be a value used in the proposalType column in the ExperimentType table.'
+BEGIN
+
+  DECLARE v_null boolean DEFAULT NULL;
+  DECLARE v_experimentTypeId int(10) unsigned DEFAULT NULL;
+
+  IF p_useNulls = True THEN
+    SET v_null := 1;
+  END IF;
+
+  IF p_experimentKind IS NULL THEN
+    SET v_experimentTypeId := NULL;
+  ELSE
+    SELECT experimentTypeId INTO v_experimentTypeId FROM ExperimentType WHERE name = p_experimentKind AND proposalType = p_useProposalType AND active = 1;
+  END IF;
+
+  IF p_shippingId IS NOT NULL THEN
+
+    UPDATE DiffractionPlan dp
+      INNER JOIN BLSample s ON s.diffractionPlanId = dp.diffractionPlanId
+      INNER JOIN Container c ON c.containerId = s.containerId
+      INNER JOIN Dewar d ON d.dewarId = c.dewarId
+    SET
+      dp.strategyOption = nvl2(v_null, p_strategyOption, ifnull(p_strategyOption, dp.strategyOption) ),
+      dp.priority = nvl2(v_null, p_priority, ifnull(p_priority, dp.priority) ),
+      dp.minimalResolution = nvl2(v_null, p_minimalResolution, ifnull(p_minimalResolution, dp.minimalResolution) ),
+      dp.requiredResolution = nvl2(v_null, p_requiredResolution, ifnull(p_requiredResolution, dp.requiredResolution) ),
+      dp.experimentKind = nvl2(v_null, p_experimentKind, ifnull(p_experimentKind, dp.experimentKind) ),
+      dp.experimentTypeId = nvl2(v_null, v_experimentTypeId, ifnull(v_experimentTypeId, dp.experimentTypeId) ),
+      dp.energy = nvl2(v_null, p_energy, ifnull(p_energy, dp.energy) ),
+      dp.anomalousScatterer = nvl2(v_null, p_anomalousScatterer, ifnull(p_anomalousScatterer, dp.anomalousScatterer) ),
+      dp.centringMethod = nvl2(v_null, p_centringMethod, ifnull(p_centringMethod, dp.centringMethod) )
+    WHERE d.shippingId = p_shippingId;
+
+  ELSEIF p_dewarId IS NOT NULL THEN
+
+    UPDATE DiffractionPlan dp
+      INNER JOIN BLSample s ON s.diffractionPlanId = dp.diffractionPlanId
+      INNER JOIN Container c ON c.containerId = s.containerId
+    SET
+      dp.strategyOption = nvl2(v_null, p_strategyOption, ifnull(p_strategyOption, dp.strategyOption) ),
+      dp.priority = nvl2(v_null, p_priority, ifnull(p_priority, dp.priority) ),
+      dp.minimalResolution = nvl2(v_null, p_minimalResolution, ifnull(p_minimalResolution, dp.minimalResolution) ),
+      dp.requiredResolution = nvl2(v_null, p_requiredResolution, ifnull(p_requiredResolution, dp.requiredResolution) ),
+      dp.experimentKind = nvl2(v_null, p_experimentKind, ifnull(p_experimentKind, dp.experimentKind) ),
+      dp.experimentTypeId = nvl2(v_null, v_experimentTypeId, ifnull(v_experimentTypeId, dp.experimentTypeId) ),
+      dp.energy = nvl2(v_null, p_energy, ifnull(p_energy, dp.energy) ),
+      dp.anomalousScatterer = nvl2(v_null, p_anomalousScatterer, ifnull(p_anomalousScatterer, dp.anomalousScatterer) ),
+      dp.centringMethod = nvl2(v_null, p_centringMethod, ifnull(p_centringMethod, dp.centringMethod) )
+    WHERE c.dewarId = p_dewarId;
+
+  ELSEIF p_containerId IS NOT NULL THEN
+
+    UPDATE DiffractionPlan dp
+      INNER JOIN BLSample s ON s.diffractionPlanId = dp.diffractionPlanId
+    SET
+      dp.strategyOption = nvl2(v_null, p_strategyOption, ifnull(p_strategyOption, dp.strategyOption) ),
+      dp.priority = nvl2(v_null, p_priority, ifnull(p_priority, dp.priority) ),
+      dp.minimalResolution = nvl2(v_null, p_minimalResolution, ifnull(p_minimalResolution, dp.minimalResolution) ),
+      dp.requiredResolution = nvl2(v_null, p_requiredResolution, ifnull(p_requiredResolution, dp.requiredResolution) ),
+      dp.experimentKind = nvl2(v_null, p_experimentKind, ifnull(p_experimentKind, dp.experimentKind) ),
+      dp.experimentTypeId = nvl2(v_null, v_experimentTypeId, ifnull(v_experimentTypeId, dp.experimentTypeId) ),
+      dp.energy = nvl2(v_null, p_energy, ifnull(p_energy, dp.energy) ),
+      dp.anomalousScatterer = nvl2(v_null, p_anomalousScatterer, ifnull(p_anomalousScatterer, dp.anomalousScatterer) ),
+      dp.centringMethod = nvl2(v_null, p_centringMethod, ifnull(p_centringMethod, dp.centringMethod) )
+    WHERE s.containerId = p_containerId;
+
+  ELSEIF p_sampleId IS NOT NULL THEN
+
+    UPDATE DiffractionPlan dp
+      INNER JOIN BLSample s ON s.diffractionPlanId = dp.diffractionPlanId
+    SET
+      dp.strategyOption = nvl2(v_null, p_strategyOption, ifnull(p_strategyOption, dp.strategyOption) ),
+      dp.priority = nvl2(v_null, p_priority, ifnull(p_priority, dp.priority) ),
+      dp.minimalResolution = nvl2(v_null, p_minimalResolution, ifnull(p_minimalResolution, dp.minimalResolution) ),
+      dp.requiredResolution = nvl2(v_null, p_requiredResolution, ifnull(p_requiredResolution, dp.requiredResolution) ),
+      dp.experimentKind = nvl2(v_null, p_experimentKind, ifnull(p_experimentKind, dp.experimentKind) ),
+      dp.experimentTypeId = nvl2(v_null, v_experimentTypeId, ifnull(v_experimentTypeId, dp.experimentTypeId) ),
+      dp.energy = nvl2(v_null, p_energy, ifnull(p_energy, dp.energy) ),
+      dp.anomalousScatterer = nvl2(v_null, p_anomalousScatterer, ifnull(p_anomalousScatterer, dp.anomalousScatterer) ),
+      dp.centringMethod = nvl2(v_null, p_centringMethod, ifnull(p_centringMethod, dp.centringMethod) )
+    WHERE s.blSampleId = p_sampleId;
+
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='One of arguments p_shippingId, p_dewarId, p_containerId, p_sampleId must be non-NULL';
+  END IF;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -11200,7 +11407,7 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-08-31 16:30:17
+-- Dump completed on 2021-09-17 11:27:06
 -- MariaDB dump 10.19  Distrib 10.5.10-MariaDB, for Linux (x86_64)
 --
 -- Host: 10.88.0.5    Database: ispyb_build
@@ -11247,4 +11454,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-08-31 16:30:17
+-- Dump completed on 2021-09-17 11:27:06
