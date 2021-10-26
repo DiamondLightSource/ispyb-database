@@ -59,6 +59,17 @@ ALTER TABLE XFEFluorescenceSpectrum
   ADD INDEX XFEFluorescenceSpectrum_instrumentId (instrumentId);
 
 
+ALTER TABLE RobotAction
+  ADD instrumentId SMALLINT UNSIGNED INVISIBLE;
+
+UPDATE RobotAction ra
+  JOIN BLSession bs ON bs.sessionId = ra.blsessionId
+  SET ra.instrumentId = bs.instrumentId;
+
+ALTER TABLE RobotAction
+  ADD INDEX RobotAction_instrumentId (instrumentId);
+
+
 ALTER TABLE AutoProcIntegration
   ADD instrumentId SMALLINT UNSIGNED INVISIBLE;
 

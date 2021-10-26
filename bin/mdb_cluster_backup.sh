@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/usr/bin/env bash
 
 # This script assumes a MariaDB Galera Cluster with read-write split. The
 # script must be run locally on one of the database read nodes.

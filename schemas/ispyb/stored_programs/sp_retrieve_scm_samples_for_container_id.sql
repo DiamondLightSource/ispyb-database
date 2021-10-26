@@ -11,8 +11,8 @@ CALL retrieve_scm_samples_for_container_id(34888, True, 'boaty')\G
 DELIMITER ;;
 
 CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `retrieve_scm_samples_for_container_id`(p_containerId int unsigned, p_useContainerSession boolean, p_authLogin varchar(45)) 
-READS SQL DATA
-COMMENT 'Returns a multi-row result-set with the samples for the given container ID'
+	READS SQL DATA
+	COMMENT 'Returns a multi-row result-set with the samples for the given container ID'
 BEGIN
 
     IF p_containerId IS NOT NULL THEN
@@ -49,12 +49,15 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  -- enum('isotropic','anisotropic')
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "planQMin",
+            plan.qMax "planQMax",
+            plan.reductionParametersAveraging "planReductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber"
@@ -103,12 +106,15 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  -- enum('isotropic','anisotropic')
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "planQMin",
+            plan.qMax "planQMax",
+            plan.reductionParametersAveraging "planReductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber"
@@ -159,12 +165,15 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  -- enum('isotropic','anisotropic')
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "planQMin",
+            plan.qMax "planQMax",
+            plan.reductionParametersAveraging "planReductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             NULL "sessionNumber"
@@ -214,12 +223,15 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  -- enum('isotropic','anisotropic')
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "planQMin",
+            plan.qMax "planQMax",
+            plan.reductionParametersAveraging "planReductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             NULL "sessionNumber"

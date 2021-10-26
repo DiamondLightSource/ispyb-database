@@ -17,3 +17,8 @@ GRANT SELECT ON AutoProcScaling_has_Int TO data_scientist;
 GRANT SELECT ON AutoProcScaling TO data_scientist;
 GRANT SELECT ON AutoProcScalingStatistics TO data_scientist;
 GRANT SELECT ON AutoProc TO data_scientist;
+GRANT SELECT ON RobotAction TO data_scientist;
+GRANT SELECT ON ProcessingJob TO data_scientist;
+GRANT SELECT ON ProcessingJobParameter TO data_scientist;
+GRANT SELECT ON ProcessingJobImageSweep TO data_scientist;
+

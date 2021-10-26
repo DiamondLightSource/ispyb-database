@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Script to make a release from code currently in the repo if none exists for
 # the current schema version.
@@ -40,7 +40,7 @@ fi
 
 echo "Creating archive file"
 mkdir -p dist
-tar cvfz ${archive} build.sh grants/ispyb_*.sql schemas/ispyb/*.sql schemas/ispyb/updates/*.sql schemas/ispyb_analytics/*
+tar cvfz ${archive} build.sh grants/ispyb_*.sql schemas/ispyb/*.sql schemas/ispyb/updates/*.sql schemas/ispyb_analytics/* schemas/xchem_db/*.sql schemas/xchem_db/updates/*.sql bin/*
 
 echo "Creating tag v${schema_version}"
 git tag -a v${schema_version} -m v${schema_version}

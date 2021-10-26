@@ -46,12 +46,15 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  -- enum('isotropic','anisotropic')
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "planQMin",
+            plan.qMax "planQMax",
+            plan.reductionParametersAveraging "planReductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber"
@@ -100,12 +103,15 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  -- enum('isotropic','anisotropic')
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "planQMin",
+            plan.qMax "planQMax",
+            plan.reductionParametersAveraging "planReductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber"
@@ -156,12 +162,15 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  -- enum('isotropic','anisotropic')
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "planQMin",
+            plan.qMax "planQMax",
+            plan.reductionParametersAveraging "planReductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             NULL "sessionNumber"
@@ -211,12 +220,15 @@ BEGIN
             conct.name "materialConcentrationType",
             pr.isotropy "materialIsotropy",  -- enum('isotropic','anisotropic')
 
-            et.name "planExperimentType",
+            IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
             plan.robotPlateTemperature "planRobotPlateTemperature",
             plan.exposureTemperature "planExposureTemperature",
             plan.transmission "planTransmission",
-            
+            plan.qMin "planQMin",
+            plan.qMax "planQMax",
+            plan.reductionParametersAveraging "planReductionParametersAveraging",
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             NULL "sessionNumber"

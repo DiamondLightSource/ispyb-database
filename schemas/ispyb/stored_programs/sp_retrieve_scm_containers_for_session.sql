@@ -3,6 +3,7 @@ CALL retrieve_scm_containers_for_session('cm', '14451', NULL, 'in_storage', NULL
 CALL retrieve_scm_containers_for_session('cm', '14451', NULL, 'in_storage', 'boaty')\G
 CALL retrieve_scm_containers_for_session('cm', '14451', 99, 'in_storage', NULL)\G
 CALL retrieve_scm_containers_for_session('cm', '14451', 99, 'in_storage', 'boaty')\G
+CALL retrieve_scm_containers_for_session('cm', 1, NULL, NULL, NULL)\G
 */
 
 DELIMITER ;;
@@ -45,7 +46,7 @@ BEGIN
             bs.visit_number "sessionNumber",
             
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN BLSession bs ON bs.sessionId = c.sessionId
             JOIN Proposal p ON p.proposalId = bs.proposalId
@@ -55,7 +56,7 @@ BEGIN
             LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
-          WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber AND c.containerStatus = p_status AND per.login = p_authLogin;
+          WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber AND c.containerStatus <=> p_status AND per.login = p_authLogin;
 
         ELSE
 
@@ -79,14 +80,14 @@ BEGIN
             bs.visit_number "sessionNumber",
             
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN BLSession bs ON bs.sessionId = c.sessionId
             JOIN Proposal p ON p.proposalId = bs.proposalId
             LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
-          WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber AND c.containerStatus = p_status;
+          WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber AND c.containerStatus <=> p_status;
 
 
         END IF;
@@ -116,7 +117,7 @@ BEGIN
             NULL "sessionNumber",
             
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN Dewar d ON c.dewarId = d.dewarId
             JOIN Shipping s ON s.shippingId = d.shippingId
@@ -127,7 +128,7 @@ BEGIN
             LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
-          WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND c.containerStatus = p_status AND per.login = p_authLogin;
+          WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND c.containerStatus <=> p_status AND per.login = p_authLogin;
 
         ELSE
 
@@ -151,7 +152,7 @@ BEGIN
             NULL "sessionNumber",
 
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN Dewar d ON c.dewarId = d.dewarId
             JOIN Shipping s ON s.shippingId = d.shippingId
@@ -159,7 +160,7 @@ BEGIN
             LEFT JOIN ContainerType ct ON ct.containerTypeId = c.containerTypeId
             LEFT JOIN Person per2 ON per2.personId = c.ownerId
             LEFT JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
-          WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND c.containerStatus = p_status;
+          WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND c.containerStatus <=> p_status;
 
         END IF;
 

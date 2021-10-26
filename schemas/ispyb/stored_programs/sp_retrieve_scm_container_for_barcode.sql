@@ -41,7 +41,7 @@ BEGIN
             bs.visit_number "sessionNumber",
             
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN BLSession bs ON bs.sessionId = c.sessionId
             JOIN Proposal p ON p.proposalId = bs.proposalId
@@ -75,7 +75,7 @@ BEGIN
             bs.visit_number "sessionNumber",
             
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN BLSession bs ON bs.sessionId = c.sessionId
             JOIN Proposal p ON p.proposalId = bs.proposalId
@@ -111,7 +111,7 @@ BEGIN
             NULL "sessionNumber",
             
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN Dewar d ON c.dewarId = d.dewarId
             JOIN Shipping s ON s.shippingId = d.shippingId
@@ -146,7 +146,7 @@ BEGIN
             NULL "sessionNumber",
 
             c.comments "comments",
-            et.name "experimentType"
+            IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
             JOIN Dewar d ON c.dewarId = d.dewarId
             JOIN Shipping s ON s.shippingId = d.shippingId

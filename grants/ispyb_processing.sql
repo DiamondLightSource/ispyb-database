@@ -8,7 +8,27 @@ CREATE ROLE IF NOT EXISTS ispyb_processing;
 
 -- Grants for ispyb_processing
 GRANT SELECT ON AdminVar TO 'ispyb_processing'; -- Hack TO allow ispyb_processing to connect through MaxScale
-GRANT INSERT ON ImageQualityIndicators TO 'ispyb_processing'; -- Needed for bulk insertion of aggregated IQIs
+GRANT SELECT,INSERT ON ImageQualityIndicators TO 'ispyb_processing'; -- Needed for bulk insertion of aggregated IQIs
+GRANT SELECT,INSERT,UPDATE ON BLSampleImage TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON BLSampleImageAnalysis TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON BLSampleImage_has_AutoScoreClass TO 'ispyb_processing';
+GRANT SELECT,INSERT ON PDB TO 'ispyb_processing';
+GRANT SELECT,INSERT ON Protein_has_PDB TO 'ispyb_processing';
+
+GRANT SELECT,INSERT,UPDATE ON AutoProcProgram TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON AutoProcProgramAttachment TO 'ispyb_processing';
+
+GRANT SELECT,INSERT,UPDATE ON CryoemInitialModel TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON ParticleClassification TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON ParticleClassificationGroup TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON ParticlePicker TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON ParticleClassification_has_CryoemInitialModel TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON MotionCorrection TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON MotionCorrectionDrift TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON RelativeIceThickness TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON CTF TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON Movie TO 'ispyb_processing';
+
 GRANT EXECUTE ON FUNCTION retrieve_visit_id TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `retrieve_dc_main` TO 'ispyb_processing';
 GRANT EXECUTE ON FUNCTION upsert_sample TO 'ispyb_processing';
@@ -56,6 +76,7 @@ GRANT EXECUTE ON PROCEDURE upsert_processing_program_attachment_v2 TO 'ispyb_pro
 GRANT EXECUTE ON PROCEDURE upsert_processing_program_message TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `upsert_processing` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `insert_processing_scaling` TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE `insert_processing_scaling_v2` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `upsert_processing_integration` TO 'ispyb_processing';
 
 GRANT EXECUTE ON PROCEDURE `insert_quality_indicators` TO 'ispyb_processing';
@@ -128,3 +149,11 @@ GRANT EXECUTE ON PROCEDURE upsert_sample_image_auto_score TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_container_for_sample_id TO 'ispyb_processing';
 
 GRANT EXECUTE ON PROCEDURE insert_phasing_analysis_results TO 'ispyb_processing';
+
+GRANT EXECUTE ON PROCEDURE insert_cryoem_initial_model TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE upsert_particle_classification TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE upsert_particle_classification_v2 TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE upsert_particle_classification_group TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE upsert_particle_picker TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE upsert_particle_picker_v2 TO 'ispyb_processing';
+

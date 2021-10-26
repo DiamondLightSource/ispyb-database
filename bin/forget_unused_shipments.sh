@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This script removes all descriptive information related to shipments for
 # a particular proposal, except that related to samples on which data was

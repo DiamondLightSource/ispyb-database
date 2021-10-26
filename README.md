@@ -2,21 +2,25 @@
 
 # ispyb-database
 
-This package provides everything needed to create the Diamond flavour of the ISPyB database schema. As we evolve the schema we will publish the update scripts here, so hopefully it should be easy for other users of the schema to stay up-to-date.
+This package provides everything needed to create the Diamond flavour of the ISPyB database schema. As the schema evolves the update scripts will also be published here, so other users of the schema should be able to stay up-to-date.
 
 ## Requirements
 
-* We recommend MariaDB 10.3 or later.
-* Linux with bash is assumed, but it's possible to make this work on other OSes.
+* Server and a client packages of MariaDB 10.3 or later.
+* A Unix-like OS with `bash` shell.
 * If binary logging is enabled in the DB system, then execute this before importing the test schema: `SET GLOBAL log_bin_trust_function_creators=ON;`
 
 ## Installation
 
-Make sure you have installed the MariaDB server and client, and maybe secured the installation by running `mariadb-secure-installation` (or `mysql_secure_installation` on MariaDB 10.3 or older). You should copy `.my.example.cnf` to `.my.cnf` and then edit that file to set the `user` and `password`, e.g. `user = root` and use the `password` you set when securing.
-
-In a test environment you can then run the `build.sh` file. This creates the database schema and applies the grants as described in the "Schema" and "Grants" sections below.
+1. Install MariaDB. See the Wiki for ideas on how to install in a particular environment.
+2. Copy `.my.example.cnf` to `.my.cnf` and then edit that file to set the `user` and `password`, e.g. `user = root` and use the `password` you set when securing. Optionally, you can also set e.g. `host` and `port`.
+3. In a test environment run the `build.sh` file. This creates the database schema and applies the grants as described in the "Schema" and "Grants" sections below.
 
 ### Schema
+
+Tip: Execute `./build.sh` to create a development `ispyb_build` database and import all the schema and grants files into it.
+
+Alternatively, do it manually:
 
 Run this on the command-line to create a database and import the schema stored in the SQL files:
 
@@ -78,6 +82,14 @@ mysql ispyb < grants/ispyb_acquisition.sql
 mysql ispyb < grants/ispyb_processing.sql
 mysql ispyb < grants/ispyb_web.sql
 ```
+
+## Useful scripts
+
+* `build.sh`: Creates a development `ispyb_build` database and import all the schema and grants files into it.
+* `release.sh`: Makes a release, see the Releasing section.
+* `bin/backup.sh`: Makes a backup of the development database.
+* `bin/missed_updates.sh`: Generates a list of files in the `schemas/ispyb/updates/` folder that haven't been applied.
+* `bin/export_session.sh`: Exports a given session's database rows to SQL files. These can then easily be imported into an empty ispyb database. This can be used e.g. to create a single-session ISPyB/SynchWeb instance if combined with all the relevant data files and processing files for the session, and an instance of SynchWeb.
 
 ## Documentation
 

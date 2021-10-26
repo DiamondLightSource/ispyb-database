@@ -71,6 +71,47 @@ CREATE OR REPLACE SQL SECURITY DEFINER VIEW XFEFluorescenceSpectrum AS
     WHERE ihu.username = substring_index(user(),'@',1)
   );
 
+CREATE OR REPLACE SQL SECURITY DEFINER VIEW RobotAction AS
+  SELECT *
+  FROM $ispyb.RobotAction
+  WHERE instrumentId IN (
+    SELECT ihu.instrumentId
+    FROM $ispyb.Instrument_has_Username ihu
+    WHERE ihu.username = substring_index(user(),'@',1)
+  );
+
+CREATE OR REPLACE SQL SECURITY DEFINER VIEW ProcessingJob AS
+  SELECT pj.*
+  FROM $ispyb.ProcessingJob pj
+    JOIN $ispyb.DataCollection dc ON dc.dataCollectionId = pj.dataCollectionId
+  WHERE dc.instrumentId IN (
+    SELECT ihu.instrumentId
+    FROM $ispyb.Instrument_has_Username ihu
+    WHERE ihu.username = substring_index(user(),'@',1)
+  );
+
+CREATE OR REPLACE SQL SECURITY DEFINER VIEW ProcessingJobParameter AS
+  SELECT pjp.*
+  FROM $ispyb.ProcessingJobParameter pjp
+    JOIN $ispyb.ProcessingJob pj ON pj.processingJobId = pjp.processingJobId
+    JOIN $ispyb.DataCollection dc ON dc.dataCollectionId = pj.dataCollectionId
+  WHERE dc.instrumentId IN (
+    SELECT ihu.instrumentId
+    FROM $ispyb.Instrument_has_Username ihu
+    WHERE ihu.username = substring_index(user(),'@',1)
+  );
+
+CREATE OR REPLACE SQL SECURITY DEFINER VIEW ProcessingJobImageSweep AS
+  SELECT pjis.*
+  FROM $ispyb.ProcessingJobImageSweep pjis
+    JOIN $ispyb.ProcessingJob pj ON pj.processingJobId = pjis.processingJobId
+    JOIN $ispyb.DataCollection dc ON dc.dataCollectionId = pj.dataCollectionId
+  WHERE dc.instrumentId IN (
+    SELECT ihu.instrumentId
+    FROM $ispyb.Instrument_has_Username ihu
+    WHERE ihu.username = substring_index(user(),'@',1)
+  );
+
 CREATE OR REPLACE SQL SECURITY DEFINER VIEW AutoProcIntegration AS
   SELECT *
   FROM $ispyb.AutoProcIntegration
