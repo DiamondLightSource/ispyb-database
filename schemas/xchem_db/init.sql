@@ -1,63 +1,12 @@
 --
--- Remove field review from badatoms
---
-ALTER TABLE `bad_atoms` DROP COLUMN `review_id`;
---
--- Add field pl_active to target
---
-ALTER TABLE `target` ADD COLUMN `pl_active` bool DEFAULT True NOT NULL;
-ALTER TABLE `target` ALTER COLUMN `pl_active` DROP DEFAULT;
---
--- Add field pl_additional_headers to target
---
-ALTER TABLE `target` ADD COLUMN `pl_additional_headers` longtext NOT NULL;
---
--- Add field pl_covalent_attachments to target
---
-ALTER TABLE `target` ADD COLUMN `pl_covalent_attachments` bool DEFAULT True NOT NULL;
-ALTER TABLE `target` ALTER COLUMN `pl_covalent_attachments` DROP DEFAULT;
---
--- Add field pl_monomeric to target
---
-ALTER TABLE `target` ADD COLUMN `pl_monomeric` bool DEFAULT False NOT NULL;
-ALTER TABLE `target` ALTER COLUMN `pl_monomeric` DROP DEFAULT;
---
--- Add field pl_reduce_reference_frame to target
---
-ALTER TABLE `target` ADD COLUMN `pl_reduce_reference_frame` bool DEFAULT True NOT NULL;
-ALTER TABLE `target` ALTER COLUMN `pl_reduce_reference_frame` DROP DEFAULT;
---
--- Add field pl_reference to target
---
-ALTER TABLE `target` ADD COLUMN `pl_reference` varchar(500) DEFAULT  NOT NULL;
-ALTER TABLE `target` ALTER COLUMN `pl_reference` DROP DEFAULT;
---
--- Alter field atomid on badatoms
---
-ALTER TABLE `bad_atoms` MODIFY `atomid` longtext NOT NULL;
---
--- Remove field compound from crystal
---
-ALTER TABLE `crystal` DROP COLUMN `compound_id`;
---
--- Add field compound to crystal
---
-CREATE TABLE `crystal_compound` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `crystal_id` integer NOT NULL, `compounds_id` integer NOT NULL);
---
--- Delete model PipelineParams
---
-DROP TABLE `pipeline_params` CASCADE;
-ALTER TABLE `crystal_compound` ADD CONSTRAINT `crystal_compound_crystal_id_compounds_id_b63a99a6_uniq` UNIQUE (`crystal_id`, `compounds_id`);
-ALTER TABLE `crystal_compound` ADD CONSTRAINT `crystal_compound_crystal_id_8770ed3a_fk_crystal_id` FOREIGN KEY (`crystal_id`) REFERENCES `crystal` (`id`);
-ALTER TABLE `crystal_compound` ADD CONSTRAINT `crystal_compound_compounds_id_2bf3601e_fk_compound_id` FOREIGN KEY (`compounds_id`) REFERENCES `compound` (`id`);
---
 -- Create model Compounds
 --
 CREATE TABLE `compound` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `smiles` varchar(255) NULL UNIQUE, `compound_id` varchar(255) NULL UNIQUE);
 --
 -- Create model Crystal
 --
-CREATE TABLE `crystal` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `crystal_name` varchar(255) NOT NULL, `status` varchar(2) NOT NULL, `well` varchar(4) NULL, `echo_x` integer NULL, `echo_y` integer NULL, `score` integer NULL, `compound_id` integer NULL);
+CREATE TABLE `crystal` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `crystal_name` varchar(255) NOT NULL, `status` varchar(2) NOT NULL, `well` varchar(4) NULL, `echo_x` integer NULL, `echo_y` integer NULL, `score` integer NULL);
+CREATE TABLE `crystal_compound` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `crystal_id` integer NOT NULL, `compounds_id` integer NOT NULL);
 --
 -- Create model DataProcessing
 --
@@ -101,7 +50,7 @@ CREATE TABLE `reference` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `ref
 --
 -- Create model Target
 --
-CREATE TABLE `target` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `target_name` varchar(255) NOT NULL UNIQUE, `uniprot_id` varchar(255) NULL, `alias` varchar(255) NULL);
+CREATE TABLE `target` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `target_name` varchar(255) NOT NULL UNIQUE, `uniprot_id` varchar(255) NULL, `alias` varchar(255) NULL, `pl_reference` varchar(500) NOT NULL, `pl_monomeric` bool NOT NULL, `pl_reduce_reference_frame` bool NOT NULL, `pl_covalent_attachments` bool NOT NULL, `pl_additional_headers` longtext NOT NULL, `pl_active` bool NOT NULL);
 --
 -- Create model SoakdbFiles
 --
@@ -118,10 +67,6 @@ CREATE TABLE `review_responses` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KE
 -- Create model Refinement
 --
 CREATE TABLE `refinement` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `bound_conf` varchar(255) NULL UNIQUE, `cif` longtext NULL, `cif_prog` longtext NULL, `cif_status` longtext NULL, `lig_bound_conf` longtext NULL, `lig_cc` longtext NULL, `lig_confidence` longtext NULL, `lig_confidence_int` integer NULL, `lig_confidence_string` longtext NULL, `matrix_weight` longtext NULL, `molprobity_score` double precision NULL, `mtz_free` longtext NULL, `mtz_latest` longtext NULL, `outcome` integer NULL, `pdb_latest` longtext NULL, `r_free` double precision NULL, `ramachandran_favoured` longtext NULL, `ramachandran_outliers` longtext NULL, `rcryst` double precision NULL, `refinement_path` longtext NULL, `res` double precision NULL, `rmsd_angles` longtext NULL, `rmsd_bonds` longtext NULL, `spacegroup` longtext NULL, `status` longtext NULL, `crystal_name_id` integer NOT NULL UNIQUE);
---
--- Create model PipelineParams
---
-CREATE TABLE `pipeline_params` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `reference` varchar(500) NOT NULL, `monomeric` bool NOT NULL, `reduce_reference_frame` bool NOT NULL, `covalent_attachments` bool NOT NULL, `additional_headers` longtext NOT NULL, `target_id` integer NOT NULL);
 --
 -- Create model PanddaSite
 --
@@ -174,7 +119,7 @@ ALTER TABLE `crystal` ADD COLUMN `visit_id` integer NOT NULL , ADD CONSTRAINT `c
 --
 -- Create model BadAtoms
 --
-CREATE TABLE `bad_atoms` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `atomid` integer NOT NULL, `comment` longtext NOT NULL, `atomname` longtext NOT NULL, `ligand_id` integer NOT NULL, `review_id` integer NOT NULL);
+CREATE TABLE `bad_atoms` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `atomid` longtext NOT NULL, `comment` longtext NOT NULL, `atomname` longtext NOT NULL, `ligand_id` integer NOT NULL);
 --
 -- Create model PanddaStatisticalMap
 --
@@ -192,8 +137,10 @@ CREATE TABLE `dimple` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `mtz_pa
 --
 ALTER TABLE `crystal` ADD CONSTRAINT `crystal_crystal_name_visit_id_9764d856_uniq` UNIQUE (`crystal_name`, `visit_id`);
 ALTER TABLE `compound` ADD CONSTRAINT `compound_smiles_compound_id_f5f82628_uniq` UNIQUE (`smiles`, `compound_id`);
-ALTER TABLE `crystal` ADD CONSTRAINT `crystal_compound_id_b3fc07f7_fk_compound_id` FOREIGN KEY (`compound_id`) REFERENCES `compound` (`id`);
 CREATE INDEX `crystal_crystal_name_6111053e` ON `crystal` (`crystal_name`);
+ALTER TABLE `crystal_compound` ADD CONSTRAINT `crystal_compound_crystal_id_compounds_id_b63a99a6_uniq` UNIQUE (`crystal_id`, `compounds_id`);
+ALTER TABLE `crystal_compound` ADD CONSTRAINT `crystal_compound_crystal_id_8770ed3a_fk_crystal_id` FOREIGN KEY (`crystal_id`) REFERENCES `crystal` (`id`);
+ALTER TABLE `crystal_compound` ADD CONSTRAINT `crystal_compound_compounds_id_2bf3601e_fk_compound_id` FOREIGN KEY (`compounds_id`) REFERENCES `compound` (`id`);
 ALTER TABLE `data_processing` ADD CONSTRAINT `data_processing_crystal_name_id_fb3aea44_fk_crystal_id` FOREIGN KEY (`crystal_name_id`) REFERENCES `crystal` (`id`);
 ALTER TABLE `ligand` ADD CONSTRAINT `ligand_compound_id_b9bf20e3_fk_compound_id` FOREIGN KEY (`compound_id`) REFERENCES `compound` (`id`);
 ALTER TABLE `ligand` ADD CONSTRAINT `ligand_crystal_id_de4f8b7e_fk_crystal_id` FOREIGN KEY (`crystal_id`) REFERENCES `crystal` (`id`);
@@ -209,7 +156,6 @@ ALTER TABLE `site_mapping` ADD CONSTRAINT `site_mapping_site_id_3533ce74_fk_prot
 ALTER TABLE `review_responses` ADD CONSTRAINT `review_responses_crystal_id_bc90b8d9_fk_crystal_id` FOREIGN KEY (`crystal_id`) REFERENCES `crystal` (`id`);
 ALTER TABLE `review_responses` ADD CONSTRAINT `review_responses_ligand_name_id_9900afe9_fk_ligand_id` FOREIGN KEY (`ligand_name_id`) REFERENCES `ligand` (`id`);
 ALTER TABLE `refinement` ADD CONSTRAINT `refinement_crystal_name_id_38c8a07b_fk_crystal_id` FOREIGN KEY (`crystal_name_id`) REFERENCES `crystal` (`id`);
-ALTER TABLE `pipeline_params` ADD CONSTRAINT `pipeline_params_target_id_f07b5637_fk_target_id` FOREIGN KEY (`target_id`) REFERENCES `target` (`id`);
 ALTER TABLE `pandda_site` ADD CONSTRAINT `pandda_site_pandda_run_id_site_48013a5b_uniq` UNIQUE (`pandda_run_id`, `site`);
 ALTER TABLE `pandda_site` ADD CONSTRAINT `pandda_site_pandda_run_id_be084b50_fk_pandda_run_id` FOREIGN KEY (`pandda_run_id`) REFERENCES `pandda_run` (`id`);
 CREATE INDEX `pandda_site_site_80cc797a` ON `pandda_site` (`site`);
@@ -220,7 +166,6 @@ ALTER TABLE `fragalysis_target_additional_files` ADD CONSTRAINT `fragalysis_targ
 ALTER TABLE `fragalysis_target_additional_files` ADD CONSTRAINT `fragalysis_target_ad_fragalysistarget_id_8343cb31_fk_fragalysi` FOREIGN KEY (`fragalysistarget_id`) REFERENCES `fragalysis_target` (`id`);
 ALTER TABLE `fragalysis_target_additional_files` ADD CONSTRAINT `fragalysis_target_ad_miscfiles_id_2dc8527c_fk_misc_file` FOREIGN KEY (`miscfiles_id`) REFERENCES `misc_files` (`id`);
 ALTER TABLE `bad_atoms` ADD CONSTRAINT `bad_atoms_ligand_id_44742335_fk_ligand_id` FOREIGN KEY (`ligand_id`) REFERENCES `ligand` (`id`);
-ALTER TABLE `bad_atoms` ADD CONSTRAINT `bad_atoms_review_id_9324df23_fk_review_responses_id` FOREIGN KEY (`review_id`) REFERENCES `review_responses` (`id`);
 ALTER TABLE `pandda_statistical_map` ADD CONSTRAINT `pandda_statistical_map_resolution_from_resoluti_14bb7f7b_uniq` UNIQUE (`resolution_from`, `resolution_to`, `pandda_run_id`);
 ALTER TABLE `pandda_statistical_map` ADD CONSTRAINT `pandda_statistical_map_pandda_run_id_eb293e7e_fk_pandda_run_id` FOREIGN KEY (`pandda_run_id`) REFERENCES `pandda_run` (`id`);
 ALTER TABLE `dimple` ADD CONSTRAINT `dimple_pdb_path_mtz_path_6c49ab75_uniq` UNIQUE (`pdb_path`, `mtz_path`);
