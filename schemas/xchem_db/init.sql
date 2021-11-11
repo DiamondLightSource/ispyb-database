@@ -1,12 +1,11 @@
 --
 -- Create model Compounds
 --
-CREATE TABLE `compound` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `smiles` varchar(255) NULL UNIQUE, `compound_id` varchar(255) NULL UNIQUE);
+CREATE TABLE `compound` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `smiles` varchar(255) NULL, `compound_string` varchar(255) NULL);
 --
 -- Create model Crystal
 --
 CREATE TABLE `crystal` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `crystal_name` varchar(255) NOT NULL, `status` varchar(2) NOT NULL, `well` varchar(4) NULL, `echo_x` integer NULL, `echo_y` integer NULL, `score` integer NULL);
-CREATE TABLE `crystal_compound` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `crystal_id` integer NOT NULL, `compounds_id` integer NOT NULL);
 --
 -- Create model DataProcessing
 --
@@ -18,7 +17,7 @@ CREATE TABLE `fragalysis_ligand` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY K
 --
 -- Create model Ligand
 --
-CREATE TABLE `ligand` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `compound_id` integer NOT NULL, `crystal_id` integer NOT NULL, `fragalysis_ligand_id` integer NOT NULL);
+CREATE TABLE `ligand` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `crystal_id` integer NOT NULL, `fragalysis_ligand_id` integer NOT NULL);
 --
 -- Create model MiscFiles
 --
@@ -90,7 +89,7 @@ ALTER TABLE `pandda_event` ADD COLUMN `site_id` integer NOT NULL , ADD CONSTRAIN
 --
 -- Create model MetaData
 --
-CREATE TABLE `meta_data` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `site_Label` varchar(255) NOT NULL, `new_smiles` longtext NOT NULL, `alternate_name` varchar(255) NOT NULL, `pdb_id` varchar(255) NOT NULL, `fragalysis_name` varchar(255) NOT NULL UNIQUE, `original_name` varchar(255) NOT NULL, `ligand_name_id` integer NOT NULL);
+CREATE TABLE `meta_data` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `site_Label` varchar(255) NOT NULL, `new_smiles` longtext NOT NULL, `alternate_name` varchar(255) NOT NULL, `pdb_id` varchar(255) NOT NULL, `fragalysis_name` varchar(255) NOT NULL UNIQUE, `original_name` varchar(255) NOT NULL, `status` varchar(255) NOT NULL, `ligand_name_id` integer NOT NULL);
 --
 -- Add field target to ligand
 --
@@ -102,12 +101,19 @@ CREATE TABLE `lab` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `cryo_frac
 --
 -- Create model FragalysisTarget
 --
-CREATE TABLE `fragalysis_target` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `public` bool NOT NULL, `target` varchar(255) NOT NULL, `metadata_file` varchar(500) NOT NULL, `input_root` longtext NOT NULL, `staging_root` longtext NOT NULL, `reference` varchar(500) NOT NULL, `biomol` varchar(500) NOT NULL);
+CREATE TABLE `fragalysis_target` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `target` varchar(255) NOT NULL, `metadata_file` varchar(500) NOT NULL, `input_root` longtext NOT NULL, `staging_root` longtext NOT NULL, `reference` varchar(500) NOT NULL, `biomol` varchar(500) NOT NULL);
 CREATE TABLE `fragalysis_target_additional_files` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `fragalysistarget_id` integer NOT NULL, `miscfiles_id` integer NOT NULL);
 --
 -- Add field fragalysis_target to fragalysisligand
 --
 ALTER TABLE `fragalysis_ligand` ADD COLUMN `fragalysis_target_id` integer NOT NULL , ADD CONSTRAINT `fragalysis_ligand_fragalysis_target_id_6a3fe295_fk_fragalysi` FOREIGN KEY (`fragalysis_target_id`) REFERENCES `fragalysis_target`(`id`);
+--
+-- Create model CrystalCompoundPairs
+--
+CREATE TABLE `crystal_compound_pairs` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `product_smiles` varchar(255) NULL, `compound_id` integer NOT NULL, `crystal_id` integer NOT NULL);
+--
+-- Add field compound to crystal
+--
 --
 -- Add field target to crystal
 --
@@ -136,13 +142,11 @@ CREATE TABLE `dimple` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `mtz_pa
 -- Alter unique_together for crystal (1 constraint(s))
 --
 ALTER TABLE `crystal` ADD CONSTRAINT `crystal_crystal_name_visit_id_9764d856_uniq` UNIQUE (`crystal_name`, `visit_id`);
-ALTER TABLE `compound` ADD CONSTRAINT `compound_smiles_compound_id_f5f82628_uniq` UNIQUE (`smiles`, `compound_id`);
+ALTER TABLE `compound` ADD CONSTRAINT `compound_smiles_compound_string_a048b9e9_uniq` UNIQUE (`smiles`, `compound_string`);
+CREATE INDEX `compound_smiles_e2c0fc93` ON `compound` (`smiles`);
+CREATE INDEX `compound_compound_string_62e9304b` ON `compound` (`compound_string`);
 CREATE INDEX `crystal_crystal_name_6111053e` ON `crystal` (`crystal_name`);
-ALTER TABLE `crystal_compound` ADD CONSTRAINT `crystal_compound_crystal_id_compounds_id_b63a99a6_uniq` UNIQUE (`crystal_id`, `compounds_id`);
-ALTER TABLE `crystal_compound` ADD CONSTRAINT `crystal_compound_crystal_id_8770ed3a_fk_crystal_id` FOREIGN KEY (`crystal_id`) REFERENCES `crystal` (`id`);
-ALTER TABLE `crystal_compound` ADD CONSTRAINT `crystal_compound_compounds_id_2bf3601e_fk_compound_id` FOREIGN KEY (`compounds_id`) REFERENCES `compound` (`id`);
 ALTER TABLE `data_processing` ADD CONSTRAINT `data_processing_crystal_name_id_fb3aea44_fk_crystal_id` FOREIGN KEY (`crystal_name_id`) REFERENCES `crystal` (`id`);
-ALTER TABLE `ligand` ADD CONSTRAINT `ligand_compound_id_b9bf20e3_fk_compound_id` FOREIGN KEY (`compound_id`) REFERENCES `compound` (`id`);
 ALTER TABLE `ligand` ADD CONSTRAINT `ligand_crystal_id_de4f8b7e_fk_crystal_id` FOREIGN KEY (`crystal_id`) REFERENCES `crystal` (`id`);
 ALTER TABLE `ligand` ADD CONSTRAINT `ligand_fragalysis_ligand_id_8662068f_fk_fragalysis_ligand_id` FOREIGN KEY (`fragalysis_ligand_id`) REFERENCES `fragalysis_ligand` (`id`);
 ALTER TABLE `pandda_event` ADD CONSTRAINT `pandda_event_crystal_id_b75ed338_fk_crystal_id` FOREIGN KEY (`crystal_id`) REFERENCES `crystal` (`id`);
@@ -165,6 +169,8 @@ ALTER TABLE `lab` ADD CONSTRAINT `lab_crystal_name_id_0412c3fb_fk_crystal_id` FO
 ALTER TABLE `fragalysis_target_additional_files` ADD CONSTRAINT `fragalysis_target_additi_fragalysistarget_id_misc_88fee56b_uniq` UNIQUE (`fragalysistarget_id`, `miscfiles_id`);
 ALTER TABLE `fragalysis_target_additional_files` ADD CONSTRAINT `fragalysis_target_ad_fragalysistarget_id_8343cb31_fk_fragalysi` FOREIGN KEY (`fragalysistarget_id`) REFERENCES `fragalysis_target` (`id`);
 ALTER TABLE `fragalysis_target_additional_files` ADD CONSTRAINT `fragalysis_target_ad_miscfiles_id_2dc8527c_fk_misc_file` FOREIGN KEY (`miscfiles_id`) REFERENCES `misc_files` (`id`);
+ALTER TABLE `crystal_compound_pairs` ADD CONSTRAINT `crystal_compound_pairs_compound_id_b3fa5eda_fk_compound_id` FOREIGN KEY (`compound_id`) REFERENCES `compound` (`id`);
+ALTER TABLE `crystal_compound_pairs` ADD CONSTRAINT `crystal_compound_pairs_crystal_id_7a72bb21_fk_crystal_id` FOREIGN KEY (`crystal_id`) REFERENCES `crystal` (`id`);
 ALTER TABLE `bad_atoms` ADD CONSTRAINT `bad_atoms_ligand_id_44742335_fk_ligand_id` FOREIGN KEY (`ligand_id`) REFERENCES `ligand` (`id`);
 ALTER TABLE `pandda_statistical_map` ADD CONSTRAINT `pandda_statistical_map_resolution_from_resoluti_14bb7f7b_uniq` UNIQUE (`resolution_from`, `resolution_to`, `pandda_run_id`);
 ALTER TABLE `pandda_statistical_map` ADD CONSTRAINT `pandda_statistical_map_pandda_run_id_eb293e7e_fk_pandda_run_id` FOREIGN KEY (`pandda_run_id`) REFERENCES `pandda_run` (`id`);
