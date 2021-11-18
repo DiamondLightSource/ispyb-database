@@ -66,6 +66,7 @@ GRANT EXECUTE ON PROCEDURE `insert_screening_strategy` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `insert_screening_strategy_wedge` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `insert_screening_strategy_sub_wedge` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `update_container_assign` TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE finish_container_for_id TO 'ispyb_processing';
 
 GRANT EXECUTE ON PROCEDURE `retrieve_reprocessing_by_dc` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `update_reprocessing_status` TO 'ispyb_processing';
