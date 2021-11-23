@@ -43,10 +43,15 @@ then
   fi
 
   # Generate table and sproc documentation
-  if [ -d "bin" ] && [ -d "docs" ]; then
+  if ! hash pandoc 2>/dev/null; then
+    echo "'pandoc' was not found in PATH"
+  elif [ -d "bin" ]; then
     cd bin
-    ./db_procs_to_rst.sh $DB > ../docs/list_of_procs.rst
-    ./db_tables_to_rst.sh $DB > ../docs/list_of_tables_and_columns.rst
+    ./db_procs_to_rst.sh $DB > /tmp/list_of_procs.rst
+    pandoc -o /tmp/list_of_procs.html /tmp/list_of_procs.rst
+    ./db_tables_to_rst.sh $DB > /tmp/list_of_tables_and_columns.rst
+    pandoc -o /tmp/list_of_tables_and_columns.html /tmp/list_of_tables_and_columns.rst
+    echo "HTML documentation written to files in /tmp/"
     cd ..
   fi
 
