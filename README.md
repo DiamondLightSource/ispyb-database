@@ -94,6 +94,6 @@ mysql ispyb < grants/ispyb_web.sql
 ## Documentation
 
 * Please refer to the [```Wiki```](https://github.com/DiamondLightSource/ispyb-database/wiki) for database diagrams, stored procedure how-to, MariaDB installation and more  
-* A complete [```list of tables and columns```](https://github.com/DiamondLightSource/ispyb-database/blob/master/docs/list_of_tables_and_columns.rst) for more details about the tables and columns
-* A complete [```list of stored procedures```](https://github.com/DiamondLightSource/ispyb-database/blob/master/docs/list_of_procs.rst) for more details about the stored procedures
+* A complete [```list of tables and columns```](https://alfred.diamond.ac.uk/documentation/ispyb-database/list_of_tables_and_columns.html) for more details about the tables and columns
+* A complete [```list of stored procedures```](https://alfred.diamond.ac.uk/documentation/ispyb-database/list_of_procs.html) for more details about the stored procedures
 
