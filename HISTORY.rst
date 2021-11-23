@@ -5,6 +5,34 @@ History
 Unreleased / master
 -------------------
 
+1.28.0 (2021-11-23)
+-------------------
+
+Table/data changes:
+
+* Added unique index on ``BLSampleImage.imageFullPath`` to improve perf. of proedure ``upsert_sample_image_auto_score``
+* Changes to ``MXMRRun``, ``MXMRRunBlob``: allow storing Anode results + more relevant molecular replacement output
+* Back populate ``BLSampleGroup.proposalId`` where this is NULL
+
+Stored procedure changes:
+
+* New procedure ``finish_container_for_id`` to set the ``ContainerQueue`` ``completedTimeStamp``
+* Updated ``retrieve_scm_containers_for_session`` so its param ``p_status`` matches on NULL
+* Updated comment for procedure ``finish_container``
+* Updated procedure ``upsert_mr_run`` and function ``upsert_mrrun`` to work with changes to ``MXMRRun`` tables
+* New procedure ``upsert_session_has_person_for_session_and_login``
+* New procedure ``insert_usergroup_has_person_for_ug_and_login``
+* New procedure ``delete_usergroup_has_person_for_login``
+
+Other misc. changes:
+
+* Exec grants for new procedure
+* Role and grants for 'touchscreen' role
+* Removed doc files which are not needed in the repo
+* Modified ``build.sh`` so it writes table + sproc docs to ``/tmp/`` and converts to HTML
+* Add previously missed admin procedures to ``routines.sql``
+
+
 1.27.0 (2021-09-15)
 -------------------
 
