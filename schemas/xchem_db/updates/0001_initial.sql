@@ -1,8 +1,4 @@
 --
--- Add field comment to reviewresponses
---
-ALTER TABLE `review_responses` ADD COLUMN `comment` longtext NULL;
---
 -- Create model Compounds
 --
 CREATE TABLE `compound` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `smiles` varchar(255) NULL, `compound_string` varchar(255) NULL);
