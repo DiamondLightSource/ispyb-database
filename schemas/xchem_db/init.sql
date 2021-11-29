@@ -1,8 +1,4 @@
 --
--- Add field comment to reviewresponses
---
-ALTER TABLE `review_responses` ADD COLUMN `comment` longtext NULL;
---
 -- Create model Compounds
 --
 CREATE TABLE `compound` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `smiles` varchar(255) NULL, `compound_string` varchar(255) NULL);
@@ -65,7 +61,7 @@ CREATE TABLE `site_mapping` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `
 --
 -- Create model ReviewResponses
 --
-CREATE TABLE `review_responses` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `fedid` longtext NOT NULL, `decision_int` integer NOT NULL, `decision_str` longtext NOT NULL, `reason` longtext NOT NULL, `time_submitted` integer NOT NULL, `crystal_id` integer NOT NULL, `ligand_name_id` integer NOT NULL);
+CREATE TABLE `review_responses` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `fedid` longtext NOT NULL, `decision_int` integer NOT NULL, `decision_str` longtext NOT NULL, `reason` longtext NOT NULL, `time_submitted` integer NOT NULL, `crystal_id` integer NOT NULL, `ligand_name_id` integer NOT NULL, `comment` longtext NULL);
 --
 -- Create model Refinement
 --
