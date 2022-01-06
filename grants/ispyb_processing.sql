@@ -17,6 +17,8 @@ GRANT SELECT,INSERT ON Protein_has_PDB TO 'ispyb_processing';
 
 GRANT SELECT,INSERT,UPDATE ON AutoProcProgram TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON AutoProcProgramAttachment TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON MXMRRun TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON MXMRRunBlob TO 'ispyb_processing';
 
 GRANT SELECT,INSERT,UPDATE ON CryoemInitialModel TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON ParticleClassification TO 'ispyb_processing';
@@ -28,6 +30,7 @@ GRANT SELECT,INSERT,UPDATE ON MotionCorrectionDrift TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON RelativeIceThickness TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON CTF TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON Movie TO 'ispyb_processing';
+
 
 GRANT EXECUTE ON FUNCTION retrieve_visit_id TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `retrieve_dc_main` TO 'ispyb_processing';
