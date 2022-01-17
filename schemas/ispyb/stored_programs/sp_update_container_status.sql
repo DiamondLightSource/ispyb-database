@@ -18,7 +18,10 @@ BEGIN
 		SET containerStatus = p_status
 		WHERE containerId = row_containerId;
 
-		INSERT INTO ContainerHistory (containerId, location, status, beamlineName) VALUES (row_containerId, row_scLoc, p_status, 'i02-2');
+    INSERT INTO ContainerHistory (containerId, location, status, beamlineName, currentDewarId)
+      SELECT row_containerId, row_scLoc, p_status, 'i02-2', currentDewarId
+      FROM Container
+      WHERE containerId = row_containerId;
 
 	END IF;
     ELSEIF p_barcode IS NULL THEN

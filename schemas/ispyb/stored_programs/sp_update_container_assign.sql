@@ -73,8 +73,10 @@ BEGIN
             END IF;
 
             -- Add to history
-            INSERT INTO ContainerHistory (containerId, location, status, beamlineName)
-              VALUES (row_containerId, p_position, IF(row_containerStatus<=>'processing', 'at facility', 'processing'), p_beamline);
+            INSERT INTO ContainerHistory (containerId, location, status, beamlineName, currentDewarId)
+              SELECT row_containerId, p_position, IF(row_containerStatus<=>'processing', 'at facility', 'processing'), p_beamline, currentDewarId
+              FROM Container
+              WHERE containerId = row_containerId;
           END IF;
         ELSE
           SIGNAL SQLSTATE '02000' SET MYSQL_ERRNO=1643, MESSAGE_TEXT='Container with p_registry_barcode not found';
