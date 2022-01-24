@@ -13,14 +13,23 @@ CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `insert_subsample_for_image
     COMMENT 'Returns subsample ID in p_id.'
 BEGIN
   DECLARE l_position1Id, l_position2Id, l_sampleId int unsigned DEFAULT NULL;
+  DECLARE EXIT HANDLER FOR SQLWARNING
+  BEGIN
+    ROLLBACK;
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='SQLWARNING, transaction rollback';
+  END;
 
-  SELECT blSampleId INTO l_sampleId
-  FROM BLSampleImage
-  WHERE imageFullPath = p_imageFullPath
-  ORDER BY blSampleImageId DESC
-  LIMIT 1;
+  IF p_imageFullPath IS NOT NULL AND p_source IS NOT NULL AND p_position1x IS NOT NULL AND p_position1y IS NOT NULL THEN
+    SELECT blSampleId INTO l_sampleId
+    FROM BLSampleImage
+    WHERE imageFullPath = p_imageFullPath
+    ORDER BY blSampleImageId DESC
+    LIMIT 1;
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_imageFullPath, p_source, p_position1x, p_position1y cannot be NULL';
+  END IF;
 
-  IF l_sampleId IS NOT NULL AND p_source IS NOT NULL AND p_position1x IS NOT NULL AND p_position1y IS NOT NULL THEN
+  IF l_sampleId IS NOT NULL THEN
 
     START TRANSACTION;
 
@@ -43,6 +52,8 @@ BEGIN
     SET p_id := LAST_INSERT_ID();
 
     COMMIT;
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Image p_imageFullPath not found in table';
   END IF;
 END;;
 DELIMITER ;
