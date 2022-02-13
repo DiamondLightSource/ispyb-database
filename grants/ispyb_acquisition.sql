@@ -17,6 +17,7 @@ GRANT EXECUTE ON PROCEDURE update_container_ls_position TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE update_container_status TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE retrieve_containers_on_beamline_with_status TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE finish_container TO 'ispyb_acquisition';
+GRANT EXECUTE ON PROCEDURE update_container_unqueue TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE retrieve_container_ls_queue TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE retrieve_container_queue_timestamp TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE retrieve_container_queue_most_recent_completed_timestamp TO 'ispyb_acquisition';
