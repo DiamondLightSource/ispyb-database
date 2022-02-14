@@ -2363,14 +2363,23 @@ CREATE PROCEDURE `insert_subsample_for_image_full_path`(
     COMMENT 'Returns subsample ID in p_id.'
 BEGIN
   DECLARE l_position1Id, l_position2Id, l_sampleId int unsigned DEFAULT NULL;
+  DECLARE EXIT HANDLER FOR SQLWARNING
+  BEGIN
+    ROLLBACK;
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='SQLWARNING, transaction rollback';
+  END;
 
-  SELECT blSampleId INTO l_sampleId
-  FROM BLSampleImage
-  WHERE imageFullPath = p_imageFullPath
-  ORDER BY blSampleImageId DESC
-  LIMIT 1;
+  IF p_imageFullPath IS NOT NULL AND p_source IS NOT NULL AND p_position1x IS NOT NULL AND p_position1y IS NOT NULL THEN
+    SELECT blSampleId INTO l_sampleId
+    FROM BLSampleImage
+    WHERE imageFullPath = p_imageFullPath
+    ORDER BY blSampleImageId DESC
+    LIMIT 1;
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_imageFullPath, p_source, p_position1x, p_position1y cannot be NULL';
+  END IF;
 
-  IF l_sampleId IS NOT NULL AND p_source IS NOT NULL AND p_position1x IS NOT NULL AND p_position1y IS NOT NULL THEN
+  IF l_sampleId IS NOT NULL THEN
 
     START TRANSACTION;
 
@@ -2393,6 +2402,8 @@ BEGIN
     SET p_id := LAST_INSERT_ID();
 
     COMMIT;
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Image p_imageFullPath not found in table';
   END IF;
 END ;;
 DELIMITER ;
@@ -7291,7 +7302,7 @@ BEGIN
     IF NOT (p_registry_barcode IS NULL) THEN
         START TRANSACTION;
 
-        SELECT c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId, count(*)
+        SELECT c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId, count(cq.containerQueueId)
           INTO row_containerId, row_containerStatus, row_dewarId, row_beamlineLocation, row_sampleChangerLocation, row_proposalId, row_queuedCount
         FROM Container c
             INNER JOIN ContainerRegistry cr ON c.containerRegistryId = cr.containerRegistryId
@@ -7305,11 +7316,11 @@ BEGIN
 
         SELECT row_containerStatus INTO currentContainerStatus;
 
-
+        
         IF NOT row_containerId IS NULL THEN
           IF (NOT row_containerStatus <=> 'processing') OR (row_beamlineLocation = p_beamline AND row_sampleChangerLocation = p_position) THEN
 
-
+            
             UPDATE Container c
               INNER JOIN Dewar d ON d.dewarId = c.dewarId
               INNER JOIN Shipping s ON s.shippingId = d.shippingId
@@ -7326,8 +7337,8 @@ BEGIN
             SELECT IF(row_containerStatus<=>'processing', 'at facility', 'processing') INTO currentContainerStatus;
 
             IF NOT row_containerStatus <=> 'processing' THEN
-
-
+              
+              
               UPDATE Container c
                 INNER JOIN Dewar d ON d.dewarId = c.dewarId
                 INNER JOIN Shipping s ON s.shippingId = d.shippingId
@@ -7336,14 +7347,16 @@ BEGIN
               WHERE s.proposalId = row_proposalId AND c.beamlineLocation = p_beamline AND
                 c.sampleChangerLocation = p_position AND c.containerId <> row_containerId;
 
-
+              
               INSERT INTO DewarTransportHistory (dewarId, dewarStatus, storageLocation, arrivalDate)
                 VALUES (row_dewarId, 'processing', p_beamline, NOW());
             END IF;
 
-
-            INSERT INTO ContainerHistory (containerId, location, status, beamlineName)
-              VALUES (row_containerId, p_position, IF(row_containerStatus<=>'processing', 'at facility', 'processing'), p_beamline);
+            
+            INSERT INTO ContainerHistory (containerId, location, status, beamlineName, currentDewarId)
+              SELECT row_containerId, p_position, IF(row_containerStatus<=>'processing', 'at facility', 'processing'), p_beamline, currentDewarId
+              FROM Container
+              WHERE containerId = row_containerId;
           END IF;
         ELSE
           SIGNAL SQLSTATE '02000' SET MYSQL_ERRNO=1643, MESSAGE_TEXT='Container with p_registry_barcode not found';
@@ -7356,6 +7369,36 @@ BEGIN
     SELECT row_containerId as "containerId",
       currentContainerStatus as "containerStatus",
       row_queuedCount as "queuedCount";
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_container_current_dewar_id` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `update_container_current_dewar_id`(IN p_id int unsigned, IN p_dewarId int unsigned)
+    MODIFIES SQL DATA
+    COMMENT 'For Container with containerId==p_id: Sets currentDewarId=p_dewarId and inserts row into ContainerHistory with that currentDewarId.'
+BEGIN
+    IF NOT (p_id IS NULL) THEN
+
+        UPDATE Container SET currentDewarId = p_dewarId WHERE containerId = p_id;
+
+        INSERT INTO ContainerHistory (containerId, location, status, beamlineName, currentDewarId)
+          SELECT p_id, sampleChangerLocation, containerStatus, beamlineLocation, p_dewarId FROM Container WHERE containerId = p_id;
+
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id is NULL';
+    END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -7507,7 +7550,10 @@ BEGIN
 		SET containerStatus = p_status
 		WHERE containerId = row_containerId;
 
-		INSERT INTO ContainerHistory (containerId, location, status, beamlineName) VALUES (row_containerId, row_scLoc, p_status, 'i02-2');
+    INSERT INTO ContainerHistory (containerId, location, status, beamlineName, currentDewarId)
+      SELECT row_containerId, row_scLoc, p_status, 'i02-2', currentDewarId
+      FROM Container
+      WHERE containerId = row_containerId;
 
 	END IF;
     ELSEIF p_barcode IS NULL THEN
@@ -7559,6 +7605,60 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_beamline is NULL';
     END IF;
 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_container_unqueue` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `update_container_unqueue`(IN p_barcode varchar(45))
+    MODIFIES SQL DATA
+    COMMENT 'Find the containerQueueId for the non-completed rows in ContainerQueue associated with barcode p_barcode.\n    Remove the association to that ContainerQueue row for the  from sub sample queue and remove the ContainerQueue row for the container with this barcode'
+BEGIN
+  DECLARE row_containerStatus varchar(45) DEFAULT NULL;
+  DECLARE row_containerType varchar(20) DEFAULT NULL;
+  DECLARE row_containerId int(10) unsigned DEFAULT NULL;
+  DECLARE row_containerQueueId int(11) unsigned DEFAULT NULL;
+
+  IF NOT (p_barcode IS NULL) THEN
+
+    SELECT c.containerId, c.containerStatus, IFNULL(ct.name, c.containerType)
+      INTO row_containerId, row_containerStatus, row_containerType
+    FROM Container c
+      LEFT OUTER JOIN ContainerType ct ON c.containerTypeId = ct.containerTypeId
+    WHERE c.barcode = p_barcode;
+
+    SELECT max(containerQueueId) INTO row_containerQueueId
+    FROM ContainerQueue 
+    WHERE containerId = row_containerId AND completedTimestamp IS NULL;
+
+    IF NOT (row_containerQueueId IS NULL) AND (
+      row_containerType = 'Puck' OR
+      row_containerStatus IN ('in_storage', 'disposed') OR
+      row_containerStatus IS NULL) THEN
+
+      UPDATE ContainerQueueSample 
+      SET containerQueueId = NULL 
+      WHERE containerQueueId = row_containerQueueId;
+
+      DELETE 
+      FROM ContainerQueue 
+      WHERE containerQueueId = row_containerQueueId;
+    END IF;
+
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode is NULL';
+  END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -8217,6 +8317,57 @@ BEGIN
 		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1643, MESSAGE_TEXT='Corresponding rows for p_proposalCode + p_proposalNumber + p_sessionNumber not found';
       END IF;
   END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `upsert_container_report` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE PROCEDURE `upsert_container_report`(
+  INOUT p_id int(11) unsigned,
+  p_containerRegistryBarcode varchar(20),
+  p_login varchar(45),
+  p_report text
+ )
+    MODIFIES SQL DATA
+    COMMENT 'Inserts or updates a ContainerReport (p_barcode).\n   Returns: Record ID in p_id.'
+BEGIN
+  DECLARE row_containerRegistryId int(11) unsigned DEFAULT NULL;
+  DECLARE row_personId int(10) unsigned DEFAULT NULL;
+
+  IF p_containerRegistryBarcode IS NOT NULL THEN
+    SELECT max(containerRegistryId) INTO row_containerRegistryId FROM ContainerRegistry WHERE barcode = p_containerRegistryBarcode;
+  END IF;
+
+  IF p_id IS NULL AND row_containerRegistryId IS NOT NULL THEN
+    SELECT personId INTO row_personId FROM Person WHERE login = p_login;
+    INSERT INTO ContainerReport (containerRegistryId, personId, report, recordTimestamp) 
+      VALUES (row_containerRegistryId, row_personId, p_report, now());
+    SET p_id = LAST_INSERT_ID();
+
+  ELSEIF p_id IS NOT NULL THEN
+
+    UPDATE ContainerReport
+    SET 
+      containerRegistryId = IFNULL(row_containerRegistryId, containerRegistryId),
+      personId = IFNULL(row_personId, personId),
+      report = IFNULL(p_report, report)
+    WHERE containerReportId = p_id;
+
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='p_id must be non-NULL or p_containerRegistryBarcode must match barcode in ContainerRegistry.';
+  END IF;
+  
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;

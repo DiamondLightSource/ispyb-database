@@ -1095,9 +1095,10 @@ CREATE TABLE `Container` (
   `storageTemperature` float DEFAULT NULL COMMENT 'NULL=ambient',
   `containerRegistryId` int(11) unsigned DEFAULT NULL,
   `scLocationUpdated` datetime DEFAULT NULL,
-  `priorityPipelineId` int(11) unsigned DEFAULT NULL,
+  `priorityPipelineId` int(11) unsigned DEFAULT 6 COMMENT 'Processing pipeline to prioritise, defaults to 6 which is xia2/DIALS',
   `experimentTypeId` int(10) unsigned DEFAULT NULL,
   `containerTypeId` int(10) unsigned DEFAULT NULL,
+  `currentDewarId` int(10) unsigned DEFAULT NULL COMMENT 'The dewar with which the container is currently associated',
   PRIMARY KEY (`containerId`),
   UNIQUE KEY `Container_UNIndex1` (`barcode`),
   KEY `Container_FKIndex` (`beamlineLocation`),
@@ -1113,6 +1114,8 @@ CREATE TABLE `Container` (
   KEY `Container_ibfk9` (`priorityPipelineId`),
   KEY `Container_fk_experimentTypeId` (`experimentTypeId`),
   KEY `Container_ibfk10` (`containerTypeId`),
+  KEY `Container_fk_currentDewarId` (`currentDewarId`),
+  CONSTRAINT `Container_fk_currentDewarId` FOREIGN KEY (`currentDewarId`) REFERENCES `Dewar` (`dewarId`),
   CONSTRAINT `Container_fk_experimentTypeId` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`),
   CONSTRAINT `Container_ibfk10` FOREIGN KEY (`containerTypeId`) REFERENCES `ContainerType` (`containerTypeId`),
   CONSTRAINT `Container_ibfk2` FOREIGN KEY (`screenId`) REFERENCES `Screen` (`screenId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -1136,8 +1139,11 @@ CREATE TABLE `ContainerHistory` (
   `blTimeStamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` varchar(45) DEFAULT NULL,
   `beamlineName` varchar(20) DEFAULT NULL,
+  `currentDewarId` int(10) unsigned DEFAULT NULL COMMENT 'The dewar with which the container was associated at the creation of this row',
   PRIMARY KEY (`containerHistoryId`),
   KEY `ContainerHistory_ibfk1` (`containerId`),
+  KEY `ContainerHistory_fk_dewarId` (`currentDewarId`),
+  CONSTRAINT `ContainerHistory_fk_dewarId` FOREIGN KEY (`currentDewarId`) REFERENCES `Dewar` (`dewarId`),
   CONSTRAINT `ContainerHistory_ibfk1` FOREIGN KEY (`containerId`) REFERENCES `Container` (`containerId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2837,6 +2843,25 @@ CREATE TABLE `PlateType` (
   PRIMARY KEY (`PlateTypeId`),
   KEY `PlateTypeToExperiment` (`experimentId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `Pod`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Pod` (
+  `podId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `personId` int(10) unsigned NOT NULL COMMENT 'Pod owner defined by the logged in SynchWeb user who requested the pod start up',
+  `filePath` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL COMMENT 'File or directory path to mount into the Pod if required',
+  `app` enum('MAXIV HDF5 Viewer','H5Web') COLLATE utf8mb3_unicode_ci NOT NULL,
+  `podName` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `status` varchar(25) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `ip` varchar(15) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `message` text COLLATE utf8mb3_unicode_ci DEFAULT NULL COMMENT 'Generic text field intended for storing error messages related to status field',
+  `created` timestamp NOT NULL DEFAULT current_timestamp(),
+  `shutdown` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`podId`),
+  KEY `Pod_fk1` (`personId`),
+  CONSTRAINT `Pod_fk1` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci COMMENT='Status tracker for k8s pods launched from SynchWeb';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Position`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

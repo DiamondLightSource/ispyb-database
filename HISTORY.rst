@@ -5,6 +5,30 @@ History
 Unreleased / master
 -------------------
 
+1.29.0 (2022-02-14)
+-------------------
+
+Tables and columns:
+
+* New column ``currentDewarId`` in ``Container`` and ``ContainerHistory`` (and modified relevant stored procedures to populate this)
+* ``Container`` table: Made xia2/DIALS the default pipeline
+* New table ``Pod``: Status tracker for k8s pods launched from SynchWeb
+* Updated ``XChemDB`` schema
+
+Stored procedures:
+
+* ``insert_subsample_for_image_full_path``: Abort if missing mandatory arguments or ``p_imageFullPath`` not found
+* New sproc ``update_container_current_dewar_id`` to set the ``currentDewarId`` for a ``Container``
+* New sproc ``update_container_unqueue`` to un-queue a container while allowing its samples/points to be re-queued later
+* New sproc ``upsert_container_report`` to upsert container reports
+
+Grants: 
+
+* Write permissions on ``MXMRRun*`` tables for ``ispyb_processing``
+* Execute grant on ``update_container_current_dewar_id`` for ``ispyb_touchscreen`` role
+* Execute grant on new sproc ``update_container_unqueue`` for ``ispyb_acquisition``
+
+
 1.28.0 (2021-11-23)
 -------------------
 
