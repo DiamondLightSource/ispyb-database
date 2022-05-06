@@ -55,6 +55,8 @@ GRANT EXECUTE ON PROCEDURE upsert_sleeve TO 'ispyb_acquisition';
 
 GRANT EXECUTE ON PROCEDURE retrieve_sample TO 'ispyb_acquisition';
 
+GRANT EXECUTE ON PROCEDURE upsert_dc TO 'ispyb_acquisition';
+GRANT EXECUTE ON FUNCTION retrieve_visit_id TO 'ispyb_acquisition';
 
 CREATE ROLE IF NOT EXISTS ispyb_gda_scm;
 
