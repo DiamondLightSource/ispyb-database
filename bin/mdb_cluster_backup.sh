@@ -5,7 +5,7 @@
 #
 # Note that the node is desynced from the cluster (wsrep_desync=ON) while
 # mariabackup is running, meaning that flow control is disabled. This allows
-# the node to fall behing the cluster. Therefore the node will not necessarily
+# the node to fall behind the cluster. Therefore the node will not necessarily
 # be up-to-date with changes written to the cluster.
 #
 # Note also that the prepare_host needs to have mariabackup installed.
