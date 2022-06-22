@@ -10,7 +10,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.29.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.30.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -190,7 +190,12 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (215,'2022_01_12_Container_and_ContainerHistory_update.sql','DONE','2022-02-14 11:02:17'),
 (216,'2022_01_20_Container_priorityPipelineId_default.sql','DONE','2022-02-14 11:02:18'),
 (217,'2022_02_04_Pod.sql','DONE','2022-02-14 11:02:18'),
-(218,'2022_02_14_AdminVar_bump_version.sql','DONE','2022-02-14 11:02:18');
+(218,'2022_02_14_AdminVar_bump_version.sql','DONE','2022-02-14 11:02:18'),
+(219,'2022_03_07_SW_onceToken_recordTimeStamp_idx.sql','DONE','2022-06-22 12:09:07'),
+(220,'2022_04_12_BLSession_fk_beamCalendarId_set_null.sql','DONE','2022-06-22 12:09:07'),
+(221,'2022_05_12_Pod_app_modify_enum.sql','DONE','2022-06-22 12:09:07'),
+(222,'2022_06_22_AdminVar_bump_version.sql','DONE','2022-06-22 12:09:07'),
+(223,'2022_06_22_cryo-ET_tables.sql','DONE','2022-06-22 12:09:07');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;

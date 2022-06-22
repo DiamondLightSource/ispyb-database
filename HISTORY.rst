@@ -5,6 +5,31 @@ History
 Unreleased / master
 -------------------
 
+1.30.0 (2022-06-22)
+-------------------
+
+New tables (for cryo-ET and electrin diffraction):
+
+* ``Tomogram``: For storing per-sample, per-position data analysis results (reconstruction)
+* ``TiltImageAlignment``: For storing per-movie analysis results (reconstruction)
+
+New columns (for cryo-ET and electron diffraction):
+
+* angle
+* fluence
+* numberOfFrames
+
+Other changes:
+
+* Add JNB (Jupyter Notebook) option to ``app`` enum in ``Pod`` table
+* Add execute privilege to ``ispyb_acquisition`` role on:
+  * procedure ``upsert_dc``
+  * function ``retrieve_visit_id``
+
+* Make it possible to delete from ``BeamCalendar`` without deleting ``BLSessions`` (no longer cascading delete)
+* Add index on ``recordTimeStamp`` in ``SW_onceToken``
+
+
 1.29.0 (2022-02-14)
 -------------------
 

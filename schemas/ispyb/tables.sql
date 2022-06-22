@@ -731,7 +731,8 @@ CREATE TABLE `BLSession` (
   KEY `Session_FKIndexBeamLineName` (`beamLineName`),
   KEY `Session_FKIndexEndDate` (`endDate`),
   KEY `Session_FKIndexStartDate` (`startDate`),
-  KEY `BLSession_ibfk_3` (`beamCalendarId`),
+  KEY `BLSession_fk_beamCalendarId` (`beamCalendarId`),
+  CONSTRAINT `BLSession_fk_beamCalendarId` FOREIGN KEY (`beamCalendarId`) REFERENCES `BeamCalendar` (`beamCalendarId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `BLSession_ibfk_1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSession_ibfk_2` FOREIGN KEY (`beamLineSetupId`) REFERENCES `BeamLineSetup` (`beamLineSetupId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSession_ibfk_3` FOREIGN KEY (`beamCalendarId`) REFERENCES `BeamCalendar` (`beamCalendarId`)
@@ -889,6 +890,7 @@ CREATE TABLE `BeamLineSetup` (
   `monoBandwidthMin` double DEFAULT NULL COMMENT 'unit: percentage',
   `monoBandwidthMax` double DEFAULT NULL COMMENT 'unit: percentage',
   `preferredDataCentre` varchar(30) DEFAULT NULL COMMENT 'Relevant datacentre to use to process data from this beamline',
+  `amplitudeContrast` float DEFAULT NULL COMMENT 'Needed for cryo-ET',
   PRIMARY KEY (`beamLineSetupId`),
   KEY `BeamLineSetup_ibfk_1` (`detectorId`),
   CONSTRAINT `BeamLineSetup_ibfk_1` FOREIGN KEY (`detectorId`) REFERENCES `Detector` (`detectorId`)
@@ -2500,6 +2502,9 @@ CREATE TABLE `Movie` (
   `positionX` float DEFAULT NULL,
   `positionY` float DEFAULT NULL,
   `nominalDefocus` float unsigned DEFAULT NULL COMMENT 'Nominal defocus, Units: A',
+  `angle` float DEFAULT NULL COMMENT 'unit: degrees relative to perpendicular to beam',
+  `fluence` float DEFAULT NULL COMMENT 'accumulated electron fluence from start to end of acquisition of this movie (commonly, but incorrectly, referred to as ‘dose’)',
+  `numberOfFrames` int(11) unsigned DEFAULT NULL COMMENT 'number of frames per movie. This should be equivalent to the number of MotionCorrectionDrift entries, but the latter is a property of data analysis, whereas the number of frames is an intrinsic property of acquisition.',
   PRIMARY KEY (`movieId`),
   KEY `Movie_ibfk1` (`dataCollectionId`),
   CONSTRAINT `Movie_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
@@ -2851,7 +2856,7 @@ CREATE TABLE `Pod` (
   `podId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `personId` int(10) unsigned NOT NULL COMMENT 'Pod owner defined by the logged in SynchWeb user who requested the pod start up',
   `filePath` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL COMMENT 'File or directory path to mount into the Pod if required',
-  `app` enum('MAXIV HDF5 Viewer','H5Web') COLLATE utf8mb3_unicode_ci NOT NULL,
+  `app` enum('MAXIV HDF5 Viewer','H5Web','JNB') COLLATE utf8mb3_unicode_ci NOT NULL,
   `podName` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
   `status` varchar(25) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
   `ip` varchar(15) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
@@ -3328,6 +3333,7 @@ CREATE TABLE `SW_onceToken` (
   PRIMARY KEY (`onceTokenId`),
   KEY `SW_onceToken_fk1` (`personId`),
   KEY `SW_onceToken_fk2` (`proposalId`),
+  KEY `SW_onceToken_recordTimeStamp_idx` (`recordTimeStamp`),
   CONSTRAINT `SW_onceToken_fk1` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`),
   CONSTRAINT `SW_onceToken_fk2` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='One-time use tokens needed for token auth in order to grant access to file downloads and webcams (and some images)';
@@ -3979,6 +3985,52 @@ CREATE TABLE `SubtractionToAbInitioModel` (
   CONSTRAINT `substractionToAbInitioModelToAbinitioModel` FOREIGN KEY (`abInitioId`) REFERENCES `AbInitioModel` (`abInitioModelId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `substractionToSubstraction` FOREIGN KEY (`subtractionId`) REFERENCES `Subtraction` (`subtractionId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `TiltImageAlignment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `TiltImageAlignment` (
+  `movieId` int(11) unsigned NOT NULL COMMENT 'FK to Movie table',
+  `tomogramId` int(11) unsigned NOT NULL COMMENT 'FK to Tomogram table; tuple (movieID, tomogramID) is unique',
+  `defocusU` float DEFAULT NULL COMMENT 'unit: Angstroms',
+  `defocusV` float DEFAULT NULL COMMENT 'unit: Angstroms',
+  `psdFile` varchar(255) DEFAULT NULL,
+  `resolution` float DEFAULT NULL COMMENT 'unit: Angstroms',
+  `fitQuality` float DEFAULT NULL,
+  `refinedMagnification` float DEFAULT NULL COMMENT 'unitless',
+  `refinedTiltAngle` float DEFAULT NULL COMMENT 'units: degrees',
+  `refinedTiltAxis` float DEFAULT NULL COMMENT 'units: degrees',
+  `residualError` float DEFAULT NULL COMMENT 'Residual error, unit: nm',
+  PRIMARY KEY (`movieId`,`tomogramId`),
+  KEY `TiltImageAlignment_fk_tomogramId` (`tomogramId`),
+  CONSTRAINT `TiltImageAlignment_fk_movieId` FOREIGN KEY (`movieId`) REFERENCES `Movie` (`movieId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `TiltImageAlignment_fk_tomogramId` FOREIGN KEY (`tomogramId`) REFERENCES `Tomogram` (`tomogramId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='For storing per-movie analysis results (reconstruction)';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `Tomogram`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Tomogram` (
+  `tomogramId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `dataCollectionId` int(11) unsigned DEFAULT NULL COMMENT 'FK to DataCollection table',
+  `autoProcProgramId` int(10) unsigned DEFAULT NULL COMMENT 'FK, gives processing times/status and software information',
+  `volumeFile` varchar(255) DEFAULT NULL COMMENT '.mrc file representing the reconstructed tomogram volume',
+  `stackFile` varchar(255) DEFAULT NULL COMMENT '.mrc file containing the motion corrected images ordered by angle used as input for the reconstruction',
+  `sizeX` int(11) unsigned DEFAULT NULL COMMENT 'unit: pixels',
+  `sizeY` int(11) unsigned DEFAULT NULL COMMENT 'unit: pixels',
+  `sizeZ` int(11) unsigned DEFAULT NULL COMMENT 'unit: pixels',
+  `pixelSpacing` float DEFAULT NULL COMMENT 'Angstrom/pixel conversion factor',
+  `residualErrorMean` float DEFAULT NULL COMMENT 'Alignment error, unit: nm',
+  `residualErrorSD` float DEFAULT NULL COMMENT 'Standard deviation of the alignment error, unit: nm',
+  `xAxisCorrection` float DEFAULT NULL COMMENT 'X axis angle (etomo), unit: degrees',
+  `tiltAngleOffset` float DEFAULT NULL COMMENT 'tilt Axis offset (etomo), unit: degrees',
+  `zShift` float DEFAULT NULL COMMENT 'shift to center volumen in Z (etomo)',
+  PRIMARY KEY (`tomogramId`),
+  KEY `Tomogram_fk_dataCollectionId` (`dataCollectionId`),
+  KEY `Tomogram_fk_autoProcProgramId` (`autoProcProgramId`),
+  CONSTRAINT `Tomogram_fk_autoProcProgramId` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `Tomogram_fk_dataCollectionId` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='For storing per-sample, per-position data analysis results (reconstruction)';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `UserGroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
