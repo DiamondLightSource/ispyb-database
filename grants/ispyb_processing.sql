@@ -31,6 +31,9 @@ GRANT SELECT,INSERT,UPDATE ON RelativeIceThickness TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON CTF TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON Movie TO 'ispyb_processing';
 
+GRANT SELECT,INSERT,UPDATE ON Tomogram TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON TiltImageAlignment TO 'ispyb_processing';
+
 
 GRANT EXECUTE ON FUNCTION retrieve_visit_id TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `retrieve_dc_main` TO 'ispyb_processing';
