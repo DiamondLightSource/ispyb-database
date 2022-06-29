@@ -186,3 +186,25 @@ CREATE OR REPLACE SQL SECURITY DEFINER VIEW AutoProc AS
     WHERE ihu.username = substring_index(user(),'@',1)
   );
 
+CREATE OR REPLACE SQL SECURITY DEFINER VIEW Crystal AS
+  SELECT DISTINCT c.*
+  FROM $ispyb.Crystal c
+    JOIN $ispyb.Protein pr ON pr.proteinId = c.proteinId
+    JOIN $ispyb.Proposal_has_Instrument phi ON phi.proposalId = pr.proposalId
+  WHERE phi.instrumentId IN (
+    SELECT ihu.instrumentId
+    FROM $ispyb.Instrument_has_Username ihu
+    WHERE ihu.username = substring_index(user(),'@',1)
+  );
+
+CREATE OR REPLACE SQL SECURITY DEFINER VIEW BLSample AS
+  SELECT DISTINCT bls.*
+  FROM $ispyb.BLSample bls
+    JOIN $ispyb.Crystal c ON c.crystalId = bls.crystalId
+    JOIN $ispyb.Protein pr ON pr.proteinId = c.proteinId
+    JOIN $ispyb.Proposal_has_Instrument phi ON phi.proposalId = pr.proposalId
+  WHERE phi.instrumentId IN (
+    SELECT ihu.instrumentId
+    FROM $ispyb.Instrument_has_Username ihu
+    WHERE ihu.username = substring_index(user(),'@',1)
+  );
