@@ -150,6 +150,16 @@ CREATE OR REPLACE SQL SECURITY DEFINER VIEW AutoProcProgramMessage AS
     WHERE ihu.username = substring_index(user(),'@',1)
   );
 
+CREATE OR REPLACE SQL SECURITY DEFINER VIEW PDBEntry AS
+  SELECT pdbe.*
+  FROM $ispyb.PDBEntry pdbe
+    JOIN $ispyb.AutoProcProgram app ON app.autoProcProgramId = pdbe.autoProcProgramId
+  WHERE app.instrumentId IN (
+    SELECT ihu.instrumentId
+    FROM $ispyb.Instrument_has_Username ihu
+    WHERE ihu.username = substring_index(user(),'@',1)
+  );
+
 CREATE OR REPLACE SQL SECURITY DEFINER VIEW AutoProcScaling_has_Int AS
   SELECT *
   FROM $ispyb.AutoProcScaling_has_Int

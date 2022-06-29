@@ -13,6 +13,7 @@ GRANT SELECT ON AutoProcIntegration TO data_scientist;
 GRANT SELECT ON AutoProcProgram TO data_scientist;
 GRANT SELECT ON AutoProcProgramAttachment TO data_scientist;
 GRANT SELECT ON AutoProcProgramMessage TO data_scientist;
+GRANT SELECT ON PDBEntry TO data_scientist
 GRANT SELECT ON AutoProcScaling_has_Int TO data_scientist;
 GRANT SELECT ON AutoProcScaling TO data_scientist;
 GRANT SELECT ON AutoProcScalingStatistics TO data_scientist;
@@ -23,4 +24,3 @@ GRANT SELECT ON ProcessingJobParameter TO data_scientist;
 GRANT SELECT ON ProcessingJobImageSweep TO data_scientist;
 GRANT SELECT ON Protein TO data_scientist;
 GRANT SELECT ON Crystal TO data_scientist;
-
