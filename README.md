@@ -8,6 +8,7 @@ This package provides everything needed to create the Diamond flavour of the ISP
 
 * Server and a client packages of MariaDB 10.3 or later.
 * A Unix-like OS with `bash` shell.
+* The pandoc package (only required to build documentation at the end of the `build.sh` script.)
 * If binary logging is enabled in the DB system, then execute this before importing the test schema: `SET GLOBAL log_bin_trust_function_creators=ON;`
 
 ## Installation
@@ -85,7 +86,7 @@ mysql ispyb < grants/ispyb_web.sql
 
 ## Useful scripts
 
-* `build.sh`: Creates a development `ispyb_build` database and import all the schema and grants files into it.
+* `build.sh`: Creates a development `ispyb_build` database and imports all the schema and grants files into it.
 * `release.sh`: Makes a release, see the Releasing section.
 * `bin/backup.sh`: Makes a backup of the development database.
 * `bin/missed_updates.sh`: Generates a list of files in the `schemas/ispyb/updates/` folder that haven't been applied.
