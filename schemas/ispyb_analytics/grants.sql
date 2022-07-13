@@ -24,3 +24,4 @@ GRANT SELECT ON ProcessingJobParameter TO data_scientist;
 GRANT SELECT ON ProcessingJobImageSweep TO data_scientist;
 GRANT SELECT ON Protein TO data_scientist;
 GRANT SELECT ON Crystal TO data_scientist;
+GRANT SELECT ON BLSample TO data_scientist;
