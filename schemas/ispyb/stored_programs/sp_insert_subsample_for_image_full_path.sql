@@ -12,7 +12,7 @@ CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `insert_subsample_for_image
     MODIFIES SQL DATA
     COMMENT 'Returns subsample ID in p_id.'
 BEGIN
-  DECLARE l_position1Id, l_position2Id, l_sampleId int unsigned DEFAULT NULL;
+  DECLARE l_position1Id, l_position2Id, l_sampleImageId, l_sampleId int unsigned DEFAULT NULL;
   DECLARE EXIT HANDLER FOR SQLWARNING
   BEGIN
     ROLLBACK;
@@ -20,7 +20,7 @@ BEGIN
   END;
 
   IF p_imageFullPath IS NOT NULL AND p_source IS NOT NULL AND p_position1x IS NOT NULL AND p_position1y IS NOT NULL THEN
-    SELECT blSampleId INTO l_sampleId
+    SELECT blSampleImageId, blSampleId INTO l_sampleImageId, l_sampleId
     FROM BLSampleImage
     WHERE imageFullPath = p_imageFullPath
     ORDER BY blSampleImageId DESC
@@ -33,7 +33,7 @@ BEGIN
 
     START TRANSACTION;
 
-    INSERT INTO Position (posX, posY) VALUES (p_position1x, p_position1y); 
+    INSERT INTO Position (posX, posY) VALUES (p_position1x, p_position1y);
     SET l_position1Id := LAST_INSERT_ID();
 
     IF p_position2x IS NOT NULL AND p_position2y IS NOT NULL THEN
@@ -43,12 +43,13 @@ BEGIN
 
     INSERT INTO BLSubSample (
       blSampleId,
+      blSampleImageId,
       source,
 --      type,
-      positionId, 
+      positionId,
       position2Id
     )
-      VALUES (l_sampleId, p_source, /*p_type,*/ l_position1Id, l_position2Id);
+      VALUES (l_sampleId, l_sampleImageId, p_source, /*p_type,*/ l_position1Id, l_position2Id);
     SET p_id := LAST_INSERT_ID();
 
     COMMIT;
