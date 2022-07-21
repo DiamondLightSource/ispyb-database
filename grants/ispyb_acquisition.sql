@@ -1,4 +1,4 @@
--- Create the processing application role.
+-- Create the acquisition application role.
 CREATE ROLE IF NOT EXISTS ispyb_acquisition;
 
 -- You must also create a database user and grant this role to them, e.g.
@@ -95,4 +95,3 @@ GRANT EXECUTE ON PROCEDURE retrieve_dc TO ispyb_gda_mxcx;
 
 GRANT EXECUTE ON PROCEDURE upsert_mx_sample TO ispyb_gda_mxcx;
 GRANT EXECUTE ON FUNCTION retrieve_proposal_title_v2 TO ispyb_gda_mxcx;
-
