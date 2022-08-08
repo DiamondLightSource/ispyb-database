@@ -41,9 +41,14 @@ Then apply the grants:
 
 ```bash
 mysql ispyb < grants/ispyb_acquisition.sql
+mysql ispyb < grants/ispyb_import.sql
 mysql ispyb < grants/ispyb_processing.sql
+mysql ispyb < grants/ispyb_ro_nopii.sql
+mysql ispyb < grants/ispyb_scripts_processing.sql
+mysql ispyb < grants/ispyb_touchscreen.sql
 mysql ispyb < grants/ispyb_web.sql
 ```
+
 Note that the grants files are based on roles, so to actually use these grants, you also need to create database users and grant the roles to them. This is described in the header section of the grant files.
 
 ### Miscellaneous Notes
@@ -97,4 +102,3 @@ mysql ispyb < grants/ispyb_web.sql
 * Please refer to the [```Wiki```](https://github.com/DiamondLightSource/ispyb-database/wiki) for database diagrams, stored procedure how-to, MariaDB installation and more  
 * A complete [```list of tables and columns```](https://alfred.diamond.ac.uk/documentation/ispyb-database/list_of_tables_and_columns.html) for more details about the tables and columns
 * A complete [```list of stored procedures```](https://alfred.diamond.ac.uk/documentation/ispyb-database/list_of_procs.html) for more details about the stored procedures
-
