@@ -10,7 +10,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.30.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.31.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -195,7 +195,9 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (220,'2022_04_12_BLSession_fk_beamCalendarId_set_null.sql','DONE','2022-06-22 12:09:07'),
 (221,'2022_05_12_Pod_app_modify_enum.sql','DONE','2022-06-22 12:09:07'),
 (222,'2022_06_22_AdminVar_bump_version.sql','DONE','2022-06-22 12:09:07'),
-(223,'2022_06_22_cryo-ET_tables.sql','DONE','2022-06-22 12:09:07');
+(223,'2022_06_22_cryo-ET_tables.sql','DONE','2022-06-22 12:09:07'),
+(224,'2022_07_17_BLSubSample_update_blSampleImageId.sql','DONE','2022-08-08 12:03:49'),
+(225,'2022_08_08_AdminVar_bump_version.sql','DONE','2022-08-08 16:40:14');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
