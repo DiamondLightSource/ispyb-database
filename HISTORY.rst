@@ -10,7 +10,7 @@ Unreleased / master
 
 Stored procedures:
 
-* Existing proc ``insert_subsample_for_image_full_path`` now also populates ```BLSubSample.blSampleImageId``. (Existing ``BLSubSample`` rows can be back-populated with values for the column through the ``2022_07_17_BLSubSample_update_blSampleImageId.sql`` script.)   
+* Existing proc ``insert_subsample_for_image_full_path`` now also populates ``BLSubSample.blSampleImageId``. (Existing ``BLSubSample`` rows can be back-populated with values for the column through the ``2022_07_17_BLSubSample_update_blSampleImageId.sql`` script.)   
 * New proc ``insert_subsample_for_image_full_path_v2`` has an additional parameter ``p_experiment_type`` used to create a ``DiffractionPlan`` for the ``BLSubSample``.
 
 Views:
