@@ -26,9 +26,12 @@ then
   mysql --defaults-file=.my.cnf -D $DB < schemas/ispyb/data.sql
   mysql --defaults-file=.my.cnf -D $DB < schemas/ispyb/routines.sql
   mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_acquisition.sql
-  mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_processing.sql
-  mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_web.sql
   mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_import.sql
+  mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_processing.sql
+  mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_ro_nopii.sql
+  mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_scripts_processing.sql
+  mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_touchscreen.sql
+  mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_web.sql
 
   arr=$(bin/missed_updates.sh)
 
