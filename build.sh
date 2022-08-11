@@ -47,7 +47,7 @@ then
 
   # Generate table and sproc documentation
   if ! hash pandoc 2>/dev/null; then
-    echo "'pandoc' was not found in PATH"
+    echo "'pandoc' was not found in PATH: skipping documentation generation"
   elif [ -d "bin" ]; then
     cd bin
     ./db_procs_to_rst.sh $DB > /tmp/list_of_procs.rst
