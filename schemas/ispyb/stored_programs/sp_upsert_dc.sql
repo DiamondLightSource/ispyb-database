@@ -60,7 +60,7 @@ CREATE OR REPLACE DEFINER=`root`@`localhost` PROCEDURE `upsert_dc` (
      p_focalSpotSizeAtSampleX float,
      p_focalSpotSizeAtSampleY float,
      p_polarisation float,
-     p_flux float,
+     p_flux double,
 -- new params
      p_processedDataFile varchar(255),
      p_datFullPath varchar(255),
