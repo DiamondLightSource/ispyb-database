@@ -10,7 +10,7 @@ CREATE TABLE `DetectorROI` (
   `type` varchar(50) NOT NULL COMMENT 'The ROI type rectangle, arc, q range, etc', 
   `name` varchar(50) NOT NULL COMMENT 'A short name for this ROI',
   `blTimestamp` timestamp NOT NULL DEFAULT current_timestamp(),
-  `definition` text NOT NULL CHECK (json_valid(`scanParameters`)) COMMENT 'The ROI definition in json format',
+  `definition` text NOT NULL CHECK (json_valid(`definition`)) COMMENT 'The ROI definition in json format',
   PRIMARY KEY (`detectorROIId`),
   KEY `detectorROI_fk1` (`detectorId`),
   KEY `detectorROI_fk2` (`blSampleId`),
