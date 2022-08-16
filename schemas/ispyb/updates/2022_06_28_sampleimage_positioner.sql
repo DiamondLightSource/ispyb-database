@@ -8,8 +8,7 @@ CREATE TABLE `BLSampleImage_has_Positioner` (
     PRIMARY KEY (`blSampleImageHasPositionerId`),
     CONSTRAINT `BLSampleImageHasPositioner_ibfk1`
         FOREIGN KEY (`blSampleImageId`)
-            REFERENCES `BLSampleImage`(`blSampleImageId`)
-                ON DELETE RESTRICT ON UPDATE RESTRICT,
+            REFERENCES `BLSampleImage`(`blSampleImageId`),
     CONSTRAINT `BLSampleImageHasPositioner_ibfk2`
         FOREIGN KEY (`positionerId`)
             REFERENCES `Positioner`(`positionerId`)
