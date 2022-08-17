@@ -12,6 +12,6 @@ CREATE TABLE `BLSampleImage_has_Positioner` (
     CONSTRAINT `BLSampleImageHasPositioner_ibfk2`
         FOREIGN KEY (`positionerId`)
             REFERENCES `Positioner`(`positionerId`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Allows a BLSampleImage to store motor positions along with the image';
+    ) ENGINE=InnoDB COMMENT='Allows a BLSampleImage to store motor positions along with the image';
 
 UPDATE SchemaStatus SET schemaStatus = 'DONE' WHERE scriptName = '2022_06_28_sampleimage_positioner.sql';
