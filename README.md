@@ -1,4 +1,4 @@
-![Build Status](https://github.com/DiamondLightSource/ispyb-database/actions/workflows/build.yml/badge.svg)
+[![Build Status](https://github.com/DiamondLightSource/ispyb-database/actions/workflows/build.yml/badge.svg)](https://github.com/DiamondLightSource/ispyb-database/actions/workflows/build.yml)
 
 # ispyb-database
 
