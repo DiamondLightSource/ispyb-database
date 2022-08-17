@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/DiamondLightSource/ispyb-database.svg?branch=master)](https://travis-ci.org/DiamondLightSource/ispyb-database)
+[![Build Status](https://github.com/DiamondLightSource/ispyb-database/actions/workflows/build.yml/badge.svg)](https://github.com/DiamondLightSource/ispyb-database/actions/workflows/build.yml)
 
 # ispyb-database
 
@@ -74,7 +74,7 @@ SHOW PLUGINS SONAME WHERE Name = 'SQL_ERROR_LOG';
 
 In order to update a production database, please follow this procedure:
 
-1. For all .sql files in `schemas/ispyb/updates` that have not already been run, read any comments inside the files to decide if/when you should run them. Run a file e.g. like this:
+1. For all *.sql files in `schemas/ispyb/updates` that have not already been run, read any comments inside the files to decide if/when you should run them. Run a file e.g. like this:
 ```bash
 mysql ispyb < schemas/ispyb/updates/2019_03_29_BLSession_archived.sql
 ```
