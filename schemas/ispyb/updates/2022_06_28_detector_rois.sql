@@ -16,7 +16,7 @@ CREATE TABLE `DetectorROI` (
   KEY `detectorROI_fk2` (`blSampleId`),
   CONSTRAINT `detectorROI_fk1` FOREIGN KEY (`detectorId`) REFERENCES `Detector` (`detectorId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `detectorROI_fk2` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Store an ROI for a 2d detector against a particular sample';
+) ENGINE=InnoDB DEFAULT COMMENT='Store an ROI for a 2d detector against a particular sample';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 ALTER TABLE `XRFFluorescenceMapping`
