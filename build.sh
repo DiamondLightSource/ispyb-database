@@ -9,6 +9,7 @@
 
 # Author: Karl Levik
 
+set -e
 source bin/functions.sh
 
 if [ -z "${DB}" ]
