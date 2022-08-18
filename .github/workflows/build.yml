@@ -25,7 +25,7 @@ jobs:
         with:
           distribution: 'mariadb'
           mysql-version: '10.8'
-          auto_start: false
+          auto-start: false
       - name: Build database
         run: |
           cp .my.example.cnf .my.cnf
