@@ -13,7 +13,7 @@ then
 fi
 
 # Note: --defaults-file must be given as first option
-DUMP_W_OPTS="mysqldump --defaults-file=../.my.cnf --add-drop-table --create-options --disable-keys --extended-insert --skip-add-locks --quick --set-charset --single-transaction --max_allowed_packet=1G --default-character-set=utf8 --skip-comments --skip-dump-date"
+DUMP_W_OPTS="mysqldump --defaults-file=../.my.cnf --column-statistics=0 --add-drop-table --create-options --disable-keys --extended-insert --skip-add-locks --quick --set-charset --single-transaction --max_allowed_packet=1G --default-character-set=utf8 --skip-comments --skip-dump-date"
 
 ${DUMP_W_OPTS} --skip-triggers --no-data "${DB}" | sed -e 's/DEFINER=[^*]*\*/SQL SECURITY INVOKER \*/' | sed 's/ AUTO_INCREMENT=[0-9]*\b//g' > ${OUT_DIR}/tables.sql
 
