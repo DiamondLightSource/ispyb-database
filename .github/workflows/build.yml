@@ -21,12 +21,13 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - uses: actions/checkout@v3
+      - uses: shogo82148/actions-setup-mysql@v1
+        with:
+          distribution: 'mariadb'
+          mysql-version: '10.8'
+          auto_start: false
       - name: Build database
         run: |
-          sudo apt-get install curl software-properties-common dirmngr ca-certificates apt-transport-https -y
-          curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash -s -- --mariadb-server-version=10.8
-          sudo apt-get update
-          sudo apt-get install mariadb-server
           cp .my.example.cnf .my.cnf
           bash build.sh
 
