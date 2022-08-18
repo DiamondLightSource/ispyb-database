@@ -28,7 +28,7 @@ jobs:
 
       - name: Regenerate sql files
         run: |
-          bash bin/backup.sh schema/
+          bash bin/backup.sh schemas/ispyb/
           rm .my.cnf
 
       - name: Create Pull Request
