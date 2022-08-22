@@ -197,7 +197,8 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (222,'2022_06_22_AdminVar_bump_version.sql','DONE','2022-06-22 12:09:07'),
 (223,'2022_06_22_cryo-ET_tables.sql','DONE','2022-06-22 12:09:07'),
 (224,'2022_07_17_BLSubSample_update_blSampleImageId.sql','DONE','2022-08-08 12:03:49'),
-(225,'2022_08_08_AdminVar_bump_version.sql','DONE','2022-08-08 16:40:14');
+(225,'2022_08_08_AdminVar_bump_version.sql','DONE','2022-08-08 16:40:14'),
+(226,'2022_06_28_diffractionplan_scanparameters.sql','DONE','2022-08-22 11:54:59');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;

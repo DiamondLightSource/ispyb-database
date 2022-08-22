@@ -1816,6 +1816,7 @@ CREATE TABLE `DiffractionPlan` (
   `qMin` float DEFAULT NULL COMMENT 'minimum in qRange, unit: nm^-1, needed for SAXS',
   `qMax` float DEFAULT NULL COMMENT 'maximum in qRange, unit: nm^-1, needed for SAXS',
   `reductionParametersAveraging` enum('All','Fastest Dimension','1D') DEFAULT NULL COMMENT 'Post processing params for SAXS',
+  `scanParameters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'JSON serialised scan parameters, useful for parameters without designated columns' CHECK (json_valid(`scanParameters`)),
   PRIMARY KEY (`diffractionPlanId`),
   KEY `DiffractionPlan_ibfk1` (`presetForProposalId`),
   KEY `DataCollectionPlan_ibfk3` (`detectorId`),
