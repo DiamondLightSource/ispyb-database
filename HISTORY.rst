@@ -5,6 +5,17 @@ History
 Unreleased / master
 -------------------
 
+1.32.0 (2022-08-25)
+-------------------
+
+* More grants files with new roles
+* Stored procedure: Changed datatype from float to double for parameter ``p_flux`` in ``upsert_dc``   
+* Tables and columns:
+  * ``DiffractionPlan``: Add JSON column ``scanParameters``
+  * ``GridInfo``: Add columns patchesX and patchesY
+  * New table ``BLSampleImage_has_Positioner`` linking ``BLSampleImage`` and ``Positioner``
+  
+
 1.31.0 (2022-08-08)
 -------------------
 
