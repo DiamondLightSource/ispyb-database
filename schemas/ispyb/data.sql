@@ -261,6 +261,9 @@ INSERT INTO `BLSampleImageScore` (`blSampleImageScoreId`, `name`, `score`, `colo
 /*!40000 ALTER TABLE `BLSampleImage_has_AutoScoreClass` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSampleImage_has_AutoScoreClass` ENABLE KEYS */;
 
+/*!40000 ALTER TABLE `BLSampleImage_has_Positioner` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BLSampleImage_has_Positioner` ENABLE KEYS */;
+
 /*!40000 ALTER TABLE `BLSampleType_has_Component` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSampleType_has_Component` ENABLE KEYS */;
 
@@ -305,7 +308,7 @@ INSERT INTO `BLSubSample` (`blSubSampleId`, `blSampleId`, `diffractionPlanId`, `
 /*!40000 ALTER TABLE `BeamCentres` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `BeamLineSetup` DISABLE KEYS */;
-INSERT INTO `BeamLineSetup` (`beamLineSetupId`, `detectorId`, `synchrotronMode`, `undulatorType1`, `undulatorType2`, `undulatorType3`, `focalSpotSizeAtSample`, `focusingOptic`, `beamDivergenceHorizontal`, `beamDivergenceVertical`, `polarisation`, `monochromatorType`, `setupDate`, `synchrotronName`, `maxExpTimePerDataCollection`, `maxExposureTimePerImage`, `minExposureTimePerImage`, `goniostatMaxOscillationSpeed`, `goniostatMaxOscillationWidth`, `goniostatMinOscillationWidth`, `maxTransmission`, `minTransmission`, `recordTimeStamp`, `CS`, `beamlineName`, `beamSizeXMin`, `beamSizeXMax`, `beamSizeYMin`, `beamSizeYMax`, `energyMin`, `energyMax`, `omegaMin`, `omegaMax`, `kappaMin`, `kappaMax`, `phiMin`, `phiMax`, `active`, `numberOfImagesMax`, `numberOfImagesMin`, `boxSizeXMin`, `boxSizeXMax`, `boxSizeYMin`, `boxSizeYMax`, `monoBandwidthMin`, `monoBandwidthMax`, `preferredDataCentre`) VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2007-04-26 00:00:00','Diamond Light Source',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-19 22:56:25',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `BeamLineSetup` (`beamLineSetupId`, `detectorId`, `synchrotronMode`, `undulatorType1`, `undulatorType2`, `undulatorType3`, `focalSpotSizeAtSample`, `focusingOptic`, `beamDivergenceHorizontal`, `beamDivergenceVertical`, `polarisation`, `monochromatorType`, `setupDate`, `synchrotronName`, `maxExpTimePerDataCollection`, `maxExposureTimePerImage`, `minExposureTimePerImage`, `goniostatMaxOscillationSpeed`, `goniostatMaxOscillationWidth`, `goniostatMinOscillationWidth`, `maxTransmission`, `minTransmission`, `recordTimeStamp`, `CS`, `beamlineName`, `beamSizeXMin`, `beamSizeXMax`, `beamSizeYMin`, `beamSizeYMax`, `energyMin`, `energyMax`, `omegaMin`, `omegaMax`, `kappaMin`, `kappaMax`, `phiMin`, `phiMax`, `active`, `numberOfImagesMax`, `numberOfImagesMin`, `boxSizeXMin`, `boxSizeXMax`, `boxSizeYMin`, `boxSizeYMax`, `monoBandwidthMin`, `monoBandwidthMax`, `preferredDataCentre`, `amplitudeContrast`) VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2007-04-26 00:00:00','Diamond Light Source',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-19 22:56:25',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `BeamLineSetup` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `BeamlineAction` DISABLE KEYS */;
@@ -468,9 +471,9 @@ INSERT INTO `Dewar` (`dewarId`, `shippingId`, `code`, `comments`, `storageLocati
 /*!40000 ALTER TABLE `DewarTransportHistory` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `DiffractionPlan` DISABLE KEYS */;
-INSERT INTO `DiffractionPlan` (`diffractionPlanId`, `name`, `experimentKind`, `observedResolution`, `minimalResolution`, `exposureTime`, `oscillationRange`, `maximalResolution`, `screeningResolution`, `radiationSensitivity`, `anomalousScatterer`, `preferredBeamSizeX`, `preferredBeamSizeY`, `preferredBeamDiameter`, `comments`, `DIFFRACTIONPLANUUID`, `aimedCompleteness`, `aimedIOverSigmaAtHighestRes`, `aimedMultiplicity`, `aimedResolution`, `anomalousData`, `complexity`, `estimateRadiationDamage`, `forcedSpaceGroup`, `requiredCompleteness`, `requiredMultiplicity`, `requiredResolution`, `strategyOption`, `kappaStrategyOption`, `numberOfPositions`, `minDimAccrossSpindleAxis`, `maxDimAccrossSpindleAxis`, `radiationSensitivityBeta`, `radiationSensitivityGamma`, `minOscWidth`, `recordTimeStamp`, `monochromator`, `energy`, `transmission`, `boxSizeX`, `boxSizeY`, `kappaStart`, `axisStart`, `axisRange`, `numberOfImages`, `presetForProposalId`, `beamLineName`, `detectorId`, `distance`, `orientation`, `monoBandwidth`, `centringMethod`, `userPath`, `robotPlateTemperature`, `exposureTemperature`, `experimentTypeId`, `purificationColumnId`, `collectionMode`, `priority`, `qMin`, `qMax`, `reductionParametersAveraging`) VALUES (197784,NULL,'OSC',NULL,NULL,0.2,NULL,NULL,NULL,NULL,NULL,10.5,10.5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,1.1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-20 23:50:27',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(197788,NULL,NULL,NULL,NULL,10,NULL,NULL,NULL,NULL,NULL,160,100,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-10-26 15:28:12',NULL,150,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,4,162.5,45,330.6,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(197792,'XPDF-1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2017-03-22 10:56:32',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `DiffractionPlan` (`diffractionPlanId`, `name`, `experimentKind`, `observedResolution`, `minimalResolution`, `exposureTime`, `oscillationRange`, `maximalResolution`, `screeningResolution`, `radiationSensitivity`, `anomalousScatterer`, `preferredBeamSizeX`, `preferredBeamSizeY`, `preferredBeamDiameter`, `comments`, `DIFFRACTIONPLANUUID`, `aimedCompleteness`, `aimedIOverSigmaAtHighestRes`, `aimedMultiplicity`, `aimedResolution`, `anomalousData`, `complexity`, `estimateRadiationDamage`, `forcedSpaceGroup`, `requiredCompleteness`, `requiredMultiplicity`, `requiredResolution`, `strategyOption`, `kappaStrategyOption`, `numberOfPositions`, `minDimAccrossSpindleAxis`, `maxDimAccrossSpindleAxis`, `radiationSensitivityBeta`, `radiationSensitivityGamma`, `minOscWidth`, `recordTimeStamp`, `monochromator`, `energy`, `transmission`, `boxSizeX`, `boxSizeY`, `kappaStart`, `axisStart`, `axisRange`, `numberOfImages`, `presetForProposalId`, `beamLineName`, `detectorId`, `distance`, `orientation`, `monoBandwidth`, `centringMethod`, `userPath`, `robotPlateTemperature`, `exposureTemperature`, `experimentTypeId`, `purificationColumnId`, `collectionMode`, `priority`, `qMin`, `qMax`, `reductionParametersAveraging`, `scanParameters`) VALUES (197784,NULL,'OSC',NULL,NULL,0.2,NULL,NULL,NULL,NULL,NULL,10.5,10.5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,1.1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-20 23:50:27',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(197788,NULL,NULL,NULL,NULL,10,NULL,NULL,NULL,NULL,NULL,160,100,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-10-26 15:28:12',NULL,150,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,4,162.5,45,330.6,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(197792,'XPDF-1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2017-03-22 10:56:32',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `DiffractionPlan` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `EMMicroscope` DISABLE KEYS */;
@@ -531,7 +534,7 @@ INSERT INTO `EnergyScan` (`energyScanId`, `sessionId`, `blSampleId`, `fluorescen
 /*!40000 ALTER TABLE `GridImageMap` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `GridInfo` DISABLE KEYS */;
-INSERT INTO `GridInfo` (`gridInfoId`, `xOffset`, `yOffset`, `dx_mm`, `dy_mm`, `steps_x`, `steps_y`, `meshAngle`, `recordTimeStamp`, `workflowMeshId`, `orientation`, `dataCollectionGroupId`, `pixelsPerMicronX`, `pixelsPerMicronY`, `snapshot_offsetXPixel`, `snapshot_offsetYPixel`, `snaked`, `dataCollectionId`) VALUES (1281212,NULL,NULL,0.02,0.02,30,16,NULL,'2021-02-25 10:15:06',NULL,'horizontal',5440739,0.83,0.83,304,229.75,1,6017405);
+INSERT INTO `GridInfo` (`gridInfoId`, `xOffset`, `yOffset`, `dx_mm`, `dy_mm`, `steps_x`, `steps_y`, `meshAngle`, `recordTimeStamp`, `workflowMeshId`, `orientation`, `dataCollectionGroupId`, `pixelsPerMicronX`, `pixelsPerMicronY`, `snapshot_offsetXPixel`, `snapshot_offsetYPixel`, `snaked`, `dataCollectionId`, `patchesX`, `patchesY`) VALUES (1281212,NULL,NULL,0.02,0.02,30,16,NULL,'2021-02-25 10:15:06',NULL,'horizontal',5440739,0.83,0.83,304,229.75,1,6017405,1,1);
 /*!40000 ALTER TABLE `GridInfo` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Image` DISABLE KEYS */;
@@ -1045,6 +1048,12 @@ INSERT INTO `ShippingHasSession` (`shippingId`, `sessionId`) VALUES (474,339525)
 
 /*!40000 ALTER TABLE `SubtractionToAbInitioModel` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SubtractionToAbInitioModel` ENABLE KEYS */;
+
+/*!40000 ALTER TABLE `TiltImageAlignment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `TiltImageAlignment` ENABLE KEYS */;
+
+/*!40000 ALTER TABLE `Tomogram` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Tomogram` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `UserGroup_has_Person` DISABLE KEYS */;
 /*!40000 ALTER TABLE `UserGroup_has_Person` ENABLE KEYS */;

@@ -629,6 +629,21 @@ CREATE TABLE `BLSampleImage_has_AutoScoreClass` (
   CONSTRAINT `BLSampleImage_has_AutoScoreClass_fk2` FOREIGN KEY (`blSampleImageAutoScoreClassId`) REFERENCES `BLSampleImageAutoScoreClass` (`blSampleImageAutoScoreClassId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Many-to-many relationship between drop images and thing being scored, as well as the actual probability (score) that the drop image contains that thing';
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `BLSampleImage_has_Positioner`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BLSampleImage_has_Positioner` (
+  `blSampleImageHasPositionerId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `blSampleImageId` int(10) unsigned NOT NULL,
+  `positionerId` int(10) unsigned NOT NULL,
+  `value` float DEFAULT NULL COMMENT 'The position of this positioner for this blsampleimage',
+  PRIMARY KEY (`blSampleImageHasPositionerId`),
+  KEY `BLSampleImageHasPositioner_ibfk1` (`blSampleImageId`),
+  KEY `BLSampleImageHasPositioner_ibfk2` (`positionerId`),
+  CONSTRAINT `BLSampleImageHasPositioner_ibfk1` FOREIGN KEY (`blSampleImageId`) REFERENCES `BLSampleImage` (`blSampleImageId`),
+  CONSTRAINT `BLSampleImageHasPositioner_ibfk2` FOREIGN KEY (`positionerId`) REFERENCES `Positioner` (`positionerId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Allows a BLSampleImage to store motor positions along with the image';
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSampleType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -1816,6 +1831,7 @@ CREATE TABLE `DiffractionPlan` (
   `qMin` float DEFAULT NULL COMMENT 'minimum in qRange, unit: nm^-1, needed for SAXS',
   `qMax` float DEFAULT NULL COMMENT 'maximum in qRange, unit: nm^-1, needed for SAXS',
   `reductionParametersAveraging` enum('All','Fastest Dimension','1D') DEFAULT NULL COMMENT 'Post processing params for SAXS',
+  `scanParameters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'JSON serialised scan parameters, useful for parameters without designated columns' CHECK (json_valid(`scanParameters`)),
   PRIMARY KEY (`diffractionPlanId`),
   KEY `DiffractionPlan_ibfk1` (`presetForProposalId`),
   KEY `DataCollectionPlan_ibfk3` (`detectorId`),
@@ -2031,6 +2047,8 @@ CREATE TABLE `GridInfo` (
   `snapshot_offsetYPixel` float DEFAULT NULL,
   `snaked` tinyint(1) DEFAULT 0 COMMENT 'True: The images associated with the DCG were collected in a snaked pattern',
   `dataCollectionId` int(11) unsigned DEFAULT NULL,
+  `patchesX` int(10) DEFAULT 1 COMMENT 'Number of patches the grid is made up of in the X direction',
+  `patchesY` int(10) DEFAULT 1 COMMENT 'Number of patches the grid is made up of in the Y direction',
   PRIMARY KEY (`gridInfoId`),
   KEY `workflowMeshId` (`workflowMeshId`),
   KEY `GridInfo_ibfk_2` (`dataCollectionGroupId`),
