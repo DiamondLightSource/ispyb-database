@@ -17,20 +17,46 @@ BEGIN
     DECLARE row_beamlineLocation varchar(20) DEFAULT NULL;
     DECLARE row_sampleChangerLocation varchar(20) DEFAULT NULL;
     DECLARE row_proposalId int(10) unsigned DEFAULT NULL;
+    DECLARE row_proposalCode varchar(45) DEFAULT NULL;
+    DECLARE row_proposalNumber varchar(45) DEFAULT NULL;
     DECLARE row_queuedCount int(11) unsigned DEFAULT NULL;
 
     IF NOT (p_registry_barcode IS NULL) THEN
         START TRANSACTION;
 
-        SELECT c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId, count(cq.containerQueueId)
-          INTO row_containerId, row_containerStatus, row_dewarId, row_beamlineLocation, row_sampleChangerLocation, row_proposalId, row_queuedCount
+        SELECT c.containerId,
+          c.containerStatus,
+          c.dewarId,
+          c.beamlineLocation,
+          c.sampleChangerLocation,
+          p.proposalId,
+          p.proposalCode,
+          p.proposalNumber,
+          count(cq.containerQueueId)
+        INTO row_containerId,
+          row_containerStatus,
+          row_dewarId,
+          row_beamlineLocation,
+          row_sampleChangerLocation,
+          row_proposalId,
+          row_proposalCode,
+          row_proposalNumber,
+          row_queuedCount
         FROM Container c
             INNER JOIN ContainerRegistry cr ON c.containerRegistryId = cr.containerRegistryId
             INNER JOIN Dewar d ON d.dewarId = c.dewarId
             INNER JOIN Shipping s ON s.shippingId = d.shippingId
+            INNER JOIN Proposal p ON p.proposalId = s.proposalId 
             LEFT OUTER JOIN ContainerQueue cq ON cq.containerId = c.containerId
         WHERE cr.barcode = p_registry_barcode
-        GROUP BY c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId
+        GROUP BY c.containerId,
+          c.containerStatus,
+          c.dewarId,
+          c.beamlineLocation,
+          c.sampleChangerLocation,
+          p.proposalId,
+          p.proposalCode,
+          p.proposalNumber
         ORDER BY c.containerId DESC
         LIMIT 1;
 
@@ -88,6 +114,8 @@ BEGIN
     END IF;
     SELECT row_containerId as "containerId",
       currentContainerStatus as "containerStatus",
+      row_proposalCode as "proposalCode",
+      row_proposalNumber as "proposalNumber",
       row_queuedCount as "queuedCount";
 END ;;
 DELIMITER ;
