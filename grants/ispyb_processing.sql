@@ -34,6 +34,8 @@ GRANT SELECT,INSERT,UPDATE ON Movie TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON Tomogram TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON TiltImageAlignment TO 'ispyb_processing';
 
+GRANT SELECT, INSERT, UPDATE ON ProcessingJob TO 'ispyb_processing';
+GRANT SELECT, INSERT, UPDATE ON ProcessingJobParameter TO 'ispyb_processing';
 
 GRANT EXECUTE ON FUNCTION retrieve_visit_id TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `retrieve_dc_main` TO 'ispyb_processing';
@@ -163,4 +165,3 @@ GRANT EXECUTE ON PROCEDURE upsert_particle_classification_v2 TO 'ispyb_processin
 GRANT EXECUTE ON PROCEDURE upsert_particle_classification_group TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE upsert_particle_picker TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE upsert_particle_picker_v2 TO 'ispyb_processing';
-
