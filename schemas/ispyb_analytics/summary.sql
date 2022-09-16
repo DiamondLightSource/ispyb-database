@@ -1,6 +1,6 @@
 -- add and modify summary results table
 
-CREATE TABLE SummaryResult AS (
+CREATE TABLE SummaryResults AS (
 SELECT p.proposalId, b.visit_number, b.beamLineName, b.startDate, b.endDate,
 app.processingPrograms, app.processingMessage, ap.spaceGroup, apss.scalingStatisticsType,
 ap.refinedCell_a, ap.refinedCell_b, ap.refinedCell_c, ap.refinedCell_alpha, ap.refinedCell_beta, ap.refinedCell_gamma,
@@ -20,7 +20,7 @@ LEFT JOIN MXMRRun m ON m.autoProcScalingId = apss.autoProcScalingId
 LEFT JOIN MXMRRunBlob mb on mb.mxMRRunId = m.mxMRRunId
 WHERE b.beamLineName IN ('i02', 'i02-1', 'i02-2', 'i03', 'i04-1', 'i23', 'i24', 'i19-1' 'i19-2')
 );
-ALTER TABLE SummaryResult ADD summaryId INT PRIMARY KEY AUTO_INCREMENT;
+ALTER TABLE SummaryResults ADD summaryId INT PRIMARY KEY AUTO_INCREMENT;
 
 CREATE INDEX SummaryResults_proposalId_startDate_endDate
 ON SummaryResults(proposalId, startDate, endDate);

@@ -61,17 +61,17 @@ ssh "${dbproxy_host}" "${dbproxy_off_cmd}"
 
 # Desync the node
 # You need (at least one of) the SUPER privilege(s) for this operation
-mysql --defaults-group-suffix="${hostname}" -u root -e "SET GLOBAL wsrep_desync=ON;"
+mariadb --defaults-group-suffix="${hostname}" -u root -e "SET GLOBAL wsrep_desync=ON;"
 
 # Make full backup i.e. all the databases
-mariabackup --defaults-extra-file="${credentials_file}" --backup --socket="${socket}" --no-lock --parallel=8 --target-dir="${backup_dir}"
+mariabackup --defaults-extra-file="${credentials_file}" --backup --socket="${socket}" --no-lock --parallel=8 --log-innodb-page-corruption --target-dir="${backup_dir}"
 
 # Prepare the backup
-mariabackup --prepare --target-dir="${backup_dir}" --parallel=8
+mariabackup --prepare --target-dir="${backup_dir}" --parallel=8 --verbose --innodb-force-recovery=1
 
 # Sync the node again
 # You need (at least one of) the SUPER privilege(s) for this operation
-mysql --defaults-group-suffix="${hostname}" -u root -e "SET GLOBAL wsrep_desync=OFF;"
+mariadb --defaults-group-suffix="${hostname}" -u root -e "SET GLOBAL wsrep_desync=OFF;"
 
 # Clear node 'maintenance' label in dbproxy
 ssh "${dbproxy_host}" "${dbproxy_on_cmd}"
