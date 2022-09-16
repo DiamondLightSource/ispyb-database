@@ -201,7 +201,8 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (226,'2022_06_28_diffractionplan_scanparameters.sql','DONE','2022-08-22 11:57:56'),
 (227,'2022_06_28_gridinfo_patches.sql','DONE','2022-08-22 11:57:56'),
 (228,'2022_06_28_sampleimage_positioner.sql','DONE','2022-08-22 11:57:56'),
-(229,'2022_08_25_AdminVar_bump_version.sql','DONE','2022-08-25 15:55:14');
+(229,'2022_08_25_AdminVar_bump_version.sql','DONE','2022-08-25 15:55:14'),
+(230,'2022_09_14_BLSample_has_DataCollectionPlan_modify_planOrder.sql','DONE','2022-09-16 11:20:51');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
