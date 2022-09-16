@@ -674,7 +674,7 @@ DROP TABLE IF EXISTS `BLSample_has_DataCollectionPlan`;
 CREATE TABLE `BLSample_has_DataCollectionPlan` (
   `blSampleId` int(11) unsigned NOT NULL,
   `dataCollectionPlanId` int(11) unsigned NOT NULL,
-  `planOrder` tinyint(3) DEFAULT NULL,
+  `planOrder` smallint(5) unsigned DEFAULT NULL,
   PRIMARY KEY (`blSampleId`,`dataCollectionPlanId`),
   KEY `BLSample_has_DataCollectionPlan_ibfk2` (`dataCollectionPlanId`),
   CONSTRAINT `BLSample_has_DataCollectionPlan_ibfk1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`),
