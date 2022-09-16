@@ -6,25 +6,21 @@ app.processingPrograms, app.processingMessage, ap.spaceGroup, apss.scalingStatis
 ap.refinedCell_a, ap.refinedCell_b, ap.refinedCell_c, ap.refinedCell_alpha, ap.refinedCell_beta, ap.refinedCell_gamma,
 apss.resolutionLimitLow, apss.resolutionLimitHigh, apss.rMeasWithinIPlusIMinus, apss.ccAnomalous,
 m.rFreeValueStart, m.rFreeValueEnd
-FROM ispyb.Proposal p
-LEFT JOIN ispyb.BLSession b ON b.proposalId = p.proposalId 
-LEFT JOIN ispyb.DataCollectionGroup dcg on dcg.sessionId = b.sessionId 
-LEFT JOIN ispyb.DataCollection dc on dc.dataCollectionGroupId = dcg.dataCollectionGroupId
-LEFT JOIN ispyb.ProcessingJob pj on pj.dataCollectionId = dc.dataCollectionId 
-LEFT JOIN ispyb.AutoProcProgram app on app.processingJobId = pj.processingJobId 
-LEFT JOIN ispyb.AutoProc ap on ap.autoProcProgramId = app.autoProcProgramId 
-LEFT JOIN ispyb.AutoProcScaling aps on aps.autoProcId = ap.autoProcId 
-LEFT JOIN ispyb.AutoProcScalingStatistics apss on apss.autoProcScalingId = aps.autoProcScalingId  
-LEFT JOIN ispyb.MXMRRun m on m.autoProcScalingId = apss.autoProcScalingId
-LEFT JOIN ispyb.MXMRRunBlob mb on mb.mxMRRunId = m.mxMRRunId 
+FROM Proposal p
+LEFT JOIN BLSession b ON b.proposalId = p.proposalId 
+LEFT JOIN DataCollectionGroup dcg ON dcg.sessionId = b.sessionId 
+LEFT JOIN DataCollection dc ON dc.dataCollectionGroupId = dcg.dataCollectionGroupId
+LEFT JOIN AutoProcIntegration api ON api.dataCollectionId = dc.dataCollectionId
+LEFT JOIN AutoProcProgram app ON app.autoProcProgramId = api.autoProcProgramId
+LEFT JOIN ProcessingJob pj ON pj.processingJobId = app.processingJobId 
+LEFT JOIN AutoProc ap ON ap.autoProcProgramId = app.autoProcProgramId 
+LEFT JOIN AutoProcScaling aps ON aps.autoProcId = ap.autoProcId 
+LEFT JOIN AutoProcScalingStatistics apss ON apss.autoProcScalingId = aps.autoProcScalingId 
+LEFT JOIN MXMRRun m ON m.autoProcScalingId = apss.autoProcScalingId
+LEFT JOIN MXMRRunBlob mb on mb.mxMRRunId = m.mxMRRunId
+WHERE b.beamLineName IN ('i02', 'i02-1', 'i02-2', 'i03', 'i04-1', 'i23', 'i24', 'i19-1' 'i19-2')
 );
 ALTER TABLE SummaryResults ADD summaryId INT PRIMARY KEY AUTO_INCREMENT;
 
-CREATE INDEX SummaryResults_FK1 
-ON SummaryResults(proposalId);
-
-CREATE INDEX startDate_Index
-ON SummaryResults(startDate);
-
-CREATE INDEX endDate_Index
-ON SummaryResults(endDate);
+CREATE INDEX SummaryResults_proposalId_startDate_endDate
+ON SummaryResults(proposalId, startDate, endDate);
