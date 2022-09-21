@@ -202,7 +202,8 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (227,'2022_06_28_gridinfo_patches.sql','DONE','2022-08-22 11:57:56'),
 (228,'2022_06_28_sampleimage_positioner.sql','DONE','2022-08-22 11:57:56'),
 (229,'2022_08_25_AdminVar_bump_version.sql','DONE','2022-08-25 15:55:14'),
-(230,'2022_09_14_BLSample_has_DataCollectionPlan_modify_planOrder.sql','DONE','2022-09-16 11:31:04');
+(230,'2022_09_14_BLSample_has_DataCollectionPlan_modify_planOrder.sql','DONE','2022-09-16 11:31:04'),
+(231,'2022_09_21_ExperimentType_add_em_types.sql','DONE','2022-09-21 07:04:19');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
@@ -306,7 +307,9 @@ INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `activ
 (32,'CD Thermal Melt','saxs',1),
 (33,'Fixed Energy At Ambient With Robot','saxs',1),
 (34,'Mesh3D','mx',1),
-(35,'Screening','sm',1);
+(35,'Screening','sm',1),
+(36,'Tomography','em',1),
+(37,'Single Particle','em',1);
 /*!40000 ALTER TABLE `ExperimentType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `InspectionType` DISABLE KEYS */;
