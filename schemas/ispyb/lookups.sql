@@ -203,7 +203,8 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (228,'2022_06_28_sampleimage_positioner.sql','DONE','2022-08-22 11:57:56'),
 (229,'2022_08_25_AdminVar_bump_version.sql','DONE','2022-08-25 15:55:14'),
 (230,'2022_09_14_BLSample_has_DataCollectionPlan_modify_planOrder.sql','DONE','2022-09-16 11:31:04'),
-(231,'2022_09_21_ExperimentType_add_em_types.sql','DONE','2022-09-21 07:17:23');
+(231,'2022_09_21_ExperimentType_add_em_types.sql','DONE','2022-09-21 07:17:23'),
+(232,'2022_09_28_ContainerType_update.sql','DONE','2022-09-28 10:04:59');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
@@ -265,7 +266,7 @@ INSERT INTO `ContainerType` (`containerTypeId`, `name`, `proposalType`, `active`
 (28,'Cane','mx',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (29,'Terasaki72','mx',0,72,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (30,'Puck-16','mx',1,16,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(31,'Block-4','mx',1,16,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(31,'Block-4','mx',1,4,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (32,'Box','xpdf',1,25,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (33,'Puck-22','xpdf',1,22,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (34,'I22_Grid_81','saxs',1,81,9,1,1,1,1,0,0,-1),
