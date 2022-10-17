@@ -204,7 +204,8 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (229,'2022_08_25_AdminVar_bump_version.sql','DONE','2022-08-25 15:55:14'),
 (230,'2022_09_14_BLSample_has_DataCollectionPlan_modify_planOrder.sql','DONE','2022-09-16 11:31:04'),
 (231,'2022_09_21_ExperimentType_add_em_types.sql','DONE','2022-09-21 07:17:23'),
-(232,'2022_09_28_ContainerType_update.sql','DONE','2022-09-28 10:04:59');
+(232,'2022_09_28_ContainerType_update.sql','DONE','2022-09-28 10:04:59'),
+(233,'2022_10_17_BLSession_drop_constraint.sql','DONE','2022-10-17 11:25:35');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
