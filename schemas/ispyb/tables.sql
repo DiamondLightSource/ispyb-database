@@ -749,8 +749,7 @@ CREATE TABLE `BLSession` (
   KEY `BLSession_fk_beamCalendarId` (`beamCalendarId`),
   CONSTRAINT `BLSession_fk_beamCalendarId` FOREIGN KEY (`beamCalendarId`) REFERENCES `BeamCalendar` (`beamCalendarId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `BLSession_ibfk_1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `BLSession_ibfk_2` FOREIGN KEY (`beamLineSetupId`) REFERENCES `BeamLineSetup` (`beamLineSetupId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `BLSession_ibfk_3` FOREIGN KEY (`beamCalendarId`) REFERENCES `BeamCalendar` (`beamCalendarId`)
+  CONSTRAINT `BLSession_ibfk_2` FOREIGN KEY (`beamLineSetupId`) REFERENCES `BeamLineSetup` (`beamLineSetupId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSession_has_SCPosition`;
@@ -4276,215 +4275,196 @@ DROP TABLE IF EXISTS `v_Log4Stat`;
 /*!50001 DROP VIEW IF EXISTS `v_Log4Stat`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_Log4Stat` (
-  `id` tinyint NOT NULL,
-  `priority` tinyint NOT NULL,
-  `timestamp` tinyint NOT NULL,
-  `msg` tinyint NOT NULL,
-  `detail` tinyint NOT NULL,
-  `value` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_Log4Stat` AS SELECT
+ 1 AS `id`,
+  1 AS `priority`,
+  1 AS `timestamp`,
+  1 AS `msg`,
+  1 AS `detail`,
+  1 AS `value` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_dewar`;
 /*!50001 DROP VIEW IF EXISTS `v_dewar`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_dewar` (
-  `proposalId` tinyint NOT NULL,
-  `shippingId` tinyint NOT NULL,
-  `shippingName` tinyint NOT NULL,
-  `dewarId` tinyint NOT NULL,
-  `dewarName` tinyint NOT NULL,
-  `dewarStatus` tinyint NOT NULL,
-  `proposalCode` tinyint NOT NULL,
-  `proposalNumber` tinyint NOT NULL,
-  `creationDate` tinyint NOT NULL,
-  `shippingType` tinyint NOT NULL,
-  `barCode` tinyint NOT NULL,
-  `shippingStatus` tinyint NOT NULL,
-  `beamLineName` tinyint NOT NULL,
-  `nbEvents` tinyint NOT NULL,
-  `storesin` tinyint NOT NULL,
-  `nbSamples` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_dewar` AS SELECT
+ 1 AS `proposalId`,
+  1 AS `shippingId`,
+  1 AS `shippingName`,
+  1 AS `dewarId`,
+  1 AS `dewarName`,
+  1 AS `dewarStatus`,
+  1 AS `proposalCode`,
+  1 AS `proposalNumber`,
+  1 AS `creationDate`,
+  1 AS `shippingType`,
+  1 AS `barCode`,
+  1 AS `shippingStatus`,
+  1 AS `beamLineName`,
+  1 AS `nbEvents`,
+  1 AS `storesin`,
+  1 AS `nbSamples` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_dewarBeamline`;
 /*!50001 DROP VIEW IF EXISTS `v_dewarBeamline`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_dewarBeamline` (
-  `beamLineName` tinyint NOT NULL,
-  `COUNT(*)` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_dewarBeamline` AS SELECT
+ 1 AS `beamLineName`,
+  1 AS `COUNT(*)` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_dewarBeamlineByWeek`;
 /*!50001 DROP VIEW IF EXISTS `v_dewarBeamlineByWeek`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_dewarBeamlineByWeek` (
-  `Week` tinyint NOT NULL,
-  `ID14` tinyint NOT NULL,
-  `ID23` tinyint NOT NULL,
-  `ID29` tinyint NOT NULL,
-  `BM14` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_dewarBeamlineByWeek` AS SELECT
+ 1 AS `Week`,
+  1 AS `ID14`,
+  1 AS `ID23`,
+  1 AS `ID29`,
+  1 AS `BM14` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_dewarByWeek`;
 /*!50001 DROP VIEW IF EXISTS `v_dewarByWeek`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_dewarByWeek` (
-  `Week` tinyint NOT NULL,
-  `Dewars Tracked` tinyint NOT NULL,
-  `Dewars Non-Tracked` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_dewarByWeek` AS SELECT
+ 1 AS `Week`,
+  1 AS `Dewars Tracked`,
+  1 AS `Dewars Non-Tracked` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_dewarByWeekTotal`;
 /*!50001 DROP VIEW IF EXISTS `v_dewarByWeekTotal`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_dewarByWeekTotal` (
-  `Week` tinyint NOT NULL,
-  `Dewars Tracked` tinyint NOT NULL,
-  `Dewars Non-Tracked` tinyint NOT NULL,
-  `Total` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_dewarByWeekTotal` AS SELECT
+ 1 AS `Week`,
+  1 AS `Dewars Tracked`,
+  1 AS `Dewars Non-Tracked`,
+  1 AS `Total` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_dewarList`;
 /*!50001 DROP VIEW IF EXISTS `v_dewarList`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_dewarList` (
-  `proposal` tinyint NOT NULL,
-  `shippingName` tinyint NOT NULL,
-  `dewarName` tinyint NOT NULL,
-  `barCode` tinyint NOT NULL,
-  `creationDate` tinyint NOT NULL,
-  `shippingType` tinyint NOT NULL,
-  `nbEvents` tinyint NOT NULL,
-  `dewarStatus` tinyint NOT NULL,
-  `shippingStatus` tinyint NOT NULL,
-  `nbSamples` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_dewarList` AS SELECT
+ 1 AS `proposal`,
+  1 AS `shippingName`,
+  1 AS `dewarName`,
+  1 AS `barCode`,
+  1 AS `creationDate`,
+  1 AS `shippingType`,
+  1 AS `nbEvents`,
+  1 AS `dewarStatus`,
+  1 AS `shippingStatus`,
+  1 AS `nbSamples` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_dewarProposalCode`;
 /*!50001 DROP VIEW IF EXISTS `v_dewarProposalCode`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_dewarProposalCode` (
-  `proposalCode` tinyint NOT NULL,
-  `COUNT(*)` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_dewarProposalCode` AS SELECT
+ 1 AS `proposalCode`,
+  1 AS `COUNT(*)` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_dewarProposalCodeByWeek`;
 /*!50001 DROP VIEW IF EXISTS `v_dewarProposalCodeByWeek`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_dewarProposalCodeByWeek` (
-  `Week` tinyint NOT NULL,
-  `MX` tinyint NOT NULL,
-  `FX` tinyint NOT NULL,
-  `BM14U` tinyint NOT NULL,
-  `BM161` tinyint NOT NULL,
-  `BM162` tinyint NOT NULL,
-  `Others` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_dewarProposalCodeByWeek` AS SELECT
+ 1 AS `Week`,
+  1 AS `MX`,
+  1 AS `FX`,
+  1 AS `BM14U`,
+  1 AS `BM161`,
+  1 AS `BM162`,
+  1 AS `Others` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_hour`;
 /*!50001 DROP VIEW IF EXISTS `v_hour`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_hour` (
-  `num` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_hour` AS SELECT
+ 1 AS `num` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_logonByHour`;
 /*!50001 DROP VIEW IF EXISTS `v_logonByHour`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_logonByHour` (
-  `Hour` tinyint NOT NULL,
-  `Distinct logins` tinyint NOT NULL,
-  `Total logins` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_logonByHour` AS SELECT
+ 1 AS `Hour`,
+  1 AS `Distinct logins`,
+  1 AS `Total logins` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_logonByHour2`;
 /*!50001 DROP VIEW IF EXISTS `v_logonByHour2`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_logonByHour2` (
-  `Hour` tinyint NOT NULL,
-  `Distinct logins` tinyint NOT NULL,
-  `Total logins` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_logonByHour2` AS SELECT
+ 1 AS `Hour`,
+  1 AS `Distinct logins`,
+  1 AS `Total logins` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_logonByMonthDay`;
 /*!50001 DROP VIEW IF EXISTS `v_logonByMonthDay`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_logonByMonthDay` (
-  `Day` tinyint NOT NULL,
-  `Distinct logins` tinyint NOT NULL,
-  `Total logins` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_logonByMonthDay` AS SELECT
+ 1 AS `Day`,
+  1 AS `Distinct logins`,
+  1 AS `Total logins` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_logonByMonthDay2`;
 /*!50001 DROP VIEW IF EXISTS `v_logonByMonthDay2`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_logonByMonthDay2` (
-  `Day` tinyint NOT NULL,
-  `Distinct logins` tinyint NOT NULL,
-  `Total logins` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_logonByMonthDay2` AS SELECT
+ 1 AS `Day`,
+  1 AS `Distinct logins`,
+  1 AS `Total logins` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_logonByWeek`;
 /*!50001 DROP VIEW IF EXISTS `v_logonByWeek`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_logonByWeek` (
-  `Week` tinyint NOT NULL,
-  `Distinct logins` tinyint NOT NULL,
-  `Total logins` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_logonByWeek` AS SELECT
+ 1 AS `Week`,
+  1 AS `Distinct logins`,
+  1 AS `Total logins` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_logonByWeek2`;
 /*!50001 DROP VIEW IF EXISTS `v_logonByWeek2`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_logonByWeek2` (
-  `Week` tinyint NOT NULL,
-  `Distinct logins` tinyint NOT NULL,
-  `Total logins` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_logonByWeek2` AS SELECT
+ 1 AS `Week`,
+  1 AS `Distinct logins`,
+  1 AS `Total logins` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_logonByWeekDay`;
 /*!50001 DROP VIEW IF EXISTS `v_logonByWeekDay`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_logonByWeekDay` (
-  `Day` tinyint NOT NULL,
-  `Distinct logins` tinyint NOT NULL,
-  `Total logins` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_logonByWeekDay` AS SELECT
+ 1 AS `Day`,
+  1 AS `Distinct logins`,
+  1 AS `Total logins` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_logonByWeekDay2`;
 /*!50001 DROP VIEW IF EXISTS `v_logonByWeekDay2`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_logonByWeekDay2` (
-  `Day` tinyint NOT NULL,
-  `Distinct logins` tinyint NOT NULL,
-  `Total logins` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_logonByWeekDay2` AS SELECT
+ 1 AS `Day`,
+  1 AS `Distinct logins`,
+  1 AS `Total logins` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_monthDay`;
 /*!50001 DROP VIEW IF EXISTS `v_monthDay`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_monthDay` (
-  `num` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_monthDay` AS SELECT
+ 1 AS `num` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_run`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -4502,44 +4482,40 @@ DROP TABLE IF EXISTS `v_sample`;
 /*!50001 DROP VIEW IF EXISTS `v_sample`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_sample` (
-  `proposalId` tinyint NOT NULL,
-  `shippingId` tinyint NOT NULL,
-  `dewarId` tinyint NOT NULL,
-  `containerId` tinyint NOT NULL,
-  `blSampleId` tinyint NOT NULL,
-  `proposalCode` tinyint NOT NULL,
-  `proposalNumber` tinyint NOT NULL,
-  `creationDate` tinyint NOT NULL,
-  `shippingType` tinyint NOT NULL,
-  `barCode` tinyint NOT NULL,
-  `shippingStatus` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_sample` AS SELECT
+ 1 AS `proposalId`,
+  1 AS `shippingId`,
+  1 AS `dewarId`,
+  1 AS `containerId`,
+  1 AS `blSampleId`,
+  1 AS `proposalCode`,
+  1 AS `proposalNumber`,
+  1 AS `creationDate`,
+  1 AS `shippingType`,
+  1 AS `barCode`,
+  1 AS `shippingStatus` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_sampleByWeek`;
 /*!50001 DROP VIEW IF EXISTS `v_sampleByWeek`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_sampleByWeek` (
-  `Week` tinyint NOT NULL,
-  `Samples` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_sampleByWeek` AS SELECT
+ 1 AS `Week`,
+  1 AS `Samples` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_week`;
 /*!50001 DROP VIEW IF EXISTS `v_week`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_week` (
-  `num` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_week` AS SELECT
+ 1 AS `num` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_weekDay`;
 /*!50001 DROP VIEW IF EXISTS `v_weekDay`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `v_weekDay` (
-  `day` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `v_weekDay` AS SELECT
+ 1 AS `day` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `zc_ZocaloBuffer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -4552,7 +4528,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
   CONSTRAINT `AutoProcProgram_fk_AutoProcProgramId` FOREIGN KEY (`AutoProcProgramID`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-/*!50001 DROP TABLE IF EXISTS `v_Log4Stat`*/;
 /*!50001 DROP VIEW IF EXISTS `v_Log4Stat`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4566,7 +4541,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_dewar`*/;
 /*!50001 DROP VIEW IF EXISTS `v_dewar`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4580,7 +4554,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_dewarBeamline`*/;
 /*!50001 DROP VIEW IF EXISTS `v_dewarBeamline`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4594,7 +4567,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_dewarBeamlineByWeek`*/;
 /*!50001 DROP VIEW IF EXISTS `v_dewarBeamlineByWeek`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4608,7 +4580,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_dewarByWeek`*/;
 /*!50001 DROP VIEW IF EXISTS `v_dewarByWeek`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4622,7 +4593,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_dewarByWeekTotal`*/;
 /*!50001 DROP VIEW IF EXISTS `v_dewarByWeekTotal`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4636,7 +4606,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_dewarList`*/;
 /*!50001 DROP VIEW IF EXISTS `v_dewarList`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4650,7 +4619,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_dewarProposalCode`*/;
 /*!50001 DROP VIEW IF EXISTS `v_dewarProposalCode`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4664,7 +4632,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_dewarProposalCodeByWeek`*/;
 /*!50001 DROP VIEW IF EXISTS `v_dewarProposalCodeByWeek`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4678,7 +4645,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_hour`*/;
 /*!50001 DROP VIEW IF EXISTS `v_hour`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4692,7 +4658,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_logonByHour`*/;
 /*!50001 DROP VIEW IF EXISTS `v_logonByHour`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4706,7 +4671,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_logonByHour2`*/;
 /*!50001 DROP VIEW IF EXISTS `v_logonByHour2`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4720,7 +4684,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_logonByMonthDay`*/;
 /*!50001 DROP VIEW IF EXISTS `v_logonByMonthDay`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4734,7 +4697,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_logonByMonthDay2`*/;
 /*!50001 DROP VIEW IF EXISTS `v_logonByMonthDay2`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4748,7 +4710,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_logonByWeek`*/;
 /*!50001 DROP VIEW IF EXISTS `v_logonByWeek`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4762,7 +4723,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_logonByWeek2`*/;
 /*!50001 DROP VIEW IF EXISTS `v_logonByWeek2`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4776,7 +4736,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_logonByWeekDay`*/;
 /*!50001 DROP VIEW IF EXISTS `v_logonByWeekDay`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4790,7 +4749,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_logonByWeekDay2`*/;
 /*!50001 DROP VIEW IF EXISTS `v_logonByWeekDay2`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4804,7 +4762,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_monthDay`*/;
 /*!50001 DROP VIEW IF EXISTS `v_monthDay`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4818,7 +4775,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_sample`*/;
 /*!50001 DROP VIEW IF EXISTS `v_sample`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4832,7 +4788,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_sampleByWeek`*/;
 /*!50001 DROP VIEW IF EXISTS `v_sampleByWeek`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4846,7 +4801,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_week`*/;
 /*!50001 DROP VIEW IF EXISTS `v_week`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -4860,7 +4814,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `v_weekDay`*/;
 /*!50001 DROP VIEW IF EXISTS `v_weekDay`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
