@@ -8,10 +8,11 @@ Unreleased / master
 1.33.0 (2022-11-02)
 -------------------
 
-Column changes:
+Table/column changes:
 
 * Table ``Shipping``: Add column ``extra`` (JSON)
 * Table ``BLSample_has_DataCollectionPlan``: Change datatype of ``planOrder`` to smallint unsigned
+* Table ``BLSession``: Drop left-behind constraint
 
 Data:
 
