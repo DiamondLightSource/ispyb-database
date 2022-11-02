@@ -5,6 +5,32 @@ History
 Unreleased / master
 -------------------
 
+1.33.0 (2022-11-02)
+-------------------
+
+Column changes:
+
+* Table ``Shipping``: Add column ``extra`` (JSON)
+* Table ``BLSample_has_DataCollectionPlan``: Change datatype of ``planOrder`` to smallint unsigned
+
+Data:
+
+* Table ``ExperimentType``: Insert rows for 'em' proposalTypes 'Tomography' and 'Single Particle' 
+* Table ``ContainerType``: Set correct capacity for Block-4
+
+Stored procedures:
+
+* Procedure ``update_container_assign``: Add ``proposalCode``, ``proposalNumber`` to returned result
+
+* Grants:
+
+  * Add ``SELECT``, ``INSERT``, ``UPDATE`` perms on ``ProcessingJob`` + ``ProcessingJobParameter`` tables for ``ispyb_processing`` role
+   
+Other:
+
+* Scripts: Add extra mariabackup options to ``mdb_cluster_backup.sh`` 
+* Analysis schema: Create and populate ``SummaryResults`` table
+
 1.32.0 (2022-08-25)
 -------------------
 
