@@ -3791,6 +3791,7 @@ CREATE TABLE `Shipping` (
   `deliveryAgent_callinTime` time DEFAULT NULL COMMENT 'Confirmed courier call-in time',
   `deliveryAgent_productcode` varchar(10) DEFAULT NULL COMMENT 'A code that identifies which shipment service was used',
   `deliveryAgent_flightCodePersonId` int(10) unsigned DEFAULT NULL COMMENT 'The person who created the AWB (for auditing)',
+  `extra` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'JSON column for facility-specific or hard-to-define attributes' CHECK (json_valid(`extra`)),
   PRIMARY KEY (`shippingId`),
   KEY `laboratoryId` (`laboratoryId`),
   KEY `Shipping_FKIndex1` (`proposalId`),

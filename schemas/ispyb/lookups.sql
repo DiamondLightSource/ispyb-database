@@ -10,7 +10,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.32.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.33.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -205,7 +205,9 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (230,'2022_09_14_BLSample_has_DataCollectionPlan_modify_planOrder.sql','DONE','2022-09-16 11:31:04'),
 (231,'2022_09_21_ExperimentType_add_em_types.sql','DONE','2022-09-21 07:17:23'),
 (232,'2022_09_28_ContainerType_update.sql','DONE','2022-09-28 10:04:59'),
-(233,'2022_10_17_BLSession_drop_constraint.sql','DONE','2022-10-17 11:25:35');
+(233,'2022_10_17_BLSession_drop_constraint.sql','DONE','2022-10-17 11:25:35'),
+(234,'2022_10_21_Shipping_extra.sql','DONE','2022-11-02 17:04:27'),
+(235,'2022_11_02_AdminVar_bump_version.sql','DONE','2022-11-02 17:04:27');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
