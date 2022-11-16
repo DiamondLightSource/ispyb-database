@@ -15,6 +15,7 @@ GRANT INSERT, UPDATE ON DataCollection TO 'ispyb_web';
 GRANT INSERT ON DataCollectionGroup TO 'ispyb_web';
 GRANT INSERT ON ProcessingJob TO 'ispyb_web';
 GRANT INSERT ON ProcessingJobParameter TO 'ispyb_web';
+GRANT SELECT, INSERT, UPDATE ON ProcessingJobImageSweep TO 'ispyb_web';
 GRANT SELECT, UPDATE ON EnergyScan TO 'ispyb_web';
 GRANT SELECT, UPDATE ON XFEFluorescenceSpectrum TO 'ispyb_web';
 GRANT UPDATE ON DataCollectionGroup TO 'ispyb_web';
