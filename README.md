@@ -47,6 +47,7 @@ mysql ispyb < grants/ispyb_ro_nopii.sql
 mysql ispyb < grants/ispyb_scripts_processing.sql
 mysql ispyb < grants/ispyb_touchscreen.sql
 mysql ispyb < grants/ispyb_web.sql
+mysql ispyb < grants/ispyb_web_verify_tests.sql
 ```
 
 Note that the grants files are based on roles, so to actually use these grants, you also need to create database users and grant the roles to them. This is described in the header section of the grant files.
