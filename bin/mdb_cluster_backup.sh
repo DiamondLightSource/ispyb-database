@@ -67,7 +67,7 @@ mariadb --defaults-group-suffix="${hostname}" -u root -e "SET GLOBAL wsrep_desyn
 mariabackup --defaults-extra-file="${credentials_file}" --backup --socket="${socket}" --no-lock --parallel=8 --log-innodb-page-corruption --target-dir="${backup_dir}"
 
 # Prepare the backup
-mariabackup --prepare --target-dir="${backup_dir}" --parallel=8 --verbose --innodb-force-recovery=1
+mariabackup --prepare --target-dir="${backup_dir}" --parallel=8 --innodb-force-recovery=1
 
 # Sync the node again
 # You need (at least one of) the SUPER privilege(s) for this operation
