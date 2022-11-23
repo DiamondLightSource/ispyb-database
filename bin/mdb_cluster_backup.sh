@@ -83,6 +83,9 @@ target_path="${dest_dir}"/"${fname}"
 cd "${backup_root_dir}" || exit
 tar cfz "${target_path}" "${today}"
 
+# Remove uncompressed, local backup
+rm -rf "${backup_root_dir:?}"/*
+
 # Remove files in the destination folder that are older than 7 days, except Tuesdays
 cd / && find "${dest_dir}"/dbbackup* -type f -mtime +7 ! -name "*Tuesday*" -exec rm -f {} \;
 
