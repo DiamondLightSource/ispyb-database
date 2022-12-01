@@ -54,7 +54,8 @@ ip_count=0
 for ip in "${ip_arr[@]}"
 do
     ip_count=$(expr ${ip_count} + 1)
-    line=$(ssh -l ${os_user} ${ip} mariadb --skip-column-names -e $( printf "%q" "SELECT json_loose(json_objectagg(@@hostname, json_array(json_merge_patch(json_object('datadir', @@datadir), (SELECT json_objectagg(VARIABLE_NAME, VARIABLE_VALUE) FROM information_schema.GLOBAL_STATUS WHERE VARIABLE_NAME IN ('UPTIME', 'THREADS_CONNECTED')))))) as json" ))
+    line=$(ssh -l ${os_user} ${ip} mariadb --skip-column-names -e $( printf \
+      "%q" "SELECT @@hostname, concat('datadir: ', @@datadir), JSON_OBJECTAGG(lower(VARIABLE_NAME), lower(VARIABLE_VALUE)) FROM information_schema.GLOBAL_STATUS WHERE VARIABLE_NAME IN ('UPTIME', 'THREADS_CONNECTED', 'Max_used_connections', 'Max_statement_time_exceeded') GROUP BY 1, 2;" ))
     echo "  ${line}"
 done
 
@@ -69,10 +70,15 @@ host_output=$(host -t CNAME ${dbproxy_host})
 # - cs04r-sc-vserv-162.diamond.ac.uk has no CNAME record
 # - ispybdbproxy.diamond.ac.uk is an alias for cs04r-sc-vserv-162.diamond.ac.uk.  <-- NOTE trailing dot
 
-pw=$(ssh -l ${os_user} ${dbproxy_host} grep password .maxctrl.cnf)
-pw=$(echo $pw | tr -d "= " | cut -c9-)
- 
-ssh -l ${os_user} ${dbproxy_host} maxctrl -u ${os_user} -p $pw list servers
+# Read username and password from ~/.maxctrl.cnf file and run:
+mxs_user=$(ssh -l ${os_user} ${dbproxy_host} grep user .maxctrl.cnf)
+mxs_user=$(echo ${mxs_user} | tr -d "= " | cut -c5-)
+mxs_pw=$(ssh -l ${os_user} ${dbproxy_host} grep password .maxctrl.cnf)
+mxs_pw=$(echo ${mxs_pw} | tr -d "= " | cut -c9-)
+
+maxctrl_out=$(ssh -l ${os_user} ${dbproxy_host} maxctrl -u ${mxs_user} -p ${mxs_pw} --tsv list servers)
+# echo with indentation
+echo "  ${maxctrl_out//$'\n'/$'\n'  }"
 
 # Read credentials from ~/.maxctrl.cnf file and run:
 # maxctrl -u $USER -p $PW list servers 
@@ -86,7 +92,7 @@ echo "Cluster:"
 # Get values for WSREP health status variables
 wsrep_status=$(mariadb --defaults-extra-file="${credentials_file}" -B \
   --skip-column-names -e \
-  "SHOW STATUS WHERE variable_name IN ('wsrep_ready', 'wsrep_local_state_comment', 'wsrep_connected', 'wsrep_cluster_size');")
+  "SHOW STATUS WHERE variable_name IN ('wsrep_ready', 'wsrep_local_state_comment', 'wsrep_connected', 'wsrep_cluster_size', 'wsrep_cluster_status');")
 
 # Parse and print the keys + values - green/red colour for good/bad values
 IFS=$'\t'
@@ -108,6 +114,10 @@ while read -r k v; do
      [ "${v}" == "ON" ] && v_col=$(colour $v 32m) || v_col=$(colour $v 31m)
      echo "  ${k}: ${v_col}"
      ;;
+   wsrep_cluster_status)
+      [ "${v}" == "Primary" ] && v_col=$(colour $v 32m) || v_col=$(colour $v 31m)
+      echo "  ${k}: ${v_col}"
+      ;;
   *)
      echo "  ${k}: ${v}"
   esac
