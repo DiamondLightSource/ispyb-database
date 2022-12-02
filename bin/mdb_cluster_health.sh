@@ -1,19 +1,33 @@
 #!/usr/bin/env bash
 
+set -e
+
+: '
+Simple MariaDB Galera Cluster health status script
+
+Requirements:
+- MariaDB client installed locally
+- Passwordless SSH access to MariaDB Cluster hosts
+- ~/.my.cnf on the MariaDB hosts with suitable params
+- Optional: passwordless SSH access to MaxScale host (if mxs_host is specified)
+- Optional: ~/.my.cnf locally for initial database connection to the cluster
+'
+
+
 function colour {
   echo $'\033[1;32m'$1$'\033[00m' 
 }
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --os_user=*)
-      os_user="${1#*=}"
+    --ssh_user=*)
+      ssh_user="${1#*=}"
       ;;
     --credentials_file=*)
       credentials_file="${1#*=}"
       ;;
-    --dbproxy_host=*)
-      dbproxy_host="${1#*=}"
+    --mxs_host=*)
+      mxs_host="${1#*=}"
       ;;
     *)
       echo "Error: Invalid argument."
@@ -22,7 +36,7 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-[ -z "$os_user" ] && os_user=${USER}
+[ -z "$ssh_user" ] && ssh_user=${USER}
 
 [ -n "$credentials_file" ] && {
   [ -f "$credentials_file" ] || { echo \
@@ -49,40 +63,34 @@ unset IFS
 
 echo "MariaDB hosts:"
 
-# Print each IP in the array
+# ssh to each host (IP) and run mariadb with command to get relevant system and status
+# variables, then echo an indented line for each host
 ip_count=0
 for ip in "${ip_arr[@]}"
 do
     ip_count=$(expr ${ip_count} + 1)
-    line=$(ssh -l ${os_user} ${ip} mariadb --skip-column-names -e $( printf \
+    line=$(ssh -l ${ssh_user} ${ip} mariadb --skip-column-names -e $( printf \
       "%q" "SELECT @@hostname, concat('datadir: ', @@datadir), JSON_OBJECTAGG(lower(VARIABLE_NAME), lower(VARIABLE_VALUE)) FROM information_schema.GLOBAL_STATUS WHERE VARIABLE_NAME IN ('UPTIME', 'THREADS_CONNECTED', 'Max_used_connections', 'Max_statement_time_exceeded') GROUP BY 1, 2;" ))
     echo "  ${line}"
 done
 
-if [ -n "$dbproxy_host" ]; then
+if [ -n "$mxs_host" ]; then
 
-echo
-echo "MaxScale:"
+  echo
+  echo "MaxScale:"
 
-host_output=$(host -t CNAME ${dbproxy_host})
+  host_output=$(host -t CNAME ${mxs_host})
 
-# Handle: 
-# - cs04r-sc-vserv-162.diamond.ac.uk has no CNAME record
-# - ispybdbproxy.diamond.ac.uk is an alias for cs04r-sc-vserv-162.diamond.ac.uk.  <-- NOTE trailing dot
+  # Read username and password from ~/.maxctrl.cnf file and run:
+  mxs_user=$(ssh -l ${ssh_user} ${mxs_host} grep user .maxctrl.cnf)
+  mxs_user=$(echo ${mxs_user} | tr -d "= " | cut -c5-)
+  mxs_pw=$(ssh -l ${ssh_user} ${mxs_host} grep password .maxctrl.cnf)
+  mxs_pw=$(echo ${mxs_pw} | tr -d "= " | cut -c9-)
 
-# Read username and password from ~/.maxctrl.cnf file and run:
-mxs_user=$(ssh -l ${os_user} ${dbproxy_host} grep user .maxctrl.cnf)
-mxs_user=$(echo ${mxs_user} | tr -d "= " | cut -c5-)
-mxs_pw=$(ssh -l ${os_user} ${dbproxy_host} grep password .maxctrl.cnf)
-mxs_pw=$(echo ${mxs_pw} | tr -d "= " | cut -c9-)
-
-maxctrl_out=$(ssh -l ${os_user} ${dbproxy_host} maxctrl -u ${mxs_user} -p ${mxs_pw} --tsv list servers)
-# echo with indentation
-echo "  ${maxctrl_out//$'\n'/$'\n'  }"
-
-# Read credentials from ~/.maxctrl.cnf file and run:
-# maxctrl -u $USER -p $PW list servers 
-
+  # Run maxctrl command and capture output
+  maxctrl_out=$(ssh -l ${ssh_user} ${mxs_host} maxctrl -u ${mxs_user} -p ${mxs_pw} --tsv list servers)
+  # echo with indentation
+  echo "  ${maxctrl_out//$'\n'/$'\n'  }"
 
 fi
 
