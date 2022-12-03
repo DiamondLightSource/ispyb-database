@@ -24,7 +24,7 @@ while [ $# -gt 0 ]; do
       ssh_user="${1#*=}"
       ;;
     --credentials_file=*)
-      credentials_file="${1#*=}"
+      defaults_file_opt="--defaults-file=${1#*=}"
       ;;
     --mxs_host=*)
       mxs_host="${1#*=}"
@@ -38,33 +38,26 @@ done
 
 [ -z "$ssh_user" ] && ssh_user=${USER}
 
-[ -n "$credentials_file" ] && {
-  [ -f "$credentials_file" ] || { echo \
-    "File '$credentials_file' does not exist"; exit 1; }
-}
-
-[ -z "$credentials_file" ] && [ -f "~/.my.cnf" ] && credentials_file="~/.my.cnf"
-
-# Get IP addresses for nodes in cluster according to wsrep_cluster_address system variable
-wsrep_cluster_address=$(mariadb --defaults-extra-file="${credentials_file}" -B \
+# Get IP addr for nodes in cluster according to wsrep_cluster_address sys. var.
+wsrep_cluster_address=$(mariadb "${defaults_file_opt}" -B \
   --skip-column-names -e "SHOW VARIABLES LIKE 'wsrep_cluster_address'")
-# The string will just contain "wsrep_cluster_address" (22 chars) if Galera is not enabled 
+# String will just contain "wsrep_cluster_address" (22 chars) if no Galera
 if [ ${#wsrep_cluster_address} -le 22 ]; then
   echo "No value found for MariaDB system variable wsrep_cluster_address - are we really connecting a MariaDB Galera Cluster node?"
   exit 0
 fi
 
 # Get just the IP addresses (these are comma-separated) 
-ip_list=$(echo $wsrep_cluster_address | cut -d' ' -f2 | cut -c9-)
+ip_list=$(echo ${wsrep_cluster_address} | cut -d' ' -f2 | cut -c9-)
 
 # Turn into array
-IFS=',' read -ra ip_arr <<< "$ip_list"
+IFS=',' read -ra ip_arr <<< "${ip_list}"
 unset IFS
 
 echo "MariaDB hosts:"
 
-# ssh to each host (IP) and run mariadb with command to get relevant system and status
-# variables, then echo an indented line for each host
+# ssh to each host (IP) and run mariadb with command to get relevant system and
+# status variables, then echo an indented line for each host
 ip_count=0
 for ip in "${ip_arr[@]}"
 do
@@ -98,8 +91,7 @@ echo
 echo "Cluster:"
 
 # Get values for WSREP health status variables
-wsrep_status=$(mariadb --defaults-extra-file="${credentials_file}" -B \
-  --skip-column-names -e \
+wsrep_status=$(mariadb "${defaults_file_opt}" -B --skip-column-names -e \
   "SHOW STATUS WHERE variable_name IN ('wsrep_ready', 'wsrep_local_state_comment', 'wsrep_connected', 'wsrep_cluster_size', 'wsrep_cluster_status');")
 
 # Parse and print the keys + values - green/red colour for good/bad values
