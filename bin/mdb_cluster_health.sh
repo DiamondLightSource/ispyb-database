@@ -6,11 +6,16 @@ set -e
 Simple MariaDB Galera Cluster health status script
 
 Requirements:
-- MariaDB client installed locally
-- Passwordless SSH access to MariaDB Cluster hosts
-- ~/.my.cnf on the MariaDB hosts with suitable params
-- Optional: passwordless SSH access to MaxScale host (if mxs_host is specified)
-- Optional: ~/.my.cnf locally for initial database connection to the cluster
+- Locally:
+  * mariadb command-line client
+  * ~/.my.health.cnf with suitable params to connect to cluster via MaxScale
+  * Passwordless SSH access to MariaDB Cluster hosts
+
+- Remotely:
+  * ~/.my.cnf on the MariaDB hosts with suitable params
+  * If --mxs_host is specified:
+    - passwordless SSH access to MaxScale host
+    - ~/.maxctrl.cnf on MaxScale hosts with user and password params
 '
 
 
@@ -18,13 +23,12 @@ function colour {
   echo $'\033[1;32m'$1$'\033[00m' 
 }
 
+defaults_file="~/.my.health.cnf"
+
 while [ $# -gt 0 ]; do
   case "$1" in
     --ssh_user=*)
       ssh_user="${1#*=}"
-      ;;
-    --credentials_file=*)
-      defaults_file_opt="--defaults-file=${1#*=}"
       ;;
     --mxs_host=*)
       mxs_host="${1#*=}"
@@ -39,7 +43,7 @@ done
 [ -z "$ssh_user" ] && ssh_user=${USER}
 
 # Get IP addr for nodes in cluster according to wsrep_cluster_address sys. var.
-wsrep_cluster_address=$(mariadb "${defaults_file_opt}" -B \
+wsrep_cluster_address=$(mariadb --defaults-file="${defaults_file}" -B\
   --skip-column-names -e "SHOW VARIABLES LIKE 'wsrep_cluster_address'")
 # String will just contain "wsrep_cluster_address" (22 chars) if no Galera
 if [ ${#wsrep_cluster_address} -le 22 ]; then
@@ -91,8 +95,8 @@ echo
 echo "Cluster:"
 
 # Get values for WSREP health status variables
-wsrep_status=$(mariadb "${defaults_file_opt}" -B --skip-column-names -e \
-  "SHOW STATUS WHERE variable_name IN ('wsrep_ready', 'wsrep_local_state_comment', 'wsrep_connected', 'wsrep_cluster_size', 'wsrep_cluster_status');")
+wsrep_status=$(mariadb --defaults-file="${defaults_file}" -B --skip-column-names\
+  -e "SHOW STATUS WHERE variable_name IN ('wsrep_ready', 'wsrep_local_state_comment', 'wsrep_connected', 'wsrep_cluster_size', 'wsrep_cluster_status');")
 
 # Parse and print the keys + values - green/red colour for good/bad values
 IFS=$'\t'
