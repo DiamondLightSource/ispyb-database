@@ -30,4 +30,5 @@ GRANT EXECUTE ON PROCEDURE update_dc_plans TO ispyb_touchscreen;
 GRANT EXECUTE ON PROCEDURE update_container_assign TO ispyb_touchscreen;
 GRANT EXECUTE ON PROCEDURE update_container_unassign_all_for_beamline TO ispyb_touchscreen;
 GRANT EXECUTE ON PROCEDURE update_container_current_dewar_id TO ispyb_touchscreen;
+GRANT EXECUTE ON PROCEDURE update_container_dispose TO ispyb_touchscreen;
 GRANT EXECUTE ON PROCEDURE update_dewar_comments_json_merge TO ispyb_touchscreen;
