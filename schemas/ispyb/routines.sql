@@ -7487,6 +7487,53 @@ DELIMITER ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_container_dispose` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
+DELIMITER ;;
+CREATE PROCEDURE `update_container_dispose`(IN p_barcode varchar(45))
+    MODIFIES SQL DATA
+    COMMENT 'Update the Container with barcode p_barcode: Set containerStatus to disposed and imagerId to NULL. Also add a row in ContainerHistory with status = disposed.'
+BEGIN
+
+  DECLARE EXIT HANDLER FOR SQLWARNING
+  BEGIN
+    ROLLBACK;
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='SQLWARNING, transaction rollback';
+  END;
+
+  IF NOT (p_barcode IS NULL) THEN
+
+      START TRANSACTION;
+
+      UPDATE Container
+      SET 
+        containerStatus = 'disposed',
+        imagerId = NULL
+      WHERE barcode = p_barcode;
+
+      INSERT INTO ContainerHistory (containerId, status)
+        SELECT containerId, 'disposed'
+        FROM Container
+        WHERE barcode = p_barcode;
+
+      COMMIT;
+
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode is NULL';
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `update_container_ls_position` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
