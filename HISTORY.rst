@@ -5,6 +5,19 @@ History
 Unreleased / master
 -------------------
 
+* New procedure ``update_container_dispose`` to mark a container as disposed
+
+Grants & roles:
+
+* Create role ispyb_web_verify_tests + grants for verifying data written by with ispyb_web
+* Add missing grant for ispyb_web role
+
+Scripts: 
+
+* Add new script ``mdb_cluster_health.sh`` to display info about MariaDB Galera cluster health
+* ``mdb_cluster_backup.sh``: Misc tweaks
+* ``build.sh``: Add import of new grants + document in README
+
 1.33.0 (2022-11-02)
 -------------------
 
