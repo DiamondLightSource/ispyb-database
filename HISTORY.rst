@@ -12,6 +12,7 @@ Table/column changes:
 Stored procedures:
 
 * New procedure ``update_container_dispose`` to mark a container as disposed
+* New procedure ``update_dc_append_comments`` to append text to the comments column in a data collection 
 
 Grants & roles:
 

@@ -4043,11 +4043,21 @@ CREATE TABLE `Tomogram` (
   `xAxisCorrection` float DEFAULT NULL COMMENT 'X axis angle (etomo), unit: degrees',
   `tiltAngleOffset` float DEFAULT NULL COMMENT 'tilt Axis offset (etomo), unit: degrees',
   `zShift` float DEFAULT NULL COMMENT 'shift to center volumen in Z (etomo)',
+  `fileDirectory` varchar(255) DEFAULT NULL COMMENT 'Directory path for files referenced by this table',
+  `centralSliceImage` varchar(255) DEFAULT NULL COMMENT 'Tomogram central slice file',
+  `tomogramMovie` varchar(255) DEFAULT NULL COMMENT 'Movie traversing the tomogram across an axis',
+  `xyShiftPlot` varchar(255) DEFAULT NULL COMMENT 'XY shift plot file',
+  `projXY` varchar(255) DEFAULT NULL COMMENT 'XY projection file',
+  `projXZ` varchar(255) DEFAULT NULL COMMENT 'XZ projection file',
+  `processingJobId` int(11) unsigned DEFAULT NULL,
+  `recordTimeStamp` datetime DEFAULT current_timestamp() COMMENT 'Creation or last update date/time',
   PRIMARY KEY (`tomogramId`),
   KEY `Tomogram_fk_dataCollectionId` (`dataCollectionId`),
   KEY `Tomogram_fk_autoProcProgramId` (`autoProcProgramId`),
+  KEY `Tomogram_fk_processingJobId` (`processingJobId`),
   CONSTRAINT `Tomogram_fk_autoProcProgramId` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `Tomogram_fk_dataCollectionId` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `Tomogram_fk_dataCollectionId` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Tomogram_fk_processingJobId` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='For storing per-sample, per-position data analysis results (reconstruction)';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `UserGroup`;
