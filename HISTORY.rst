@@ -5,6 +5,9 @@ History
 Unreleased / master
 -------------------
 
+1.34.0 (2023-01-16)
+-------------------
+
 Table/column changes:
 
 * Table ``Tomogram``: Extra path and file columns 
@@ -16,6 +19,7 @@ Stored procedures:
 
 Grants & roles:
 
+* Add ``EXECUTE`` perms on new procedures to relevant roles
 * Create role ispyb_web_verify_tests + grants for verifying data written by with ispyb_web
 * Add missing grant for ispyb_web role
 
