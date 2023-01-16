@@ -5,6 +5,12 @@ History
 Unreleased / master
 -------------------
 
+Table/column changes:
+
+* Table ``Tomogram``: Extra path and file columns 
+
+Stored procedures:
+
 * New procedure ``update_container_dispose`` to mark a container as disposed
 
 Grants & roles:
