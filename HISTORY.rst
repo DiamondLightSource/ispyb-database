@@ -5,6 +5,12 @@ History
 Unreleased / master
 -------------------
 
+1.34.1 (2023-01-19)
+-------------------
+
+* Add ``EXECUTE`` perm on procedure ``update_dc_append_comments`` to 'ispyb_processing' role.
+
+
 1.34.0 (2023-01-16)
 -------------------
 

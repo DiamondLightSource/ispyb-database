@@ -150,6 +150,7 @@ GRANT EXECUTE ON PROCEDURE upsert_dc_grid TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE upsert_motion_correction TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_persons_for_session TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE upsert_proposal TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE update_dc_append_comments TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE update_dc_position TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE upsert_ctf TO 'ispyb_processing';
 
