@@ -6,6 +6,7 @@ Unreleased / master
 -------------------
 
 * Turn on column compression for ``PDB.contents``. (This is a slow operation which takes several minutes on a table with thousands of rows.)
+* Drop unneccessary column ``Tomogram.processingJobId``.
 
 1.34.1 (2023-01-19)
 -------------------
