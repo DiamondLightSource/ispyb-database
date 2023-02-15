@@ -139,7 +139,7 @@ CREATE TABLE `Event` (
     `offset` float NOT NULL COMMENT 'Start of the event relative to data collection start time in seconds.',
     `duration` float DEFAULT NULL COMMENT 'Duration of the event if applicable.',
     `period` float DEFAULT NULL COMMENT 'Repetition period if applicable in seconds.',
-    `repetition` float DEFAULT NULL COMMENT 'Number of repetition if applicable.',
+    `repetition` float DEFAULT NULL COMMENT 'Number of repetitions if applicable.',
     FOREIGN KEY (`eventChainId`) REFERENCES `EventChain`(`eventChainId`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`componentId`) REFERENCES `Component`(`componentId`),
     FOREIGN KEY (`eventTypeId`) REFERENCES `EventType`(`eventTypeId`)
