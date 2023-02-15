@@ -108,7 +108,7 @@ CREATE TABLE `CrystalComposition` (
     FOREIGN KEY (`componentId`) REFERENCES `Component`(`componentId`),
     FOREIGN KEY (`crystalId`) REFERENCES `Crystal`(`crystalId`),
     FOREIGN KEY (`concentrationTypeId`) REFERENCES `ConcentrationType`(`concentrationTypeId`)
-) DEFAULT CHARSET = utf8mb4 COMMENT = "Links a crystal to it's components with a specified abundance or ratio.";
+) DEFAULT CHARSET = utf8mb4 COMMENT = "Links a crystal to its components with a specified abundance or ratio.";
 
 CREATE TABLE `EventChain` (
     `eventChainId` int(11) unsigned PRIMARY KEY AUTO_INCREMENT,
