@@ -89,7 +89,7 @@ CREATE TABLE `SampleComposition` (
     `componentId` int(11) unsigned NOT NULL,
     `blSampleId` int(11) unsigned NOT NULL,
     `concentrationTypeId` int(11) unsigned DEFAULT NULL,
-    `abundance` float DEFAULT NULL COMMENT 'Abundance or oncentration in the unit defined by concentrationTypeId.',
+    `abundance` float DEFAULT NULL COMMENT 'Abundance or concentration in the unit defined by concentrationTypeId.',
     `ratio` float DEFAULT NULL,
     `ph` float DEFAULT NULL,
     FOREIGN KEY (`componentId`) REFERENCES `Component`(`componentId`),
