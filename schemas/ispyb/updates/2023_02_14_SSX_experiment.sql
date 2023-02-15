@@ -91,7 +91,7 @@ CREATE TABLE `SampleComposition` (
     `concentrationTypeId` int(11) unsigned DEFAULT NULL,
     `abundance` float DEFAULT NULL COMMENT 'Abundance or concentration in the unit defined by concentrationTypeId.',
     `ratio` float DEFAULT NULL,
-    `ph` float DEFAULT NULL,
+    `pH` float DEFAULT NULL,
     FOREIGN KEY (`componentId`) REFERENCES `Component`(`componentId`),
     FOREIGN KEY (`blSampleId`) REFERENCES `BLSample`(`blSampleId`),
     FOREIGN KEY (`concentrationTypeId`) REFERENCES `ConcentrationType`(`concentrationTypeId`)
@@ -104,7 +104,7 @@ CREATE TABLE `CrystalComposition` (
     `concentrationTypeId` int(10) unsigned DEFAULT NULL,
     `abundance` float DEFAULT NULL COMMENT 'Abundance or concentration in the unit defined by concentrationTypeId.',
     `ratio` float DEFAULT NULL,
-    `ph` float DEFAULT NULL,
+    `pH` float DEFAULT NULL,
     FOREIGN KEY (`componentId`) REFERENCES `Component`(`componentId`),
     FOREIGN KEY (`crystalId`) REFERENCES `Crystal`(`crystalId`),
     FOREIGN KEY (`concentrationTypeId`) REFERENCES `ConcentrationType`(`concentrationTypeId`)
