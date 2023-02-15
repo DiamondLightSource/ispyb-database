@@ -95,7 +95,7 @@ CREATE TABLE `SampleComposition` (
     FOREIGN KEY (`componentId`) REFERENCES `Component`(`componentId`),
     FOREIGN KEY (`blSampleId`) REFERENCES `BLSample`(`blSampleId`),
     FOREIGN KEY (`concentrationTypeId`) REFERENCES `ConcentrationType`(`concentrationTypeId`)
-) DEFAULT CHARSET = utf8mb4 COMMENT = "Links a sample to it's components with a specified abundance or ratio.";
+) DEFAULT CHARSET = utf8mb4 COMMENT = "Links a sample to its components with a specified abundance or ratio.";
 
 CREATE TABLE `CrystalComposition` (
     `crystalCompositionId` int(11) unsigned PRIMARY KEY AUTO_INCREMENT,
