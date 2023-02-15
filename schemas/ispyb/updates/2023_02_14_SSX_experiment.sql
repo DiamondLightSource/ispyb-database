@@ -143,6 +143,6 @@ CREATE TABLE `Event` (
     FOREIGN KEY (`eventChainId`) REFERENCES `EventChain`(`eventChainId`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`componentId`) REFERENCES `Component`(`componentId`),
     FOREIGN KEY (`eventTypeId`) REFERENCES `EventType`(`eventTypeId`)
-) DEFAULT CHARSET = utf8mb4 COMMENT = "Describes something that happend during a data collection and should be taken into account for data analysis. Can be reapeted at a specified frequency or not.";
+) DEFAULT CHARSET = utf8mb4 COMMENT = "Describes an event that occurred during a data collection and should be taken into account for data analysis. Can optionally be repeated at a specified frequency.";
 
 UPDATE SchemaStatus SET schemaStatus = 'DONE' WHERE scriptName = '2023_02_14_SSX_experiment.sql';
