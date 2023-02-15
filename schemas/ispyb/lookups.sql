@@ -210,14 +210,20 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (235,'2022_11_02_AdminVar_bump_version.sql','DONE','2022-11-02 17:04:27'),
 (236,'2023_01_16_Tomogram_new_cols.sql','DONE','2023-01-16 18:09:03'),
 (237,'2023_01_16_AdminVar_bump_version.sql','DONE','2023-01-16 18:42:40'),
-(238,'2023_01_19_AdminVar_bump_version.sql','DONE','2023-01-19 12:24:28');
+(238,'2023_01_19_AdminVar_bump_version.sql','DONE','2023-01-19 12:24:28'),
+(239,'2023_02_01_PDB_contents_compressed.sql','DONE','2023-02-15 11:25:14'),
+(240,'2023_02_01_Tomogram_drop_processingJobId.sql','DONE','2023-02-15 11:25:14'),
+(241,'2023_02_14_SSX_experiment.sql','DONE','2023-02-15 11:25:14');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
-INSERT INTO `ComponentType` (`componentTypeId`, `name`) VALUES (1,'Protein'),
+INSERT INTO `ComponentType` (`componentTypeId`, `name`) VALUES (6,'Buffer'),
 (2,'DNA'),
-(3,'Small Molecule'),
-(4,'RNA');
+(7,'JetMaterial'),
+(5,'Ligand'),
+(1,'Protein'),
+(4,'RNA'),
+(3,'Small Molecule');
 /*!40000 ALTER TABLE `ComponentType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentSubType` DISABLE KEYS */;
@@ -316,7 +322,10 @@ INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `activ
 (34,'Mesh3D','mx',1),
 (35,'Screening','sm',1),
 (36,'Tomography','em',1),
-(37,'Single Particle','em',1);
+(37,'Single Particle','em',1),
+(38,'Still','mx',1),
+(39,'SSX-Chip','mx',1),
+(40,'SSX-Jet','mx',1);
 /*!40000 ALTER TABLE `ExperimentType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `InspectionType` DISABLE KEYS */;
