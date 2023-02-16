@@ -210,7 +210,9 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (235,'2022_11_02_AdminVar_bump_version.sql','DONE','2022-11-02 17:04:27'),
 (236,'2023_01_16_Tomogram_new_cols.sql','DONE','2023-01-16 18:09:03'),
 (237,'2023_01_16_AdminVar_bump_version.sql','DONE','2023-01-16 18:42:40'),
-(238,'2023_01_19_AdminVar_bump_version.sql','DONE','2023-01-19 12:24:28');
+(238,'2023_01_19_AdminVar_bump_version.sql','DONE','2023-01-19 12:24:28'),
+(239,'2023_02_01_PDB_contents_compressed.sql','DONE','2023-02-16 13:38:56'),
+(240,'2023_02_01_Tomogram_drop_processingJobId.sql','DONE','2023-02-16 13:38:56');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
