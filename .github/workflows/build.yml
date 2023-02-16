@@ -50,4 +50,3 @@ jobs:
               Before merging this pull request you may want to:
               * [ ] Update `HISTORY.md` to reflect the changes in this pull request
             branch: update-schema-sql
-            branch-suffix: short-commit-hash
