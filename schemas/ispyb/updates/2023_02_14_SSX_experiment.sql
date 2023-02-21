@@ -54,13 +54,16 @@ MODIFY
         'SSX-Chip',
         'SSX-Jet'
       ) 
-      DEFAULT NULL COMMENT 'Standard: Routine structure determination experiment. Time Resolved: Investigate the change of a system over time. Custom: Special or non-standard data collection.';
+      DEFAULT NULL COMMENT 'Standard: Routine structure determination experiment. Time Resolved: Investigate the change of a system over time. Custom: Special or non-standard data collection.',
+ALGORITHM=INSTANT;
 
 INSERT INTO ExperimentType (experimentTypeId, name, proposalType, active)
 VALUES 
-  (38, 'Still','mx', 1),
-  (39, 'SSX-Chip','mx', 1),
-  (40, 'SSX-Jet','mx', 1);
+  (38, 'Serial Fixed','mx', 1),
+  (39, 'Serial Jet','mx', 1),
+  (40, 'Still','mx', 1),
+  (41, 'SSX-Chip','mx', 1),
+  (42, 'SSX-Jet','mx', 1);
 
 ALTER TABLE
     `ComponentType`
