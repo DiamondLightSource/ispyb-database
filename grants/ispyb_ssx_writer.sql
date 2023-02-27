@@ -5,6 +5,9 @@ CREATE ROLE ispyb_ssx_writer;
 -- GRANT ispyb_ssx_writer TO ispyb_ssx_server@'%';
 -- SET DEFAULT ROLE ispyb_ssx_writer FOR ispyb_ssx_server@'%';
 
+GRANT SELECT ON Proposal TO ispyb_ssx_writer;
+GRANT SELECT ON BLSession TO ispyb_ssx_writer;
+
 GRANT SELECT ON ExperimentType TO ispyb_ssx_writer;
 GRANT SELECT ON ComponentType TO ispyb_ssx_writer;
 GRANT SELECT ON ConcentrationType TO ispyb_ssx_writer;
