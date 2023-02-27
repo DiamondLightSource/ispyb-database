@@ -13,8 +13,8 @@ GRANT SELECT ON ComponentType TO ispyb_ssx_writer;
 GRANT SELECT ON ConcentrationType TO ispyb_ssx_writer;
 GRANT SELECT ON EventType TO ispyb_ssx_writer;
 
-GRANT EXECUTE ON upsert_dc_group_v3 TO ispyb_ssx_writer;
-GRANT EXECUTE ON upsert_dc TO ispyb_ssx_writer;
+GRANT EXECUTE ON PROCEDURE upsert_dc_group_v3 TO ispyb_ssx_writer;
+GRANT EXECUTE ON PROCEDURE upsert_dc TO ispyb_ssx_writer;
 
 GRANT SELECT, INSERT, UPDATE ON SSXDataCollection TO ispyb_ssx_writer;
 GRANT SELECT, INSERT, UPDATE ON DataCollectionGroup TO ispyb_ssx_writer;
