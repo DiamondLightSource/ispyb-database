@@ -34,6 +34,7 @@ then
   mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_touchscreen.sql
   mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_web.sql
   mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_web_verify_tests.sql
+  mysql --defaults-file=.my.cnf -D $DB < grants/ispyb_ssx_writer.sql
 
   arr=$(bin/missed_updates.sh)
 
