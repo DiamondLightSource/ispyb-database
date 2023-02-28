@@ -45,6 +45,7 @@ mysql ispyb < grants/ispyb_import.sql
 mysql ispyb < grants/ispyb_processing.sql
 mysql ispyb < grants/ispyb_ro_nopii.sql
 mysql ispyb < grants/ispyb_scripts_processing.sql
+mysql ispyb < grants/ispyb_ssx_writer.sql
 mysql ispyb < grants/ispyb_touchscreen.sql
 mysql ispyb < grants/ispyb_web.sql
 mysql ispyb < grants/ispyb_web_verify_tests.sql
