@@ -10,7 +10,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.34.1');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.35.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -213,7 +213,8 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (238,'2023_01_19_AdminVar_bump_version.sql','DONE','2023-01-19 12:24:28'),
 (239,'2023_02_01_PDB_contents_compressed.sql','DONE','2023-02-21 13:20:55'),
 (240,'2023_02_01_Tomogram_drop_processingJobId.sql','DONE','2023-02-21 13:20:55'),
-(241,'2023_02_14_SSX_experiment.sql','DONE','2023-02-21 13:20:55');
+(241,'2023_02_14_SSX_experiment.sql','DONE','2023-02-21 13:20:55'),
+(242,'2023_02_28_AdminVar_bump_version.sql','DONE','2023-02-28 16:57:44');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
@@ -826,6 +827,13 @@ INSERT INTO `UserGroup_has_Permission` (`userGroupId`, `permissionId`) VALUES (1
 INSERT INTO `ScanParametersService` (`scanParametersServiceId`, `name`, `description`) VALUES (4,'Temperature','Temperature in Celsius'),
 (7,'Pressure','Pressure in pascal (Pa)');
 /*!40000 ALTER TABLE `ScanParametersService` ENABLE KEYS */;
+
+/*!40000 ALTER TABLE `EventType` DISABLE KEYS */;
+INSERT INTO `EventType` (`eventTypeId`, `name`) VALUES (3,'LaserExcitation'),
+(4,'ReactionTrigger'),
+(1,'XrayDetection'),
+(2,'XrayExposure');
+/*!40000 ALTER TABLE `EventType` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

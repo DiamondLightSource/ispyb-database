@@ -521,13 +521,6 @@ INSERT INTO `EnergyScan` (`energyScanId`, `sessionId`, `blSampleId`, `fluorescen
 /*!40000 ALTER TABLE `EventChain` DISABLE KEYS */;
 /*!40000 ALTER TABLE `EventChain` ENABLE KEYS */;
 
-/*!40000 ALTER TABLE `EventType` DISABLE KEYS */;
-INSERT INTO `EventType` (`eventTypeId`, `name`) VALUES (3,'LaserExcitation'),
-(4,'ReactionTrigger'),
-(1,'XrayDetection'),
-(2,'XrayExposure');
-/*!40000 ALTER TABLE `EventType` ENABLE KEYS */;
-
 /*!40000 ALTER TABLE `Experiment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Experiment` ENABLE KEYS */;
 

@@ -28,6 +28,7 @@ UserGroup
 Permission
 UserGroup_has_Permission
 ScanParametersService
+EventType
 )
 
 LOOKUP_TABLES_STRING=''

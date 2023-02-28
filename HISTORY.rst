@@ -5,6 +5,19 @@ History
 Unreleased / master
 -------------------
 
+1.35.0 (2023-02-28)
+-------------------
+
+* New tables, rows and enum options for SSX (serial crystallography):
+  * Table ``SSXDataCollection``
+  * Table ``Component``
+  * Table ``SampleComposition``
+  * Table ``CrystalComposition``
+  * Table ``EventChain``
+  * Table ``EventType``
+  * Table ``Event``
+  * Rows for ``EventType``, ``ComponentType``, ``ExperimentType``
+  * Enum options in ``DataCollectionGroup.experimentType``: 'Still' (not for SSX), 'SSX-Chip', 'SSX-Jet'
 * Turn on column compression for ``PDB.contents``. (This is a slow operation which takes several minutes on a table with thousands of rows.)
 * Drop unneccessary column ``Tomogram.processingJobId``.
 
@@ -12,7 +25,6 @@ Unreleased / master
 -------------------
 
 * Add ``EXECUTE`` perm on procedure ``update_dc_append_comments`` to 'ispyb_processing' role.
-
 
 1.34.0 (2023-01-16)
 -------------------
