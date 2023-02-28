@@ -1,4 +1,4 @@
-CREATE ROLE ispyb_ssx_writer;
+CREATE ROLE IF NOT EXISTS ispyb_ssx_writer;
 
 -- You also need to create a database user and grant this role to them, e.g.
 -- CREATE USER ispyb_ssx_server@'%' IDENTIFIED BY 'the_password';
