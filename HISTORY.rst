@@ -5,6 +5,11 @@ History
 Unreleased / master
 -------------------
 
+* New tables to hold configuration parameters for searching LDAP:
+  * ``LDAPSearchParameters``
+  * ``LDAPSearchBase``
+  * ``UserGroup_has_LDAPGroup``
+
 1.35.0 (2023-02-28)
 -------------------
 

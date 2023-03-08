@@ -29,6 +29,9 @@ Permission
 UserGroup_has_Permission
 ScanParametersService
 EventType
+LDAPSearchParameters
+LDAPSearchBase
+UserGroup_has_LDAPGroup
 )
 
 LOOKUP_TABLES_STRING=''
