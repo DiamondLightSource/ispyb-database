@@ -4,10 +4,12 @@ READS SQL DATA
 COMMENT 'Returns a single-row result-set with the columns for the given data collection group id'
 BEGIN
     IF p_id IS NOT NULL THEN
-      SELECT sessionId, blSampleId "sampleId", experimentType "experimenttype", startTime "starttime", endTime "endtime",
-        crystalClass, detectorMode, actualSampleBarcode, actualSampleSlotInContainer, actualContainerBarcode, actualContainerSlotInSC,
-        comments, xtalSnapshotFullPath, scanParameters
-      FROM DataCollectionGroup
+      SELECT p.proposalCode, p.proposalNumber, bs.visit_number "sessionNumber", dcg.sessionId, dcg.blSampleId "sampleId", dcg.experimentType "experimenttype", dcg.startTime "starttime", dcg.endTime "endtime",
+        dcg.crystalClass, dcg.detectorMode, dcg.actualSampleBarcode, dcg.actualSampleSlotInContainer, dcg.actualContainerBarcode, dcg.actualContainerSlotInSC,
+        dcg.comments, dcg.xtalSnapshotFullPath, dcg.scanParameters
+      FROM DataCollectionGroup dcg
+        JOIN BLSession bs ON bs.sessionId = dcg.sessionId
+        JOIN Proposal p ON p.proposalId = bs.proposalId
       WHERE datacollectionGroupId = p_id;
     ELSE
 	    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
