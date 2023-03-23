@@ -1073,6 +1073,9 @@ INSERT INTO `ShippingHasSession` (`shippingId`, `sessionId`) VALUES (474,339525)
 /*!40000 ALTER TABLE `Tomogram` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Tomogram` ENABLE KEYS */;
 
+/*!40000 ALTER TABLE `UserGroup_has_LDAPSearchParameters` DISABLE KEYS */;
+/*!40000 ALTER TABLE `UserGroup_has_LDAPSearchParameters` ENABLE KEYS */;
+
 /*!40000 ALTER TABLE `UserGroup_has_Person` DISABLE KEYS */;
 /*!40000 ALTER TABLE `UserGroup_has_Person` ENABLE KEYS */;
 
