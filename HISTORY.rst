@@ -10,6 +10,10 @@ Unreleased / master
   * ``LDAPSearchBase``
   * ``UserGroup_has_LDAPGroup``
 
+* Stored procedures:
+  * New procedure ``update_sample_append_staff_comments``
+  * Modified procedure ``retrieve_dc_group`` now also returns ``proposalCode``, ``proposalNumber`` and ``sessionNumber`` 
+
 1.35.0 (2023-02-28)
 -------------------
 
