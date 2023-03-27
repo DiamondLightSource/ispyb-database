@@ -214,7 +214,10 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (239,'2023_02_01_PDB_contents_compressed.sql','DONE','2023-02-21 13:20:55'),
 (240,'2023_02_01_Tomogram_drop_processingJobId.sql','DONE','2023-02-21 13:20:55'),
 (241,'2023_02_14_SSX_experiment.sql','DONE','2023-02-21 13:20:55'),
-(242,'2023_02_28_AdminVar_bump_version.sql','DONE','2023-02-28 16:57:44');
+(242,'2023_02_28_AdminVar_bump_version.sql','DONE','2023-02-28 16:57:44'),
+(243,'2023_03_08_LDAPSearch_tables.sql','DONE','2023-03-27 11:06:43'),
+(244,'2023_03_27_Detector_numberOfROIPixelsXY.sql','DONE','2023-03-27 11:06:44'),
+(245,'2023_03_27_GridInfo_micronsPerPixelXY.sql','DONE','2023-03-27 11:06:44');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
@@ -394,8 +397,8 @@ INSERT INTO `Imager` (`imagerId`, `name`, `temperature`, `serial`, `capacity`) V
 /*!40000 ALTER TABLE `Imager` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Detector` DISABLE KEYS */;
-INSERT INTO `Detector` (`detectorId`, `detectorType`, `detectorManufacturer`, `detectorModel`, `detectorPixelSizeHorizontal`, `detectorPixelSizeVertical`, `DETECTORMAXRESOLUTION`, `DETECTORMINRESOLUTION`, `detectorSerialNumber`, `detectorDistanceMin`, `detectorDistanceMax`, `trustedPixelValueRangeLower`, `trustedPixelValueRangeUpper`, `sensorThickness`, `overload`, `XGeoCorr`, `YGeoCorr`, `detectorMode`, `density`, `composition`, `numberOfPixelsX`, `numberOfPixelsY`, `detectorRollMin`, `detectorRollMax`, `localName`) VALUES (4,'Photon counting','In-house','Excalibur',NULL,NULL,NULL,NULL,'1109-434',100,300,NULL,NULL,NULL,NULL,NULL,NULL,NULL,55,'CrO3Br5Sr10',NULL,NULL,NULL,NULL,NULL),
-(8,'Diamond XPDF detector',NULL,NULL,NULL,NULL,NULL,NULL,'1109-761',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,10.4,'C+Br+He',NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `Detector` (`detectorId`, `detectorType`, `detectorManufacturer`, `detectorModel`, `detectorPixelSizeHorizontal`, `detectorPixelSizeVertical`, `DETECTORMAXRESOLUTION`, `DETECTORMINRESOLUTION`, `detectorSerialNumber`, `detectorDistanceMin`, `detectorDistanceMax`, `trustedPixelValueRangeLower`, `trustedPixelValueRangeUpper`, `sensorThickness`, `overload`, `XGeoCorr`, `YGeoCorr`, `detectorMode`, `density`, `composition`, `numberOfPixelsX`, `numberOfPixelsY`, `detectorRollMin`, `detectorRollMax`, `localName`, `numberOfROIPixelsX`, `numberOfROIPixelsY`) VALUES (4,'Photon counting','In-house','Excalibur',NULL,NULL,NULL,NULL,'1109-434',100,300,NULL,NULL,NULL,NULL,NULL,NULL,NULL,55,'CrO3Br5Sr10',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(8,'Diamond XPDF detector',NULL,NULL,NULL,NULL,NULL,NULL,'1109-761',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,10.4,'C+Br+He',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `Detector` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `DewarLocationList` DISABLE KEYS */;
@@ -834,6 +837,15 @@ INSERT INTO `EventType` (`eventTypeId`, `name`) VALUES (3,'LaserExcitation'),
 (1,'XrayDetection'),
 (2,'XrayExposure');
 /*!40000 ALTER TABLE `EventType` ENABLE KEYS */;
+
+/*!40000 ALTER TABLE `LDAPSearchParameters` DISABLE KEYS */;
+/*!40000 ALTER TABLE `LDAPSearchParameters` ENABLE KEYS */;
+
+/*!40000 ALTER TABLE `LDAPSearchBase` DISABLE KEYS */;
+/*!40000 ALTER TABLE `LDAPSearchBase` ENABLE KEYS */;
+
+/*!40000 ALTER TABLE `UserGroup_has_LDAPSearchParameters` DISABLE KEYS */;
+/*!40000 ALTER TABLE `UserGroup_has_LDAPSearchParameters` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
