@@ -3756,10 +3756,12 @@ CREATE PROCEDURE `retrieve_dc_group`(p_id int unsigned)
     COMMENT 'Returns a single-row result-set with the columns for the given data collection group id'
 BEGIN
     IF p_id IS NOT NULL THEN
-      SELECT sessionId, blSampleId "sampleId", experimentType "experimenttype", startTime "starttime", endTime "endtime",
-        crystalClass, detectorMode, actualSampleBarcode, actualSampleSlotInContainer, actualContainerBarcode, actualContainerSlotInSC,
-        comments, xtalSnapshotFullPath, scanParameters
-      FROM DataCollectionGroup
+      SELECT p.proposalCode, p.proposalNumber, bs.visit_number "sessionNumber", dcg.sessionId, dcg.blSampleId "sampleId", dcg.experimentType "experimenttype", dcg.startTime "starttime", dcg.endTime "endtime",
+        dcg.crystalClass, dcg.detectorMode, dcg.actualSampleBarcode, dcg.actualSampleSlotInContainer, dcg.actualContainerBarcode, dcg.actualContainerSlotInSC,
+        dcg.comments, dcg.xtalSnapshotFullPath, dcg.scanParameters
+      FROM DataCollectionGroup dcg
+        JOIN BLSession bs ON bs.sessionId = dcg.sessionId
+        JOIN Proposal p ON p.proposalId = bs.proposalId
       WHERE datacollectionGroupId = p_id;
     ELSE
 	    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
@@ -8286,6 +8288,39 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id is NULL';
     END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_sample_append_staff_comments` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
+DELIMITER ;;
+CREATE PROCEDURE `update_sample_append_staff_comments`(
+  p_id int(11) unsigned,
+  p_staffComments varchar(1024),
+  p_separator varchar(5)
+)
+    MODIFIES SQL DATA
+    COMMENT 'Appends text to BLSample.staffComments for blSampleId=p_id. '
+BEGIN
+  IF NOT (p_id IS NULL) AND NOT (p_staffComments IS NULL) THEN
+
+    UPDATE BLSample
+    SET staffComments = concat_ws(p_separator, staffComments, p_staffComments)
+    WHERE blSampleId = p_id;
+
+  ELSE
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_id and/or p_staffComments are NULL';
+  END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
