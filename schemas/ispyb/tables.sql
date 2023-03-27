@@ -1674,6 +1674,8 @@ CREATE TABLE `Detector` (
   `detectorRollMin` double DEFAULT NULL COMMENT 'unit: degrees',
   `detectorRollMax` double DEFAULT NULL COMMENT 'unit: degrees',
   `localName` varchar(40) DEFAULT NULL COMMENT 'Colloquial name for the detector',
+  `numberOfROIPixelsX` mediumint(9) DEFAULT NULL COMMENT 'Detector number of pixels in x in ROI mode',
+  `numberOfROIPixelsY` mediumint(9) DEFAULT NULL COMMENT 'Detector number of pixels in y in ROI mode',
   PRIMARY KEY (`detectorId`),
   UNIQUE KEY `Detector_ibuk1` (`detectorSerialNumber`),
   KEY `Detector_FKIndex1` (`detectorType`,`detectorManufacturer`,`detectorModel`,`detectorPixelSizeHorizontal`,`detectorPixelSizeVertical`)
@@ -2129,6 +2131,8 @@ CREATE TABLE `GridInfo` (
   `dataCollectionId` int(11) unsigned DEFAULT NULL,
   `patchesX` int(10) DEFAULT 1 COMMENT 'Number of patches the grid is made up of in the X direction',
   `patchesY` int(10) DEFAULT 1 COMMENT 'Number of patches the grid is made up of in the Y direction',
+  `micronsPerPixelX` float DEFAULT NULL,
+  `micronsPerPixelY` float DEFAULT NULL,
   PRIMARY KEY (`gridInfoId`),
   KEY `workflowMeshId` (`workflowMeshId`),
   KEY `GridInfo_ibfk_2` (`dataCollectionGroupId`),
@@ -2257,6 +2261,33 @@ CREATE TABLE `IspybReference` (
   `beamline` enum('All','ID14-4','ID23-1','ID23-2','ID29','XRF','AllXRF','Mesh') DEFAULT NULL COMMENT 'beamline involved',
   PRIMARY KEY (`referenceId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `LDAPSearchBase`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `LDAPSearchBase` (
+  `ldapSearchBaseId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ldapSearchParametersId` int(11) unsigned NOT NULL COMMENT 'The other LDAP search parameters to be used with this search base',
+  `searchBase` varchar(200) NOT NULL COMMENT 'Name of the object we search for',
+  `sequenceNumber` tinyint(3) unsigned NOT NULL COMMENT 'The number in the sequence of searches where this search base should be attempted',
+  PRIMARY KEY (`ldapSearchBaseId`),
+  KEY `LDAPSearchBase_fk_ldapSearchParametersId` (`ldapSearchParametersId`),
+  CONSTRAINT `LDAPSearchBase_fk_ldapSearchParametersId` FOREIGN KEY (`ldapSearchParametersId`) REFERENCES `LDAPSearchParameters` (`ldapSearchParametersId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='LDAP search base and the sequence number in which it should be attempted';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `LDAPSearchParameters`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `LDAPSearchParameters` (
+  `ldapSearchParametersId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `accountType` enum('group_member','staff_account','functional_account') NOT NULL COMMENT 'The entity type returned by the search',
+  `accountTypeGroupName` varchar(100) DEFAULT NULL COMMENT 'all accounts of this type must be members of this group',
+  `oneOrMany` enum('one','many') NOT NULL COMMENT 'Expected number of search results',
+  `hostURL` varchar(200) NOT NULL COMMENT 'URL for the LDAP host',
+  `filter` varchar(200) DEFAULT NULL COMMENT 'A filter string for the search',
+  `attributes` varchar(255) NOT NULL COMMENT 'Comma-separated list of search attributes',
+  PRIMARY KEY (`ldapSearchParametersId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='All necessary parameters to run an LDAP search, except the search base';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `LabContact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -4186,6 +4217,19 @@ CREATE TABLE `UserGroup` (
   PRIMARY KEY (`userGroupId`),
   UNIQUE KEY `UserGroup_idx1` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `UserGroup_has_LDAPSearchParameters`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `UserGroup_has_LDAPSearchParameters` (
+  `userGroupId` int(11) unsigned NOT NULL,
+  `ldapSearchParametersId` int(11) unsigned NOT NULL,
+  `name` varchar(200) NOT NULL COMMENT 'Name of the object we search for',
+  PRIMARY KEY (`userGroupId`,`ldapSearchParametersId`,`name`),
+  KEY `UserGroup_has_LDAPSearchParameters_fk2` (`ldapSearchParametersId`),
+  CONSTRAINT `UserGroup_has_LDAPSearchParameters_fk1` FOREIGN KEY (`userGroupId`) REFERENCES `UserGroup` (`userGroupId`),
+  CONSTRAINT `UserGroup_has_LDAPSearchParameters_fk2` FOREIGN KEY (`ldapSearchParametersId`) REFERENCES `LDAPSearchParameters` (`ldapSearchParametersId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Gives the LDAP search parameters needed to find a set of usergroup members';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `UserGroup_has_Permission`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
