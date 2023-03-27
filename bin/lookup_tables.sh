@@ -31,7 +31,7 @@ ScanParametersService
 EventType
 LDAPSearchParameters
 LDAPSearchBase
-UserGroup_has_LDAPGroup
+UserGroup_has_LDAPSearchParameters
 )
 
 LOOKUP_TABLES_STRING=''
