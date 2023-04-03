@@ -5,6 +5,10 @@ History
 Unreleased / master
 -------------------
 
+* New columns:
+  * In ``Detector`` table: ``numberOfROIPixelsX`` + ``numberOfROIPixelsY`` (for ROI mode) 
+  * In ``GridInfo`` table: ``micronsPerPixelX`` + ``micronsPerPixelY`` (these will eventually replace ``pixelsPerMicronX`` and ``pixelsPerMicronY``)
+
 * New tables to hold configuration parameters for searching LDAP:
   * ``LDAPSearchParameters``
   * ``LDAPSearchBase``
@@ -13,6 +17,7 @@ Unreleased / master
 * Stored procedures:
   * New procedure ``update_sample_append_staff_comments``
   * Modified procedure ``retrieve_dc_group`` now also returns ``proposalCode``, ``proposalNumber`` and ``sessionNumber`` 
+  * Modified procedures ``upsert_dcg_grid`` and ``upsert_dc_grid`` so they additionally write to the new ``GridInfo`` columns
 
 1.35.0 (2023-02-28)
 -------------------
