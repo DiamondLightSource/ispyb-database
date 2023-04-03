@@ -1,12 +1,35 @@
 #!/usr/bin/env bash
 
 # Usage:
-# export_session.sh <proposalCode><proposalNumber> <session number> <output dir>
+# export_session.sh [-t|-s|-v] <proposalCode><proposalNumber> <session number> <output dir> 
+# -t: Process tomography tables
+# -s: Process single particle analysis tables
+# -v: Verbose output (prints all commands ran)
 # Usage example:
 # export_session.sh cm14451 2 /tmp/cm14451-2
 # Author: Karl Levik
-# Date: 2020-02-14
+# Date: 2023-03-28
 
+USE_TOMO=0
+USE_SPA=0
+
+while getopts 'tsv' OPTION; do
+  case "$OPTION" in
+    t)
+      USE_TOMO=1
+      ;;
+
+    s)
+      USE_SPA=1
+      ;;
+
+    v)
+      set -x
+      ;;
+  esac
+done
+
+shift "$(($OPTIND -1))"
 
 MYCNF=../.my.cnf
 PROPOSAL=$1
@@ -149,11 +172,31 @@ mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM 
 
 mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" Movie > ${SESSION_DIR}/Movie.sql
 
+if [ USE_TOMO ]; then
+  mysqldump ${OPTIONS} --where="tomogramId IN (SELECT t.tomogramId FROM Tomogram t INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" TiltImageAlignment > ${SESSION_DIR}/TiltImageAlignment.sql
+
+  mysqldump ${OPTIONS} --where="dataCollectionId IN (SELECT dataCollectionId FROM DataCollection INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" Tomogram > ${SESSION_DIR}/Tomogram.sql
+fi
+
 mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT mc.autoProcProgramId FROM MotionCorrection mc INNER JOIN Movie m USING(movieId) INNER JOIN DataCollection dc ON dc.dataCollectionId=m.dataCollectionId INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcProgram > ${SESSION_DIR}/AutoProcProgram3.sql
 
 mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT mc.autoProcProgramId FROM MotionCorrection mc INNER JOIN Movie m USING(movieId) INNER JOIN DataCollection dc ON dc.dataCollectionId=m.dataCollectionId INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcProgramAttachment > ${SESSION_DIR}/AutoProcProgramAttachment3.sql
 
 mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT mc.autoProcProgramId FROM MotionCorrection mc INNER JOIN Movie m USING(movieId) INNER JOIN DataCollection dc ON dc.dataCollectionId=m.dataCollectionId INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" AutoProcProgramMessage > ${SESSION_DIR}/AutoProcProgramMessage3.sql
+
+if [ USE_SPA ]; then
+  mysqldump ${OPTIONS} --where="programId IN (SELECT app.autoProcProgramId FROM AutoProcProgram app INNER JOIN ProcessingJob pj USING(processingJobId) INNER JOIN DataCollection USING (dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ParticlePicker > ${SESSION_DIR}/ParticlePicker.sql
+
+  mysqldump ${OPTIONS} --where="particlePickerId IN (SELECT pp.particlePickerId FROM ParticlePicker pp INNER JOIN AutoProcProgram app ON pp.programId=app.autoProcProgramId INNER JOIN ProcessingJob pj USING(processingJobId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ParticleClassificationGroup > ${SESSION_DIR}/ParticleClassificationGroup.sql
+
+  mysqldump ${OPTIONS} --where="particleClassificationGroupId IN (SELECT pcg.particleClassificationGroupId FROM ParticleClassificationGroup pcg INNER JOIN ParticlePicker pp USING(particlePickerId) INNER JOIN AutoProcProgram app ON pp.programId=app.autoProcProgramId INNER JOIN ProcessingJob pj USING(processingJobId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ParticleClassification > ${SESSION_DIR}/ParticleClassification.sql
+
+  mysqldump ${OPTIONS} --where="particleClassificationId IN (SELECT pc.particleClassificationId FROM ParticleClassification pc INNER JOIN ParticleClassificationGroup pcg USING(particleClassificationGroupId) INNER JOIN ParticlePicker pp USING(particlePickerId) INNER JOIN AutoProcProgram app ON pp.programId=app.autoProcProgramId INNER JOIN ProcessingJob pj USING(processingJobId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" ParticleClassification_has_CryoemInitialModel > ${SESSION_DIR}/ParticleClassification_has_CryoemInitialModel.sql
+
+  mysqldump ${OPTIONS} --where="cryoemInitialModelId IN (SELECT pchceim.cryoemInitialModelId FROM ParticleClassification_has_CryoemInitialModel pchceim INNER JOIN ParticleClassification pc USING(particleClassificationId) INNER JOIN ParticleClassificationGroup pcg USING(particleClassificationGroupId) INNER JOIN ParticlePicker pp USING(particlePickerId) INNER JOIN AutoProcProgram app ON pp.programId=app.autoProcProgramId INNER JOIN ProcessingJob pj USING(processingJobId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" CryoemInitialModel > ${SESSION_DIR}/CryoemInitialModel.sql
+
+  mysqldump ${OPTIONS} --where="autoProcProgramId IN (SELECT app.autoProcProgramId FROM AutoProcProgram app INNER JOIN ProcessingJob pj USING(processingJobId) INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" RelativeIceThickness > ${SESSION_DIR}/RelativeIceThickness.sql
+fi
 
 mysqldump ${OPTIONS} --where="movieId IN (SELECT m.movieId FROM Movie m INNER JOIN DataCollection USING(dataCollectionId) INNER JOIN DataCollectionGroup dcg USING(dataCollectionGroupId) WHERE dcg.sessionId=${SID})" MotionCorrection > ${SESSION_DIR}/MotionCorrection.sql
 
