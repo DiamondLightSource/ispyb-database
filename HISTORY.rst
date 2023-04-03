@@ -6,15 +6,18 @@ Unreleased / master
 -------------------
 
 * New columns:
+
   * In ``Detector`` table: ``numberOfROIPixelsX`` + ``numberOfROIPixelsY`` (for ROI mode) 
   * In ``GridInfo`` table: ``micronsPerPixelX`` + ``micronsPerPixelY`` (these will eventually replace ``pixelsPerMicronX`` and ``pixelsPerMicronY``)
 
 * New tables to hold configuration parameters for searching LDAP:
+
   * ``LDAPSearchParameters``
   * ``LDAPSearchBase``
   * ``UserGroup_has_LDAPGroup``
 
 * Stored procedures:
+
   * New procedure ``update_sample_append_staff_comments``
   * Modified procedure ``retrieve_dc_group`` now also returns ``proposalCode``, ``proposalNumber`` and ``sessionNumber`` 
   * Modified procedures ``upsert_dcg_grid`` and ``upsert_dc_grid`` so they additionally write to the new ``GridInfo`` columns
@@ -23,6 +26,7 @@ Unreleased / master
 -------------------
 
 * New tables, rows and enum options for SSX (serial crystallography):
+
   * Table ``SSXDataCollection``
   * Table ``Component``
   * Table ``SampleComposition``
@@ -32,6 +36,7 @@ Unreleased / master
   * Table ``Event``
   * Rows for ``EventType``, ``ComponentType``, ``ExperimentType``
   * Enum options in ``DataCollectionGroup.experimentType``: 'Still' (not for SSX), 'SSX-Chip', 'SSX-Jet'
+
 * Turn on column compression for ``PDB.contents``. (This is a slow operation which takes several minutes on a table with thousands of rows.)
 * Drop unneccessary column ``Tomogram.processingJobId``.
 
@@ -97,6 +102,7 @@ Other:
 * More grants files with new roles
 * Stored procedure: Changed datatype from float to double for parameter ``p_flux`` in ``upsert_dc``   
 * Tables and columns:
+
   * ``DiffractionPlan``: Add JSON column ``scanParameters``
   * ``GridInfo``: Add columns patchesX and patchesY
   * New table ``BLSampleImage_has_Positioner`` linking ``BLSampleImage`` and ``Positioner``
