@@ -5,6 +5,10 @@ History
 Unreleased / master
 -------------------
 
+* New tables for storing X-ray centring results:
+  * ``XrayCentring``
+  * ``XrayCentringResult`` (replaces unused/legacy ``XrayCentringResult`` table)
+
 * New columns:
 
   * In ``Detector`` table: ``numberOfROIPixelsX`` + ``numberOfROIPixelsY`` (for ROI mode) 
