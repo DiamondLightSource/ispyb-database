@@ -4428,20 +4428,43 @@ CREATE TABLE `XRFFluorescenceMappingROI` (
   CONSTRAINT `XRFFluorescenceMappingROI_FKblSampleId` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `XrayCentring`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `XrayCentring` (
+  `xrayCentringId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `dataCollectionGroupId` int(11) NOT NULL COMMENT 'references DataCollectionGroup table',
+  `status` enum('success','failed','pending') DEFAULT NULL,
+  `xrayCentringType` enum('2d','3d') DEFAULT NULL,
+  PRIMARY KEY (`xrayCentringId`),
+  KEY `dataCollectionGroupId` (`dataCollectionGroupId`),
+  CONSTRAINT `XrayCentring_ibfk_1` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Xray Centring analysis associated with one or more grid scans.';
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `XrayCentringResult`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `XrayCentringResult` (
   `xrayCentringResultId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `gridInfoId` int(11) unsigned NOT NULL,
-  `method` varchar(15) DEFAULT NULL COMMENT 'Type of X-ray centering calculation',
-  `status` enum('success','failure','pending') NOT NULL DEFAULT 'pending',
-  `x` float DEFAULT NULL COMMENT 'position in number of boxes in direction of the fast scan within GridInfo grid',
-  `y` float DEFAULT NULL COMMENT 'position in number of boxes in direction of the slow scan within GridInfo grid',
+  `xrayCentringId` int(11) unsigned NOT NULL COMMENT 'references XrayCentring table',
+  `centreOfMassX` float DEFAULT NULL COMMENT 'x-coordinate corresponding to the centre of mass of the crystal (in voxels)',
+  `centreOfMassY` float DEFAULT NULL COMMENT 'y-coordinate corresponding to the centre of mass of the crystal (in voxels)',
+  `centreOfMassZ` float DEFAULT NULL COMMENT 'z-coordinate corresponding to the centre of mass of the crystal (in voxels)',
+  `maxVoxelX` int(11) DEFAULT NULL COMMENT 'x-coordinate of the voxel with the maximum value within this crystal volume',
+  `maxVoxelY` int(11) DEFAULT NULL COMMENT 'y-coordinate of the voxel with the maximum value within this crystal volume',
+  `maxVoxelZ` int(11) DEFAULT NULL COMMENT 'z-coordinate of the voxel with the maximum value within this crystal volume',
+  `numberOfVoxels` int(11) DEFAULT NULL COMMENT 'Number of voxels within the specified bounding box',
+  `totalCount` float DEFAULT NULL COMMENT 'The sum of the values of all the voxels within the specified bounding box',
+  `boundingBoxMinX` float DEFAULT NULL COMMENT 'Minimum x-coordinate of the bounding box containing the crystal (in voxels)',
+  `boundingBoxMaxX` float DEFAULT NULL COMMENT 'Maximum x-coordinate of the bounding box containing the crystal (in voxels)',
+  `boundingBoxMinY` float DEFAULT NULL COMMENT 'Minimum y-coordinate of the bounding box containing the crystal (in voxels)',
+  `boundingBoxMaxY` float DEFAULT NULL COMMENT 'Maximum y-coordinate of the bounding box containing the crystal (in voxels)',
+  `boundingBoxMinZ` float DEFAULT NULL COMMENT 'Minimum z-coordinate of the bounding box containing the crystal (in voxels)',
+  `boundingBoxMaxZ` float DEFAULT NULL COMMENT 'Maximum z-coordinate of the bounding box containing the crystal (in voxels)',
   PRIMARY KEY (`xrayCentringResultId`),
-  KEY `XrayCenteringResult_ibfk_1` (`gridInfoId`),
-  CONSTRAINT `XrayCentringResult_ibfk_1` FOREIGN KEY (`gridInfoId`) REFERENCES `GridInfo` (`gridInfoId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+  KEY `xrayCentringId` (`xrayCentringId`),
+  CONSTRAINT `XrayCentringResult_ibfk_1` FOREIGN KEY (`xrayCentringId`) REFERENCES `XrayCentring` (`xrayCentringId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Xray Centring result.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `v_Log4Stat`;
 /*!50001 DROP VIEW IF EXISTS `v_Log4Stat`*/;

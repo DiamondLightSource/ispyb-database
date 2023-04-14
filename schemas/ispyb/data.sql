@@ -1159,6 +1159,9 @@ INSERT INTO `XFEFluorescenceSpectrum` (`xfeFluorescenceSpectrumId`, `sessionId`,
 /*!40000 ALTER TABLE `XRFFluorescenceMappingROI` DISABLE KEYS */;
 /*!40000 ALTER TABLE `XRFFluorescenceMappingROI` ENABLE KEYS */;
 
+/*!40000 ALTER TABLE `XrayCentring` DISABLE KEYS */;
+/*!40000 ALTER TABLE `XrayCentring` ENABLE KEYS */;
+
 /*!40000 ALTER TABLE `XrayCentringResult` DISABLE KEYS */;
 /*!40000 ALTER TABLE `XrayCentringResult` ENABLE KEYS */;
 

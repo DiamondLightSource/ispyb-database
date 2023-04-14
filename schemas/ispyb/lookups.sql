@@ -217,7 +217,8 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (242,'2023_02_28_AdminVar_bump_version.sql','DONE','2023-02-28 16:57:44'),
 (243,'2023_03_08_LDAPSearch_tables.sql','DONE','2023-03-27 11:06:43'),
 (244,'2023_03_27_Detector_numberOfROIPixelsXY.sql','DONE','2023-03-27 11:06:44'),
-(245,'2023_03_27_GridInfo_micronsPerPixelXY.sql','DONE','2023-03-27 11:06:44');
+(245,'2023_03_27_GridInfo_micronsPerPixelXY.sql','DONE','2023-03-27 11:06:44'),
+(246,'2023_04_04_XrayCentring.sql','DONE','2023-04-13 17:03:59');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
