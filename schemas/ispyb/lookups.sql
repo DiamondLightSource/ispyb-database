@@ -10,7 +10,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.36.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','1.36.1');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -220,7 +220,8 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (245,'2023_03_27_GridInfo_micronsPerPixelXY.sql','DONE','2023-03-27 11:06:44'),
 (246,'2023_04_04_XrayCentring.sql','DONE','2023-04-13 17:03:59'),
 (247,'2023_04_14_XrayCentring.sql','DONE','2023-04-17 10:06:29'),
-(248,'2023_04_17_AdminVar_bump_version.sql','DONE','2023-04-17 10:06:29');
+(248,'2023_04_17_AdminVar_bump_version.sql','DONE','2023-04-17 10:06:29'),
+(249,'2023_04_17_AdminVar_bump_version_v2.sql','DONE','2023-04-17 11:27:26');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;

@@ -5,6 +5,11 @@ History
 Unreleased / master
 -------------------
 
+1.36.1 (2023-04-17)
+-------------------
+
+Bug fix: The file name of an update .sql file didn't correspond with the name it inserted into the ``SchemaStatus`` table.
+
 1.36.0 (2023-04-17)
 -------------------
 
