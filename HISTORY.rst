@@ -14,6 +14,7 @@ Bug fix: The file name of an update .sql file didn't correspond with the name it
 -------------------
 
 * New tables for storing X-ray centring results (contributed by @rjgildea):
+
   * ``XrayCentring``
   * ``XrayCentringResult`` (replaces unused/legacy ``XrayCentringResult`` table)
 
@@ -41,7 +42,7 @@ Bug fix: The file name of an update .sql file didn't correspond with the name it
 
 Tools (contributed by @gfrn):
 
-  * ``bin/export_session.sh`` now also exports tables relatd to EM SPA and EM tomography
+  * Script ``bin/export_session.sh`` now also exports tables relatd to EM SPA and EM tomography
 
 1.35.0 (2023-02-28)
 -------------------
