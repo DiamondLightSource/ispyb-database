@@ -5,7 +5,10 @@ History
 Unreleased / master
 -------------------
 
-* New tables for storing X-ray centring results:
+1.36.0 (2023-04-17)
+-------------------
+
+* New tables for storing X-ray centring results (contributed by @rjgildea):
   * ``XrayCentring``
   * ``XrayCentringResult`` (replaces unused/legacy ``XrayCentringResult`` table)
 
@@ -25,6 +28,15 @@ Unreleased / master
   * New procedure ``update_sample_append_staff_comments``
   * Modified procedure ``retrieve_dc_group`` now also returns ``proposalCode``, ``proposalNumber`` and ``sessionNumber`` 
   * Modified procedures ``upsert_dcg_grid`` and ``upsert_dc_grid`` so they additionally write to the new ``GridInfo`` columns
+
+* Build (contributed by @garryod):
+
+  * Added Dockerfile to create container image
+  * Tagged releases are now published to the Github Container Registry
+
+Tools (contributed by @gfrn):
+
+  * ``bin/export_session.sh`` now also exports tables relatd to EM SPA and EM tomography
 
 1.35.0 (2023-02-28)
 -------------------

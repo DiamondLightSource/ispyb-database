@@ -130,7 +130,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `retrieve_proposal_title`(p_proposal_code varchar(5), p_proposal_number int) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
+CREATE FUNCTION `retrieve_proposal_title`(p_proposal_code varchar(5), p_proposal_number int) RETURNS varchar(255) CHARSET latin1
     READS SQL DATA
 BEGIN
 	DECLARE ret_title varchar(255);
@@ -155,7 +155,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `retrieve_proposal_title_v2`(p_proposalCode varchar(5), p_proposalNumber int) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
+CREATE FUNCTION `retrieve_proposal_title_v2`(p_proposalCode varchar(5), p_proposalNumber int) RETURNS varchar(255) CHARSET latin1
     READS SQL DATA
     COMMENT 'Retrieve the title for a given proposal code and number.'
 BEGIN
@@ -206,7 +206,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `root_replace`(p_str varchar(255), p_oldroot varchar(255), p_newroot varchar(255)) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
+CREATE FUNCTION `root_replace`(p_str varchar(255), p_oldroot varchar(255), p_newroot varchar(255)) RETURNS varchar(255) CHARSET latin1
     COMMENT 'Returns a varchar where the old root p_oldroot (the leftmost part) of p_str has been replaced with a new root p_newroot'
 BEGIN
  DECLARE path_len smallint unsigned DEFAULT LENGTH(p_oldroot);
@@ -8851,7 +8851,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `upsert_dcg_grid` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -8878,9 +8878,11 @@ CREATE PROCEDURE `upsert_dcg_grid`(
     MODIFIES SQL DATA
 BEGIN
 	IF p_dcgId IS NOT NULL THEN
-      INSERT INTO GridInfo (gridInfoId, dataCollectionGroupId, dx_mm, dy_mm, steps_x, steps_y, meshAngle, pixelsPerMicronX, pixelsPerMicronY,
+      INSERT INTO GridInfo (gridInfoId, dataCollectionGroupId, dx_mm, dy_mm, steps_x, steps_y, meshAngle, 
+        pixelsPerMicronX, pixelsPerMicronY, micronsPerPixelX, micronsPerPixelY,
         snapshot_offsetXPixel, snapshot_offsetYPixel, orientation, snaked)
-        VALUES (p_id, p_dcgId, p_dxInMm, p_dyInMm, p_stepsX, p_stepsY, p_meshAngle, p_pixelsPerMicronX, p_pixelsPerMicronY,
+        VALUES (p_id, p_dcgId, p_dxInMm, p_dyInMm, p_stepsX, p_stepsY, p_meshAngle, 
+        p_pixelsPerMicronX, p_pixelsPerMicronY, p_pixelsPerMicronX, p_pixelsPerMicronY,
         p_snapshotOffsetXPixel, p_snapshotOffsetYPixel, p_orientation, p_snaked)
         ON DUPLICATE KEY UPDATE
 		  dataCollectionGroupId = IFNULL(p_dcgId, dataCollectionGroupId),
@@ -8891,6 +8893,8 @@ BEGIN
 		  meshAngle = IFNULL(p_meshAngle, meshAngle),
 		  pixelsPerMicronX = IFNULL(p_pixelsPerMicronX, pixelsPerMicronX),
 		  pixelsPerMicronY = IFNULL(p_pixelsPerMicronY, pixelsPerMicronY),
+      micronsPerPixelX = IFNULL(p_pixelsPerMicronX, micronsPerPixelX),
+      micronsPerPixelY = IFNULL(p_pixelsPerMicronY, micronsPerPixelY),
 		  snapshot_offsetXPixel = IFNULL(p_snapshotOffsetXPixel, snapshot_offsetXPixel),
 		  snapshot_offsetYPixel = IFNULL(p_snapshotOffsetYPixel, snapshot_offsetYPixel),
 		  orientation = IFNULL(p_orientation, orientation),
@@ -8946,7 +8950,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `upsert_dc_grid` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -8972,28 +8976,32 @@ CREATE PROCEDURE `upsert_dc_grid`(
 )
     MODIFIES SQL DATA
 BEGIN
-	IF p_dcId IS NOT NULL THEN
-      INSERT INTO GridInfo (gridInfoId, dataCollectionId, dx_mm, dy_mm, steps_x, steps_y, meshAngle, pixelsPerMicronX, pixelsPerMicronY,
+        IF p_dcId IS NOT NULL THEN
+      INSERT INTO GridInfo (gridInfoId, dataCollectionId, dx_mm, dy_mm, steps_x, steps_y, meshAngle,
+        pixelsPerMicronX, pixelsPerMicronY, micronsPerPixelX, micronsPerPixelY,
         snapshot_offsetXPixel, snapshot_offsetYPixel, orientation, snaked)
-        VALUES (p_id, p_dcId, p_dxInMm, p_dyInMm, p_stepsX, p_stepsY, p_meshAngle, p_pixelsPerMicronX, p_pixelsPerMicronY,
+        VALUES (p_id, p_dcId, p_dxInMm, p_dyInMm, p_stepsX, p_stepsY, p_meshAngle,
+        p_pixelsPerMicronX, p_pixelsPerMicronY, p_pixelsPerMicronX, p_pixelsPerMicronY,
         p_snapshotOffsetXPixel, p_snapshotOffsetYPixel, p_orientation, p_snaked)
         ON DUPLICATE KEY UPDATE
-		  dataCollectionId = IFNULL(p_dcId, dataCollectionId),
-		  dx_mm = IFNULL(p_dxInMm, dx_mm),
-		  dy_mm = IFNULL(p_dyInMm, dy_mm),
-		  steps_x = IFNULL(p_stepsX, steps_x),
-		  steps_y = IFNULL(p_stepsY, steps_y),
-		  meshAngle = IFNULL(p_meshAngle, meshAngle),
-		  pixelsPerMicronX = IFNULL(p_pixelsPerMicronX, pixelsPerMicronX),
-		  pixelsPerMicronY = IFNULL(p_pixelsPerMicronY, pixelsPerMicronY),
-		  snapshot_offsetXPixel = IFNULL(p_snapshotOffsetXPixel, snapshot_offsetXPixel),
-		  snapshot_offsetYPixel = IFNULL(p_snapshotOffsetYPixel, snapshot_offsetYPixel),
-		  orientation = IFNULL(p_orientation, orientation),
-		  snaked = IFNULL(p_snaked, snaked);
-	  IF LAST_INSERT_ID() <> 0 THEN
-		  SET p_id = LAST_INSERT_ID();
+                  dataCollectionId = IFNULL(p_dcId, dataCollectionId),
+                  dx_mm = IFNULL(p_dxInMm, dx_mm),
+                  dy_mm = IFNULL(p_dyInMm, dy_mm),
+                  steps_x = IFNULL(p_stepsX, steps_x),
+                  steps_y = IFNULL(p_stepsY, steps_y),
+                  meshAngle = IFNULL(p_meshAngle, meshAngle),
+                  pixelsPerMicronX = IFNULL(p_pixelsPerMicronX, pixelsPerMicronX),
+                  pixelsPerMicronY = IFNULL(p_pixelsPerMicronY, pixelsPerMicronY),
+                  micronsPerPixelX = IFNULL(p_pixelsPerMicronX, micronsPerPixelX),
+                  micronsPerPixelY = IFNULL(p_pixelsPerMicronY, micronsPerPixelY),
+                  snapshot_offsetXPixel = IFNULL(p_snapshotOffsetXPixel, snapshot_offsetXPixel),
+                  snapshot_offsetYPixel = IFNULL(p_snapshotOffsetYPixel, snapshot_offsetYPixel),
+                  orientation = IFNULL(p_orientation, orientation),
+                  snaked = IFNULL(p_snaked, snaked);
+          IF LAST_INSERT_ID() <> 0 THEN
+                  SET p_id = LAST_INSERT_ID();
       END IF;
-	END IF;
+        END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
