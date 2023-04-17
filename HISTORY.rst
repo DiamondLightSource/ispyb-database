@@ -40,7 +40,7 @@ Bug fix: The file name of an update .sql file didn't correspond with the name it
   * Added Dockerfile to create container image
   * Tagged releases are now published to the Github Container Registry
 
-Tools (contributed by @gfrn):
+* Tools (contributed by @gfrn):
 
   * Script ``bin/export_session.sh`` now also exports tables relatd to EM SPA and EM tomography
 
