@@ -221,7 +221,8 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (246,'2023_04_04_XrayCentring.sql','DONE','2023-04-13 17:03:59'),
 (247,'2023_04_14_XrayCentring.sql','DONE','2023-04-17 10:06:29'),
 (248,'2023_04_17_AdminVar_bump_version.sql','DONE','2023-04-17 10:06:29'),
-(249,'2023_04_17_AdminVar_bump_version_v2.sql','DONE','2023-04-17 11:27:26');
+(249,'2023_04_17_AdminVar_bump_version_v2.sql','DONE','2023-04-17 11:27:26'),
+(250,'2023_04_18_Remove_upsert_XrayCentring.sql','DONE','2023-04-18 14:59:34');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
