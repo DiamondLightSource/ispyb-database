@@ -123,8 +123,6 @@ GRANT EXECUTE ON PROCEDURE upsert_session_has_person TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE upsert_dc TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_grid_info_for_dcg TO 'ispyb_processing';
 
-GRANT EXECUTE ON PROCEDURE upsert_xray_centring_result TO 'ispyb_processing';
-
 GRANT EXECUTE ON PROCEDURE update_container_unassign_all_for_beamline TO 'ispyb_processing';
 
 GRANT EXECUTE ON PROCEDURE upsert_sample TO 'ispyb_processing';
