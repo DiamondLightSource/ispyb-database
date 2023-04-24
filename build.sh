@@ -54,9 +54,9 @@ then
   elif [ -d "bin" ]; then
     cd bin
     ./db_procs_to_rst.sh $DB > /tmp/list_of_procs.rst
-    pandoc -o /tmp/list_of_procs.html /tmp/list_of_procs.rst
+    pandoc --self-contained --metadata title:"List or procedures" -c ../docs/list.css -o /tmp/list_of_procs.html /tmp/list_of_procs.rst
     ./db_tables_to_rst.sh $DB > /tmp/list_of_tables_and_columns.rst
-    pandoc -o /tmp/list_of_tables_and_columns.html /tmp/list_of_tables_and_columns.rst
+    pandoc --self-contained --metadata title:"List or tables and columns" -c ../docs/list.css -o /tmp/list_of_tables_and_columns.html /tmp/list_of_tables_and_columns.rst
     echo "HTML documentation written to files in /tmp/"
     cd ..
   fi
