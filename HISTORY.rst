@@ -7,6 +7,11 @@ Unreleased / master
 
 Removed procedures relating to old ``XrayCentringResult`` table removed in 1.36.0 (contributed by @DominicOram)
 
+New and modified columns:
+
+* In the ``Dewar`` table: ``extra`` JSON column for facility-specific or hard-to-define attributes.
+* In the ``ParticleClassificationGroup`` table: ``selected`` boolean to indicate that the group has been selected for processing.
+
 1.36.1 (2023-04-17)
 -------------------
 
