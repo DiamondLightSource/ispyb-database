@@ -224,7 +224,9 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (249,'2023_04_17_AdminVar_bump_version_v2.sql','DONE','2023-04-17 11:27:26'),
 (250,'2023_04_18_Remove_upsert_XrayCentring.sql','DONE','2023-04-18 14:59:34'),
 (251,'2023_05_05_Dewar_extra.sql','DONE','2023-05-05 14:25:42'),
-(252,'2023_05_05_ParticleClassificationGroup_selected.sql','DONE','2023-05-05 14:25:42');
+(252,'2023_05_05_ParticleClassificationGroup_selected.sql','DONE','2023-05-05 14:25:42'),
+(253,'2023_05_09_Dewar_modify_comments.sql','DONE','2023-05-11 15:32:52'),
+(254,'2023_05_11_ParticleClassification_selected.sql','DONE','2023-05-11 15:32:52');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
