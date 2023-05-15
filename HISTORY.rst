@@ -5,6 +5,9 @@ History
 Unreleased / master
 -------------------
 
+2.0.0 (2023-05-15)
+-------------------
+
 Removed procedures relating to old ``XrayCentringResult`` table removed in 1.36.0 (contributed by @DominicOram)
 
 New and modified columns:
