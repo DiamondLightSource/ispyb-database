@@ -37,6 +37,9 @@ GRANT SELECT,INSERT,UPDATE ON TiltImageAlignment TO 'ispyb_processing';
 GRANT SELECT, INSERT, UPDATE ON ProcessingJob TO 'ispyb_processing';
 GRANT SELECT, INSERT, UPDATE ON ProcessingJobParameter TO 'ispyb_processing';
 
+GRANT SELECT, INSERT, UPDATE ON XrayCentring TO 'ispyb_processing';
+GRANT SELECT, INSERT, UPDATE ON XrayCentringResult TO 'ispyb_processing';
+
 GRANT EXECUTE ON FUNCTION retrieve_visit_id TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `retrieve_dc_main` TO 'ispyb_processing';
 GRANT EXECUTE ON FUNCTION upsert_sample TO 'ispyb_processing';
