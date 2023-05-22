@@ -17,11 +17,14 @@ function drop_db {
   mysql --defaults-file=.my.cnf -e "DROP DATABASE IF EXISTS $1; CREATE DATABASE $1; SET GLOBAL log_bin_trust_function_creators=ON;"
 }
 
-function exec_grants {
+function exec_schema {
   mysql --defaults-file=.my.cnf -D $1 < schemas/ispyb/tables.sql
   mysql --defaults-file=.my.cnf -D $1 < schemas/ispyb/lookups.sql
   mysql --defaults-file=.my.cnf -D $1 < schemas/ispyb/data.sql
   mysql --defaults-file=.my.cnf -D $1 < schemas/ispyb/routines.sql
+}
+
+function exec_grants {
   mysql --defaults-file=.my.cnf -D $1 < grants/ispyb_acquisition.sql
   mysql --defaults-file=.my.cnf -D $1 < grants/ispyb_import.sql
   mysql --defaults-file=.my.cnf -D $1 < grants/ispyb_processing.sql
@@ -61,6 +64,25 @@ function generate_docs {
   cd ..
 }
 
+function usage_help {
+  echo "usage: build.sh [COMMANDS]"
+  echo
+  echo "List of commands"
+  echo "nodrop      don't drop and recreate the build database"
+  echo "noschema    don't create the schema from the schema SQL files"
+  echo "nogrants    don't execute the grant SQL files"
+  echo "noupdates   don't execute any outstanding SQL update files"
+  echo "nodocs      don't build the documentation"
+  echo "updatesonly only execute outstanding SQL update files (mutually exclusive with other commands)"
+  echo "docsonly    only build the documentation (mutually exclusive with other commands)"
+  echo
+  echo "By default without any commands specified the script will:"
+  echo "- drop and re-create the build database"
+  echo "- execute the schema create SQL files"
+  echo "- execute the grant statements and any non-recorded SQL update files"
+  echo "- generate the documentation"
+}
+
 
 # Set default database name
 if [ -z "${DB}" ]; then
@@ -68,26 +90,36 @@ if [ -z "${DB}" ]; then
 fi
 
 # Handle command-line arguments
-DROP=true; GRANTS=true; UPDATES=true; DOCS=true;
+DROP=true; SCHEMA=true; GRANTS=true; UPDATES=true; DOCS=true;
 for arg in $@
 do
    case $arg in
-        "nodrop" )
-          DROP=false;;
-        "nogrants" )
-          GRANTS=false;;
-        "noupdates" )
-          UPDATES=false;;
-        "nodocs" )
-          DOCS=false;;
-        "docsonly" )
+        nodrop) DROP=false;;
+        noschema) SCHEMA=false;;
+        nogrants) GRANTS=false;;
+        noupdates) UPDATES=false;;
+        nodocs) DOCS=false;;
+        updatesonly)
+          exec_missed_updates "$DB"
+          exit 0;;
+        docsonly)
           generate_docs "$DB"
           exit 0;;
+        help)
+          usage_help
+          exit 0;;
+        *)
+          echo "Unrecognised command '$arg'"
+          usage_help
+          exit 1;;
     esac
 done
 
 if [ $DROP = true ]; then
   drop_db "$DB"
+fi
+if [ $SCHEMA = true ]; then
+  exec_schema "$DB"
 fi
 if [ $GRANTS = true ]; then
   exec_grants "$DB"
