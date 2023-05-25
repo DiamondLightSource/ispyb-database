@@ -24,6 +24,10 @@ CREATE OR REPLACE PROCEDURE `upsert_dewar`(
 BEGIN
     DECLARE row_storageLocation varchar(45) DEFAULT NULL;
 	  DECLARE row_dewarStatus varchar(45) DEFAULT NULL;
+		
+		IF p_storageLocation IS NULL THEN
+			SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_storageLocation is NULL';
+		END IF;
 
     IF p_id IS NULL THEN
 		  IF p_type IS NOT NULL THEN

@@ -21,6 +21,10 @@ BEGIN
     DECLARE row_proposalNumber varchar(45) DEFAULT NULL;
     DECLARE row_queuedCount int(11) unsigned DEFAULT NULL;
 
+    IF p_beamline IS NULL THEN
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_beamline is NULL';
+    END IF;
+
     IF NOT (p_registry_barcode IS NULL) THEN
         START TRANSACTION;
 
