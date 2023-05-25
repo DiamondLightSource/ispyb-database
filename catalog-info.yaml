@@ -1,0 +1,25 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: ispyb-database
+  title: ISPyB database
+  description: >
+    A database for experiement-related metadata such as data collections, processing, samples and shipments.
+    This is the Diamond-flavour of the ISPyB schema running on MariaDB Server.
+  annotations:
+    github.com/project-slug: DiamondLightSource/ispyb-database
+    diamond.ac.uk/viewdocs-url: https://diamondlightsource.github.io/ispyb-database/
+  links:
+    - url: https://confluence.diamond.ac.uk/x/15tTAQ
+      title: Documentation in Confluence
+    - url: https://github.com/DiamondLightSource/ispyb-database/wiki
+      title: Documentation in Github Wiki
+    - url: https://alfred.diamond.ac.uk/documentation/ispyb-database/list_of_tables_and_columns.html
+      title: Auto-generated list of database tables and columns 
+    - url: https://alfred.diamond.ac.uk/documentation/ispyb-database/list_of_procs.html
+      title: Auto-generated list of database stored procedures
+spec:
+  type: database
+  lifecycle: production
+  owner: group:lims
+  dependsOn: [resource:uas-database]
