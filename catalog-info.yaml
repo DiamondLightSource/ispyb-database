@@ -22,4 +22,5 @@ spec:
   type: database
   lifecycle: production
   owner: group:lims
-  dependsOn: [resource:uas-database]
+  dependsOn:
+    - resource:uas-database
