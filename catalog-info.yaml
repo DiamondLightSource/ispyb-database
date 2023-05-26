@@ -4,7 +4,7 @@ metadata:
   name: ispyb-database
   title: ISPyB database
   description: >
-    A database for experiement-related metadata such as data collections, processing, samples and shipments.
+    A database for experiment-related metadata such as data collections, processing, samples and shipments.
     This is the Diamond-flavour of the ISPyB schema running on MariaDB Server.
   annotations:
     github.com/project-slug: DiamondLightSource/ispyb-database
