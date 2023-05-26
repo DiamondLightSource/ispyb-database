@@ -18,6 +18,11 @@ metadata:
       title: Auto-generated list of database tables and columns 
     - url: https://alfred.diamond.ac.uk/documentation/ispyb-database/list_of_procs.html
       title: Auto-generated list of database stored procedures
+  tags:
+    - sql
+    - bash
+    - mariadb
+    - ispyb
 spec:
   type: database
   lifecycle: production
