@@ -1,6 +1,6 @@
 -- Test:
 -- SET @id = NULL;
--- CALL upsert_dewar(@id, 'boaty', 6988, 'boatys dewar', NULL, '1', 'at facility', 0, 'DLS-MX-00101', NULL, 0, 0, NULL, NULL, 'Dewar', 'DLS-MX-00101', 5, NULL);
+-- CALL upsert_dewar_v2(@id, 'boaty', 6988, 'boatys dewar', NULL, '1', 'at facility', 0, 'DLS-MX-00101', NULL, 0, 0, NULL, NULL, 'Dewar', 'DLS-MX-00101', 5, NULL);
 -- 
 
 DELIMITER ;;
@@ -32,6 +32,10 @@ BEGIN
 	DECLARE row_storageLocation varchar(45) DEFAULT NULL;
 	DECLARE row_dewarStatus varchar(45) DEFAULT NULL;
   DECLARE row_count int unsigned DEFAULT 0;
+
+	IF p_storageLocation IS NULL THEN
+		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_storageLocation is NULL';
+	END IF;
 
   IF p_authLogin IS NOT NULL AND p_shippingId IS NOT NULL THEN
 
