@@ -5,6 +5,11 @@ History
 Unreleased / master
 -------------------
 
+2.1.0 (2023-06-05)
+-------------------
+
+* New stored procedure ``upsert_dc_grid_v2`` and ``EXECUTE`` permission on it for the relevant role
+
 2.0.0 (2023-05-15)
 -------------------
 
