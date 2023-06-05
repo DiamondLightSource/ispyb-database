@@ -10,7 +10,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','2.0.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','2.1.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -227,7 +227,8 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (252,'2023_05_05_ParticleClassificationGroup_selected.sql','DONE','2023-05-05 14:25:42'),
 (253,'2023_05_09_Dewar_modify_comments.sql','DONE','2023-05-11 15:32:52'),
 (254,'2023_05_11_ParticleClassification_selected.sql','DONE','2023-05-11 15:32:52'),
-(255,'2023_05_15_AdminVar_bump_version.sql','DONE','2023-05-15 09:59:49');
+(255,'2023_05_15_AdminVar_bump_version.sql','DONE','2023-05-15 09:59:49'),
+(256,'2023_06_05_AdminVar_bump_version.sql','DONE','2023-06-05 15:13:35');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
