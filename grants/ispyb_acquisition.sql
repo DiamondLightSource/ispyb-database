@@ -34,6 +34,7 @@ GRANT EXECUTE ON PROCEDURE update_dc_machine TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE upsert_sample_image_analysis TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE upsert_dcg_grid TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE upsert_dc_grid TO 'ispyb_acquisition';
+GRANT EXECUTE ON PROCEDURE upsert_dc_grid_v2 TO 'ispyb_acquisition';
 
 GRANT EXECUTE ON PROCEDURE update_dc_append_comments TO 'ispyb_acquisition';
 GRANT EXECUTE ON PROCEDURE update_dc_position TO 'ispyb_acquisition';
