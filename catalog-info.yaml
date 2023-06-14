@@ -28,4 +28,4 @@ spec:
   lifecycle: production
   owner: group:lims
   dependsOn:
-    - resource:uas-database
+    - resource:uas-uasispyb-schema
