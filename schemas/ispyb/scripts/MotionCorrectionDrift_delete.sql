@@ -21,4 +21,7 @@ DELIMITER ;
 
 -- Rebuild table to reclaim space - assumes InnoDB and requires innodb_file_per_table=ON:
 -- Can take a long time for large tables, should probably run in RSU (or NBO) mode on Galera
+
+SET GLOBAL wsrep_OSU_method:='RSU';
 ALTER TABLE MotionCorrectionDrift FORCE;
+SET GLOBAL wsrep_OSU_method:='TOI';
