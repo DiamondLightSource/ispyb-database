@@ -6,7 +6,7 @@ CREATE ROLE IF NOT EXISTS ispyb_scripts_processing;
 -- GRANT ispyb_scripts_processing to ispyb_mx_scripts@'%';
 -- SET DEFAULT ROLE ispyb_scripts_processing FOR ispyb_mx_scripts@'%';
 
-GRANT SELECT ON AutoProc TO ispyb_scripts_processing; 
+GRANT SELECT ON AutoProc TO ispyb_scripts_processing;
 GRANT SELECT ON AutoProcIntegration TO ispyb_scripts_processing;
 GRANT SELECT ON AutoProcProgram TO ispyb_scripts_processing;
 GRANT SELECT ON AutoProcProgramAttachment TO ispyb_scripts_processing;
@@ -18,3 +18,5 @@ GRANT SELECT ON AutoProcScalingStatistics TO ispyb_scripts_processing;
 GRANT SELECT ON BLSession TO ispyb_scripts_processing;
 GRANT SELECT ON DataCollection TO ispyb_scripts_processing;
 GRANT SELECT ON Proposal TO ispyb_scripts_processing;
+GRANT SELECT ON ProcessingJob TO ispyb_scripts_processing;
+GRANT SELECT ON ProcessingJobImageSweep TO ispyb_scripts_processing;
