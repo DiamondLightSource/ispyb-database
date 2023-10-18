@@ -76,7 +76,6 @@ GRANT SELECT ON LabContact TO ispyb_web_verify_tests;
 GRANT SELECT ON Laboratory TO ispyb_web_verify_tests;
 
 GRANT SELECT ON MotionCorrection TO ispyb_web_verify_tests;
-GRANT SELECT ON MotionCorrectionDrift TO ispyb_web_verify_tests;
 GRANT SELECT ON Movie TO ispyb_web_verify_tests;
 
 GRANT SELECT ON PHPSession TO ispyb_web_verify_tests;

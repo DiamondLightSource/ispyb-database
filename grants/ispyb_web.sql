@@ -123,7 +123,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON XRFFluorescenceMapping TO 'ispyb_web';
 GRANT SELECT ON Movie TO 'ispyb_web';
 GRANT SELECT ON `CTF` TO 'ispyb_web';
 GRANT SELECT ON `MotionCorrection` TO 'ispyb_web';
-GRANT SELECT ON `MotionCorrectionDrift` TO 'ispyb_web';
 
 GRANT SELECT, INSERT ON Session_has_Person TO 'ispyb_web';
 
