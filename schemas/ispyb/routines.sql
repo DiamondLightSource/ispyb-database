@@ -648,7 +648,7 @@ BEGIN
   DECLARE app_id integer DEFAULT NULL;
   DECLARE tmp_runDirectory varchar(255);
 
-  
+
   INSERT INTO MXMRRun (mxMRRunId, autoProcScalingId, rValueStart, rValueEnd, rFreeValueStart, rFreeValueEnd)
     VALUES (
       p_id,
@@ -669,10 +669,10 @@ BEGIN
 		SET p_id = LAST_INSERT_ID();
   END IF;
 
-  
+
   SET app_id = (SELECT autoProcProgramId FROM MXMRRun WHERE mxMRRunId = p_id);
 
-  
+
   INSERT INTO AutoProcProgram (
     autoProcProgramId, processingCommandLine, processingPrograms, processingStatus,
     processingMessage, processingStartTime, processingEndTime, recordTimeStamp)
@@ -688,13 +688,13 @@ BEGIN
     recordTimeStamp = IFNULL(p_endtime, recordTimeStamp)
     ;
 
-  
+
   IF app_id IS NULL THEN
     SET app_id = LAST_INSERT_ID();
     UPDATE MXMRRun SET autoProcProgramId = app_id WHERE mxMRRunId = p_id;
   END IF;
 
-  
+
   SET tmp_runDirectory = p_runDirectory;
   IF tmp_runDirectory IS NOT NULL AND RIGHT(tmp_runDirectory, 1) != '/' THEN
     SET tmp_runDirectory = CONCAT(tmp_runDirectory, '/') ;
@@ -1054,7 +1054,7 @@ BEGIN
     UPDATE ContainerQueue cq
       JOIN (
         SELECT max(containerQueueId) as containerQueueId
-        FROM ContainerQueue 
+        FROM ContainerQueue
         WHERE completedTimeStamp IS NULL and containerId = p_id
       ) cqmax
           ON cq.containerQueueId = cqmax.containerQueueId
@@ -1248,7 +1248,7 @@ BEGIN
 
     INSERT INTO ParticleClassification_has_CryoemInitialModel (
       particleClassificationId, cryoemInitialModelId
-    ) 
+    )
     VALUES (
       p_particleClassificationId, p_id
     );
@@ -1391,7 +1391,7 @@ BEGIN
 
 	SELECT experimentTypeId INTO v_experimentTypeId
 	FROM ExperimentType WHERE name = p_experimentKind;
-	
+
 	IF v_experimentTypeId IS NOT NULL THEN
 		INSERT INTO DiffractionPlan
 			(name, experimentKind, observedResolution, minimalResolution, exposureTime,
@@ -1429,7 +1429,7 @@ BEGIN
 		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
 		 MESSAGE_TEXT="Invalid value for p_experimentType";
 	END IF;
-	
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1459,22 +1459,22 @@ BEGIN
   DECLARE v_no_attachments int unsigned DEFAULT 0;
   DECLARE i int unsigned DEFAULT 0;
 
-  
+
   IF NOT json_valid(p_phasing_result) THEN
-    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, 
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
       MESSAGE_TEXT='JSON document is invalid.';
     LEAVE `proc_body`;
   END IF;
-  
+
   IF NOT json_exists(p_phasing_result,'$.PhasingContainer') THEN
-    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, 
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
       MESSAGE_TEXT='JSON document must have a PhasingContainer element.';
     LEAVE `proc_body`;
   END IF;
 
   IF NOT json_exists(p_phasing_result,
     '$.PhasingContainer.PhasingAnalysis[0].recordTimeStamp') THEN
-    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, 
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
       MESSAGE_TEXT='JSON document must have a PhasingContainer.PhasingAnalysis[0].recordTimeStamp element.';
     LEAVE `proc_body`;
   END IF;
@@ -1484,14 +1484,14 @@ BEGIN
   INSERT INTO PhasingAnalysis (recordTimeStamp) VALUES (JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, '$.PhasingContainer.PhasingAnalysis[0].recordTimeStamp')));
   SET v_phasingAnalysisId := last_insert_id();
 
-  INSERT INTO Phasing_has_Scaling (phasingAnalysisId, autoProcScalingId) 
+  INSERT INTO Phasing_has_Scaling (phasingAnalysisId, autoProcScalingId)
     VALUES (v_phasingAnalysisId, p_autoProcScalingId);
-  SET v_phasingHasScalingId := last_insert_id(); 
+  SET v_phasingHasScalingId := last_insert_id();
 
   SET v_no_stats := JSON_LENGTH(p_phasing_result, '$.PhasingContainer.Phasing_has_ScalingContainer.PhasingStatistics');
   SET i := 0;
   WHILE i < v_no_stats DO
-    INSERT INTO PhasingStatistics (phasingHasScalingId1, numberOfBins, binNumber, lowRes, highRes, metric, statisticsValue, nReflections) 
+    INSERT INTO PhasingStatistics (phasingHasScalingId1, numberOfBins, binNumber, lowRes, highRes, metric, statisticsValue, nReflections)
       VALUES (
         v_phasingHasScalingId,
         JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, concat('$.PhasingContainer.Phasing_has_ScalingContainer.PhasingStatistics[', i, '].numberOfBins'))),
@@ -1500,13 +1500,13 @@ BEGIN
         JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, concat('$.PhasingContainer.Phasing_has_ScalingContainer.PhasingStatistics[', i, '].highRes'))),
         JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, concat('$.PhasingContainer.Phasing_has_ScalingContainer.PhasingStatistics[', i, '].metric'))),
         JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, concat('$.PhasingContainer.Phasing_has_ScalingContainer.PhasingStatistics[', i, '].statisticsValue'))),
-        JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, concat('$.PhasingContainer.Phasing_has_ScalingContainer.PhasingStatistics[', i, '].nReflections')))        
+        JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, concat('$.PhasingContainer.Phasing_has_ScalingContainer.PhasingStatistics[', i, '].nReflections')))
       );
     SET i := i + 1;
   END WHILE;
-  
+
   INSERT INTO PhasingProgramRun (
-    phasingCommandLine, phasingPrograms, phasingStatus, phasingMessage, phasingStartTime, phasingEndTime) 
+    phasingCommandLine, phasingPrograms, phasingStatus, phasingMessage, phasingStartTime, phasingEndTime)
     VALUES (
       substr(JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, '$.PhasingContainer.PhasingProgramRun[0].phasingCommandLine')), 1, 255),
       JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, '$.PhasingContainer.PhasingProgramRun[0].phasingPrograms')),
@@ -1515,11 +1515,11 @@ BEGIN
       JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, '$.PhasingContainer.PhasingProgramRun[0].phasingStartTime')),
       JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, '$.PhasingContainer.PhasingProgramRun[0].phasingEndTime'))
     );
-  SET v_phasingProgramRunId := last_insert_id(); 
+  SET v_phasingProgramRunId := last_insert_id();
 
   IF json_exists(p_phasing_result,
     '$.PhasingContainer.PreparePhasingData') THEN
-    INSERT INTO PreparePhasingData (phasingAnalysisId, phasingProgramRunId, spaceGroupId, lowRes, highRes) 
+    INSERT INTO PreparePhasingData (phasingAnalysisId, phasingProgramRunId, spaceGroupId, lowRes, highRes)
       VALUES (
         v_phasingAnalysisId,
         v_phasingProgramRunId,
@@ -1528,10 +1528,10 @@ BEGIN
         JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, '$.PhasingContainer.PreparePhasingData[0].highRes'))
       );
   END IF;
-    
+
   IF json_exists(p_phasing_result,
     '$.PhasingContainer.Phasing') THEN
-    INSERT INTO Phasing (phasingAnalysisId, phasingProgramRunId, spaceGroupId, method, solventContent, enantiomorph, lowRes, highRes) 
+    INSERT INTO Phasing (phasingAnalysisId, phasingProgramRunId, spaceGroupId, method, solventContent, enantiomorph, lowRes, highRes)
       VALUES (
         v_phasingAnalysisId,
         v_phasingProgramRunId,
@@ -1553,11 +1553,11 @@ BEGIN
         JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, '$.PhasingContainer.ModelBuilding[0].spaceGroupId')),
         JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, '$.PhasingContainer.ModelBuilding[0].lowRes')),
         JSON_UNQUOTE(JSON_EXTRACT(p_phasing_result, '$.PhasingContainer.ModelBuilding[0].highRes'))
-      ); 
+      );
   END IF;
-  
+
   IF json_exists(p_phasing_result,
-    '$.PhasingContainer.SubstructureDetermination') THEN  
+    '$.PhasingContainer.SubstructureDetermination') THEN
     INSERT INTO SubstructureDetermination (phasingAnalysisId, phasingProgramRunId, spaceGroupId, method, lowRes, highRes)
       VALUES (
         v_phasingAnalysisId,
@@ -2534,7 +2534,7 @@ CREATE PROCEDURE `retrieve_apertures_using_size`(p_sizeX double)
     READS SQL DATA
     COMMENT 'Return a multi-row result set with info about Apertures identified by aperture size.'
 BEGIN
-	SELECT 
+	SELECT
 		a.apertureId,
 		a.sizeX
 	FROM Aperture a
@@ -2777,7 +2777,7 @@ BEGIN
 		WHERE c.containerId = p_id AND per.login = p_authLogin;
 
 	END IF;
-    
+
     ELSE
 
 	IF p_authLogin IS NOT NULL THEN
@@ -2821,7 +2821,7 @@ BEGIN
 		    LEFT OUTER JOIN Person per2 ON per2.personId = c.ownerId
 		    LEFT OUTER JOIN ExperimentType et ON et.experimentTypeId = c.experimentTypeId
 		WHERE c.containerId = p_id AND per.login = p_authLogin;
-	
+
 	ELSE
 
 		SELECT DISTINCT c.containerId "containerId",
@@ -3044,8 +3044,8 @@ BEGIN
     IF p_id IS NOT NULL THEN
 
       IF p_authLogin IS NOT NULL THEN
-      
-      
+
+
 
         SELECT DISTINCT
           c.containerId, c.dewarId, c.code, c.containerType, c.capacity,
@@ -3539,7 +3539,7 @@ BEGIN
     IF p_id IS NOT NULL THEN
 
     	IF p_authLogin IS NOT NULL THEN
-    	
+
 
 				SELECT dc.dataCollectionId "id",
 					dc.dataCollectionGroupId "groupId",
@@ -3605,13 +3605,13 @@ BEGIN
 					dc.undulatorGap3 "undulatorGap3"
 				FROM DataCollection dc
 					INNER JOIN DataCollectionGroup dcg ON dc.dataCollectionGroupId = dcg.dataCollectionGroupId
-        	INNER JOIN BLSession bs ON dcg.sessionId = bs.sessionId 
+        	INNER JOIN BLSession bs ON dcg.sessionId = bs.sessionId
         	INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
         	INNER JOIN Person p ON p.personId = shp.personId
 					LEFT OUTER JOIN Aperture a ON dc.apertureId = a.apertureId
 	  		WHERE p.login = p_authLogin AND	dc.dataCollectionId = p_id;
 
-    	ELSE 
+    	ELSE
 
 				SELECT dc.dataCollectionId "id",
 					dc.dataCollectionGroupId "groupId",
@@ -4974,7 +4974,7 @@ DELIMITER ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
 CREATE PROCEDURE `retrieve_processing_program_attachments_for_dc_group_program_v2`(
-    p_id int unsigned, 
+    p_id int unsigned,
     p_program varchar(255),
     p_authLogin varchar(45)
 )
@@ -4992,12 +4992,12 @@ BEGIN
                 INNER JOIN AutoProcProgramAttachment appa ON appa.autoProcProgramId = api.autoProcProgramId
                 INNER JOIN DataCollectionGroup dcg ON dcg.dataCollectionGroupId = dc.dataCollectionGroupId
                 INNER JOIN Session_has_Person shp ON shp.sessionId = dcg.sessionId
-                INNER JOIN Person per ON per.personId = shp.personId 
+                INNER JOIN Person per ON per.personId = shp.personId
             WHERE
                 dc.dataCollectionGroupId = p_id AND app.processingPrograms = p_program AND per.login = p_authLogin
             GROUP BY
                 dc.dataCollectionId, app.autoProcProgramId, app.processingStatus;
-        ELSE 
+        ELSE
             SELECT dc.dataCollectionId, app.autoProcProgramId,
                 app.processingStatus,
                 concat('[', group_concat(json_object('fileType', appa.fileType, 'fullFilePath', concat(appa.filePath, '/', appa.fileName), 'importanceRank', appa.importanceRank)), ']') "processingAttachments"
@@ -5060,7 +5060,7 @@ DELIMITER ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
 CREATE PROCEDURE `retrieve_processing_program_attachments_for_program_id_v2`(
-    p_id int unsigned,	
+    p_id int unsigned,
     p_authLogin varchar(45)
 )
     READS SQL DATA
@@ -5076,7 +5076,7 @@ BEGIN
                 INNER JOIN DataCollection dc ON dc.dataCollectionId = pj.dataCollectionId
                 INNER JOIN DataCollectionGroup dcg ON dcg.dataCollectionGroupId = dc.dataCollectionGroupId
                 INNER JOIN Session_has_Person shp ON shp.sessionId = dcg.sessionId
-                INNER JOIN Person per ON per.personId = shp.personId 
+                INNER JOIN Person per ON per.personId = shp.personId
             WHERE appa.autoProcProgramId = p_id AND per.login = p_authLogin
             GROUP BY appa.autoProcProgramAttachmentId, appa.fileType, appa.filePath, appa.fileName, appa.importanceRank;
         ELSE
@@ -5257,9 +5257,9 @@ BEGIN
 		IF p_useRobotActionSession = True THEN
 
 			IF p_authlogin IS NOT NULL THEN
-			
 
-				SELECT DISTINCT 
+
+				SELECT DISTINCT
 				ra.robotActionId "robotActionId",
 				ra.blsessionId "sessionId",
 				ra.blSampleId "sampleId",
@@ -5283,7 +5283,7 @@ BEGIN
 				WHERE pe.login = p_authLogin AND bls.blSampleId = p_id;
 
 			ELSE
-			
+
 				SELECT
 				ra.robotActionId "robotActionId",
 				NULL "sessionId",
@@ -5306,11 +5306,11 @@ BEGIN
 			END IF;
 
 		ELSE
-		
+
 
 			IF p_authLogin IS NOT NULL THEN
-			 
-				
+
+
 				SELECT DISTINCT
 				ra.robotActionId "robotActionId",
 				ra.blsessionId "sessionId",
@@ -5332,11 +5332,11 @@ BEGIN
 				  INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
 				  INNER JOIN Person pe ON pe.personID = shp.personId
 				WHERE pe.login = p_authLogin AND bls.blSampleId = p_id;
-			
+
 			ELSE
-			
-				
-				SELECT 
+
+
+				SELECT
 				ra.robotActionId "robotActionId",
 				NULL "sessionId",
 				ra.blSampleId "sampleId",
@@ -5358,9 +5358,9 @@ BEGIN
 			END IF;
 
 		END IF;
-	
+
 	ELSE
-	
+
 		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
 	END IF;
 END ;;
@@ -5388,7 +5388,7 @@ BEGIN
       IF p_useContainerSession = True THEN
 
         IF p_authLogin IS NOT NULL THEN
-        
+
 
           SELECT DISTINCT bls.blSampleId "sampleId",
             bls.containerId "containerId",
@@ -5465,9 +5465,9 @@ BEGIN
       ELSE
 
         IF p_authLogin IS NOT NULL THEN
-        
 
-          
+
+
           SELECT DISTINCT bls.blSampleId "sampleId",
             bls.containerId "containerId",
             bls.diffractionPlanId "dataCollectionPlanId",
@@ -5506,7 +5506,7 @@ BEGIN
 
         ELSE
 
-          
+
           SELECT DISTINCT bls.blSampleId "sampleId",
             bls.containerId "containerId",
             bls.diffractionPlanId "dataCollectionPlanId",
@@ -5785,7 +5785,7 @@ BEGIN
       IF p_useContainerSession = True THEN
 
         IF p_authLogin IS NOT NULL THEN
-        
+
 
           SELECT DISTINCT c.containerId "containerId",
             c.dewarId "dewarId",
@@ -5801,11 +5801,11 @@ BEGIN
             c.containerStatus "status",
             c.capacity "capacity",
             c.storageTemperature "storageTemperature",
-            
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber",
-            
+
             c.comments "comments",
             IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
@@ -5835,11 +5835,11 @@ BEGIN
             c.containerStatus "status",
             c.capacity "capacity",
             c.storageTemperature "storageTemperature",
-            
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber",
-            
+
             c.comments "comments",
             IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
@@ -5856,7 +5856,7 @@ BEGIN
       ELSE
 
         IF p_authLogin IS NOT NULL THEN
-        
+
 
           SELECT DISTINCT c.containerId "containerId",
             d.dewarId "dewarId",
@@ -5872,11 +5872,11 @@ BEGIN
             c.containerStatus "status",
             c.capacity "capacity",
             c.storageTemperature "storageTemperature",
-            
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             NULL "sessionNumber",
-            
+
             c.comments "comments",
             IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
@@ -5963,7 +5963,7 @@ BEGIN
       IF p_sessionNumber IS NOT NULL THEN
 
         IF p_authLogin IS NOT NULL THEN
-        
+
 
           SELECT DISTINCT c.containerId "containerId",
             c.dewarId "dewarId",
@@ -5979,11 +5979,11 @@ BEGIN
             c.containerStatus "status",
             c.capacity "capacity",
             c.storageTemperature "storageTemperature",
-            
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber",
-            
+
             c.comments "comments",
             IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
@@ -6013,11 +6013,11 @@ BEGIN
             c.containerStatus "status",
             c.capacity "capacity",
             c.storageTemperature "storageTemperature",
-            
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber",
-            
+
             c.comments "comments",
             IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
@@ -6034,7 +6034,7 @@ BEGIN
       ELSE
 
         IF p_authLogin IS NOT NULL THEN
-        
+
 
           SELECT DISTINCT c.containerId "containerId",
             d.dewarId "dewarId",
@@ -6050,11 +6050,11 @@ BEGIN
             c.containerStatus "status",
             c.capacity "capacity",
             c.storageTemperature "storageTemperature",
-            
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             NULL "sessionNumber",
-            
+
             c.comments "comments",
             IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
@@ -6135,7 +6135,7 @@ BEGIN
       IF p_useContainerSession = True THEN
 
         IF p_authLogin IS NOT NULL THEN
-        
+
 
           SELECT DISTINCT c.containerId "containerId",
             c.dewarId "dewarId",
@@ -6151,11 +6151,11 @@ BEGIN
             c.containerStatus "status",
             c.capacity "capacity",
             c.storageTemperature "storageTemperature",
-            
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber",
-            
+
             c.comments "comments",
             IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
@@ -6185,11 +6185,11 @@ BEGIN
             c.containerStatus "status",
             c.capacity "capacity",
             c.storageTemperature "storageTemperature",
-            
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             bs.visit_number "sessionNumber",
-            
+
             c.comments "comments",
             IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
@@ -6205,7 +6205,7 @@ BEGIN
       ELSE
 
         IF p_authLogin IS NOT NULL THEN
-        
+
 
           SELECT DISTINCT c.containerId "containerId",
             d.dewarId "dewarId",
@@ -6221,11 +6221,11 @@ BEGIN
             c.containerStatus "status",
             c.capacity "capacity",
             c.storageTemperature "storageTemperature",
-            
+
             p.proposalCode "proposalCode",
             p.proposalNumber "proposalNumber",
             NULL "sessionNumber",
-            
+
             c.comments "comments",
             IFNULL(et.name, c.experimentType) "experimentType"
           FROM Container c
@@ -6306,7 +6306,7 @@ BEGIN
       IF p_useContainerSession = True THEN
 
         IF p_authLogin IS NOT NULL THEN
-        
+
 
           SELECT DISTINCT bls.blSampleId "sampleId",
             pr.proteinId "materialId",
@@ -6328,12 +6328,12 @@ BEGIN
             pr.acronym "materialAcronym",
             pr.sequence "materialFormula",
             pr.density "materialDensity",
-            pr.safetyLevel "materialSafetyLevel", 
+            pr.safetyLevel "materialSafetyLevel",
             pr.description "materialChemicalDescription",
             pr.molecularMass "materialMolecularMass",
-            compt.name "materialType", 
+            compt.name "materialType",
             conct.name "materialConcentrationType",
-            pr.isotropy "materialIsotropy",  
+            pr.isotropy "materialIsotropy",
 
             IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
@@ -6385,12 +6385,12 @@ BEGIN
             pr.acronym "materialAcronym",
             pr.sequence "materialFormula",
             pr.density "materialDensity",
-            pr.safetyLevel "materialSafetyLevel", 
+            pr.safetyLevel "materialSafetyLevel",
             pr.description "materialChemicalDescription",
             pr.molecularMass "materialMolecularMass",
-            compt.name "materialType", 
+            compt.name "materialType",
             conct.name "materialConcentrationType",
-            pr.isotropy "materialIsotropy",  
+            pr.isotropy "materialIsotropy",
 
             IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
@@ -6422,7 +6422,7 @@ BEGIN
       ELSE
 
         IF p_authLogin IS NOT NULL THEN
-        
+
 
           SELECT DISTINCT bls.blSampleId "sampleId",
             pr.proteinId "materialId",
@@ -6444,12 +6444,12 @@ BEGIN
             pr.acronym "materialAcronym",
             pr.sequence "materialFormula",
             pr.density "materialDensity",
-            pr.safetyLevel "materialSafetyLevel", 
+            pr.safetyLevel "materialSafetyLevel",
             pr.description "materialChemicalDescription",
             pr.molecularMass "materialMolecularMass",
-            compt.name "materialType", 
+            compt.name "materialType",
             conct.name "materialConcentrationType",
-            pr.isotropy "materialIsotropy",  
+            pr.isotropy "materialIsotropy",
 
             IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
@@ -6502,12 +6502,12 @@ BEGIN
             pr.acronym "materialAcronym",
             pr.sequence "materialFormula",
             pr.density "materialDensity",
-            pr.safetyLevel "materialSafetyLevel", 
+            pr.safetyLevel "materialSafetyLevel",
             pr.description "materialChemicalDescription",
             pr.molecularMass "materialMolecularMass",
-            compt.name "materialType", 
+            compt.name "materialType",
             conct.name "materialConcentrationType",
-            pr.isotropy "materialIsotropy",  
+            pr.isotropy "materialIsotropy",
 
             IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
@@ -6569,7 +6569,7 @@ BEGIN
       IF p_useContainerSession = True THEN
 
         IF p_authLogin IS NOT NULL THEN
-        
+
 
           SELECT DISTINCT bls.blSampleId "sampleId",
             pr.proteinId "materialId",
@@ -6591,12 +6591,12 @@ BEGIN
             pr.acronym "materialAcronym",
             pr.sequence "materialFormula",
             pr.density "materialDensity",
-            pr.safetyLevel "materialSafetyLevel", 
+            pr.safetyLevel "materialSafetyLevel",
             pr.description "materialChemicalDescription",
             pr.molecularMass "materialMolecularMass",
-            compt.name "materialType", 
+            compt.name "materialType",
             conct.name "materialConcentrationType",
-            pr.isotropy "materialIsotropy",  
+            pr.isotropy "materialIsotropy",
 
             IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
@@ -6648,12 +6648,12 @@ BEGIN
             pr.acronym "materialAcronym",
             pr.sequence "materialFormula",
             pr.density "materialDensity",
-            pr.safetyLevel "materialSafetyLevel", 
+            pr.safetyLevel "materialSafetyLevel",
             pr.description "materialChemicalDescription",
             pr.molecularMass "materialMolecularMass",
-            compt.name "materialType", 
+            compt.name "materialType",
             conct.name "materialConcentrationType",
-            pr.isotropy "materialIsotropy",  
+            pr.isotropy "materialIsotropy",
 
             IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
@@ -6685,7 +6685,7 @@ BEGIN
       ELSE
 
         IF p_authLogin IS NOT NULL THEN
-        
+
 
           SELECT DISTINCT bls.blSampleId "sampleId",
             pr.proteinId "materialId",
@@ -6707,12 +6707,12 @@ BEGIN
             pr.acronym "materialAcronym",
             pr.sequence "materialFormula",
             pr.density "materialDensity",
-            pr.safetyLevel "materialSafetyLevel", 
+            pr.safetyLevel "materialSafetyLevel",
             pr.description "materialChemicalDescription",
             pr.molecularMass "materialMolecularMass",
-            compt.name "materialType", 
+            compt.name "materialType",
             conct.name "materialConcentrationType",
-            pr.isotropy "materialIsotropy",  
+            pr.isotropy "materialIsotropy",
 
             IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
@@ -6765,12 +6765,12 @@ BEGIN
             pr.acronym "materialAcronym",
             pr.sequence "materialFormula",
             pr.density "materialDensity",
-            pr.safetyLevel "materialSafetyLevel", 
+            pr.safetyLevel "materialSafetyLevel",
             pr.description "materialChemicalDescription",
             pr.molecularMass "materialMolecularMass",
-            compt.name "materialType", 
+            compt.name "materialType",
             conct.name "materialConcentrationType",
-            pr.isotropy "materialIsotropy",  
+            pr.isotropy "materialIsotropy",
 
             IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
@@ -6832,7 +6832,7 @@ BEGIN
       IF p_useContainerSession = True THEN
 
         IF p_authLogin IS NOT NULL THEN
-        
+
 
           SELECT DISTINCT bls.blSampleId "sampleId",
             pr.proteinId "materialId",
@@ -6854,12 +6854,12 @@ BEGIN
             pr.acronym "materialAcronym",
             pr.sequence "materialFormula",
             pr.density "materialDensity",
-            pr.safetyLevel "materialSafetyLevel", 
+            pr.safetyLevel "materialSafetyLevel",
             pr.description "materialChemicalDescription",
             pr.molecularMass "materialMolecularMass",
-            compt.name "materialType", 
+            compt.name "materialType",
             conct.name "materialConcentrationType",
-            pr.isotropy "materialIsotropy",  
+            pr.isotropy "materialIsotropy",
 
             IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
@@ -6911,12 +6911,12 @@ BEGIN
             pr.acronym "materialAcronym",
             pr.sequence "materialFormula",
             pr.density "materialDensity",
-            pr.safetyLevel "materialSafetyLevel", 
+            pr.safetyLevel "materialSafetyLevel",
             pr.description "materialChemicalDescription",
             pr.molecularMass "materialMolecularMass",
-            compt.name "materialType", 
+            compt.name "materialType",
             conct.name "materialConcentrationType",
-            pr.isotropy "materialIsotropy",  
+            pr.isotropy "materialIsotropy",
 
             IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
@@ -6948,7 +6948,7 @@ BEGIN
       ELSE
 
         IF p_authLogin IS NOT NULL THEN
-        
+
 
           SELECT DISTINCT bls.blSampleId "sampleId",
             pr.proteinId "materialId",
@@ -6970,12 +6970,12 @@ BEGIN
             pr.acronym "materialAcronym",
             pr.sequence "materialFormula",
             pr.density "materialDensity",
-            pr.safetyLevel "materialSafetyLevel", 
+            pr.safetyLevel "materialSafetyLevel",
             pr.description "materialChemicalDescription",
             pr.molecularMass "materialMolecularMass",
-            compt.name "materialType", 
+            compt.name "materialType",
             conct.name "materialConcentrationType",
-            pr.isotropy "materialIsotropy",  
+            pr.isotropy "materialIsotropy",
 
             IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
@@ -7028,12 +7028,12 @@ BEGIN
             pr.acronym "materialAcronym",
             pr.sequence "materialFormula",
             pr.density "materialDensity",
-            pr.safetyLevel "materialSafetyLevel", 
+            pr.safetyLevel "materialSafetyLevel",
             pr.description "materialChemicalDescription",
             pr.molecularMass "materialMolecularMass",
-            compt.name "materialType", 
+            compt.name "materialType",
             conct.name "materialConcentrationType",
-            pr.isotropy "materialIsotropy",  
+            pr.isotropy "materialIsotropy",
 
             IFNULL(et.name, c.experimentType) "planExperimentType",
             pc.name "planPurificationColumn",
@@ -7348,7 +7348,7 @@ BEGIN
 	  xfeFluorescenceSpectrumId
 	FROM XFEFluorescenceSpectrum
 	WHERE blSampleId = p_id;
-	
+
 	ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
 	    MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
@@ -7399,11 +7399,11 @@ BEGIN
 
         SELECT row_containerStatus INTO currentContainerStatus;
 
-        
+
         IF NOT row_containerId IS NULL THEN
           IF (NOT row_containerStatus <=> 'processing') OR (row_beamlineLocation = p_beamline AND row_sampleChangerLocation = p_position) THEN
 
-            
+
             UPDATE Container c
               INNER JOIN Dewar d ON d.dewarId = c.dewarId
               INNER JOIN Shipping s ON s.shippingId = d.shippingId
@@ -7420,8 +7420,8 @@ BEGIN
             SELECT IF(row_containerStatus<=>'processing', 'at facility', 'processing') INTO currentContainerStatus;
 
             IF NOT row_containerStatus <=> 'processing' THEN
-              
-              
+
+
               UPDATE Container c
                 INNER JOIN Dewar d ON d.dewarId = c.dewarId
                 INNER JOIN Shipping s ON s.shippingId = d.shippingId
@@ -7430,12 +7430,12 @@ BEGIN
               WHERE s.proposalId = row_proposalId AND c.beamlineLocation = p_beamline AND
                 c.sampleChangerLocation = p_position AND c.containerId <> row_containerId;
 
-              
+
               INSERT INTO DewarTransportHistory (dewarId, dewarStatus, storageLocation, arrivalDate)
                 VALUES (row_dewarId, 'processing', p_beamline, NOW());
             END IF;
 
-            
+
             INSERT INTO ContainerHistory (containerId, location, status, beamlineName, currentDewarId)
               SELECT row_containerId, p_position, IF(row_containerStatus<=>'processing', 'at facility', 'processing'), p_beamline, currentDewarId
               FROM Container
@@ -7514,7 +7514,7 @@ BEGIN
       START TRANSACTION;
 
       UPDATE Container
-      SET 
+      SET
         containerStatus = 'disposed',
         imagerId = NULL
       WHERE barcode = p_barcode;
@@ -7590,9 +7590,9 @@ BEGIN
   DECLARE v_containerId int unsigned DEFAULT NULL;
   DECLARE v_oldSessionId int unsigned DEFAULT NULL;
 
-  IF p_authLogin IS NOT NULL THEN 
+  IF p_authLogin IS NOT NULL THEN
 
-    
+
     SELECT count(*)
       INTO v_rows
     FROM UserGroup_has_Person ughp
@@ -7605,12 +7605,12 @@ BEGIN
   IF p_authLogin IS NOT NULL AND v_rows = 0 THEN
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Not authorised';
   END IF;
-  
-  IF p_proposalCode IS NOT NULL AND p_proposalNumber IS NOT NULL AND 
+
+  IF p_proposalCode IS NOT NULL AND p_proposalNumber IS NOT NULL AND
     p_sessionNumber IS NOT NULL THEN
 
     SELECT bs.sessionId INTO v_sessionId
-    FROM BLSession bs 
+    FROM BLSession bs
       JOIN Proposal p ON p.proposalId = bs.proposalId
     WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber;
 
@@ -7618,12 +7618,12 @@ BEGIN
 
   IF p_containerId IS NOT NULL THEN
 
-    
-    
-    IF (p_proposalCode IS NULL AND p_proposalNumber IS NULL AND 
+
+
+    IF (p_proposalCode IS NULL AND p_proposalNumber IS NULL AND
       p_sessionNumber IS NULL) OR NOT (v_sessionId IS NULL) THEN
 
-        SELECT containerId, c.sessionId INTO v_containerId, v_oldSessionId 
+        SELECT containerId, c.sessionId INTO v_containerId, v_oldSessionId
         FROM Container c
         WHERE containerId = p_containerId;
 
@@ -7769,7 +7769,7 @@ BEGIN
     WHERE c.barcode = p_barcode;
 
     SELECT max(containerQueueId) INTO row_containerQueueId
-    FROM ContainerQueue 
+    FROM ContainerQueue
     WHERE containerId = row_containerId AND completedTimestamp IS NULL;
 
     IF NOT (row_containerQueueId IS NULL) AND (
@@ -7777,12 +7777,12 @@ BEGIN
       row_containerStatus IN ('in_storage', 'disposed') OR
       row_containerStatus IS NULL) THEN
 
-      UPDATE ContainerQueueSample 
-      SET containerQueueId = NULL 
+      UPDATE ContainerQueueSample
+      SET containerQueueId = NULL
       WHERE containerQueueId = row_containerQueueId;
 
-      DELETE 
-      FROM ContainerQueue 
+      DELETE
+      FROM ContainerQueue
       WHERE containerQueueId = row_containerQueueId;
     END IF;
 
@@ -7815,9 +7815,9 @@ CREATE PROCEDURE `update_dc_append_comments`(
 BEGIN
   IF NOT (p_id IS NULL) AND NOT (p_comments IS NULL) THEN
 
-    UPDATE DataCollection 
-    SET comments = concat_ws(p_separator, comments, p_comments) 
-    WHERE dataCollectionId = p_id; 
+    UPDATE DataCollection
+    SET comments = concat_ws(p_separator, comments, p_comments)
+    WHERE dataCollectionId = p_id;
 
   ELSE
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_id and/or p_comments are NULL';
@@ -8051,8 +8051,8 @@ CREATE PROCEDURE `update_dc_plans`(
     IN p_priority int,
     IN p_minimalResolution float,
     IN p_requiredResolution double,
-    IN p_experimentKind varchar(20), 
-    IN p_energy float, 
+    IN p_experimentKind varchar(20),
+    IN p_energy float,
     IN p_anomalousScatterer varchar(255),
     IN p_centringMethod varchar(20),
     IN p_useNulls boolean,
@@ -8547,14 +8547,14 @@ BEGIN
 
   IF p_id IS NULL AND row_containerRegistryId IS NOT NULL THEN
     SELECT personId INTO row_personId FROM Person WHERE login = p_login;
-    INSERT INTO ContainerReport (containerRegistryId, personId, report, recordTimestamp) 
+    INSERT INTO ContainerReport (containerRegistryId, personId, report, recordTimestamp)
       VALUES (row_containerRegistryId, row_personId, p_report, now());
     SET p_id = LAST_INSERT_ID();
 
   ELSEIF p_id IS NOT NULL THEN
 
     UPDATE ContainerReport
-    SET 
+    SET
       containerRegistryId = IFNULL(row_containerRegistryId, containerRegistryId),
       personId = IFNULL(row_personId, personId),
       report = IFNULL(p_report, report)
@@ -8563,7 +8563,7 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='p_id must be non-NULL or p_containerRegistryBarcode must match barcode in ContainerRegistry.';
   END IF;
-  
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -8705,16 +8705,16 @@ CREATE PROCEDURE `upsert_dc`(
      p_datFullPath varchar(255),
      p_magnification int(11),
      p_totalAbsorbedDose float,
-     p_binning tinyint(1), 
-     p_particleDiameter float, 
+     p_binning tinyint(1),
+     p_particleDiameter float,
      p_boxSize_CTF float,
-     p_minResolution float, 
-     p_minDefocus float, 
-     p_maxDefocus float, 
-     p_defocusStepSize float, 
-     p_amountAstigmatism float, 
-     p_extractSize float, 
-     p_bgRadius float, 
+     p_minResolution float,
+     p_minDefocus float,
+     p_maxDefocus float,
+     p_defocusStepSize float,
+     p_amountAstigmatism float,
+     p_extractSize float,
+     p_bgRadius float,
      p_voltage float,
      p_objAperture float,
      p_c1aperture float,
@@ -8878,10 +8878,10 @@ CREATE PROCEDURE `upsert_dcg_grid`(
     MODIFIES SQL DATA
 BEGIN
 	IF p_dcgId IS NOT NULL THEN
-      INSERT INTO GridInfo (gridInfoId, dataCollectionGroupId, dx_mm, dy_mm, steps_x, steps_y, meshAngle, 
+      INSERT INTO GridInfo (gridInfoId, dataCollectionGroupId, dx_mm, dy_mm, steps_x, steps_y, meshAngle,
         pixelsPerMicronX, pixelsPerMicronY, micronsPerPixelX, micronsPerPixelY,
         snapshot_offsetXPixel, snapshot_offsetYPixel, orientation, snaked)
-        VALUES (p_id, p_dcgId, p_dxInMm, p_dyInMm, p_stepsX, p_stepsY, p_meshAngle, 
+        VALUES (p_id, p_dcgId, p_dxInMm, p_dyInMm, p_stepsX, p_stepsY, p_meshAngle,
         p_pixelsPerMicronX, p_pixelsPerMicronY, p_pixelsPerMicronX, p_pixelsPerMicronY,
         p_snapshotOffsetXPixel, p_snapshotOffsetYPixel, p_orientation, p_snaked)
         ON DUPLICATE KEY UPDATE
@@ -9037,10 +9037,10 @@ CREATE PROCEDURE `upsert_dc_grid_v2`(
 BEGIN
         IF p_dcId IS NOT NULL THEN
       INSERT INTO GridInfo (gridInfoId, dataCollectionId, dx_mm, dy_mm, steps_x, steps_y, meshAngle,
-        micronsPerPixelX, micronsPerPixelY, snapshot_offsetXPixel, snapshot_offsetYPixel, 
+        micronsPerPixelX, micronsPerPixelY, snapshot_offsetXPixel, snapshot_offsetYPixel,
         orientation, snaked)
         VALUES (p_id, p_dcId, p_dxInMm, p_dyInMm, p_stepsX, p_stepsY, p_meshAngle,
-        p_micronsPerPixelX, p_micronsPerPixelY, p_snapshotOffsetXPixel, p_snapshotOffsetYPixel, 
+        p_micronsPerPixelX, p_micronsPerPixelY, p_snapshotOffsetXPixel, p_snapshotOffsetYPixel,
         p_orientation, p_snaked)
         ON DUPLICATE KEY UPDATE
                   dataCollectionId = IFNULL(p_dcId, dataCollectionId),
@@ -9896,7 +9896,7 @@ CREATE PROCEDURE `upsert_fluo_mapping`(
 BEGIN
     INSERT INTO XRFFluorescenceMapping (xrfFluorescenceMappingId, xrfFluorescenceMappingROIId, gridInfoId, dataFormat, data, points, opacity, colourMap, min, max, autoProcProgramId)
         VALUES (p_id, p_xrfFluorescenceMappingROIId, p_gridInfoId, p_dataFormat, UNHEX(p_data), p_points, p_opacity, p_colourMap, p_min, p_max, p_autoProcProgramId)
-    
+
     ON DUPLICATE KEY UPDATE
         xrfFluorescenceMappingROIId = IFNULL(p_xrfFluorescenceMappingROIId, xrfFluorescenceMappingROIId),
         gridInfoId = IFNULL(p_gridInfoId, gridInfoId),
@@ -9908,7 +9908,7 @@ BEGIN
         min = IFNULL(p_min, min),
         max = IFNULL(p_max, max),
         autoProcProgramId = IFNULL(p_autoProcProgramId, autoProcProgramId);
-    
+
     IF p_id IS NULL THEN
         SET p_id = LAST_INSERT_ID();
     END IF;
@@ -9945,7 +9945,7 @@ CREATE PROCEDURE `upsert_fluo_mapping_roi`(
 BEGIN
     INSERT INTO XRFFluorescenceMappingROI (xrfFluorescenceMappingROIId, startEnergy, endEnergy, element, edge, r, g, b, blSampleId, scalar)
         VALUES (p_id, p_startEnergy, p_endEnergy, p_element, p_edge, p_r, p_g, p_b, p_blSampleId, p_scalar)
-    
+
     ON DUPLICATE KEY UPDATE
         startEnergy = IFNULL(p_startEnergy, startEnergy),
         endEnergy = IFNULL(p_endEnergy, endEnergy),
@@ -9956,7 +9956,7 @@ BEGIN
         b = IFNULL(p_b, b),
         blSampleId = IFNULL(p_blSampleId, blSampleId),
         scalar = IFNULL(p_scalar, scalar);
-    
+
     IF p_id IS NULL THEN
         SET p_id = LAST_INSERT_ID();
     END IF;
@@ -10022,48 +10022,6 @@ BEGIN
 	    SET p_motionCorrectionId = LAST_INSERT_ID();
     	END IF;
      END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `upsert_motion_correction_drift` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb3 */ ;
-/*!50003 SET character_set_results = utf8mb3 */ ;
-/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
-DELIMITER ;;
-CREATE PROCEDURE `upsert_motion_correction_drift`(
-     INOUT p_id int(11) unsigned,
-	 p_motionCorrectionId int(11) unsigned,
-     p_frameNumber smallint unsigned,
-     p_deltaX float,
-     p_deltaY float
-  )
-    MODIFIES SQL DATA
-    COMMENT 'If p_id is not provided, inserts new row. Otherwise updates exis'
-BEGIN
-  IF p_id IS NOT NULL OR p_motionCorrectionId IS NOT NULL THEN
-    INSERT INTO MotionCorrectionDrift (
-      motionCorrectionDriftId, motionCorrectionId, frameNumber, deltaX, deltaY)
-	VALUES (
-	  p_id, p_motionCorrectionId, p_frameNumber, p_deltaX, p_deltaY)
-	ON DUPLICATE KEY UPDATE
-      motionCorrectionId = IFNULL(p_motionCorrectionId, motionCorrectionId),
-      frameNumber = IFNULL(p_frameNumber, frameNumber),
-      deltaX = IFNULL(p_deltaX, deltaX),
-      deltaY = IFNULL(p_deltaY, deltaY);
-	IF p_id IS NULL THEN
-      SET p_id = LAST_INSERT_ID();
-    END IF;
-  ELSE
-    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) p_id and/or p_motionCorrectionId are NULL';
-  END IF;
-END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10150,7 +10108,7 @@ BEGIN
 
     IF p_parentId IS NOT NULL THEN
 
-      
+
       INSERT INTO MXMRRun (mxMRRunId, autoProcScalingId, rValueStart, rValueEnd, rFreeValueStart, rFreeValueEnd)
         VALUES (
           p_id,
@@ -10171,10 +10129,10 @@ BEGIN
         SET p_id = LAST_INSERT_ID();
       END IF;
 
-      
+
       SET app_id = (SELECT autoProcProgramId FROM MXMRRun WHERE mxMRRunId = p_id);
 
-      
+
       INSERT INTO AutoProcProgram (
         autoProcProgramId, processingCommandLine, processingPrograms, processingStatus,
         processingMessage, processingStartTime, processingEndTime, recordTimeStamp)
@@ -10199,13 +10157,13 @@ BEGIN
         recordTimeStamp = IFNULL(p_endtime, recordTimeStamp)
         ;
 
-      
+
       IF app_id IS NULL THEN
         SET app_id = LAST_INSERT_ID();
         UPDATE MXMRRun SET autoProcProgramId = app_id WHERE mxMRRunId = p_id;
       END IF;
 
-      
+
       SET tmp_runDirectory = p_runDirectory;
       IF tmp_runDirectory IS NOT NULL AND RIGHT(tmp_runDirectory, 1) != '/' THEN
         SET tmp_runDirectory = CONCAT(tmp_runDirectory, '/') ;
@@ -10327,8 +10285,8 @@ BEGIN
 	DECLARE row_count2 int unsigned DEFAULT 0;
 
 	IF p_authLogin IS NOT NULL AND (p_containerId IS NOT NULL OR p_sampleId IS NOT NULL) THEN
-	
-	
+
+
 
 	SELECT count(*) INTO row_count
 	FROM Container c
@@ -10338,9 +10296,9 @@ BEGIN
 	  INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
 	  INNER JOIN Person p ON p.personId = shp.personId
 	WHERE p.login = p_authLogin AND c.containerId = p_containerId;
-	
+
 	IF row_count = 0 THEN
-	
+
 	SELECT count(*) INTO row_count2
 	FROM Container c
 	  INNER JOIN BLSession bs ON bs.sessionId = c.sessionId
@@ -10431,13 +10389,13 @@ CREATE PROCEDURE `upsert_particle_classification`(
     COMMENT 'Inserts or updates info about a particle classification (p_id).\nMandatory columns:\nFor insert: p_particleClassificationGroupId\nFor update: p_id \nReturns: Record ID in p_id.'
 BEGIN
   IF p_id IS NOT NULL OR p_particleClassificationGroupId IS NOT NULL THEN
-    INSERT INTO ParticleClassification (particleClassificationId, 
-      particleClassificationGroupId, classNumber, classImageFullPath, 
-      particlesPerClass, rotationAccuracy, translationAccuracy, 
+    INSERT INTO ParticleClassification (particleClassificationId,
+      particleClassificationGroupId, classNumber, classImageFullPath,
+      particlesPerClass, rotationAccuracy, translationAccuracy,
       estimatedResolution, overallFourierCompleteness)
-      VALUES (p_id, p_particleClassificationGroupId, p_classNumber, 
-        p_classImageFullPath, 
-        p_particlesPerClass, p_rotationAccuracy, p_translationAccuracy, 
+      VALUES (p_id, p_particleClassificationGroupId, p_classNumber,
+        p_classImageFullPath,
+        p_particlesPerClass, p_rotationAccuracy, p_translationAccuracy,
         p_estimatedResolution, p_overallFourierCompleteness)
       ON DUPLICATE KEY UPDATE
         particleClassificationGroupId = IFNULL(p_particleClassificationGroupId, particleClassificationGroupId),
@@ -10535,14 +10493,14 @@ CREATE PROCEDURE `upsert_particle_classification_v2`(
     COMMENT 'Inserts or updates info about a particle classification (p_id).\nMandatory columns:\nFor insert: p_particleClassificationGroupId\nFor update: p_id \nReturns: Record ID in p_id.'
 BEGIN
   IF p_id IS NOT NULL OR p_particleClassificationGroupId IS NOT NULL THEN
-    INSERT INTO ParticleClassification (particleClassificationId, 
-      particleClassificationGroupId, classNumber, classImageFullPath, 
-      particlesPerClass, classDistribution, rotationAccuracy, 
+    INSERT INTO ParticleClassification (particleClassificationId,
+      particleClassificationGroupId, classNumber, classImageFullPath,
+      particlesPerClass, classDistribution, rotationAccuracy,
       translationAccuracy, estimatedResolution, overallFourierCompleteness)
-      VALUES (p_id, p_particleClassificationGroupId, p_classNumber, 
-        p_classImageFullPath, 
-        p_particlesPerClass, p_classDistribution, p_rotationAccuracy, 
-        p_translationAccuracy, p_estimatedResolution, 
+      VALUES (p_id, p_particleClassificationGroupId, p_classNumber,
+        p_classImageFullPath,
+        p_particlesPerClass, p_classDistribution, p_rotationAccuracy,
+        p_translationAccuracy, p_estimatedResolution,
         p_overallFourierCompleteness)
       ON DUPLICATE KEY UPDATE
         particleClassificationGroupId = IFNULL(p_particleClassificationGroupId, particleClassificationGroupId),
@@ -11275,8 +11233,8 @@ DELIMITER ;
 DELIMITER ;;
 CREATE PROCEDURE `upsert_quality_indicators`(
   OUT p_id int(11) unsigned,
-  p_dataCollectionId int(11) unsigned, 
-  p_autoProcProgramId int(10) unsigned, 
+  p_dataCollectionId int(11) unsigned,
+  p_autoProcProgramId int(10) unsigned,
   p_imageNumber mediumint(8) unsigned,
   p_spotTotal int(10),
   p_inResTotal int(10),
@@ -11297,22 +11255,22 @@ CREATE PROCEDURE `upsert_quality_indicators`(
 BEGIN
   DECLARE row_DataCollectionId int(11) unsigned DEFAULT NULL;
   DECLARE row_imageNumber mediumint(8) unsigned DEFAULT NULL;
-  
+
   IF (p_dataCollectionId IS NOT NULL AND p_imageNumber IS NOT NULL) THEN
     SELECT dataCollectionId, imageNumber INTO row_DataCollectionId, row_imageNumber FROM ImageQualityIndicators WHERE dataCollectionId = p_dataCollectionId AND imageNumber = p_imageNumber;
     IF row_DataCollectionId IS NULL THEN
         INSERT INTO ImageQualityIndicators (
-          dataCollectionId, imageNumber, autoProcProgramId, spotTotal, goodBraggCandidates,  
-	      method1Res, method2Res, totalIntegratedSignal, dozor_score, driftFactor) 
+          dataCollectionId, imageNumber, autoProcProgramId, spotTotal, goodBraggCandidates,
+	      method1Res, method2Res, totalIntegratedSignal, dozor_score, driftFactor)
         VALUES (
-          p_dataCollectionId, p_imageNumber, p_autoProcProgramId, p_spotTotal, p_goodBraggCandidates, 
+          p_dataCollectionId, p_imageNumber, p_autoProcProgramId, p_spotTotal, p_goodBraggCandidates,
           p_method1Res, p_method2Res, p_totalIntegratedSignal, p_dozorScore, p_driftFactor
         );
         SET p_id = 1;
     ELSE
-        
-        
-        UPDATE ImageQualityIndicators 
+
+
+        UPDATE ImageQualityIndicators
         SET
           spotTotal = IFNULL(p_spotTotal, spotTotal),
           goodBraggCandidates = IFNULL(p_goodBraggCandidates, goodBraggCandidates),
@@ -11326,7 +11284,7 @@ BEGIN
         SET p_id = 1;
     END IF;
   ELSE
-	SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_dataCollectionId and/or p_imageNumber are NULL';  
+	SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_dataCollectionId and/or p_imageNumber are NULL';
   END IF;
 END ;;
 DELIMITER ;
@@ -11718,16 +11676,16 @@ CREATE PROCEDURE `upsert_session_for_proposal_code_number`(
 BEGIN
   DECLARE row_proposal_id int(10) unsigned DEFAULT NULL;
   DECLARE row_session_id int(10) unsigned DEFAULT NULL;
-  
+
   IF p_id IS NOT NULL OR (p_proposalCode IS NOT NULL AND p_proposalNumber IS NOT NULL) THEN
-    
+
     IF p_proposalCode IS NOT NULL AND p_proposalNumber IS NOT NULL THEN
       SELECT min(proposalId) INTO row_proposal_id FROM Proposal WHERE proposalCode=p_proposalCode AND proposalNumber=p_proposalNumber;
       IF row_proposal_id IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Proposal given by p_proposalCode + p_proposalNumber does not exist.';
       END IF;
     END IF;
-    
+
     IF p_id IS NULL AND row_proposal_id IS NOT NULL THEN
       SELECT sessionId INTO row_session_id FROM BLSession WHERE proposalId = row_proposal_id AND visit_number = p_visitNumber;
     ELSEIF p_id IS NOT NULL THEN
@@ -11828,7 +11786,7 @@ CREATE PROCEDURE `upsert_session_has_person_for_session_and_login`(
     COMMENT 'Inserts or updates info about a session - person association (p_sessionId, p_personId).\nMandatory columns: p_proposalCode, p_proposalNumber, p_visit_number, p_login\nReturns: Nothing.'
 BEGIN
   DECLARE v_personId int unsigned DEFAULT 0;
-  
+
   IF p_proposalCode IS NOT NULL AND p_proposalNumber IS NOT NULL AND p_visit_number IS NOT NULL AND p_login IS NOT NULL THEN
     SELECT per.personId INTO v_personId FROM Person per WHERE per.login = p_login;
     INSERT INTO Session_has_Person(sessionId, personId, `role`, remote)
@@ -12019,4 +11977,3 @@ DELIMITER ;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-

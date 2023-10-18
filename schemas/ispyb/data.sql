@@ -633,9 +633,6 @@ INSERT INTO `MXMRRun` (`mxMRRunId`, `autoProcScalingId`, `rValueStart`, `rValueE
 /*!40000 ALTER TABLE `MotionCorrection` DISABLE KEYS */;
 /*!40000 ALTER TABLE `MotionCorrection` ENABLE KEYS */;
 
-/*!40000 ALTER TABLE `MotionCorrectionDrift` DISABLE KEYS */;
-/*!40000 ALTER TABLE `MotionCorrectionDrift` ENABLE KEYS */;
-
 /*!40000 ALTER TABLE `MotorPosition` DISABLE KEYS */;
 /*!40000 ALTER TABLE `MotorPosition` ENABLE KEYS */;
 
@@ -1250,4 +1247,3 @@ INSERT INTO `v_run` (`runId`, `run`, `startDate`, `endDate`) VALUES (1,'2008-01'
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
