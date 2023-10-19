@@ -128,7 +128,6 @@ GRANT SELECT ON ModelBuilding TO ispyb_ro_nopii;
 GRANT SELECT ON ModelList TO ispyb_ro_nopii;
 GRANT SELECT ON ModelToList TO ispyb_ro_nopii;
 GRANT SELECT ON MotionCorrection TO ispyb_ro_nopii;
-GRANT SELECT ON MotionCorrectionDrift TO ispyb_ro_nopii;
 GRANT SELECT ON MotorPosition TO ispyb_ro_nopii;
 GRANT SELECT ON Movie TO ispyb_ro_nopii;
 GRANT SELECT ON MXMRRun TO ispyb_ro_nopii;

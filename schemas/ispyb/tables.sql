@@ -2586,20 +2586,6 @@ CREATE TABLE `MotionCorrection` (
   CONSTRAINT `_MotionCorrection_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `MotionCorrectionDrift`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `MotionCorrectionDrift` (
-  `motionCorrectionDriftId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `motionCorrectionId` int(11) unsigned DEFAULT NULL,
-  `frameNumber` smallint(5) unsigned DEFAULT NULL COMMENT 'Frame number of the movie these drift values relate to',
-  `deltaX` float DEFAULT NULL COMMENT 'Drift in x, Units: A',
-  `deltaY` float DEFAULT NULL COMMENT 'Drift in y, Units: A',
-  PRIMARY KEY (`motionCorrectionDriftId`),
-  KEY `MotionCorrectionDrift_ibfk1` (`motionCorrectionId`),
-  CONSTRAINT `MotionCorrectionDrift_ibfk1` FOREIGN KEY (`motionCorrectionId`) REFERENCES `MotionCorrection` (`motionCorrectionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `MotorPosition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -5035,4 +5021,3 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-

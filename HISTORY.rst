@@ -5,6 +5,10 @@ History
 Unreleased / master
 -------------------
 
+* Drop table ``MotionCorrectionDrift``
+* Drop procedure ``upsert_motion_correction_drift`` and remove procedure file
+* Remove above table and procedure from schema files
+
 2.1.0 (2023-06-05)
 -------------------
 
@@ -35,7 +39,7 @@ Bug fix: The file name of an update .sql file didn't correspond with the name it
 
 * New columns:
 
-  * In ``Detector`` table: ``numberOfROIPixelsX`` + ``numberOfROIPixelsY`` (for ROI mode) 
+  * In ``Detector`` table: ``numberOfROIPixelsX`` + ``numberOfROIPixelsY`` (for ROI mode)
   * In ``GridInfo`` table: ``micronsPerPixelX`` + ``micronsPerPixelY`` (these will eventually replace ``pixelsPerMicronX`` and ``pixelsPerMicronY``)
 
 * New tables to hold configuration parameters for searching LDAP:
@@ -47,7 +51,7 @@ Bug fix: The file name of an update .sql file didn't correspond with the name it
 * Stored procedures:
 
   * New procedure ``update_sample_append_staff_comments``
-  * Modified procedure ``retrieve_dc_group`` now also returns ``proposalCode``, ``proposalNumber`` and ``sessionNumber`` 
+  * Modified procedure ``retrieve_dc_group`` now also returns ``proposalCode``, ``proposalNumber`` and ``sessionNumber``
   * Modified procedures ``upsert_dcg_grid`` and ``upsert_dc_grid`` so they additionally write to the new ``GridInfo`` columns
 
 * Build (contributed by @garryod):
@@ -87,12 +91,12 @@ Bug fix: The file name of an update .sql file didn't correspond with the name it
 
 Table/column changes:
 
-* Table ``Tomogram``: Extra path and file columns 
+* Table ``Tomogram``: Extra path and file columns
 
 Stored procedures:
 
 * New procedure ``update_container_dispose`` to mark a container as disposed
-* New procedure ``update_dc_append_comments`` to append text to the comments column in a data collection 
+* New procedure ``update_dc_append_comments`` to append text to the comments column in a data collection
 
 Grants & roles:
 
@@ -100,7 +104,7 @@ Grants & roles:
 * Create role ispyb_web_verify_tests + grants for verifying data written by with ispyb_web
 * Add missing grant for ispyb_web role
 
-Scripts: 
+Scripts:
 
 * Add new script ``mdb_cluster_health.sh`` to display info about MariaDB Galera cluster health
 * ``mdb_cluster_backup.sh``: Misc tweaks
@@ -117,7 +121,7 @@ Table/column changes:
 
 Data:
 
-* Table ``ExperimentType``: Insert rows for 'em' proposalTypes 'Tomography' and 'Single Particle' 
+* Table ``ExperimentType``: Insert rows for 'em' proposalTypes 'Tomography' and 'Single Particle'
 * Table ``ContainerType``: Set correct capacity for Block-4
 
 Stored procedures:
@@ -127,30 +131,30 @@ Stored procedures:
 * Grants:
 
   * Add ``SELECT``, ``INSERT``, ``UPDATE`` perms on ``ProcessingJob`` + ``ProcessingJobParameter`` tables for ``ispyb_processing`` role
-   
+
 Other:
 
-* Scripts: Add extra mariabackup options to ``mdb_cluster_backup.sh`` 
+* Scripts: Add extra mariabackup options to ``mdb_cluster_backup.sh``
 * Analysis schema: Create and populate ``SummaryResults`` table
 
 1.32.0 (2022-08-25)
 -------------------
 
 * More grants files with new roles
-* Stored procedure: Changed datatype from float to double for parameter ``p_flux`` in ``upsert_dc``   
+* Stored procedure: Changed datatype from float to double for parameter ``p_flux`` in ``upsert_dc``
 * Tables and columns:
 
   * ``DiffractionPlan``: Add JSON column ``scanParameters``
   * ``GridInfo``: Add columns patchesX and patchesY
   * New table ``BLSampleImage_has_Positioner`` linking ``BLSampleImage`` and ``Positioner``
-  
+
 
 1.31.0 (2022-08-08)
 -------------------
 
 Stored procedures:
 
-* Existing proc ``insert_subsample_for_image_full_path`` now also populates ``BLSubSample.blSampleImageId``. (Existing ``BLSubSample`` rows can be back-populated with values for the column through the ``2022_07_17_BLSubSample_update_blSampleImageId.sql`` script.)   
+* Existing proc ``insert_subsample_for_image_full_path`` now also populates ``BLSubSample.blSampleImageId``. (Existing ``BLSubSample`` rows can be back-populated with values for the column through the ``2022_07_17_BLSubSample_update_blSampleImageId.sql`` script.)
 * New proc ``insert_subsample_for_image_full_path_v2`` has an additional parameter ``p_experiment_type`` used to create a ``DiffractionPlan`` for the ``BLSubSample``.
 
 Views:
@@ -206,7 +210,7 @@ Stored procedures:
 * New sproc ``update_container_unqueue`` to un-queue a container while allowing its samples/points to be re-queued later
 * New sproc ``upsert_container_report`` to upsert container reports
 
-Grants: 
+Grants:
 
 * Write permissions on ``MXMRRun*`` tables for ``ispyb_processing``
 * Execute grant on ``update_container_current_dewar_id`` for ``ispyb_touchscreen`` role
@@ -320,11 +324,11 @@ New columns:
 
 New tables:
 
-* ``zc_ZocaloBuffer``: A table for temporary Zocalo data. 
+* ``zc_ZocaloBuffer``: A table for temporary Zocalo data.
 
 Lookup table data changes:
 
-* ``SpaceGroup``: Changed a few ``spaceGroupShortName`` values for common spacegroups, and set ``MX_used = 0`` for less commonly used spacegroups. 
+* ``SpaceGroup``: Changed a few ``spaceGroupShortName`` values for common spacegroups, and set ``MX_used = 0`` for less commonly used spacegroups.
 * ``UserGroup``: Add groups ``detector_admin``, ``prop_admin``, ``goods_handling``, ``imaging_admin``, ``spectroscopy_admin``, ``mm_admin``.
 
 Additionally, new enum options have been added to DataCollectionGroup.experimentType: Mesh3D, Screening.
@@ -356,7 +360,7 @@ New stored programs:
 
   * The FK constraint for Dewar.firstExperimentId has been changed to ``ON DELETE SET NULL ON UPDATE CASCADE``.
   * The data type of the ``ParticleClassification.rotationAccuracy`` column has been changed from ``int unsigned`` to ``float``.
-  * In ``DataCollection``: Added new column ``dataCollectionPlanId`` with FK constraint referencing the table currently known as ``DiffractionPlan``. 
+  * In ``DataCollection``: Added new column ``dataCollectionPlanId`` with FK constraint referencing the table currently known as ``DiffractionPlan``.
   * In ``ContainerQueueSample``: Added new columns ``status``, ``startTime``, ``endTime``, ``dataCollectionPlanId`` and ``blSampleId`` with FK constraints for the two latter ones.
 
 * New stored procedures for cryo EM:
@@ -414,7 +418,7 @@ New stored programs:
   * Update ``ContainerType.proposalType``: Change scm to saxs
   * Add two XPDF and five MX container types
   * Update ``SpaceGroup`` table: Remove newlines in names. Set ``MX_used`` = 1 for all SGs.
-  
+
 * Stored procedures:
 
   * ``retrieve_scm_*``: Preferentially get experiement type and container type+capacity from new lookup tables ``ExperimentType`` and ``ContainerType``, otherwise fall-back to ``experimentType`` and ``containerType``+``capacity`` columns in the ``Container`` table.
@@ -428,7 +432,7 @@ New stored programs:
   * Updated simplified MX database diagram files
   * Move list + string with lookup tables to separate file so it can be reused
   * All bash scripts have been given new shebang lines to run on systems where bash is not at ``/bin/bash``.
-  
+
 * Users, roles and grants:
 
   * More ``INSERT`` grants for ``ispyb_web`` role: DC, DCG, ``ProcessingJob``, ``ProcessingJobParameter``

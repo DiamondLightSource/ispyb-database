@@ -26,7 +26,6 @@ GRANT SELECT,INSERT,UPDATE ON ParticleClassificationGroup TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON ParticlePicker TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON ParticleClassification_has_CryoemInitialModel TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON MotionCorrection TO 'ispyb_processing';
-GRANT SELECT,INSERT,UPDATE ON MotionCorrectionDrift TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON RelativeIceThickness TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON CTF TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON Movie TO 'ispyb_processing';
@@ -99,8 +98,6 @@ GRANT EXECUTE ON PROCEDURE upsert_quality_indicators TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_processing_programs_for_job_id TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_processing_program_attachments_for_dc_group_and_program TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_processing_program_attachments_for_program_id TO 'ispyb_processing';
-
-GRANT EXECUTE ON PROCEDURE upsert_motion_correction_drift TO 'ispyb_processing';
 
 GRANT EXECUTE ON PROCEDURE `upsert_processing_job` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `upsert_processing_job_parameter` TO 'ispyb_processing';
