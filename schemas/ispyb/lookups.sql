@@ -228,7 +228,13 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (253,'2023_05_09_Dewar_modify_comments.sql','DONE','2023-05-11 15:32:52'),
 (254,'2023_05_11_ParticleClassification_selected.sql','DONE','2023-05-11 15:32:52'),
 (255,'2023_05_15_AdminVar_bump_version.sql','DONE','2023-05-15 09:59:49'),
-(256,'2023_06_05_AdminVar_bump_version.sql','DONE','2023-06-05 15:13:35');
+(256,'2023_06_05_AdminVar_bump_version.sql','DONE','2023-06-05 15:13:35'),
+(257,'2023_07_19_Container_parentContainerId.sql','DONE','2023-10-19 09:36:56'),
+(258,'2023_08_09_Screen_fk_containerTypeId.sql','DONE','2023-10-19 09:36:56'),
+(259,'2023_08_15_DewarRegistry_manufacturerSerialNumber.sql','DONE','2023-10-19 09:36:56'),
+(260,'2023_08_15_Laboratory_EORINumber.sql','DONE','2023-10-19 09:36:56'),
+(261,'2023_08_16_ContainerRegistry_barcode_unique_not_null.sql','DONE','2023-10-19 09:36:56'),
+(262,'2023_10_18_MotionCorrectionDrift_drop.sql','DONE','2023-10-19 09:36:56');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
