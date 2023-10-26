@@ -431,6 +431,20 @@ CREATE TABLE `BF_system_beamline` (
   CONSTRAINT `bf_system_beamline_FK1` FOREIGN KEY (`systemId`) REFERENCES `BF_system` (`systemId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `BFactorFit`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BFactorFit` (
+  `bFactorFitId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `particleClassificationId` int(11) unsigned DEFAULT NULL,
+  `resolution` float DEFAULT NULL COMMENT 'Resolution of a refined map using a given number of particles',
+  `numberOfParticles` int(10) unsigned DEFAULT NULL COMMENT 'Number of particles used in refinement',
+  `particleBatchSize` int(10) unsigned DEFAULT NULL COMMENT 'Number of particles in the batch that the B-factor analysis was performed on',
+  PRIMARY KEY (`bFactorFitId`),
+  KEY `BFactorFit_fk_particleClassificationId` (`particleClassificationId`),
+  CONSTRAINT `BFactorFit_fk_particleClassificationId` FOREIGN KEY (`particleClassificationId`) REFERENCES `ParticleClassification` (`particleClassificationId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='CryoEM reconstruction resolution as a function of the number of particles for the creation of a Rosenthal-Henderson plot and the calculation of B-factors';
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSample`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -739,6 +753,7 @@ CREATE TABLE `BLSession` (
   `protectedData` varchar(1024) DEFAULT NULL COMMENT 'indicates if the data are protected or not',
   `externalId` binary(16) DEFAULT NULL,
   `archived` tinyint(1) DEFAULT 0 COMMENT 'The data for the session is archived and no longer available on disk',
+  `riskRating` enum('Low','Medium','High','Not Permitted') DEFAULT NULL COMMENT 'ERA in user admin system',
   PRIMARY KEY (`sessionId`),
   UNIQUE KEY `proposalId` (`proposalId`,`visit_number`),
   KEY `BLSession_FKIndexOperatorSiteNumber` (`operatorSiteNumber`),
@@ -1686,7 +1701,7 @@ DROP TABLE IF EXISTS `Dewar`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Dewar` (
   `dewarId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `shippingId` int(10) unsigned DEFAULT NULL,
+  `shippingId` int(10) unsigned NOT NULL,
   `code` varchar(45) DEFAULT NULL,
   `comments` varchar(1024) DEFAULT NULL,
   `storageLocation` varchar(45) DEFAULT NULL,
@@ -2720,6 +2735,9 @@ CREATE TABLE `ParticleClassification` (
   `particleClassificationGroupId` int(10) unsigned DEFAULT NULL,
   `classDistribution` float DEFAULT NULL COMMENT 'Provides a figure of merit for the class, higher number is better',
   `selected` tinyint(1) DEFAULT 0 COMMENT 'Indicates whether the class is selected for further processing or not',
+  `bFactorFitIntercept` float DEFAULT NULL COMMENT 'Intercept of quadratic fit to refinement resolution against the logarithm of the number of particles',
+  `bFactorFitLinear` float DEFAULT NULL COMMENT 'Linear coefficient of quadratic fit to refinement resolution against the logarithm of the number of particles, equal to half of the B factor',
+  `bFactorFitQuadratic` float DEFAULT NULL COMMENT 'Quadratic coefficient of quadratic fit to refinement resolution against the logarithm of the number of particles',
   PRIMARY KEY (`particleClassificationId`),
   KEY `ParticleClassification_fk_particleClassificationGroupId` (`particleClassificationGroupId`),
   CONSTRAINT `ParticleClassification_fk_particleClassificationGroupId` FOREIGN KEY (`particleClassificationGroupId`) REFERENCES `ParticleClassificationGroup` (`particleClassificationGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -4189,6 +4207,7 @@ CREATE TABLE `Tomogram` (
   `projXY` varchar(255) DEFAULT NULL COMMENT 'XY projection file',
   `projXZ` varchar(255) DEFAULT NULL COMMENT 'XZ projection file',
   `recordTimeStamp` datetime DEFAULT current_timestamp() COMMENT 'Creation or last update date/time',
+  `globalAlignmentQuality` float DEFAULT NULL COMMENT 'Quality of fit metric for the alignment of the tilt series corresponding to this tomogram',
   PRIMARY KEY (`tomogramId`),
   KEY `Tomogram_fk_dataCollectionId` (`dataCollectionId`),
   KEY `Tomogram_fk_autoProcProgramId` (`autoProcProgramId`),
@@ -5021,3 +5040,4 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
