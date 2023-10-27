@@ -5,9 +5,34 @@ History
 Unreleased / master
 -------------------
 
-* Drop table ``MotionCorrectionDrift``
-* Drop procedure ``upsert_motion_correction_drift`` and remove procedure file
-* Remove above table and procedure from schema files
+* Tables:
+
+  * Drop: ``MotionCorrectionDrift`` and remove it from schema files
+  * Add: ``BFactorFit`` with foreign key referencing  ``ParticleClassification``
+
+* Columns and keys:
+
+  * Make ``Dewar.shippingId`` not nullable
+  * Add: bFactorFit-related columns in ``ParticleClassification``
+  * Add: self-referenting foreign key column ``parentContainerId`` in ``Container`` to allow hierarchy of ``Container``s
+  * Add: ``containerTypeId`` foreign key column for the ``Screen`` table
+  * Add: ``manufacturerSerialNumber`` in ``DewarRegistry`` table
+  * Add: ``EORINumber`` column in ``Laboratory`` table to help with international shipping
+  * Add: ``riskRating`` enum column to the ``BLSession`` table to hold the ERA status
+  * Add: ``globalAlignmentQuality`` in ``Tomogram``
+  * Add unique key for ``ContainerRegistry.barcode`` and make it not nullable
+
+* Stored procedures:
+
+  * Drop: ``upsert_motion_correction_drift``, remove procedure file and remove it from the schema files
+  * Add: ``upsert_adminvar`` to upsert rows in the ``AdminVar`` table
+  * Add: ``update_reg_container_barcode``
+  * Add: ``update_session_enddate``
+
+* Misc:
+
+  * Add: maintenance script to delete a given number of rows from a table, and then rebuild the table to reclaim the space for the OS
+  * Add: ``SELECT`` grants on ``ProcessingJob``, ``ProcessingJobImageSweep`` tables for role ``ispyb_scripts_processing``
 
 2.1.0 (2023-06-05)
 -------------------
