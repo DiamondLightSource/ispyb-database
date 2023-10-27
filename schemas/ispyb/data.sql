@@ -194,6 +194,9 @@ INSERT INTO `AutoProcScaling_has_Int` (`autoProcScaling_has_IntId`, `autoProcSca
 /*!40000 ALTER TABLE `BF_system_beamline` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_system_beamline` ENABLE KEYS */;
 
+/*!40000 ALTER TABLE `BFactorFit` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BFactorFit` ENABLE KEYS */;
+
 /*!40000 ALTER TABLE `BLSample` DISABLE KEYS */;
 INSERT INTO `BLSample` (`blSampleId`, `diffractionPlanId`, `crystalId`, `containerId`, `name`, `code`, `location`, `holderLength`, `loopLength`, `loopType`, `wireWidth`, `comments`, `completionStage`, `structureStage`, `publicationStage`, `publicationComments`, `blSampleStatus`, `isInSampleChanger`, `lastKnownCenteringPosition`, `POSITIONID`, `recordTimeStamp`, `SMILES`, `blSubSampleId`, `lastImageURL`, `screenComponentGroupId`, `volume`, `dimension1`, `dimension2`, `dimension3`, `shape`, `packingFraction`, `preparationTemeprature`, `preparationHumidity`, `blottingTime`, `blottingForce`, `blottingDrainTime`, `support`, `subLocation`, `staffComments`) VALUES (11550,NULL,3918,1326,'Sample-001','SAM-011550','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:16:11',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (11553,NULL,3921,1326,'Sample-002','SAM-011553','2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:21:43',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -279,12 +282,12 @@ INSERT INTO `BLSample_has_DataCollectionPlan` (`blSampleId`, `dataCollectionPlan
 /*!40000 ALTER TABLE `BLSample_has_Positioner` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `BLSession` DISABLE KEYS */;
-INSERT INTO `BLSession` (`sessionId`, `beamLineSetupId`, `proposalId`, `beamCalendarId`, `projectCode`, `startDate`, `endDate`, `beamLineName`, `scheduled`, `nbShifts`, `comments`, `beamLineOperator`, `bltimeStamp`, `visit_number`, `usedFlag`, `sessionTitle`, `structureDeterminations`, `dewarTransport`, `databackupFrance`, `databackupEurope`, `expSessionPk`, `operatorSiteNumber`, `lastUpdate`, `protectedData`, `externalId`, `archived`) VALUES (55167,1,37027,NULL,NULL,'2016-01-01 09:00:00','2016-01-01 17:00:00','i03',NULL,NULL,'ghfg',NULL,'2015-12-21 15:20:43',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0),
-(55168,1,37027,NULL,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,'jhgjh',NULL,'2015-12-21 15:20:44',2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0),
-(339525,NULL,141666,NULL,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-16 16:08:29',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0),
-(339528,NULL,141666,NULL,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-17 15:07:42',2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0),
-(339531,NULL,141666,NULL,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-17 15:08:09',3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0),
-(339535,NULL,37027,NULL,NULL,'2018-03-27 09:00:00','2018-07-27 09:00:00','i02-2',NULL,NULL,NULL,NULL,'2018-04-05 15:48:37',99,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0);
+INSERT INTO `BLSession` (`sessionId`, `beamLineSetupId`, `proposalId`, `beamCalendarId`, `projectCode`, `startDate`, `endDate`, `beamLineName`, `scheduled`, `nbShifts`, `comments`, `beamLineOperator`, `bltimeStamp`, `visit_number`, `usedFlag`, `sessionTitle`, `structureDeterminations`, `dewarTransport`, `databackupFrance`, `databackupEurope`, `expSessionPk`, `operatorSiteNumber`, `lastUpdate`, `protectedData`, `externalId`, `archived`, `riskRating`) VALUES (55167,1,37027,NULL,NULL,'2016-01-01 09:00:00','2016-01-01 17:00:00','i03',NULL,NULL,'ghfg',NULL,'2015-12-21 15:20:43',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0,NULL),
+(55168,1,37027,NULL,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,'jhgjh',NULL,'2015-12-21 15:20:44',2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0,NULL),
+(339525,NULL,141666,NULL,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-16 16:08:29',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0,NULL),
+(339528,NULL,141666,NULL,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-17 15:07:42',2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0,NULL),
+(339531,NULL,141666,NULL,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-17 15:08:09',3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0,NULL),
+(339535,NULL,37027,NULL,NULL,'2018-03-27 09:00:00','2018-07-27 09:00:00','i02-2',NULL,NULL,NULL,NULL,'2018-04-05 15:48:37',99,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0,NULL);
 /*!40000 ALTER TABLE `BLSession` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `BLSession_has_SCPosition` DISABLE KEYS */;
@@ -1247,3 +1250,4 @@ INSERT INTO `v_run` (`runId`, `run`, `startDate`, `endDate`) VALUES (1,'2008-01'
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+

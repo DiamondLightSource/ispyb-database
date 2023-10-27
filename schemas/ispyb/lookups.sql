@@ -234,7 +234,10 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (259,'2023_08_15_DewarRegistry_manufacturerSerialNumber.sql','DONE','2023-10-19 09:36:56'),
 (260,'2023_08_15_Laboratory_EORINumber.sql','DONE','2023-10-19 09:36:56'),
 (261,'2023_08_16_ContainerRegistry_barcode_unique_not_null.sql','DONE','2023-10-19 09:36:56'),
-(262,'2023_10_18_MotionCorrectionDrift_drop.sql','DONE','2023-10-19 09:36:56');
+(262,'2023_10_18_MotionCorrectionDrift_drop.sql','DONE','2023-10-19 09:36:56'),
+(263,'2023_10_23_Dewar_modify_shippingId.sql','DONE','2023-10-26 15:50:26'),
+(264,'2023_10_24_BLSession_add_riskRating.sql','DONE','2023-10-26 15:50:26'),
+(265,'2023_10_26_BFactorFit_and_new_cols.sql','DONE','2023-10-26 15:50:26');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
