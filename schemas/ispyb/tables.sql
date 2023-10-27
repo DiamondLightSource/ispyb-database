@@ -436,7 +436,7 @@ DROP TABLE IF EXISTS `BFactorFit`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `BFactorFit` (
   `bFactorFitId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `particleClassificationId` int(11) unsigned DEFAULT NULL,
+  `particleClassificationId` int(11) unsigned NOT NULL,
   `resolution` float DEFAULT NULL COMMENT 'Resolution of a refined map using a given number of particles',
   `numberOfParticles` int(10) unsigned DEFAULT NULL COMMENT 'Number of particles used in refinement',
   `particleBatchSize` int(10) unsigned DEFAULT NULL COMMENT 'Number of particles in the batch that the B-factor analysis was performed on',
