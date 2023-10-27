@@ -1147,6 +1147,7 @@ CREATE TABLE `Container` (
   `experimentTypeId` int(10) unsigned DEFAULT NULL,
   `containerTypeId` int(10) unsigned DEFAULT NULL,
   `currentDewarId` int(10) unsigned DEFAULT NULL COMMENT 'The dewar with which the container is currently associated',
+  `parentContainerId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`containerId`),
   UNIQUE KEY `Container_UNIndex1` (`barcode`),
   KEY `Container_FKIndex` (`beamlineLocation`),
@@ -1163,8 +1164,10 @@ CREATE TABLE `Container` (
   KEY `Container_fk_experimentTypeId` (`experimentTypeId`),
   KEY `Container_ibfk10` (`containerTypeId`),
   KEY `Container_fk_currentDewarId` (`currentDewarId`),
+  KEY `Container_fk_parentContainerId` (`parentContainerId`),
   CONSTRAINT `Container_fk_currentDewarId` FOREIGN KEY (`currentDewarId`) REFERENCES `Dewar` (`dewarId`),
   CONSTRAINT `Container_fk_experimentTypeId` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`),
+  CONSTRAINT `Container_fk_parentContainerId` FOREIGN KEY (`parentContainerId`) REFERENCES `Container` (`containerId`),
   CONSTRAINT `Container_ibfk10` FOREIGN KEY (`containerTypeId`) REFERENCES `ContainerType` (`containerTypeId`),
   CONSTRAINT `Container_ibfk2` FOREIGN KEY (`screenId`) REFERENCES `Screen` (`screenId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Container_ibfk3` FOREIGN KEY (`scheduleId`) REFERENCES `Schedule` (`scheduleId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -1266,10 +1269,11 @@ DROP TABLE IF EXISTS `ContainerRegistry`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ContainerRegistry` (
   `containerRegistryId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `barcode` varchar(20) DEFAULT NULL,
+  `barcode` varchar(20) NOT NULL,
   `comments` varchar(255) DEFAULT NULL,
   `recordTimestamp` datetime DEFAULT current_timestamp(),
-  PRIMARY KEY (`containerRegistryId`)
+  PRIMARY KEY (`containerRegistryId`),
+  UNIQUE KEY `ContainerRegistry_uniq_barcode` (`barcode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ContainerRegistry_has_Proposal`;
@@ -1762,6 +1766,7 @@ CREATE TABLE `DewarRegistry` (
   `labContactId` int(11) unsigned DEFAULT NULL,
   `purchaseDate` datetime DEFAULT NULL,
   `bltimestamp` datetime NOT NULL DEFAULT current_timestamp(),
+  `manufacturerSerialNumber` varchar(15) DEFAULT NULL COMMENT 'Dewar serial number as given by manufacturer. Used to be typically 5 or 6 digits, more likely to be 11 alphanumeric chars in future',
   PRIMARY KEY (`dewarRegistryId`),
   UNIQUE KEY `facilityCode` (`facilityCode`),
   KEY `DewarRegistry_ibfk_1` (`proposalId`),
@@ -2342,6 +2347,7 @@ CREATE TABLE `Laboratory` (
   `recordTimeStamp` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Creation or last update date/time',
   `laboratoryPk` int(10) DEFAULT NULL,
   `postcode` varchar(15) DEFAULT NULL,
+  `EORINumber` varchar(17) DEFAULT NULL COMMENT 'An EORI number consists of an ISO Country code from an EU Member State  (2 characters) + a maximum of 15 characters',
   PRIMARY KEY (`laboratoryId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -3649,9 +3655,12 @@ CREATE TABLE `Screen` (
   `name` varchar(45) DEFAULT NULL,
   `proposalId` int(10) unsigned DEFAULT NULL,
   `global` tinyint(1) DEFAULT NULL,
+  `containerTypeId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`screenId`),
   KEY `Screen_fk1` (`proposalId`),
-  CONSTRAINT `Screen_fk1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`)
+  KEY `Screen_fk_containerTypeId` (`containerTypeId`),
+  CONSTRAINT `Screen_fk1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`),
+  CONSTRAINT `Screen_fk_containerTypeId` FOREIGN KEY (`containerTypeId`) REFERENCES `ContainerType` (`containerTypeId`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ScreenComponent`;

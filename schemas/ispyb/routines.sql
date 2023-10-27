@@ -130,7 +130,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `retrieve_proposal_title`(p_proposal_code varchar(5), p_proposal_number int) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
+CREATE FUNCTION `retrieve_proposal_title`(p_proposal_code varchar(5), p_proposal_number int) RETURNS varchar(255) CHARSET latin1
     READS SQL DATA
 BEGIN
 	DECLARE ret_title varchar(255);
@@ -155,7 +155,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `retrieve_proposal_title_v2`(p_proposalCode varchar(5), p_proposalNumber int) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
+CREATE FUNCTION `retrieve_proposal_title_v2`(p_proposalCode varchar(5), p_proposalNumber int) RETURNS varchar(255) CHARSET latin1
     READS SQL DATA
     COMMENT 'Retrieve the title for a given proposal code and number.'
 BEGIN
@@ -206,7 +206,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `root_replace`(p_str varchar(255), p_oldroot varchar(255), p_newroot varchar(255)) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
+CREATE FUNCTION `root_replace`(p_str varchar(255), p_oldroot varchar(255), p_newroot varchar(255)) RETURNS varchar(255) CHARSET latin1
     COMMENT 'Returns a varchar where the old root p_oldroot (the leftmost part) of p_str has been replaced with a new root p_newroot'
 BEGIN
  DECLARE path_len smallint unsigned DEFAULT LENGTH(p_oldroot);
@@ -8260,6 +8260,40 @@ DELIMITER ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_reg_container_barcode` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
+DELIMITER ;;
+CREATE PROCEDURE `update_reg_container_barcode`(IN p_oldBarcode varchar(20), IN p_newBarcode varchar(20))
+    MODIFIES SQL DATA
+    COMMENT 'For Registered Container with barcode==p_oldBarcode: Sets barcode=p_newBarcode'
+BEGIN
+    DECLARE row_containerRegistryId int(11) unsigned DEFAULT NULL;
+
+    IF NOT (p_oldBarcode IS NULL) AND NOT (p_newBarcode IS NULL) THEN
+        START TRANSACTION;
+          SELECT containerRegistryId INTO row_containerRegistryId FROM ContainerRegistry WHERE barcode = p_oldBarcode FOR UPDATE;
+          IF NOT (row_containerRegistryId IS NULL) THEN
+              UPDATE ContainerRegistry SET barcode = p_newBarcode WHERE containerRegistryId = row_containerRegistryId;
+          ELSE
+              SIGNAL SQLSTATE '02000' SET MYSQL_ERRNO=1643, MESSAGE_TEXT='Barcode given by p_oldBarcode not found';
+          END IF;
+        COMMIT;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) p_oldBarcode and/or p_newBarcode are NULL';
+    END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `update_reprocessing_status` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -8355,6 +8389,37 @@ BEGIN
         SET MYSQL_ERRNO=1644,
             MESSAGE_TEXT='Mandatory arguments p_proposalCode, p_proposalNumber int, p_sessionNumber must be non-NULL';
     END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_session_enddate` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
+DELIMITER ;;
+CREATE PROCEDURE `update_session_enddate`(
+	 p_id int(11) unsigned,
+	 p_endDate datetime
+ )
+    MODIFIES SQL DATA
+    COMMENT 'Updates the end date for a session. Mandatory params: p_id and p_endDate.'
+BEGIN
+  IF p_id IS NOT NULL AND p_endDate IS NOT NULL THEN
+      UPDATE BLSession
+      SET
+        endDate = p_endDate
+      WHERE sessionId = p_id;
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id AND p_endDate must be non-NULL.';
+  END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -8513,6 +8578,44 @@ BEGIN
 		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1643, MESSAGE_TEXT='Corresponding rows for p_proposalCode + p_proposalNumber + p_sessionNumber not found';
       END IF;
   END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `upsert_adminvar` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
+DELIMITER ;;
+CREATE PROCEDURE `upsert_adminvar`(
+  p_name varchar(32),
+  p_value varchar(1024)
+)
+    MODIFIES SQL DATA
+BEGIN
+    DECLARE row_varId int(11) DEFAULT NULL;
+    DECLARE row_value varchar(1024) DEFAULT NULL;
+
+    START TRANSACTION;
+    SELECT varId, `value`
+      INTO row_varId, row_value
+      FROM AdminVar
+      WHERE `name` = p_name;
+
+    IF row_varId IS NULL THEN
+      INSERT INTO AdminVar (`name`, `value`)
+        VALUES (p_name, p_value);
+    ELSE
+      UPDATE AdminVar SET `value` = p_value WHERE `name` = p_name;
+    END IF;
+    COMMIT;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
