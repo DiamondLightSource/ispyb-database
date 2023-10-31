@@ -21,6 +21,7 @@ Unreleased / master
   * Add: ``riskRating`` enum column to the ``BLSession`` table to hold the ERA status
   * Add: ``globalAlignmentQuality`` in ``Tomogram``
   * Add unique key for ``ContainerRegistry.barcode`` and make it not nullable
+  * Extend ``BLSession.beamLineOperator`` to 255 characters
 
 * Stored procedures:
 

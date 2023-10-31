@@ -738,7 +738,7 @@ CREATE TABLE `BLSession` (
   `scheduled` tinyint(1) DEFAULT NULL,
   `nbShifts` int(10) unsigned DEFAULT NULL,
   `comments` varchar(2000) DEFAULT NULL,
-  `beamLineOperator` varchar(45) DEFAULT NULL,
+  `beamLineOperator` varchar(255) DEFAULT NULL,
   `bltimeStamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `visit_number` int(10) unsigned DEFAULT 0,
   `usedFlag` tinyint(1) DEFAULT NULL COMMENT 'indicates if session has Datacollections or XFE or EnergyScans attached',
@@ -5049,4 +5049,3 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
