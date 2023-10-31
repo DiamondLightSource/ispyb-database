@@ -238,7 +238,8 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (263,'2023_10_23_Dewar_modify_shippingId.sql','DONE','2023-10-26 15:50:26'),
 (264,'2023_10_24_BLSession_add_riskRating.sql','DONE','2023-10-26 15:50:26'),
 (265,'2023_10_26_BFactorFit_and_new_cols.sql','DONE','2023-10-26 15:50:26'),
-(266,'2023_10_27_BFactorFit_particleClassification_not_null.sql','DONE','2023-10-27 11:28:51');
+(266,'2023_10_27_BFactorFit_particleClassification_not_null.sql','DONE','2023-10-27 11:28:51'),
+(267,'2023_10_31_BLSession_modify_beamlineOperator.sql','DONE','2023-10-31 11:58:22');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
