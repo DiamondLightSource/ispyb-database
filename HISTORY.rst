@@ -5,10 +5,13 @@ History
 Unreleased / master
 -------------------
 
+3.0.0 (2023-11-16)
+-------------------
+
 * Tables:
 
   * Drop: ``MotionCorrectionDrift`` and remove it from schema files
-  * Add: ``BFactorFit`` with foreign key referencing  ``ParticleClassification``
+  * Add: ``BFactorFit`` with foreign key referencing ``ParticleClassification``
 
 * Columns and keys:
 
@@ -33,6 +36,7 @@ Unreleased / master
 * Misc:
 
   * Add: maintenance script to delete a given number of rows from a table, and then rebuild the table to reclaim the space for the OS
+  * Add: maintenance script to update BLSample.subLocation via a cursor in order to remove rows with duplications of (containerId, location, subLocation)
   * Add: ``SELECT`` grants on ``ProcessingJob``, ``ProcessingJobImageSweep`` tables for role ``ispyb_scripts_processing``
 
 2.1.0 (2023-06-05)
