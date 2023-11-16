@@ -55,11 +55,11 @@ function generate_docs {
   cd bin
   ./db_procs_to_rst.sh ${1} > /tmp/list_of_procs.rst
   html_tmp=$(mktemp /tmp/procs.XXXXXX.tmp.html)
-  pandoc --self-contained --metadata title:"List of procedures" -c ../docs/list.css -o ${html_tmp} /tmp/list_of_procs.rst
+  pandoc --embed-resources --standalone --metadata title:"List of procedures" -c ../docs/list.css -o ${html_tmp} /tmp/list_of_procs.rst
   awk -v RS='</tr>' -v FS='</td>' -v ORS='</tr>' -v OFS='</td>' '{gsub(", ", "<br>\n", $0); gsub(", ", "<br>\n", $1); printf("%s", $0)}' ${html_tmp} > /tmp/list_of_procs.html
   rm ${html_tmp}
   ./db_tables_to_rst.sh ${1} > /tmp/list_of_tables_and_columns.rst
-  pandoc --self-contained --metadata title:"List of tables and columns" -c ../docs/list.css -o /tmp/list_of_tables_and_columns.html /tmp/list_of_tables_and_columns.rst
+  pandoc --embed-resources --standalone --metadata title:"List of tables and columns" -c ../docs/list.css -o /tmp/list_of_tables_and_columns.html /tmp/list_of_tables_and_columns.rst
   echo "HTML documentation written to files in /tmp/"
   cd ..
 }
