@@ -7,8 +7,6 @@ ConcentrationType
 ContainerType
 ExperimentType
 InspectionType
-PlateType
-WorkflowType
 Schedule
 ScheduleComponent
 Imager
