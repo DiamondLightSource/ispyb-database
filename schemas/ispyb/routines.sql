@@ -4484,6 +4484,81 @@ DELIMITER ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `retrieve_grid_info_for_dc_v2` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
+DELIMITER ;;
+CREATE PROCEDURE `retrieve_grid_info_for_dc_v2`(IN p_dcId int unsigned, p_authLogin varchar(45))
+    READS SQL DATA
+    COMMENT 'Return multi-row result-set with grid info values for the dc'
+BEGIN
+    IF NOT (p_dcId IS NULL) THEN
+        IF p_authLogin IS NOT NULL THEN
+            SELECT
+                gi.gridInfoId,
+                gi.dx_mm,
+                gi.dy_mm,
+                gi.steps_x,
+                gi.steps_y,
+                gi.meshAngle,
+                gi.micronsPerPixelX,
+                gi.micronsPerPixelY,
+                gi.snapshot_offsetXPixel,
+                gi.snapshot_offsetYPixel,
+                gi.orientation,
+                gi.snaked
+            FROM GridInfo gi
+                INNER JOIN DataCollection dc ON gi.dataCollectionId = dc.dataCollectionId
+                INNER JOIN DataCollectionGroup dcg ON dc.dataCollectionGroupId = dcg.dataCollectionGroupId
+                INNER JOIN Session_has_Person shp ON dcg.sessionId = shp.sessionId
+                INNER JOIN Person per ON per.personId = shp.personId
+            WHERE per.login = p_authLogin AND gi.dataCollectionId = p_dcId
+            GROUP BY gi.gridInfoId,
+                gi.dx_mm,
+                gi.dy_mm,
+                gi.steps_x,
+                gi.steps_y,
+                gi.meshAngle,
+                gi.micronsPerPixelX,
+                gi.micronsPerPixelY,
+                gi.snapshot_offsetXPixel,
+                gi.snapshot_offsetYPixel,
+                gi.orientation,
+                gi.snaked
+            ORDER BY gi.gridInfoId ASC;
+        ELSE
+            SELECT
+                gi.gridInfoId,
+                gi.dx_mm,
+                gi.dy_mm,
+                gi.steps_x,
+                gi.steps_y,
+                gi.meshAngle,
+                gi.micronsPerPixelX,
+                gi.micronsPerPixelY,
+                gi.snapshot_offsetXPixel,
+                gi.snapshot_offsetYPixel,
+                gi.orientation,
+                gi.snaked
+            FROM GridInfo gi
+            WHERE gi.dataCollectionId = p_dcId
+            ORDER BY gi.gridInfoId ASC;
+        END IF;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_dcId is NULL';
+    END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `retrieve_lcs_for_session` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
