@@ -5,6 +5,30 @@ History
 Unreleased / master
 -------------------
 
+4.0.0 (2024-01-08)
+-------------------
+
+* Add stored procedure ``retrieve_grid_info_for_dc_v2`` similar to
+  ``retrieve_grid_info_for_dc``, but with micronsPerPixelX,Y columns instead of
+  pixelsPerMicronX,Y.
+
+* Removed columns in ``BLSession``: projectCode, sessionTitle,
+  structureDeterminations, dewarTransport, databackupFrance, databackupEurope,
+  expSessionPk, operatorSiteNumber, protectedData
+
+* Remove columns in ``DataCollectionGroup``: ``workflowId``
+
+* Remove tables: Pod, PHPSession, Log4Stat, Particle, EMMicroscope, DataReductionStatus,
+  SAFETYREQUEST, SAMPLECELL, SAMPLEEXPOSUREUNIT, SAXSDATACOLLECTIONGROUP,
+  WorkflowStep, WorkflowType, WorkflowMesh, Workflow, AssemblyRegion,
+  AssemblyHasMacromolecule, Assembly, Structure, SubtractionToAbInitioModel,
+  MeasurementToDataCollection, Instruction, Merge, Measurement, AbInitioModel,
+  ModelToList, Model, ModelList, FrameSet, Run, FrameToList, Frame, FrameList,
+  BufferHasAdditive, MeasurementUnit, MacromoleculeRegion, Subtraction,
+  Stoichiometry, Additive, Specimen, StockSolution, Buffer, Macromolecule,
+  SafetyLevel, SamplePlatePosition, SamplePlate, PlateGroup, InstructionSet,
+  PlateType, SaxsDataCollection, Experiment.
+
 3.0.0 (2023-11-16)
 -------------------
 
