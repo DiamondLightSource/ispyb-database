@@ -107,7 +107,6 @@ GRANT INSERT, UPDATE, DELETE ON BLSampleImageScore TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON BLSampleImage TO 'ispyb_web';
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSampleImageMeasurement TO 'ispyb_web';
 
-GRANT SELECT, INSERT, UPDATE ON Log4Stat TO 'ispyb_web';
 GRANT SELECT, INSERT, UPDATE, DELETE ON SW_onceToken TO 'ispyb_web';
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSample_has_DataCollectionPlan TO 'ispyb_web';
