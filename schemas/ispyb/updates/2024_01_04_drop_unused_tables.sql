@@ -21,6 +21,7 @@ DROP TABLE IF EXISTS WorkflowMesh;
 
 ALTER TABLE DataCollectionGroup
   DROP CONSTRAINT IF EXISTS DataCollectionGroup_ibfk_3,
+  DROP CONSTRAINT IF EXISTS _DataCollectionGroup_ibfk_3,
   DROP COLUMN IF EXISTS workflowId;
 DROP TABLE IF EXISTS Workflow;
 
