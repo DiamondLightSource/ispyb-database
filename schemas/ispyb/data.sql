@@ -9,26 +9,11 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-/*!40000 ALTER TABLE `AbInitioModel` DISABLE KEYS */;
-/*!40000 ALTER TABLE `AbInitioModel` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `Additive` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Additive` ENABLE KEYS */;
-
 /*!40000 ALTER TABLE `AdminActivity` DISABLE KEYS */;
 /*!40000 ALTER TABLE `AdminActivity` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Aperture` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Aperture` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `Assembly` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Assembly` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `AssemblyHasMacromolecule` DISABLE KEYS */;
-/*!40000 ALTER TABLE `AssemblyHasMacromolecule` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `AssemblyRegion` DISABLE KEYS */;
-/*!40000 ALTER TABLE `AssemblyRegion` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `AutoProc` DISABLE KEYS */;
 INSERT INTO `AutoProc` (`autoProcId`, `autoProcProgramId`, `spaceGroup`, `refinedCell_a`, `refinedCell_b`, `refinedCell_c`, `refinedCell_alpha`, `refinedCell_beta`, `refinedCell_gamma`, `recordTimeStamp`) VALUES (596406,56425592,'P 6 2 2',92.5546,92.5546,129.784,90,90,120,'2016-01-14 12:46:22'),
@@ -282,12 +267,12 @@ INSERT INTO `BLSample_has_DataCollectionPlan` (`blSampleId`, `dataCollectionPlan
 /*!40000 ALTER TABLE `BLSample_has_Positioner` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `BLSession` DISABLE KEYS */;
-INSERT INTO `BLSession` (`sessionId`, `beamLineSetupId`, `proposalId`, `beamCalendarId`, `projectCode`, `startDate`, `endDate`, `beamLineName`, `scheduled`, `nbShifts`, `comments`, `beamLineOperator`, `bltimeStamp`, `visit_number`, `usedFlag`, `sessionTitle`, `structureDeterminations`, `dewarTransport`, `databackupFrance`, `databackupEurope`, `expSessionPk`, `operatorSiteNumber`, `lastUpdate`, `protectedData`, `externalId`, `archived`, `riskRating`) VALUES (55167,1,37027,NULL,NULL,'2016-01-01 09:00:00','2016-01-01 17:00:00','i03',NULL,NULL,'ghfg',NULL,'2015-12-21 15:20:43',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0,NULL),
-(55168,1,37027,NULL,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,'jhgjh',NULL,'2015-12-21 15:20:44',2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0,NULL),
-(339525,NULL,141666,NULL,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-16 16:08:29',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0,NULL),
-(339528,NULL,141666,NULL,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-17 15:07:42',2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0,NULL),
-(339531,NULL,141666,NULL,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-17 15:08:09',3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0,NULL),
-(339535,NULL,37027,NULL,NULL,'2018-03-27 09:00:00','2018-07-27 09:00:00','i02-2',NULL,NULL,NULL,NULL,'2018-04-05 15:48:37',99,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0000-00-00 00:00:00',NULL,NULL,0,NULL);
+INSERT INTO `BLSession` (`sessionId`, `beamLineSetupId`, `proposalId`, `beamCalendarId`, `startDate`, `endDate`, `beamLineName`, `scheduled`, `nbShifts`, `comments`, `beamLineOperator`, `bltimeStamp`, `visit_number`, `usedFlag`, `lastUpdate`, `externalId`, `archived`, `riskRating`) VALUES (55167,1,37027,NULL,'2016-01-01 09:00:00','2016-01-01 17:00:00','i03',NULL,NULL,'ghfg',NULL,'2015-12-21 15:20:43',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL),
+(55168,1,37027,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,'jhgjh',NULL,'2015-12-21 15:20:44',2,NULL,'0000-00-00 00:00:00',NULL,0,NULL),
+(339525,NULL,141666,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-16 16:08:29',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL),
+(339528,NULL,141666,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-17 15:07:42',2,NULL,'0000-00-00 00:00:00',NULL,0,NULL),
+(339531,NULL,141666,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-17 15:08:09',3,NULL,'0000-00-00 00:00:00',NULL,0,NULL),
+(339535,NULL,37027,NULL,'2018-03-27 09:00:00','2018-07-27 09:00:00','i02-2',NULL,NULL,NULL,NULL,'2018-04-05 15:48:37',99,NULL,'0000-00-00 00:00:00',NULL,0,NULL);
 /*!40000 ALTER TABLE `BLSession` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `BLSession_has_SCPosition` DISABLE KEYS */;
@@ -319,12 +304,6 @@ INSERT INTO `BeamLineSetup` (`beamLineSetupId`, `detectorId`, `synchrotronMode`,
 
 /*!40000 ALTER TABLE `BeamlineStats` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BeamlineStats` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `Buffer` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Buffer` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `BufferHasAdditive` DISABLE KEYS */;
-/*!40000 ALTER TABLE `BufferHasAdditive` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `CTF` DISABLE KEYS */;
 /*!40000 ALTER TABLE `CTF` ENABLE KEYS */;
@@ -439,20 +418,17 @@ INSERT INTO `DataCollection` (`dataCollectionId`, `BLSAMPLEID`, `SESSIONID`, `ex
 /*!40000 ALTER TABLE `DataCollectionFileAttachment` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `DataCollectionGroup` DISABLE KEYS */;
-INSERT INTO `DataCollectionGroup` (`dataCollectionGroupId`, `sessionId`, `comments`, `blSampleId`, `experimentType`, `startTime`, `endTime`, `crystalClass`, `detectorMode`, `actualSampleBarcode`, `actualSampleSlotInContainer`, `actualContainerBarcode`, `actualContainerSlotInSC`, `workflowId`, `xtalSnapshotFullPath`, `scanParameters`, `experimentTypeId`) VALUES (988855,55167,NULL,374695,'SAD',NULL,NULL,NULL,'Ext. Trigger','HA00AU3712',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(996311,55167,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(1040398,55168,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(1040407,55168,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(1054243,55168,NULL,398810,'SAD',NULL,NULL,NULL,'Ext. Trigger','CA00AG9993',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(5440739,55167,NULL,374695,'Mesh',NULL,NULL,NULL,NULL,'NR',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `DataCollectionGroup` (`dataCollectionGroupId`, `sessionId`, `comments`, `blSampleId`, `experimentType`, `startTime`, `endTime`, `crystalClass`, `detectorMode`, `actualSampleBarcode`, `actualSampleSlotInContainer`, `actualContainerBarcode`, `actualContainerSlotInSC`, `xtalSnapshotFullPath`, `scanParameters`, `experimentTypeId`) VALUES (988855,55167,NULL,374695,'SAD',NULL,NULL,NULL,'Ext. Trigger','HA00AU3712',NULL,NULL,NULL,NULL,NULL,NULL),
+(996311,55167,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1040398,55168,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1040407,55168,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1054243,55168,NULL,398810,'SAD',NULL,NULL,NULL,'Ext. Trigger','CA00AG9993',NULL,NULL,NULL,NULL,NULL,NULL),
+(5440739,55167,NULL,374695,'Mesh',NULL,NULL,NULL,NULL,'NR',NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `DataCollectionGroup` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `DataCollectionPlan_has_Detector` DISABLE KEYS */;
 INSERT INTO `DataCollectionPlan_has_Detector` (`dataCollectionPlanHasDetectorId`, `dataCollectionPlanId`, `detectorId`, `exposureTime`, `distance`, `roll`) VALUES (4,197792,8,5.4,136.86,45);
 /*!40000 ALTER TABLE `DataCollectionPlan_has_Detector` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `DataReductionStatus` DISABLE KEYS */;
-/*!40000 ALTER TABLE `DataReductionStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Dewar` DISABLE KEYS */;
 INSERT INTO `Dewar` (`dewarId`, `shippingId`, `code`, `comments`, `storageLocation`, `dewarStatus`, `bltimeStamp`, `isStorageDewar`, `barCode`, `firstExperimentId`, `customsValue`, `transportValue`, `trackingNumberToSynchrotron`, `trackingNumberFromSynchrotron`, `type`, `facilityCode`, `weight`, `deliveryAgent_barcode`, `extra`) VALUES (573,474,'Dewar-1-cm0001-1',NULL,NULL,'processing',NULL,0,'dewar-cm0001-1-0000001',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL),
@@ -484,9 +460,6 @@ INSERT INTO `DiffractionPlan` (`diffractionPlanId`, `name`, `experimentKind`, `o
 (197788,NULL,NULL,NULL,NULL,10,NULL,NULL,NULL,NULL,NULL,160,100,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-10-26 15:28:12',NULL,150,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,4,162.5,45,330.6,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (197792,'XPDF-1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2017-03-22 10:56:32',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `DiffractionPlan` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `EMMicroscope` DISABLE KEYS */;
-/*!40000 ALTER TABLE `EMMicroscope` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `EnergyScan` DISABLE KEYS */;
 INSERT INTO `EnergyScan` (`energyScanId`, `sessionId`, `blSampleId`, `fluorescenceDetector`, `scanFileFullPath`, `jpegChoochFileFullPath`, `element`, `startEnergy`, `endEnergy`, `transmissionFactor`, `exposureTime`, `axisPosition`, `synchrotronCurrent`, `temperature`, `peakEnergy`, `peakFPrime`, `peakFDoublePrime`, `inflectionEnergy`, `inflectionFPrime`, `inflectionFDoublePrime`, `xrayDose`, `startTime`, `endTime`, `edgeEnergy`, `filename`, `beamSizeVertical`, `beamSizeHorizontal`, `choochFileFullPath`, `crystalClass`, `comments`, `flux`, `flux_end`, `workingDirectory`, `blSubSampleId`) VALUES (49661,55167,NULL,'Vortex1_MCAScaler','/dls/i03/data/2016/cm14451-1/fe1.fluo','/dls/i03/data/2016/cm14451-1/fluorescence_scans/fe1_chooch.png','Fe',7062.75,7170.88,0.016,1,NULL,298.569,100,7115.73,-4.79,4.66,7095.13,-7.26,1.66,0,'2016-01-12 14:51:20','2016-01-12 14:58:33','K',NULL,20,50,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -524,23 +497,8 @@ INSERT INTO `EnergyScan` (`energyScanId`, `sessionId`, `blSampleId`, `fluorescen
 /*!40000 ALTER TABLE `EventChain` DISABLE KEYS */;
 /*!40000 ALTER TABLE `EventChain` ENABLE KEYS */;
 
-/*!40000 ALTER TABLE `Experiment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Experiment` ENABLE KEYS */;
-
 /*!40000 ALTER TABLE `ExperimentKindDetails` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ExperimentKindDetails` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `Frame` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Frame` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `FrameList` DISABLE KEYS */;
-/*!40000 ALTER TABLE `FrameList` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `FrameSet` DISABLE KEYS */;
-/*!40000 ALTER TABLE `FrameSet` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `FrameToList` DISABLE KEYS */;
-/*!40000 ALTER TABLE `FrameToList` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `GeometryClassname` DISABLE KEYS */;
 /*!40000 ALTER TABLE `GeometryClassname` ENABLE KEYS */;
@@ -574,12 +532,6 @@ INSERT INTO `ImageQualityIndicators` (`dataCollectionId`, `imageNumber`, `imageI
 (1066786,3,284718118,NULL,922,922,735,0,1.57,1.57,0,0,0,0,NULL,2.13,NULL,NULL);
 /*!40000 ALTER TABLE `ImageQualityIndicators` ENABLE KEYS */;
 
-/*!40000 ALTER TABLE `Instruction` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Instruction` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `InstructionSet` DISABLE KEYS */;
-/*!40000 ALTER TABLE `InstructionSet` ENABLE KEYS */;
-
 /*!40000 ALTER TABLE `IspybCrystalClass` DISABLE KEYS */;
 /*!40000 ALTER TABLE `IspybCrystalClass` ENABLE KEYS */;
 
@@ -592,9 +544,6 @@ INSERT INTO `ImageQualityIndicators` (`dataCollectionId`, `imageNumber`, `imageI
 /*!40000 ALTER TABLE `Laboratory` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Laboratory` ENABLE KEYS */;
 
-/*!40000 ALTER TABLE `Log4Stat` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Log4Stat` ENABLE KEYS */;
-
 /*!40000 ALTER TABLE `MXMRRun` DISABLE KEYS */;
 INSERT INTO `MXMRRun` (`mxMRRunId`, `autoProcScalingId`, `rValueStart`, `rValueEnd`, `rFreeValueStart`, `rFreeValueEnd`, `LLG`, `TFZ`, `spaceGroup`, `autoProcProgramId`) VALUES (672897,603470,0.1812,0.1682,0.1896,0.1888,NULL,NULL,NULL,56986674),
 (672900,603470,NULL,NULL,NULL,NULL,NULL,NULL,NULL,56986675);
@@ -603,35 +552,8 @@ INSERT INTO `MXMRRun` (`mxMRRunId`, `autoProcScalingId`, `rValueStart`, `rValueE
 /*!40000 ALTER TABLE `MXMRRunBlob` DISABLE KEYS */;
 /*!40000 ALTER TABLE `MXMRRunBlob` ENABLE KEYS */;
 
-/*!40000 ALTER TABLE `Macromolecule` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Macromolecule` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `MacromoleculeRegion` DISABLE KEYS */;
-/*!40000 ALTER TABLE `MacromoleculeRegion` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `Measurement` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Measurement` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `MeasurementToDataCollection` DISABLE KEYS */;
-/*!40000 ALTER TABLE `MeasurementToDataCollection` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `MeasurementUnit` DISABLE KEYS */;
-/*!40000 ALTER TABLE `MeasurementUnit` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `Merge` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Merge` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `Model` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Model` ENABLE KEYS */;
-
 /*!40000 ALTER TABLE `ModelBuilding` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ModelBuilding` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `ModelList` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ModelList` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `ModelToList` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ModelToList` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `MotionCorrection` DISABLE KEYS */;
 /*!40000 ALTER TABLE `MotionCorrection` ENABLE KEYS */;
@@ -651,12 +573,6 @@ INSERT INTO `PDB` (`pdbId`, `name`, `contents`, `code`, `source`) VALUES (6,'ceo
 
 /*!40000 ALTER TABLE `PDBEntry_has_AutoProcProgram` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PDBEntry_has_AutoProcProgram` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `PHPSession` DISABLE KEYS */;
-/*!40000 ALTER TABLE `PHPSession` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `Particle` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Particle` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ParticleClassification` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ParticleClassification` ENABLE KEYS */;
@@ -696,12 +612,6 @@ INSERT INTO `Person` (`personId`, `laboratoryId`, `siteId`, `personUUID`, `famil
 
 /*!40000 ALTER TABLE `Phasing_has_Scaling` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Phasing_has_Scaling` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `PlateGroup` DISABLE KEYS */;
-/*!40000 ALTER TABLE `PlateGroup` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `Pod` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Pod` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Position` DISABLE KEYS */;
 INSERT INTO `Position` (`positionId`, `relativePositionId`, `posX`, `posY`, `posZ`, `scale`, `recordTimeStamp`, `X`, `Y`, `Z`) VALUES (2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -795,41 +705,14 @@ INSERT INTO `Protein_has_PDB` (`proteinhaspdbid`, `proteinid`, `pdbid`) VALUES (
 /*!40000 ALTER TABLE `RobotAction` DISABLE KEYS */;
 /*!40000 ALTER TABLE `RobotAction` ENABLE KEYS */;
 
-/*!40000 ALTER TABLE `Run` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Run` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `SAFETYREQUEST` DISABLE KEYS */;
-/*!40000 ALTER TABLE `SAFETYREQUEST` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `SAMPLECELL` DISABLE KEYS */;
-/*!40000 ALTER TABLE `SAMPLECELL` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `SAMPLEEXPOSUREUNIT` DISABLE KEYS */;
-/*!40000 ALTER TABLE `SAMPLEEXPOSUREUNIT` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `SAXSDATACOLLECTIONGROUP` DISABLE KEYS */;
-/*!40000 ALTER TABLE `SAXSDATACOLLECTIONGROUP` ENABLE KEYS */;
-
 /*!40000 ALTER TABLE `SSXDataCollection` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SSXDataCollection` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SW_onceToken` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SW_onceToken` ENABLE KEYS */;
 
-/*!40000 ALTER TABLE `SafetyLevel` DISABLE KEYS */;
-/*!40000 ALTER TABLE `SafetyLevel` ENABLE KEYS */;
-
 /*!40000 ALTER TABLE `SampleComposition` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SampleComposition` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `SamplePlate` DISABLE KEYS */;
-/*!40000 ALTER TABLE `SamplePlate` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `SamplePlatePosition` DISABLE KEYS */;
-/*!40000 ALTER TABLE `SamplePlatePosition` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `SaxsDataCollection` DISABLE KEYS */;
-/*!40000 ALTER TABLE `SaxsDataCollection` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ScanParametersModel` DISABLE KEYS */;
 INSERT INTO `ScanParametersModel` (`scanParametersModelId`, `scanParametersServiceId`, `dataCollectionPlanId`, `sequenceNumber`, `start`, `stop`, `step`, `array`, `duration`) VALUES (4,4,197788,1,0,90,10,NULL,NULL),
@@ -1046,26 +929,8 @@ INSERT INTO `ShippingHasSession` (`shippingId`, `sessionId`) VALUES (474,339525)
 /*!40000 ALTER TABLE `Sleeve` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Sleeve` ENABLE KEYS */;
 
-/*!40000 ALTER TABLE `Specimen` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Specimen` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `StockSolution` DISABLE KEYS */;
-/*!40000 ALTER TABLE `StockSolution` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `Stoichiometry` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Stoichiometry` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `Structure` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Structure` ENABLE KEYS */;
-
 /*!40000 ALTER TABLE `SubstructureDetermination` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SubstructureDetermination` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `Subtraction` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Subtraction` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `SubtractionToAbInitioModel` DISABLE KEYS */;
-/*!40000 ALTER TABLE `SubtractionToAbInitioModel` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `TiltImageAlignment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `TiltImageAlignment` ENABLE KEYS */;
@@ -1075,15 +940,6 @@ INSERT INTO `ShippingHasSession` (`shippingId`, `sessionId`) VALUES (474,339525)
 
 /*!40000 ALTER TABLE `UserGroup_has_Person` DISABLE KEYS */;
 /*!40000 ALTER TABLE `UserGroup_has_Person` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `Workflow` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Workflow` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `WorkflowMesh` DISABLE KEYS */;
-/*!40000 ALTER TABLE `WorkflowMesh` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `WorkflowStep` DISABLE KEYS */;
-/*!40000 ALTER TABLE `WorkflowStep` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `XFEFluorescenceComposite` DISABLE KEYS */;
 /*!40000 ALTER TABLE `XFEFluorescenceComposite` ENABLE KEYS */;

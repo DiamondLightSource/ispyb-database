@@ -9,39 +9,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-DROP TABLE IF EXISTS `AbInitioModel`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `AbInitioModel` (
-  `abInitioModelId` int(10) NOT NULL AUTO_INCREMENT,
-  `modelListId` int(10) DEFAULT NULL,
-  `averagedModelId` int(10) DEFAULT NULL,
-  `rapidShapeDeterminationModelId` int(10) DEFAULT NULL,
-  `shapeDeterminationModelId` int(10) DEFAULT NULL,
-  `comments` varchar(512) DEFAULT NULL,
-  `creationTime` datetime DEFAULT NULL,
-  PRIMARY KEY (`abInitioModelId`),
-  KEY `AbInitioModelToModelList` (`modelListId`),
-  KEY `AbInitioModelToRapid` (`rapidShapeDeterminationModelId`),
-  KEY `AverageToModel` (`averagedModelId`),
-  KEY `SahpeDeterminationToAbiniti` (`shapeDeterminationModelId`),
-  CONSTRAINT `AbInitioModelToModelList` FOREIGN KEY (`modelListId`) REFERENCES `ModelList` (`modelListId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `AbInitioModelToRapid` FOREIGN KEY (`rapidShapeDeterminationModelId`) REFERENCES `Model` (`modelId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `AverageToModel` FOREIGN KEY (`averagedModelId`) REFERENCES `Model` (`modelId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `SahpeDeterminationToAbiniti` FOREIGN KEY (`shapeDeterminationModelId`) REFERENCES `Model` (`modelId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Additive`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Additive` (
-  `additiveId` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  `additiveType` varchar(45) DEFAULT NULL,
-  `comments` varchar(512) DEFAULT NULL,
-  PRIMARY KEY (`additiveId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AdminActivity`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -75,48 +42,6 @@ CREATE TABLE `Aperture` (
   `apertureId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sizeX` float DEFAULT NULL,
   PRIMARY KEY (`apertureId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Assembly`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Assembly` (
-  `assemblyId` int(10) NOT NULL AUTO_INCREMENT,
-  `macromoleculeId` int(10) NOT NULL,
-  `creationDate` datetime DEFAULT NULL,
-  `comments` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`assemblyId`),
-  KEY `AssemblyToMacromolecule` (`macromoleculeId`),
-  CONSTRAINT `AssemblyToMacromolecule` FOREIGN KEY (`macromoleculeId`) REFERENCES `Macromolecule` (`macromoleculeId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `AssemblyHasMacromolecule`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `AssemblyHasMacromolecule` (
-  `AssemblyHasMacromoleculeId` int(10) NOT NULL AUTO_INCREMENT,
-  `assemblyId` int(10) NOT NULL,
-  `macromoleculeId` int(10) NOT NULL,
-  PRIMARY KEY (`AssemblyHasMacromoleculeId`),
-  KEY `AssemblyHasMacromoleculeToAssembly` (`assemblyId`),
-  KEY `AssemblyHasMacromoleculeToAssemblyRegion` (`macromoleculeId`),
-  CONSTRAINT `AssemblyHasMacromoleculeToAssembly` FOREIGN KEY (`assemblyId`) REFERENCES `Assembly` (`assemblyId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `AssemblyHasMacromoleculeToAssemblyRegion` FOREIGN KEY (`macromoleculeId`) REFERENCES `Macromolecule` (`macromoleculeId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `AssemblyRegion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `AssemblyRegion` (
-  `assemblyRegionId` int(10) NOT NULL AUTO_INCREMENT,
-  `assemblyHasMacromoleculeId` int(10) NOT NULL,
-  `assemblyRegionType` varchar(45) DEFAULT NULL,
-  `name` varchar(45) DEFAULT NULL,
-  `fromResiduesBases` varchar(45) DEFAULT NULL,
-  `toResiduesBases` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`assemblyRegionId`),
-  KEY `AssemblyRegionToAssemblyHasMacromolecule` (`assemblyHasMacromoleculeId`),
-  CONSTRAINT `AssemblyRegionToAssemblyHasMacromolecule` FOREIGN KEY (`assemblyHasMacromoleculeId`) REFERENCES `AssemblyHasMacromolecule` (`AssemblyHasMacromoleculeId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AutoProc`;
@@ -731,7 +656,6 @@ CREATE TABLE `BLSession` (
   `beamLineSetupId` int(10) unsigned DEFAULT NULL,
   `proposalId` int(10) unsigned NOT NULL DEFAULT 0,
   `beamCalendarId` int(10) unsigned DEFAULT NULL,
-  `projectCode` varchar(45) DEFAULT NULL,
   `startDate` datetime DEFAULT NULL,
   `endDate` datetime DEFAULT NULL,
   `beamLineName` varchar(45) DEFAULT NULL,
@@ -742,21 +666,12 @@ CREATE TABLE `BLSession` (
   `bltimeStamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `visit_number` int(10) unsigned DEFAULT 0,
   `usedFlag` tinyint(1) DEFAULT NULL COMMENT 'indicates if session has Datacollections or XFE or EnergyScans attached',
-  `sessionTitle` varchar(255) DEFAULT NULL COMMENT 'fx accounts only',
-  `structureDeterminations` float DEFAULT NULL,
-  `dewarTransport` float DEFAULT NULL,
-  `databackupFrance` float DEFAULT NULL COMMENT 'data backup and express delivery France',
-  `databackupEurope` float DEFAULT NULL COMMENT 'data backup and express delivery Europe',
-  `expSessionPk` int(11) unsigned DEFAULT NULL COMMENT 'smis session Pk ',
-  `operatorSiteNumber` varchar(10) DEFAULT NULL COMMENT 'matricule site',
-  `lastUpdate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'last update timestamp: by default the end of the session, the last collect...',
-  `protectedData` varchar(1024) DEFAULT NULL COMMENT 'indicates if the data are protected or not',
+  `lastUpdate` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'last update timestamp: by default the end of the session, the last collect...',
   `externalId` binary(16) DEFAULT NULL,
   `archived` tinyint(1) DEFAULT 0 COMMENT 'The data for the session is archived and no longer available on disk',
   `riskRating` enum('Low','Medium','High','Not Permitted') DEFAULT NULL COMMENT 'ERA in user admin system',
   PRIMARY KEY (`sessionId`),
   UNIQUE KEY `proposalId` (`proposalId`,`visit_number`),
-  KEY `BLSession_FKIndexOperatorSiteNumber` (`operatorSiteNumber`),
   KEY `Session_FKIndex2` (`beamLineSetupId`),
   KEY `Session_FKIndexBeamLineName` (`beamLineName`),
   KEY `Session_FKIndexEndDate` (`endDate`),
@@ -959,42 +874,6 @@ CREATE TABLE `BeamlineStats` (
   `scanFileW` varchar(255) DEFAULT NULL,
   `scanFileH` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`beamlineStatsId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Buffer`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Buffer` (
-  `bufferId` int(10) NOT NULL AUTO_INCREMENT,
-  `BLSESSIONID` int(11) unsigned DEFAULT NULL,
-  `safetyLevelId` int(10) DEFAULT NULL,
-  `name` varchar(45) DEFAULT NULL,
-  `acronym` varchar(45) DEFAULT NULL,
-  `pH` varchar(45) DEFAULT NULL,
-  `composition` varchar(45) DEFAULT NULL,
-  `comments` varchar(512) DEFAULT NULL,
-  `proposalId` int(10) NOT NULL DEFAULT -1,
-  PRIMARY KEY (`bufferId`),
-  KEY `BufferToSafetyLevel` (`safetyLevelId`),
-  CONSTRAINT `BufferToSafetyLevel` FOREIGN KEY (`safetyLevelId`) REFERENCES `SafetyLevel` (`safetyLevelId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `BufferHasAdditive`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `BufferHasAdditive` (
-  `bufferHasAdditiveId` int(10) NOT NULL AUTO_INCREMENT,
-  `bufferId` int(10) NOT NULL,
-  `additiveId` int(10) NOT NULL,
-  `measurementUnitId` int(10) DEFAULT NULL,
-  `quantity` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`bufferHasAdditiveId`),
-  KEY `BufferHasAdditiveToAdditive` (`additiveId`),
-  KEY `BufferHasAdditiveToBuffer` (`bufferId`),
-  KEY `BufferHasAdditiveToUnit` (`measurementUnitId`),
-  CONSTRAINT `BufferHasAdditiveToAdditive` FOREIGN KEY (`additiveId`) REFERENCES `Additive` (`additiveId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `BufferHasAdditiveToBuffer` FOREIGN KEY (`bufferId`) REFERENCES `Buffer` (`bufferId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `BufferHasAdditiveToUnit` FOREIGN KEY (`measurementUnitId`) REFERENCES `MeasurementUnit` (`measurementUnitId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `CTF`;
@@ -1620,18 +1499,15 @@ CREATE TABLE `DataCollectionGroup` (
   `actualSampleSlotInContainer` int(10) unsigned DEFAULT NULL COMMENT 'Actual sample slot number in container',
   `actualContainerBarcode` varchar(45) DEFAULT NULL COMMENT 'Actual container barcode',
   `actualContainerSlotInSC` int(10) unsigned DEFAULT NULL COMMENT 'Actual container slot number in sample changer',
-  `workflowId` int(11) unsigned DEFAULT NULL,
   `xtalSnapshotFullPath` varchar(255) DEFAULT NULL,
   `scanParameters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`scanParameters`)),
   `experimentTypeId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`dataCollectionGroupId`),
   KEY `DataCollectionGroup_FKIndex1` (`blSampleId`),
   KEY `DataCollectionGroup_FKIndex2` (`sessionId`),
-  KEY `workflowId` (`workflowId`),
   KEY `DataCollectionGroup_ibfk_4` (`experimentTypeId`),
   CONSTRAINT `DataCollectionGroup_ibfk_1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `DataCollectionGroup_ibfk_2` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `DataCollectionGroup_ibfk_3` FOREIGN KEY (`workflowId`) REFERENCES `Workflow` (`workflowId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `DataCollectionGroup_ibfk_4` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='a dataCollectionGroup is a group of dataCollection for a spe';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1650,18 +1526,6 @@ CREATE TABLE `DataCollectionPlan_has_Detector` (
   KEY `DataCollectionPlan_has_Detector_ibfk2` (`detectorId`),
   CONSTRAINT `DataCollectionPlan_has_Detector_ibfk1` FOREIGN KEY (`dataCollectionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`),
   CONSTRAINT `DataCollectionPlan_has_Detector_ibfk2` FOREIGN KEY (`detectorId`) REFERENCES `Detector` (`detectorId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `DataReductionStatus`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `DataReductionStatus` (
-  `dataReductionStatusId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `dataCollectionId` int(11) unsigned NOT NULL,
-  `status` varchar(15) DEFAULT NULL,
-  `filename` varchar(255) DEFAULT NULL,
-  `message` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`dataReductionStatusId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Detector`;
@@ -1902,21 +1766,6 @@ CREATE TABLE `DiffractionPlan` (
   CONSTRAINT `DiffractionPlan_ibfk3` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `EMMicroscope`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `EMMicroscope` (
-  `emMicroscopeId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `instrumentName` varchar(100) NOT NULL,
-  `voltage` float DEFAULT NULL,
-  `CS` float DEFAULT NULL,
-  `detectorPixelSize` float DEFAULT NULL,
-  `C2aperture` float DEFAULT NULL,
-  `ObjAperture` float DEFAULT NULL,
-  `C2lens` float DEFAULT NULL,
-  PRIMARY KEY (`emMicroscopeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `EnergyScan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -2008,23 +1857,6 @@ CREATE TABLE `EventType` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Defines the list of event types which can occur during a data collection.';
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Experiment`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Experiment` (
-  `experimentId` int(11) NOT NULL AUTO_INCREMENT,
-  `proposalId` int(10) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `creationDate` datetime DEFAULT NULL,
-  `comments` varchar(512) DEFAULT NULL,
-  `experimentType` varchar(128) DEFAULT NULL,
-  `sourceFilePath` varchar(256) DEFAULT NULL,
-  `dataAcquisitionFilePath` varchar(256) DEFAULT NULL COMMENT 'The file path pointing to the data acquisition. Eventually it may be a compressed file with all the files or just the folder',
-  `status` varchar(45) DEFAULT NULL,
-  `sessionId` int(10) DEFAULT NULL,
-  PRIMARY KEY (`experimentId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ExperimentKindDetails`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -2050,58 +1882,6 @@ CREATE TABLE `ExperimentType` (
   `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`experimentTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='A lookup table for different types of experients';
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Frame`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Frame` (
-  `frameId` int(10) NOT NULL AUTO_INCREMENT,
-  `FRAMESETID` int(11) unsigned DEFAULT NULL,
-  `filePath` varchar(255) DEFAULT NULL,
-  `comments` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`frameId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `FrameList`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `FrameList` (
-  `frameListId` int(10) NOT NULL AUTO_INCREMENT,
-  `comments` int(10) DEFAULT NULL,
-  PRIMARY KEY (`frameListId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `FrameSet`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `FrameSet` (
-  `frameSetId` int(10) NOT NULL AUTO_INCREMENT,
-  `runId` int(10) NOT NULL,
-  `FILEPATH` varchar(255) DEFAULT NULL,
-  `INTERNALPATH` varchar(255) DEFAULT NULL,
-  `frameListId` int(10) DEFAULT NULL,
-  `detectorId` int(10) DEFAULT NULL,
-  `detectorDistance` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`frameSetId`),
-  KEY `FrameSetToFrameList` (`frameListId`),
-  KEY `FramesetToRun` (`runId`),
-  CONSTRAINT `FrameSetToFrameList` FOREIGN KEY (`frameListId`) REFERENCES `FrameList` (`frameListId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FramesetToRun` FOREIGN KEY (`runId`) REFERENCES `Run` (`runId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `FrameToList`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `FrameToList` (
-  `frameToListId` int(10) NOT NULL AUTO_INCREMENT,
-  `frameListId` int(10) NOT NULL,
-  `frameId` int(10) NOT NULL,
-  PRIMARY KEY (`frameToListId`),
-  KEY `FrameToLisToFrameList` (`frameListId`),
-  KEY `FrameToListToFrame` (`frameId`),
-  CONSTRAINT `FrameToLisToFrameList` FOREIGN KEY (`frameListId`) REFERENCES `FrameList` (`frameListId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FrameToListToFrame` FOREIGN KEY (`frameId`) REFERENCES `Frame` (`frameId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `GeometryClassname`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2159,7 +1939,6 @@ CREATE TABLE `GridInfo` (
   KEY `GridInfo_ibfk_2` (`dataCollectionGroupId`),
   KEY `GridInfo_fk_dataCollectionId` (`dataCollectionId`),
   CONSTRAINT `GridInfo_fk_dataCollectionId` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `GridInfo_ibfk_1` FOREIGN KEY (`workflowMeshId`) REFERENCES `WorkflowMesh` (`workflowMeshId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `GridInfo_ibfk_2` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2236,29 +2015,6 @@ CREATE TABLE `InspectionType` (
   `inspectionTypeId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`inspectionTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Instruction`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Instruction` (
-  `instructionId` int(10) NOT NULL AUTO_INCREMENT,
-  `instructionSetId` int(10) NOT NULL,
-  `INSTRUCTIONORDER` int(11) unsigned DEFAULT NULL,
-  `comments` varchar(255) DEFAULT NULL,
-  `order` int(11) NOT NULL,
-  PRIMARY KEY (`instructionId`),
-  KEY `InstructionToInstructionSet` (`instructionSetId`),
-  CONSTRAINT `InstructionToInstructionSet` FOREIGN KEY (`instructionSetId`) REFERENCES `InstructionSet` (`instructionSetId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `InstructionSet`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `InstructionSet` (
-  `instructionSetId` int(10) NOT NULL AUTO_INCREMENT,
-  `type` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`instructionSetId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `IspybCrystalClass`;
@@ -2351,20 +2107,6 @@ CREATE TABLE `Laboratory` (
   PRIMARY KEY (`laboratoryId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Log4Stat`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Log4Stat` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `priority` varchar(15) DEFAULT NULL,
-  `LOG4JTIMESTAMP` datetime DEFAULT NULL,
-  `msg` varchar(255) DEFAULT NULL,
-  `detail` varchar(255) DEFAULT NULL,
-  `value` varchar(255) DEFAULT NULL,
-  `timestamp` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `MXMRRun`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -2412,125 +2154,6 @@ CREATE TABLE `MXMRRunBlob` (
   CONSTRAINT `mxMRRunBlob_FK1` FOREIGN KEY (`mxMRRunId`) REFERENCES `MXMRRun` (`mxMRRunId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Macromolecule`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Macromolecule` (
-  `macromoleculeId` int(11) NOT NULL AUTO_INCREMENT,
-  `proposalId` int(10) unsigned DEFAULT NULL,
-  `safetyLevelId` int(10) DEFAULT NULL,
-  `name` varchar(45) DEFAULT NULL,
-  `acronym` varchar(45) DEFAULT NULL,
-  `molecularMass` varchar(45) DEFAULT NULL,
-  `extintionCoefficient` varchar(45) DEFAULT NULL,
-  `sequence` varchar(1000) DEFAULT NULL,
-  `creationDate` datetime DEFAULT NULL,
-  `comments` varchar(1024) DEFAULT NULL,
-  PRIMARY KEY (`macromoleculeId`),
-  KEY `MacromoleculeToSafetyLevel` (`safetyLevelId`),
-  CONSTRAINT `MacromoleculeToSafetyLevel` FOREIGN KEY (`safetyLevelId`) REFERENCES `SafetyLevel` (`safetyLevelId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `MacromoleculeRegion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `MacromoleculeRegion` (
-  `macromoleculeRegionId` int(10) NOT NULL AUTO_INCREMENT,
-  `macromoleculeId` int(10) NOT NULL,
-  `regionType` varchar(45) DEFAULT NULL,
-  `id` varchar(45) DEFAULT NULL,
-  `count` varchar(45) DEFAULT NULL,
-  `sequence` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`macromoleculeRegionId`),
-  KEY `MacromoleculeRegionInformationToMacromolecule` (`macromoleculeId`),
-  CONSTRAINT `MacromoleculeRegionInformationToMacromolecule` FOREIGN KEY (`macromoleculeId`) REFERENCES `Macromolecule` (`macromoleculeId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Measurement`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Measurement` (
-  `specimenId` int(10) NOT NULL,
-  `runId` int(10) DEFAULT NULL,
-  `code` varchar(100) DEFAULT NULL,
-  `priorityLevelId` int(10) DEFAULT NULL,
-  `exposureTemperature` varchar(45) DEFAULT NULL,
-  `viscosity` varchar(45) DEFAULT NULL,
-  `flow` tinyint(1) DEFAULT NULL,
-  `extraFlowTime` varchar(45) DEFAULT NULL,
-  `volumeToLoad` varchar(45) DEFAULT NULL,
-  `waitTime` varchar(45) DEFAULT NULL,
-  `transmission` varchar(45) DEFAULT NULL,
-  `comments` varchar(512) DEFAULT NULL,
-  `measurementId` int(10) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`measurementId`),
-  KEY `MeasurementToRun` (`runId`),
-  KEY `SpecimenToSamplePlateWell` (`specimenId`),
-  CONSTRAINT `MeasurementToRun` FOREIGN KEY (`runId`) REFERENCES `Run` (`runId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `SpecimenToSamplePlateWell` FOREIGN KEY (`specimenId`) REFERENCES `Specimen` (`specimenId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `MeasurementToDataCollection`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `MeasurementToDataCollection` (
-  `measurementToDataCollectionId` int(10) NOT NULL AUTO_INCREMENT,
-  `dataCollectionId` int(10) DEFAULT NULL,
-  `measurementId` int(10) DEFAULT NULL,
-  `dataCollectionOrder` int(10) DEFAULT NULL,
-  PRIMARY KEY (`measurementToDataCollectionId`),
-  KEY `MeasurementToDataCollectionToDataCollection` (`dataCollectionId`),
-  KEY `MeasurementToDataCollectionToMeasurement` (`measurementId`),
-  CONSTRAINT `MeasurementToDataCollectionToDataCollection` FOREIGN KEY (`dataCollectionId`) REFERENCES `SaxsDataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `MeasurementToDataCollectionToMeasurement` FOREIGN KEY (`measurementId`) REFERENCES `Measurement` (`measurementId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `MeasurementUnit`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `MeasurementUnit` (
-  `measurementUnitId` int(10) NOT NULL,
-  `name` varchar(45) DEFAULT NULL,
-  `unitType` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`measurementUnitId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Merge`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Merge` (
-  `mergeId` int(10) NOT NULL AUTO_INCREMENT,
-  `measurementId` int(10) DEFAULT NULL,
-  `frameListId` int(10) DEFAULT NULL,
-  `discardedFrameNameList` varchar(1024) DEFAULT NULL,
-  `averageFilePath` varchar(255) DEFAULT NULL,
-  `framesCount` varchar(45) DEFAULT NULL,
-  `framesMerge` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`mergeId`),
-  KEY `MergeToListOfFrames` (`frameListId`),
-  KEY `MergeToMeasurement` (`measurementId`),
-  CONSTRAINT `MergeToListOfFrames` FOREIGN KEY (`frameListId`) REFERENCES `FrameList` (`frameListId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `MergeToMeasurement` FOREIGN KEY (`measurementId`) REFERENCES `Measurement` (`measurementId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Model`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Model` (
-  `modelId` int(10) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  `pdbFile` varchar(255) DEFAULT NULL,
-  `fitFile` varchar(255) DEFAULT NULL,
-  `firFile` varchar(255) DEFAULT NULL,
-  `logFile` varchar(255) DEFAULT NULL,
-  `rFactor` varchar(45) DEFAULT NULL,
-  `chiSqrt` varchar(45) DEFAULT NULL,
-  `volume` varchar(45) DEFAULT NULL,
-  `rg` varchar(45) DEFAULT NULL,
-  `dMax` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`modelId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ModelBuilding`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -2549,30 +2172,6 @@ CREATE TABLE `ModelBuilding` (
   CONSTRAINT `ModelBuilding_phasingAnalysisfk_1` FOREIGN KEY (`phasingAnalysisId`) REFERENCES `PhasingAnalysis` (`phasingAnalysisId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ModelBuilding_phasingProgramRunfk_1` FOREIGN KEY (`phasingProgramRunId`) REFERENCES `PhasingProgramRun` (`phasingProgramRunId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ModelBuilding_spaceGroupfk_1` FOREIGN KEY (`spaceGroupId`) REFERENCES `SpaceGroup` (`spaceGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `ModelList`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ModelList` (
-  `modelListId` int(10) NOT NULL AUTO_INCREMENT,
-  `nsdFilePath` varchar(255) DEFAULT NULL,
-  `chi2RgFilePath` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`modelListId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `ModelToList`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ModelToList` (
-  `modelToListId` int(10) NOT NULL AUTO_INCREMENT,
-  `modelId` int(10) NOT NULL,
-  `modelListId` int(10) NOT NULL,
-  PRIMARY KEY (`modelToListId`),
-  KEY `ModelToListToList` (`modelListId`),
-  KEY `ModelToListToModel` (`modelId`),
-  CONSTRAINT `ModelToListToList` FOREIGN KEY (`modelListId`) REFERENCES `ModelList` (`modelListId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `ModelToListToModel` FOREIGN KEY (`modelId`) REFERENCES `Model` (`modelId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `MotionCorrection`;
@@ -2701,29 +2300,6 @@ CREATE TABLE `PDBEntry_has_AutoProcProgram` (
   KEY `pdbEntry_AutoProcProgramIdx2` (`autoProcProgramId`),
   CONSTRAINT `pdbEntry_AutoProcProgram_FK1` FOREIGN KEY (`pdbEntryId`) REFERENCES `PDBEntry` (`pdbEntryId`) ON DELETE CASCADE,
   CONSTRAINT `pdbEntry_AutoProcProgram_FK2` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `PHPSession`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `PHPSession` (
-  `id` varchar(50) NOT NULL,
-  `accessDate` datetime DEFAULT NULL,
-  `data` varchar(4000) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Particle`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Particle` (
-  `particleId` int(11) unsigned NOT NULL,
-  `dataCollectionId` int(11) unsigned NOT NULL,
-  `x` float DEFAULT NULL,
-  `y` float DEFAULT NULL,
-  PRIMARY KEY (`particleId`),
-  KEY `Particle_FKIND1` (`dataCollectionId`),
-  CONSTRAINT `Particle_FK1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ParticleClassification`;
@@ -2964,50 +2540,6 @@ CREATE TABLE `Phasing_has_Scaling` (
   CONSTRAINT `PhasingHasScaling_autoProcScalingfk_1` FOREIGN KEY (`autoProcScalingId`) REFERENCES `AutoProcScaling` (`autoProcScalingId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `PhasingHasScaling_phasingAnalysisfk_1` FOREIGN KEY (`phasingAnalysisId`) REFERENCES `PhasingAnalysis` (`phasingAnalysisId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `PlateGroup`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `PlateGroup` (
-  `plateGroupId` int(10) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `storageTemperature` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`plateGroupId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `PlateType`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `PlateType` (
-  `PlateTypeId` int(10) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  `description` varchar(45) DEFAULT NULL,
-  `shape` varchar(45) DEFAULT NULL,
-  `rowCount` int(11) DEFAULT NULL,
-  `columnCount` int(11) DEFAULT NULL,
-  `experimentId` int(10) DEFAULT NULL,
-  PRIMARY KEY (`PlateTypeId`),
-  KEY `PlateTypeToExperiment` (`experimentId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Pod`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Pod` (
-  `podId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `personId` int(10) unsigned NOT NULL COMMENT 'Pod owner defined by the logged in SynchWeb user who requested the pod start up',
-  `filePath` varchar(255) DEFAULT NULL COMMENT 'File or directory path to mount into the Pod if required',
-  `app` enum('MAXIV HDF5 Viewer','H5Web','JNB') NOT NULL,
-  `podName` varchar(255) DEFAULT NULL,
-  `status` varchar(25) DEFAULT NULL,
-  `ip` varchar(15) DEFAULT NULL,
-  `message` text DEFAULT NULL COMMENT 'Generic text field intended for storing error messages related to status field',
-  `created` timestamp NOT NULL DEFAULT current_timestamp(),
-  `shutdown` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`podId`),
-  KEY `Pod_fk1` (`personId`),
-  CONSTRAINT `Pod_fk1` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci COMMENT='Status tracker for k8s pods launched from SynchWeb';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Position`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3387,80 +2919,6 @@ CREATE TABLE `RobotAction` (
   CONSTRAINT `RobotAction_FK2` FOREIGN KEY (`blsampleId`) REFERENCES `BLSample` (`blSampleId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Robot actions as reported by GDA';
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Run`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Run` (
-  `runId` int(10) NOT NULL AUTO_INCREMENT,
-  `timePerFrame` varchar(45) DEFAULT NULL,
-  `timeStart` varchar(45) DEFAULT NULL,
-  `timeEnd` varchar(45) DEFAULT NULL,
-  `storageTemperature` varchar(45) DEFAULT NULL,
-  `exposureTemperature` varchar(45) DEFAULT NULL,
-  `spectrophotometer` varchar(45) DEFAULT NULL,
-  `energy` varchar(45) DEFAULT NULL,
-  `creationDate` datetime DEFAULT NULL,
-  `frameAverage` varchar(45) DEFAULT NULL,
-  `frameCount` varchar(45) DEFAULT NULL,
-  `transmission` varchar(45) DEFAULT NULL,
-  `beamCenterX` varchar(45) DEFAULT NULL,
-  `beamCenterY` varchar(45) DEFAULT NULL,
-  `pixelSizeX` varchar(45) DEFAULT NULL,
-  `pixelSizeY` varchar(45) DEFAULT NULL,
-  `radiationRelative` varchar(45) DEFAULT NULL,
-  `radiationAbsolute` varchar(45) DEFAULT NULL,
-  `normalization` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`runId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `SAFETYREQUEST`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `SAFETYREQUEST` (
-  `SAFETYREQUESTID` decimal(10,0) DEFAULT NULL,
-  `XMLDOCUMENTID` decimal(10,0) DEFAULT NULL,
-  `PROTEINID` decimal(10,0) DEFAULT NULL,
-  `PROJECTCODE` varchar(45) DEFAULT NULL,
-  `SUBMISSIONDATE` datetime DEFAULT NULL,
-  `RESPONSE` decimal(3,0) DEFAULT NULL,
-  `REPONSEDATE` datetime DEFAULT NULL,
-  `RESPONSEDETAILS` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `SAMPLECELL`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `SAMPLECELL` (
-  `SAMPLECELLID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `SAMPLEEXPOSUREUNITID` int(11) unsigned DEFAULT NULL,
-  `ID` varchar(45) DEFAULT NULL,
-  `NAME` varchar(45) DEFAULT NULL,
-  `DIAMETER` varchar(45) DEFAULT NULL,
-  `MATERIAL` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`SAMPLECELLID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `SAMPLEEXPOSUREUNIT`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `SAMPLEEXPOSUREUNIT` (
-  `SAMPLEEXPOSUREUNITID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `ID` varchar(45) DEFAULT NULL,
-  `PATHLENGTH` varchar(45) DEFAULT NULL,
-  `VOLUME` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`SAMPLEEXPOSUREUNITID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `SAXSDATACOLLECTIONGROUP`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `SAXSDATACOLLECTIONGROUP` (
-  `DATACOLLECTIONGROUPID` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `DEFAULTDATAACQUISITIONID` int(11) unsigned DEFAULT NULL,
-  `SAXSDATACOLLECTIONARRAYID` int(11) unsigned DEFAULT NULL,
-  PRIMARY KEY (`DATACOLLECTIONGROUPID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `SSXDataCollection`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -3498,16 +2956,6 @@ CREATE TABLE `SW_onceToken` (
   CONSTRAINT `SW_onceToken_fk2` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='One-time use tokens needed for token auth in order to grant access to file downloads and webcams (and some images)';
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `SafetyLevel`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `SafetyLevel` (
-  `safetyLevelId` int(10) NOT NULL AUTO_INCREMENT,
-  `code` varchar(45) DEFAULT NULL,
-  `description` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`safetyLevelId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `SampleComposition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -3527,59 +2975,6 @@ CREATE TABLE `SampleComposition` (
   CONSTRAINT `SampleComposition_ibfk_2` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`),
   CONSTRAINT `SampleComposition_ibfk_3` FOREIGN KEY (`concentrationTypeId`) REFERENCES `ConcentrationType` (`concentrationTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Links a sample to its components with a specified abundance or ratio.';
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `SamplePlate`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `SamplePlate` (
-  `samplePlateId` int(10) NOT NULL AUTO_INCREMENT,
-  `BLSESSIONID` int(11) unsigned DEFAULT NULL,
-  `plateGroupId` int(10) DEFAULT NULL,
-  `plateTypeId` int(10) DEFAULT NULL,
-  `instructionSetId` int(10) DEFAULT NULL,
-  `boxId` int(10) unsigned DEFAULT NULL,
-  `name` varchar(45) DEFAULT NULL,
-  `slotPositionRow` varchar(45) DEFAULT NULL,
-  `slotPositionColumn` varchar(45) DEFAULT NULL,
-  `storageTemperature` varchar(45) DEFAULT NULL,
-  `experimentId` int(10) NOT NULL,
-  PRIMARY KEY (`samplePlateId`),
-  KEY `PlateToPtateGroup` (`plateGroupId`),
-  KEY `SamplePlateToExperiment` (`experimentId`),
-  KEY `SamplePlateToInstructionSet` (`instructionSetId`),
-  KEY `SamplePlateToType` (`plateTypeId`),
-  CONSTRAINT `PlateToPtateGroup` FOREIGN KEY (`plateGroupId`) REFERENCES `PlateGroup` (`plateGroupId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `SamplePlateToExperiment` FOREIGN KEY (`experimentId`) REFERENCES `Experiment` (`experimentId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `SamplePlateToInstructionSet` FOREIGN KEY (`instructionSetId`) REFERENCES `InstructionSet` (`instructionSetId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `SamplePlateToType` FOREIGN KEY (`plateTypeId`) REFERENCES `PlateType` (`PlateTypeId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `SamplePlatePosition`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `SamplePlatePosition` (
-  `samplePlatePositionId` int(10) NOT NULL AUTO_INCREMENT,
-  `samplePlateId` int(10) NOT NULL,
-  `rowNumber` int(11) DEFAULT NULL,
-  `columnNumber` int(11) DEFAULT NULL,
-  `volume` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`samplePlatePositionId`),
-  KEY `PlatePositionToPlate` (`samplePlateId`),
-  CONSTRAINT `PlatePositionToPlate` FOREIGN KEY (`samplePlateId`) REFERENCES `SamplePlate` (`samplePlateId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `SaxsDataCollection`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `SaxsDataCollection` (
-  `dataCollectionId` int(10) NOT NULL AUTO_INCREMENT,
-  `BLSESSIONID` int(11) unsigned DEFAULT NULL,
-  `experimentId` int(10) NOT NULL,
-  `comments` varchar(5120) DEFAULT NULL,
-  PRIMARY KEY (`dataCollectionId`),
-  KEY `SaxsDataCollectionToExperiment` (`experimentId`),
-  CONSTRAINT `SaxsDataCollectionToExperiment` FOREIGN KEY (`experimentId`) REFERENCES `Experiment` (`experimentId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ScanParametersModel`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -4015,93 +3410,6 @@ CREATE TABLE `SpaceGroup` (
   CONSTRAINT `SpaceGroup_ibfk_1` FOREIGN KEY (`geometryClassnameId`) REFERENCES `GeometryClassname` (`geometryClassnameId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Specimen`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Specimen` (
-  `specimenId` int(10) NOT NULL AUTO_INCREMENT,
-  `BLSESSIONID` int(11) unsigned DEFAULT NULL,
-  `bufferId` int(10) DEFAULT NULL,
-  `macromoleculeId` int(10) DEFAULT NULL,
-  `samplePlatePositionId` int(10) DEFAULT NULL,
-  `safetyLevelId` int(10) DEFAULT NULL,
-  `stockSolutionId` int(10) DEFAULT NULL,
-  `code` varchar(255) DEFAULT NULL,
-  `concentration` varchar(45) DEFAULT NULL,
-  `volume` varchar(45) DEFAULT NULL,
-  `experimentId` int(10) NOT NULL,
-  `comments` varchar(5120) DEFAULT NULL,
-  PRIMARY KEY (`specimenId`),
-  KEY `SamplePlateWellToBuffer` (`bufferId`),
-  KEY `SamplePlateWellToExperiment` (`experimentId`),
-  KEY `SamplePlateWellToMacromolecule` (`macromoleculeId`),
-  KEY `SamplePlateWellToSafetyLevel` (`safetyLevelId`),
-  KEY `SamplePlateWellToSamplePlatePosition` (`samplePlatePositionId`),
-  KEY `SampleToStockSolution` (`stockSolutionId`),
-  CONSTRAINT `SamplePlateWellToBuffer` FOREIGN KEY (`bufferId`) REFERENCES `Buffer` (`bufferId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `SamplePlateWellToExperiment` FOREIGN KEY (`experimentId`) REFERENCES `Experiment` (`experimentId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `SamplePlateWellToMacromolecule` FOREIGN KEY (`macromoleculeId`) REFERENCES `Macromolecule` (`macromoleculeId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `SamplePlateWellToSafetyLevel` FOREIGN KEY (`safetyLevelId`) REFERENCES `SafetyLevel` (`safetyLevelId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `SamplePlateWellToSamplePlatePosition` FOREIGN KEY (`samplePlatePositionId`) REFERENCES `SamplePlatePosition` (`samplePlatePositionId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `SampleToStockSolution` FOREIGN KEY (`stockSolutionId`) REFERENCES `StockSolution` (`stockSolutionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `StockSolution`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `StockSolution` (
-  `stockSolutionId` int(10) NOT NULL AUTO_INCREMENT,
-  `BLSESSIONID` int(11) unsigned DEFAULT NULL,
-  `bufferId` int(10) NOT NULL,
-  `macromoleculeId` int(10) DEFAULT NULL,
-  `instructionSetId` int(10) DEFAULT NULL,
-  `boxId` int(10) unsigned DEFAULT NULL,
-  `name` varchar(45) DEFAULT NULL,
-  `storageTemperature` varchar(55) DEFAULT NULL,
-  `volume` varchar(55) DEFAULT NULL,
-  `concentration` varchar(55) DEFAULT NULL,
-  `comments` varchar(255) DEFAULT NULL,
-  `proposalId` int(10) NOT NULL DEFAULT -1,
-  PRIMARY KEY (`stockSolutionId`),
-  KEY `StockSolutionToBuffer` (`bufferId`),
-  KEY `StockSolutionToInstructionSet` (`instructionSetId`),
-  KEY `StockSolutionToMacromolecule` (`macromoleculeId`),
-  CONSTRAINT `StockSolutionToBuffer` FOREIGN KEY (`bufferId`) REFERENCES `Buffer` (`bufferId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `StockSolutionToInstructionSet` FOREIGN KEY (`instructionSetId`) REFERENCES `InstructionSet` (`instructionSetId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `StockSolutionToMacromolecule` FOREIGN KEY (`macromoleculeId`) REFERENCES `Macromolecule` (`macromoleculeId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Stoichiometry`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Stoichiometry` (
-  `stoichiometryId` int(10) NOT NULL AUTO_INCREMENT,
-  `hostMacromoleculeId` int(10) NOT NULL,
-  `macromoleculeId` int(10) NOT NULL,
-  `ratio` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`stoichiometryId`),
-  KEY `StoichiometryToHost` (`hostMacromoleculeId`),
-  KEY `StoichiometryToMacromolecule` (`macromoleculeId`),
-  CONSTRAINT `StoichiometryToHost` FOREIGN KEY (`hostMacromoleculeId`) REFERENCES `Macromolecule` (`macromoleculeId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `StoichiometryToMacromolecule` FOREIGN KEY (`macromoleculeId`) REFERENCES `Macromolecule` (`macromoleculeId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Structure`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Structure` (
-  `structureId` int(10) NOT NULL AUTO_INCREMENT,
-  `macromoleculeId` int(10) NOT NULL,
-  `PDB` varchar(45) DEFAULT NULL,
-  `structureType` varchar(45) DEFAULT NULL,
-  `fromResiduesBases` varchar(45) DEFAULT NULL,
-  `toResiduesBases` varchar(45) DEFAULT NULL,
-  `sequence` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`structureId`),
-  KEY `StructureToMacromolecule` (`macromoleculeId`),
-  CONSTRAINT `StructureToMacromolecule` FOREIGN KEY (`macromoleculeId`) REFERENCES `Macromolecule` (`macromoleculeId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `SubstructureDetermination`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -4121,53 +3429,6 @@ CREATE TABLE `SubstructureDetermination` (
   CONSTRAINT `SubstructureDetermination_phasingAnalysisfk_1` FOREIGN KEY (`phasingAnalysisId`) REFERENCES `PhasingAnalysis` (`phasingAnalysisId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `SubstructureDetermination_phasingProgramRunfk_1` FOREIGN KEY (`phasingProgramRunId`) REFERENCES `PhasingProgramRun` (`phasingProgramRunId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `SubstructureDetermination_spaceGroupfk_1` FOREIGN KEY (`spaceGroupId`) REFERENCES `SpaceGroup` (`spaceGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Subtraction`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Subtraction` (
-  `subtractionId` int(10) NOT NULL AUTO_INCREMENT,
-  `dataCollectionId` int(10) NOT NULL,
-  `rg` varchar(45) DEFAULT NULL,
-  `rgStdev` varchar(45) DEFAULT NULL,
-  `I0` varchar(45) DEFAULT NULL,
-  `I0Stdev` varchar(45) DEFAULT NULL,
-  `firstPointUsed` varchar(45) DEFAULT NULL,
-  `lastPointUsed` varchar(45) DEFAULT NULL,
-  `quality` varchar(45) DEFAULT NULL,
-  `isagregated` varchar(45) DEFAULT NULL,
-  `concentration` varchar(45) DEFAULT NULL,
-  `gnomFilePath` varchar(255) DEFAULT NULL,
-  `rgGuinier` varchar(45) DEFAULT NULL,
-  `rgGnom` varchar(45) DEFAULT NULL,
-  `dmax` varchar(45) DEFAULT NULL,
-  `total` varchar(45) DEFAULT NULL,
-  `volume` varchar(45) DEFAULT NULL,
-  `creationTime` datetime DEFAULT NULL,
-  `kratkyFilePath` varchar(255) DEFAULT NULL,
-  `scatteringFilePath` varchar(255) DEFAULT NULL,
-  `guinierFilePath` varchar(255) DEFAULT NULL,
-  `SUBTRACTEDFILEPATH` varchar(255) DEFAULT NULL,
-  `gnomFilePathOutput` varchar(255) DEFAULT NULL,
-  `substractedFilePath` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`subtractionId`),
-  KEY `EdnaAnalysisToMeasurement` (`dataCollectionId`),
-  CONSTRAINT `EdnaAnalysisToMeasurement0` FOREIGN KEY (`dataCollectionId`) REFERENCES `SaxsDataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `SubtractionToAbInitioModel`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `SubtractionToAbInitioModel` (
-  `subtractionToAbInitioModelId` int(10) NOT NULL AUTO_INCREMENT,
-  `abInitioId` int(10) DEFAULT NULL,
-  `subtractionId` int(10) DEFAULT NULL,
-  PRIMARY KEY (`subtractionToAbInitioModelId`),
-  KEY `substractionToAbInitioModelToAbinitioModel` (`abInitioId`),
-  KEY `ubstractionToSubstraction` (`subtractionId`),
-  CONSTRAINT `substractionToAbInitioModelToAbinitioModel` FOREIGN KEY (`abInitioId`) REFERENCES `AbInitioModel` (`abInitioModelId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `substractionToSubstraction` FOREIGN KEY (`subtractionId`) REFERENCES `Subtraction` (`subtractionId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `TiltImageAlignment`;
@@ -4269,80 +3530,6 @@ CREATE TABLE `UserGroup_has_Person` (
   KEY `userGroup_has_Person_fk2` (`personId`),
   CONSTRAINT `userGroup_has_Person_fk1` FOREIGN KEY (`userGroupId`) REFERENCES `UserGroup` (`userGroupId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `userGroup_has_Person_fk2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `Workflow`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Workflow` (
-  `workflowId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
-  `workflowTitle` varchar(255) DEFAULT NULL,
-  `workflowType` enum('Undefined','BioSAXS Post Processing','EnhancedCharacterisation','LineScan','MeshScan','Dehydration','KappaReorientation','BurnStrategy','XrayCentering','DiffractionTomography','TroubleShooting','VisualReorientation','HelicalCharacterisation','GroupedProcessing','MXPressE','MXPressO','MXPressL','MXScore','MXPressI','MXPressM','MXPressA') DEFAULT NULL,
-  `workflowTypeId` int(11) DEFAULT NULL,
-  `comments` varchar(1024) DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
-  `resultFilePath` varchar(255) DEFAULT NULL,
-  `logFilePath` varchar(255) DEFAULT NULL,
-  `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
-  `workflowDescriptionFullPath` varchar(255) DEFAULT NULL COMMENT 'Full file path to a json description of the workflow',
-  PRIMARY KEY (`workflowId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `WorkflowMesh`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `WorkflowMesh` (
-  `workflowMeshId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
-  `workflowId` int(11) unsigned NOT NULL COMMENT 'Related workflow',
-  `bestPositionId` int(11) unsigned DEFAULT NULL,
-  `bestImageId` int(12) unsigned DEFAULT NULL,
-  `value1` double DEFAULT NULL,
-  `value2` double DEFAULT NULL,
-  `value3` double DEFAULT NULL COMMENT 'N value',
-  `value4` double DEFAULT NULL,
-  `cartographyPath` varchar(255) DEFAULT NULL,
-  `recordTimeStamp` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Creation or last update date/time',
-  PRIMARY KEY (`workflowMeshId`),
-  KEY `bestImageId` (`bestImageId`),
-  KEY `bestPositionId` (`bestPositionId`),
-  KEY `WorkflowMesh_FKIndex1` (`workflowId`),
-  CONSTRAINT `WorkflowMesh_ibfk_1` FOREIGN KEY (`bestPositionId`) REFERENCES `MotorPosition` (`motorPositionId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `WorkflowMesh_ibfk_2` FOREIGN KEY (`bestImageId`) REFERENCES `Image` (`imageId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `WorkflowMesh_workflowfk_1` FOREIGN KEY (`workflowId`) REFERENCES `Workflow` (`workflowId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `WorkflowStep`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `WorkflowStep` (
-  `workflowStepId` int(11) NOT NULL AUTO_INCREMENT,
-  `workflowId` int(11) unsigned NOT NULL,
-  `type` varchar(45) DEFAULT NULL,
-  `status` varchar(45) DEFAULT NULL,
-  `folderPath` varchar(1024) DEFAULT NULL,
-  `imageResultFilePath` varchar(1024) DEFAULT NULL,
-  `htmlResultFilePath` varchar(1024) DEFAULT NULL,
-  `resultFilePath` varchar(1024) DEFAULT NULL,
-  `comments` varchar(2048) DEFAULT NULL,
-  `crystalSizeX` varchar(45) DEFAULT NULL,
-  `crystalSizeY` varchar(45) DEFAULT NULL,
-  `crystalSizeZ` varchar(45) DEFAULT NULL,
-  `maxDozorScore` varchar(45) DEFAULT NULL,
-  `recordTimeStamp` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`workflowStepId`),
-  KEY `step_to_workflow_fk_idx` (`workflowId`),
-  CONSTRAINT `step_to_workflow_fk` FOREIGN KEY (`workflowId`) REFERENCES `Workflow` (`workflowId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `WorkflowType`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `WorkflowType` (
-  `workflowTypeId` int(11) NOT NULL AUTO_INCREMENT,
-  `workflowTypeName` varchar(45) DEFAULT NULL,
-  `comments` varchar(2048) DEFAULT NULL,
-  `recordTimeStamp` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`workflowTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `XFEFluorescenceComposite`;
@@ -4484,201 +3671,6 @@ CREATE TABLE `XrayCentringResult` (
   CONSTRAINT `XrayCentringResult_ibfk_1` FOREIGN KEY (`xrayCentringId`) REFERENCES `XrayCentring` (`xrayCentringId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Xray Centring result.';
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `v_Log4Stat`;
-/*!50001 DROP VIEW IF EXISTS `v_Log4Stat`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_Log4Stat` AS SELECT
- 1 AS `id`,
-  1 AS `priority`,
-  1 AS `timestamp`,
-  1 AS `msg`,
-  1 AS `detail`,
-  1 AS `value` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_dewar`;
-/*!50001 DROP VIEW IF EXISTS `v_dewar`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_dewar` AS SELECT
- 1 AS `proposalId`,
-  1 AS `shippingId`,
-  1 AS `shippingName`,
-  1 AS `dewarId`,
-  1 AS `dewarName`,
-  1 AS `dewarStatus`,
-  1 AS `proposalCode`,
-  1 AS `proposalNumber`,
-  1 AS `creationDate`,
-  1 AS `shippingType`,
-  1 AS `barCode`,
-  1 AS `shippingStatus`,
-  1 AS `beamLineName`,
-  1 AS `nbEvents`,
-  1 AS `storesin`,
-  1 AS `nbSamples` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_dewarBeamline`;
-/*!50001 DROP VIEW IF EXISTS `v_dewarBeamline`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_dewarBeamline` AS SELECT
- 1 AS `beamLineName`,
-  1 AS `COUNT(*)` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_dewarBeamlineByWeek`;
-/*!50001 DROP VIEW IF EXISTS `v_dewarBeamlineByWeek`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_dewarBeamlineByWeek` AS SELECT
- 1 AS `Week`,
-  1 AS `ID14`,
-  1 AS `ID23`,
-  1 AS `ID29`,
-  1 AS `BM14` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_dewarByWeek`;
-/*!50001 DROP VIEW IF EXISTS `v_dewarByWeek`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_dewarByWeek` AS SELECT
- 1 AS `Week`,
-  1 AS `Dewars Tracked`,
-  1 AS `Dewars Non-Tracked` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_dewarByWeekTotal`;
-/*!50001 DROP VIEW IF EXISTS `v_dewarByWeekTotal`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_dewarByWeekTotal` AS SELECT
- 1 AS `Week`,
-  1 AS `Dewars Tracked`,
-  1 AS `Dewars Non-Tracked`,
-  1 AS `Total` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_dewarList`;
-/*!50001 DROP VIEW IF EXISTS `v_dewarList`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_dewarList` AS SELECT
- 1 AS `proposal`,
-  1 AS `shippingName`,
-  1 AS `dewarName`,
-  1 AS `barCode`,
-  1 AS `creationDate`,
-  1 AS `shippingType`,
-  1 AS `nbEvents`,
-  1 AS `dewarStatus`,
-  1 AS `shippingStatus`,
-  1 AS `nbSamples` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_dewarProposalCode`;
-/*!50001 DROP VIEW IF EXISTS `v_dewarProposalCode`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_dewarProposalCode` AS SELECT
- 1 AS `proposalCode`,
-  1 AS `COUNT(*)` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_dewarProposalCodeByWeek`;
-/*!50001 DROP VIEW IF EXISTS `v_dewarProposalCodeByWeek`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_dewarProposalCodeByWeek` AS SELECT
- 1 AS `Week`,
-  1 AS `MX`,
-  1 AS `FX`,
-  1 AS `BM14U`,
-  1 AS `BM161`,
-  1 AS `BM162`,
-  1 AS `Others` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_hour`;
-/*!50001 DROP VIEW IF EXISTS `v_hour`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_hour` AS SELECT
- 1 AS `num` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_logonByHour`;
-/*!50001 DROP VIEW IF EXISTS `v_logonByHour`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_logonByHour` AS SELECT
- 1 AS `Hour`,
-  1 AS `Distinct logins`,
-  1 AS `Total logins` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_logonByHour2`;
-/*!50001 DROP VIEW IF EXISTS `v_logonByHour2`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_logonByHour2` AS SELECT
- 1 AS `Hour`,
-  1 AS `Distinct logins`,
-  1 AS `Total logins` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_logonByMonthDay`;
-/*!50001 DROP VIEW IF EXISTS `v_logonByMonthDay`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_logonByMonthDay` AS SELECT
- 1 AS `Day`,
-  1 AS `Distinct logins`,
-  1 AS `Total logins` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_logonByMonthDay2`;
-/*!50001 DROP VIEW IF EXISTS `v_logonByMonthDay2`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_logonByMonthDay2` AS SELECT
- 1 AS `Day`,
-  1 AS `Distinct logins`,
-  1 AS `Total logins` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_logonByWeek`;
-/*!50001 DROP VIEW IF EXISTS `v_logonByWeek`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_logonByWeek` AS SELECT
- 1 AS `Week`,
-  1 AS `Distinct logins`,
-  1 AS `Total logins` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_logonByWeek2`;
-/*!50001 DROP VIEW IF EXISTS `v_logonByWeek2`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_logonByWeek2` AS SELECT
- 1 AS `Week`,
-  1 AS `Distinct logins`,
-  1 AS `Total logins` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_logonByWeekDay`;
-/*!50001 DROP VIEW IF EXISTS `v_logonByWeekDay`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_logonByWeekDay` AS SELECT
- 1 AS `Day`,
-  1 AS `Distinct logins`,
-  1 AS `Total logins` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_logonByWeekDay2`;
-/*!50001 DROP VIEW IF EXISTS `v_logonByWeekDay2`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_logonByWeekDay2` AS SELECT
- 1 AS `Day`,
-  1 AS `Distinct logins`,
-  1 AS `Total logins` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_monthDay`;
-/*!50001 DROP VIEW IF EXISTS `v_monthDay`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_monthDay` AS SELECT
- 1 AS `num` */;
-SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `v_run`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -4691,45 +3683,6 @@ CREATE TABLE `v_run` (
   KEY `v_run_idx1` (`startDate`,`endDate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `v_sample`;
-/*!50001 DROP VIEW IF EXISTS `v_sample`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_sample` AS SELECT
- 1 AS `proposalId`,
-  1 AS `shippingId`,
-  1 AS `dewarId`,
-  1 AS `containerId`,
-  1 AS `blSampleId`,
-  1 AS `proposalCode`,
-  1 AS `proposalNumber`,
-  1 AS `creationDate`,
-  1 AS `shippingType`,
-  1 AS `barCode`,
-  1 AS `shippingStatus` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_sampleByWeek`;
-/*!50001 DROP VIEW IF EXISTS `v_sampleByWeek`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_sampleByWeek` AS SELECT
- 1 AS `Week`,
-  1 AS `Samples` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_week`;
-/*!50001 DROP VIEW IF EXISTS `v_week`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_week` AS SELECT
- 1 AS `num` */;
-SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `v_weekDay`;
-/*!50001 DROP VIEW IF EXISTS `v_weekDay`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `v_weekDay` AS SELECT
- 1 AS `day` */;
-SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `zc_ZocaloBuffer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -4741,305 +3694,6 @@ CREATE TABLE `zc_ZocaloBuffer` (
   CONSTRAINT `AutoProcProgram_fk_AutoProcProgramId` FOREIGN KEY (`AutoProcProgramID`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-/*!50001 DROP VIEW IF EXISTS `v_Log4Stat`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_Log4Stat` AS select `s`.`id` AS `id`,`s`.`priority` AS `priority`,`s`.`timestamp` AS `timestamp`,`s`.`msg` AS `msg`,`s`.`detail` AS `detail`,`s`.`value` AS `value` from `Log4Stat` `s` where (`s`.`detail` like 'fx%' or `s`.`detail` like 'ifx%' or `s`.`detail` like 'mx%' or `s`.`detail` like 'ix%' or `s`.`detail` like 'bm14u%' or `s`.`detail` like 'bm161%' or `s`.`detail` like 'bm162%') and `s`.`detail` <> 'fx999' and `s`.`detail` <> 'ifx999' and `s`.`detail` <> 'mx415' */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_dewar`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_dewar` AS select `p`.`proposalId` AS `proposalId`,`s`.`shippingId` AS `shippingId`,`s`.`shippingName` AS `shippingName`,`d`.`dewarId` AS `dewarId`,`d`.`code` AS `dewarName`,`d`.`dewarStatus` AS `dewarStatus`,`p`.`proposalCode` AS `proposalCode`,`p`.`proposalNumber` AS `proposalNumber`,`s`.`creationDate` AS `creationDate`,`s`.`shippingType` AS `shippingType`,`d`.`barCode` AS `barCode`,`s`.`shippingStatus` AS `shippingStatus`,`ss`.`beamLineName` AS `beamLineName`,count(distinct `h1`.`DewarTransportHistoryId`) AS `nbEvents`,count(distinct `h2`.`DewarTransportHistoryId`) AS `storesin`,count(if(`bls`.`code` is not null,1,NULL)) AS `nbSamples` from (((((((`Proposal` `p` join `Shipping` `s` on(`s`.`proposalId` = `p`.`proposalId`)) join `Dewar` `d` on(`d`.`shippingId` = `s`.`shippingId`)) left join `Container` `c` on(`c`.`dewarId` = `d`.`dewarId`)) left join `BLSession` `ss` on(`ss`.`sessionId` = `d`.`firstExperimentId`)) left join `BLSample` `bls` on(`bls`.`containerId` = `c`.`containerId`)) left join `DewarTransportHistory` `h1` on(`h1`.`dewarId` = `d`.`dewarId` and (`h1`.`dewarStatus` = 'at ESRF' or `h1`.`dewarStatus` = 'sent to User'))) left join `DewarTransportHistory` `h2` on(`h2`.`dewarId` = `d`.`dewarId` and `h2`.`storageLocation` = 'STORES-IN')) where (`p`.`proposalCode` like 'MX%' or `p`.`proposalCode` like 'FX%' or `p`.`proposalCode` like 'IFX%' or `p`.`proposalCode` like 'IX%' or `p`.`proposalCode` like 'BM14U%' or `p`.`proposalCode` like 'bm161%' or `p`.`proposalCode` like 'bm162%') and (`p`.`proposalCode` <> 'FX' or `p`.`proposalNumber` <> '999') and (`p`.`proposalCode` <> 'IFX' or `p`.`proposalNumber` <> '999') and (`p`.`proposalCode` <> 'MX' or `p`.`proposalNumber` <> '415') and `d`.`type` = 'Dewar' and `s`.`creationDate` is not null group by `d`.`dewarId` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_dewarBeamline`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_dewarBeamline` AS select `d`.`beamLineName` AS `beamLineName`,count(0) AS `COUNT(*)` from `v_dewar` `d` where `d`.`beamLineName` is not null group by `d`.`beamLineName` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_dewarBeamlineByWeek`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_dewarBeamlineByWeek` AS select substr(`w`.`num`,6) AS `Week`,count(if(`d`.`beamLineName` like 'ID14%',1,NULL)) AS `ID14`,count(if(`d`.`beamLineName` like 'ID23%',1,NULL)) AS `ID23`,count(if(`d`.`beamLineName` like 'ID29%',1,NULL)) AS `ID29`,count(if(`d`.`beamLineName` like 'BM14%',1,NULL)) AS `BM14` from (`v_week` `w` left join `v_dewar` `d` on(`w`.`num` = date_format(`d`.`creationDate`,'%x-%v'))) group by `w`.`num` order by `w`.`num` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_dewarByWeek`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_dewarByWeek` AS select substr(`w`.`num`,6) AS `Week`,count(if(`d`.`shippingType` = 'DewarTracking',1,NULL)) AS `Dewars Tracked`,count(if(`d`.`proposalCode` is not null and (`d`.`shippingType` <> 'DewarTracking' or `d`.`shippingType` is null),1,NULL)) AS `Dewars Non-Tracked` from (`v_week` `w` left join `v_dewar` `d` on(`w`.`num` = date_format(`d`.`creationDate`,'%Y-%v'))) group by substr(`w`.`num`,6) order by `w`.`num` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_dewarByWeekTotal`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_dewarByWeekTotal` AS select substr(`w`.`num`,6) AS `Week`,count(if(`d`.`shippingType` = 'DewarTracking',1,NULL)) AS `Dewars Tracked`,count(if(`d`.`proposalCode` is not null and (`d`.`shippingType` <> 'DewarTracking' or `d`.`shippingType` is null),1,NULL)) AS `Dewars Non-Tracked`,count(if(`d`.`proposalCode` is not null,1,NULL)) AS `Total` from (`v_week` `w` left join `v_dewar` `d` on(`w`.`num` = date_format(`d`.`creationDate`,'%Y-%v'))) group by substr(`w`.`num`,6) order by substr(`w`.`num`,6) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_dewarList`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_dewarList` AS select concat(`d`.`proposalCode`,`d`.`proposalNumber`) AS `proposal`,`d`.`shippingName` AS `shippingName`,`d`.`dewarName` AS `dewarName`,`d`.`barCode` AS `barCode`,date_format(`d`.`creationDate`,'%d/%m/%Y') AS `creationDate`,`d`.`shippingType` AS `shippingType`,count(distinct `h`.`DewarTransportHistoryId`) AS `nbEvents`,`d`.`dewarStatus` AS `dewarStatus`,`d`.`shippingStatus` AS `shippingStatus`,count(if(`bls`.`blSampleId` is not null,1,NULL)) AS `nbSamples` from (((`v_dewar` `d` left join `Container` `c` on(`c`.`dewarId` = `d`.`dewarId`)) left join `BLSample` `bls` on(`bls`.`containerId` = `c`.`containerId`)) left join `DewarTransportHistory` `h` on(`h`.`dewarId` = `d`.`dewarId`)) group by `d`.`dewarId` order by `d`.`creationDate` desc */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_dewarProposalCode`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_dewarProposalCode` AS select `d`.`proposalCode` AS `proposalCode`,count(0) AS `COUNT(*)` from `v_dewar` `d` group by `d`.`proposalCode` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_dewarProposalCodeByWeek`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_dewarProposalCodeByWeek` AS select substr(`w`.`num`,6) AS `Week`,count(if(`d`.`proposalCode` = 'MX',1,NULL)) AS `MX`,count(if(`d`.`proposalCode` = 'FX',1,NULL)) AS `FX`,count(if(`d`.`proposalCode` = 'BM14U',1,NULL)) AS `BM14U`,count(if(`d`.`proposalCode` = 'BM161',1,NULL)) AS `BM161`,count(if(`d`.`proposalCode` = 'BM162',1,NULL)) AS `BM162`,count(if(`d`.`proposalCode` <> 'MX' and `d`.`proposalCode` <> 'FX' and `d`.`proposalCode` <> 'BM14U' and `d`.`proposalCode` <> 'BM161' and `d`.`proposalCode` <> 'BM162',1,NULL)) AS `Others` from (`v_week` `w` left join `v_dewar` `d` on(`w`.`num` = date_format(`d`.`creationDate`,'%Y-%v'))) group by substr(`w`.`num`,6) order by substr(`w`.`num`,6) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_hour`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_hour` AS select date_format(current_timestamp() - interval 23 hour,_utf8mb3'%Y-%m-%d %H') AS `num` union select date_format(current_timestamp() - interval 22 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 22 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 21 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 21 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 20 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 20 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 19 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 19 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 18 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 18 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 17 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 17 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 16 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 16 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 15 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 15 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 14 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 14 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 13 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 13 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 12 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 12 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 11 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 11 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 10 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 9 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 9 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 8 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 8 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 7 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 7 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 6 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 6 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 5 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 5 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 4 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 4 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 3 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 3 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 2 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 2 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 1 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 HOUR),'%Y-%m-%d %H')` union select date_format(current_timestamp() - interval 0 hour,_utf8mb3'%Y-%m-%d %H') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 0 HOUR),'%Y-%m-%d %H')` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_logonByHour`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_logonByHour` AS select date_format(`w`.`num`,'%H') AS `Hour`,count(distinct `s`.`detail`) AS `Distinct logins`,count(`s`.`detail`) - count(distinct `s`.`detail`) AS `Total logins` from (`v_hour` `w` left join `v_Log4Stat` `s` on(`w`.`num` = date_format(`s`.`timestamp`,'%Y-%m-%d %H') and `s`.`msg` = 'LOGON')) group by date_format(`w`.`num`,'%H') order by `w`.`num` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_logonByHour2`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_logonByHour2` AS select date_format(`w`.`num`,'%H') AS `Hour`,count(distinct `s`.`detail`) AS `Distinct logins`,count(`s`.`detail`) - count(distinct `s`.`detail`) AS `Total logins` from (`v_hour` `w` left join `v_Log4Stat` `s` on(`w`.`num` = date_format(`s`.`timestamp`,'%Y-%m-%d %H') and `s`.`msg` = 'LOGON' and `s`.`priority` = 'ISPYB2_STAT')) group by date_format(`w`.`num`,'%H') order by `w`.`num` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_logonByMonthDay`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_logonByMonthDay` AS select date_format(`w`.`num`,'%d/%m') AS `Day`,count(distinct `s`.`detail`) AS `Distinct logins`,count(`s`.`detail`) - count(distinct `s`.`detail`) AS `Total logins` from (`v_monthDay` `w` left join `v_Log4Stat` `s` on(`w`.`num` = date_format(`s`.`timestamp`,'%Y-%m-%d') and `s`.`msg` = 'LOGON')) group by date_format(`w`.`num`,'%d/%m') order by `w`.`num` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_logonByMonthDay2`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_logonByMonthDay2` AS select date_format(`w`.`num`,'%d/%m') AS `Day`,count(distinct `s`.`detail`) AS `Distinct logins`,count(`s`.`detail`) - count(distinct `s`.`detail`) AS `Total logins` from (`v_monthDay` `w` left join `v_Log4Stat` `s` on(`w`.`num` = date_format(`s`.`timestamp`,'%Y-%m-%d') and `s`.`msg` = 'LOGON' and `s`.`priority` = 'ISPYB2_STAT')) group by date_format(`w`.`num`,'%d/%m') order by `w`.`num` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_logonByWeek`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_logonByWeek` AS select substr(`w`.`num`,6) AS `Week`,count(distinct `s`.`detail`) AS `Distinct logins`,count(`s`.`detail`) - count(distinct `s`.`detail`) AS `Total logins` from (`v_week` `w` left join `v_Log4Stat` `s` on(`w`.`num` = date_format(`s`.`timestamp`,'%Y-%v') and `s`.`msg` = 'LOGON')) group by substr(`w`.`num`,6) order by `w`.`num` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_logonByWeek2`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_logonByWeek2` AS select substr(`w`.`num`,6) AS `Week`,count(distinct `s`.`detail`) AS `Distinct logins`,count(`s`.`detail`) - count(distinct `s`.`detail`) AS `Total logins` from (`v_week` `w` left join `v_Log4Stat` `s` on(`w`.`num` = date_format(`s`.`timestamp`,'%Y-%v') and `s`.`msg` = 'LOGON' and `s`.`priority` = 'ISPYB2_STAT')) group by substr(`w`.`num`,6) order by `w`.`num` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_logonByWeekDay`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_logonByWeekDay` AS select date_format(`w`.`day`,'%W') AS `Day`,count(distinct `s`.`detail`) AS `Distinct logins`,count(`s`.`detail`) - count(distinct `s`.`detail`) AS `Total logins` from (`v_weekDay` `w` left join `v_Log4Stat` `s` on(`w`.`day` = date_format(`s`.`timestamp`,'%Y-%m-%d') and `s`.`msg` = 'LOGON')) group by `w`.`day` order by `w`.`day` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_logonByWeekDay2`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_logonByWeekDay2` AS select date_format(`w`.`day`,'%W') AS `Day`,count(distinct `s`.`detail`) AS `Distinct logins`,count(`s`.`detail`) - count(distinct `s`.`detail`) AS `Total logins` from (`v_weekDay` `w` left join `v_Log4Stat` `s` on(`w`.`day` = date_format(`s`.`timestamp`,'%Y-%m-%d') and `s`.`msg` = 'LOGON' and `s`.`priority` = 'ISPYB2_STAT')) group by `w`.`day` order by `w`.`day` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_monthDay`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_monthDay` AS select date_format(current_timestamp() - interval 31 day,_utf8mb3'%Y-%m-%d') AS `num` union select date_format(current_timestamp() - interval 30 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 30 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 29 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 29 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 28 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 28 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 27 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 27 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 26 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 26 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 25 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 25 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 24 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 24 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 23 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 23 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 22 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 22 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 21 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 21 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 20 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 20 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 19 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 19 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 18 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 18 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 17 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 17 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 16 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 16 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 15 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 15 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 14 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 14 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 13 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 13 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 12 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 12 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 11 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 11 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 10 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 9 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 9 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 8 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 8 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 7 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 7 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 6 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 6 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 5 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 5 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 4 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 4 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 3 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 3 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 2 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 2 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 1 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 0 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 0 DAY),'%Y-%m-%d')` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_sample`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_sample` AS select `d`.`proposalId` AS `proposalId`,`d`.`shippingId` AS `shippingId`,`d`.`dewarId` AS `dewarId`,`c`.`containerId` AS `containerId`,`bls`.`blSampleId` AS `blSampleId`,`d`.`proposalCode` AS `proposalCode`,`d`.`proposalNumber` AS `proposalNumber`,`d`.`creationDate` AS `creationDate`,`d`.`shippingType` AS `shippingType`,`d`.`barCode` AS `barCode`,`d`.`shippingStatus` AS `shippingStatus` from ((`BLSample` `bls` join `Container` `c` on(`c`.`containerId` = `bls`.`containerId`)) join `v_dewar` `d` on(`d`.`dewarId` = `c`.`dewarId`)) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_sampleByWeek`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_sampleByWeek` AS select substr(`w`.`num`,6) AS `Week`,if(`w`.`num` <= date_format(current_timestamp(),'%Y-%v'),count(if(`bls`.`proposalCode` is not null,1,NULL)),NULL) AS `Samples` from (`v_week` `w` left join `v_sample` `bls` on(`w`.`num` = date_format(`bls`.`creationDate`,'%Y-%v'))) group by substr(`w`.`num`,6) order by substr(`w`.`num`,6) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_week`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_week` AS select date_format(current_timestamp() - interval 52 week,_utf8mb3'%x-%v') AS `num` union select date_format(current_timestamp() - interval 51 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 51 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 50 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 50 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 49 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 49 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 48 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 48 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 47 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 47 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 46 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 46 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 45 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 45 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 44 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 44 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 43 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 43 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 42 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 42 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 41 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 41 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 40 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 40 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 39 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 39 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 38 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 38 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 37 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 37 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 36 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 36 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 35 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 35 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 34 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 34 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 33 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 33 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 32 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 32 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 31 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 31 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 30 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 30 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 29 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 29 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 28 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 28 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 27 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 27 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 26 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 26 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 25 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 25 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 24 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 24 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 23 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 23 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 22 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 22 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 21 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 21 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 20 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 20 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 19 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 19 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 18 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 18 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 17 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 17 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 16 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 16 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 15 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 15 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 14 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 14 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 13 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 13 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 12 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 12 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 11 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 11 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 10 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 9 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 9 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 8 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 8 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 7 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 7 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 6 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 6 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 5 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 5 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 4 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 4 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 3 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 3 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 2 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 2 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 1 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 WEEK),'%x-%v')` union select date_format(current_timestamp() - interval 0 week,_utf8mb3'%x-%v') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 0 WEEK),'%x-%v')` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP VIEW IF EXISTS `v_weekDay`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb3 */;
-/*!50001 SET character_set_results     = utf8mb3 */;
-/*!50001 SET collation_connection      = utf8mb3_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 SQL SECURITY INVOKER */
-/*!50001 VIEW `v_weekDay` AS select date_format(current_timestamp() - interval 6 day,_utf8mb3'%Y-%m-%d') AS `day` union select date_format(current_timestamp() - interval 5 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 5 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 4 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 4 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 3 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 3 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 2 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 2 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 1 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d')` union select date_format(current_timestamp() - interval 0 day,_utf8mb3'%Y-%m-%d') AS `DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 0 DAY),'%Y-%m-%d')` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -5049,3 +3703,4 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
