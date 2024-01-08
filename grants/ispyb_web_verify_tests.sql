@@ -78,7 +78,6 @@ GRANT SELECT ON Laboratory TO ispyb_web_verify_tests;
 GRANT SELECT ON MotionCorrection TO ispyb_web_verify_tests;
 GRANT SELECT ON Movie TO ispyb_web_verify_tests;
 
-GRANT SELECT ON PHPSession TO ispyb_web_verify_tests;
 GRANT SELECT ON Person TO ispyb_web_verify_tests;
 
 GRANT SELECT ON PDB TO ispyb_web_verify_tests;

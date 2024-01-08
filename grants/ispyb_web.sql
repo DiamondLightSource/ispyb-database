@@ -55,7 +55,6 @@ GRANT INSERT, UPDATE, DELETE ON Project_has_Session TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON Project_has_Shipping TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON Project_has_User TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON Project_has_XFEFSpectrum TO 'ispyb_web';
-GRANT INSERT, UPDATE, DELETE ON PHPSession TO 'ispyb_web';
 
 GRANT INSERT, UPDATE, DELETE ON UserGroup_has_Permission TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON Permission TO 'ispyb_web';
