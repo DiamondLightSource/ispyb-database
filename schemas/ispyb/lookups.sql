@@ -239,7 +239,11 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (264,'2023_10_24_BLSession_add_riskRating.sql','DONE','2023-10-26 15:50:26'),
 (265,'2023_10_26_BFactorFit_and_new_cols.sql','DONE','2023-10-26 15:50:26'),
 (266,'2023_10_27_BFactorFit_particleClassification_not_null.sql','DONE','2023-10-27 11:28:51'),
-(267,'2023_10_31_BLSession_modify_beamlineOperator.sql','DONE','2023-10-31 11:58:22');
+(267,'2023_10_31_BLSession_modify_beamlineOperator.sql','DONE','2023-10-31 11:58:22'),
+(269,'2024_01_02_drop_bioSAXS.sql','DONE','2024-01-08 15:41:22'),
+(270,'2024_01_02_drop_views.sql','DONE','2024-01-08 15:41:22'),
+(271,'2024_01_04_BLSession_drop_cols.sql','DONE','2024-01-08 15:41:22'),
+(272,'2024_01_04_drop_unused_tables.sql','DONE','2024-01-08 15:41:22');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
@@ -360,12 +364,6 @@ INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `activ
 INSERT INTO `InspectionType` (`inspectionTypeId`, `name`) VALUES (1,'Visible'),
 (2,'UV');
 /*!40000 ALTER TABLE `InspectionType` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `PlateType` DISABLE KEYS */;
-/*!40000 ALTER TABLE `PlateType` ENABLE KEYS */;
-
-/*!40000 ALTER TABLE `WorkflowType` DISABLE KEYS */;
-/*!40000 ALTER TABLE `WorkflowType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Schedule` DISABLE KEYS */;
 INSERT INTO `Schedule` (`scheduleId`, `name`) VALUES (1,'Daily - 1 week'),
