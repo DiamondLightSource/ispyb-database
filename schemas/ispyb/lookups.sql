@@ -10,7 +10,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.0.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','3.0.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
