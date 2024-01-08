@@ -83,7 +83,6 @@ GRANT SELECT ON Person TO ispyb_web_verify_tests;
 GRANT SELECT ON PDB TO ispyb_web_verify_tests;
 GRANT SELECT ON PDBEntry TO ispyb_web_verify_tests;
 GRANT SELECT ON Permission TO ispyb_web_verify_tests;
-GRANT SELECT ON Pod TO ispyb_web_verify_tests;
 GRANT SELECT ON Position TO ispyb_web_verify_tests;
 
 GRANT SELECT ON ProcessingJob TO ispyb_web_verify_tests;
