@@ -10,7 +10,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.0.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.0.1');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -244,7 +244,9 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (270,'2024_01_02_drop_views.sql','DONE','2024-01-08 15:41:22'),
 (271,'2024_01_04_BLSession_drop_cols.sql','DONE','2024-01-08 15:41:22'),
 (272,'2024_01_04_drop_unused_tables.sql','DONE','2024-01-08 15:41:22'),
-(274,'2024_01_08_AdminVar_bump_version.sql','DONE','2024-01-08 17:01:43');
+(274,'2024_01_08_AdminVar_bump_version.sql','DONE','2024-01-08 17:01:43'),
+(276,'2024_01_08_BLSession_add_dropped_cols.sql','DONE','2024-01-09 14:26:50'),
+(277,'2024_01_09_AdminVar_bump_version.sql','DONE','2024-01-09 14:43:35');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
