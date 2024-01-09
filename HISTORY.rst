@@ -5,6 +5,12 @@ History
 Unreleased / master
 -------------------
 
+4.0.1 (2024-01-09)
+-------------------
+
+* Modify stored procedure ``upsert_session_for_proposal_code_number`` to remove
+  references in queries to previously removed ``BLSession`` columns.
+
 4.0.0 (2024-01-08)
 -------------------
 

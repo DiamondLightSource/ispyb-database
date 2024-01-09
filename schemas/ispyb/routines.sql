@@ -130,7 +130,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `retrieve_proposal_title`(p_proposal_code varchar(5), p_proposal_number int) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
+CREATE FUNCTION `retrieve_proposal_title`(p_proposal_code varchar(5), p_proposal_number int) RETURNS varchar(255) CHARSET latin1
     READS SQL DATA
 BEGIN
 	DECLARE ret_title varchar(255);
@@ -155,7 +155,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `retrieve_proposal_title_v2`(p_proposalCode varchar(5), p_proposalNumber int) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
+CREATE FUNCTION `retrieve_proposal_title_v2`(p_proposalCode varchar(5), p_proposalNumber int) RETURNS varchar(255) CHARSET latin1
     READS SQL DATA
     COMMENT 'Retrieve the title for a given proposal code and number.'
 BEGIN
@@ -206,7 +206,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `root_replace`(p_str varchar(255), p_oldroot varchar(255), p_newroot varchar(255)) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
+CREATE FUNCTION `root_replace`(p_str varchar(255), p_oldroot varchar(255), p_newroot varchar(255)) RETURNS varchar(255) CHARSET latin1
     COMMENT 'Returns a varchar where the old root p_oldroot (the leftmost part) of p_str has been replaced with a new root p_newroot'
 BEGIN
  DECLARE path_len smallint unsigned DEFAULT LENGTH(p_oldroot);
@@ -11840,13 +11840,11 @@ CREATE PROCEDURE `upsert_session_for_proposal_code_number`(
 	 p_startDate datetime,
 	 p_endDate datetime,
 	 p_beamlineName varchar(45),
-	 p_title varchar(255),
 	 p_beamlineOperator varchar(45),
 	 p_nbShifts int(10) unsigned,
 	 p_scheduled tinyint(1),
 	 p_usedFlag tinyint(1),
 	 p_comments varchar(255),
-	 p_externalPkId int(11) unsigned,
 	 p_externalPkUUID varchar(32)
  )
     MODIFIES SQL DATA
@@ -11872,9 +11870,9 @@ BEGIN
 
     IF row_session_id IS NULL THEN
       INSERT INTO BLSession(sessionId, proposalId, visit_number, beamLineSetupId, startDate, endDate,
-        beamLineName, sessionTitle, beamLineOperator, nbShifts, scheduled, usedFlag, comments, expSessionPk, externalId)
+        beamLineName, beamLineOperator, nbShifts, scheduled, usedFlag, comments, externalId)
         VALUES (p_id, row_proposal_id, p_visitNumber, p_beamLineSetupId, p_startDate, p_endDate,
-          p_beamlineName, p_title, p_beamlineOperator, p_nbShifts, p_scheduled, p_usedFlag, p_comments, p_externalPkId, unhex(p_externalPkUUID));
+          p_beamlineName, p_beamlineOperator, p_nbShifts, p_scheduled, p_usedFlag, p_comments, unhex(p_externalPkUUID));
       SET p_id = LAST_INSERT_ID();
 
     ELSE
@@ -11887,13 +11885,11 @@ BEGIN
         startDate = IFNULL(p_startDate, startDate),
         endDate = IFNULL(p_endDate, endDate),
         beamLineName = IFNULL(p_beamlineName, beamLineName),
-        sessionTitle = IFNULL(p_title, sessionTitle),
         beamLineOperator = IFNULL(p_beamlineOperator, beamLineOperator),
         nbShifts = IFNULL(p_nbShifts, nbShifts),
         scheduled = IFNULL(p_scheduled, scheduled),
         usedFlag = IFNULL(p_usedFlag, usedFlag),
         comments = IFNULL(p_comments, comments),
-        expSessionPk = IFNULL(p_externalPkId, expSessionPk),
         externalId = IFNULL(unhex(p_externalPkUUID), externalId)
       WHERE sessionId = row_session_id;
       SET p_id := row_session_id;
