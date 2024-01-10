@@ -2,17 +2,18 @@ INSERT IGNORE INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2023_12_13_c
 
 CREATE TABLE Atlas (
   atlasId int(11) unsigned auto_increment PRIMARY KEY,
-  dataCollectionGroupId int(11) NOT NULL, -- foreign key
+  dataCollectionGroupId int(11) NOT NULL,
   atlasImage varchar(255) NOT NULL COMMENT 'path to atlas image',
   pixelSize float NOT NULL COMMENT 'pixel size of atlas image',
   CONSTRAINT Atlas_fk_dataCollectionGroupId
     FOREIGN KEY (dataCollectionGroupId)
       REFERENCES DataCollectionGroup (dataCollectionGroupId)
+        ON UPDATE CASCADE ON DELETE RESTRICT
 ) COMMENT '';
 
 CREATE TABLE GridSquare (
   gridSquareId int(11) unsigned auto_increment PRIMARY KEY,
-  atlasId int(11) unsigned,
+  atlasId int(11) unsigned NOT NULL,
   gridSquareLabel int COMMENT 'grid square reference from acquisition software',
   gridSquareImage varchar(255) COMMENT 'path to grid square image',
   pixelLocationX int COMMENT 'pixel location of grid square centre on atlas image (x)',
@@ -27,11 +28,12 @@ CREATE TABLE GridSquare (
   CONSTRAINT GridSquare_fk_atlasId
     FOREIGN KEY (atlasId)
       REFERENCES Atlas (atlasId)
+        ON UPDATE CASCADE ON DELETE RESTRICT
 ) COMMENT '';
 
 CREATE TABLE FoilHole (
   foilHoleId int(11) unsigned auto_increment PRIMARY KEY,
-  gridSquareId int(11) unsigned,
+  gridSquareId int(11) unsigned NOT NULL,
   foilHoleLabel varchar(30) NOT NULL COMMENT 'foil hole reference name from acquisition software',
   foilHoleImage varchar(255) COMMENT 'path to foil hole image, nullable as there is not always a foil hole image',
   pixelLocationX int COMMENT 'pixel location of foil hole centre on grid square image (x)',
@@ -44,12 +46,14 @@ CREATE TABLE FoilHole (
   CONSTRAINT FoilHole_fk_gridSquareId
     FOREIGN KEY (gridSquareId)
       REFERENCES GridSquare (gridSquareId)
+        ON UPDATE CASCADE ON DELETE RESTRICT
 ) COMMENT '';
 
 ALTER TABLE Movie
   ADD foilHoleId int unsigned,
   ADD CONSTRAINT Movie_fk_foilHoleId
     FOREIGN KEY (foilHoleId)
-      REFERENCES FoilHole (foilHoleId);
+      REFERENCES FoilHole (foilHoleId)
+        ON UPDATE CASCADE ON DELETE RESTRICT;;
 
 UPDATE SchemaStatus SET schemaStatus = 'DONE' WHERE scriptName = '2023_12_13_cryoEM_tracking.sql';
