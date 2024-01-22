@@ -56,6 +56,6 @@ ALTER TABLE Movie
   ADD CONSTRAINT Movie_fk_foilHoleId
     FOREIGN KEY (foilHoleId)
       REFERENCES FoilHole (foilHoleId)
-        ON UPDATE CASCADE ON DELETE RESTRICT;;
+        ON UPDATE CASCADE ON DELETE RESTRICT;
 
 UPDATE SchemaStatus SET schemaStatus = 'DONE' WHERE scriptName = '2024_01_22_cryoEM_tracking.sql';
