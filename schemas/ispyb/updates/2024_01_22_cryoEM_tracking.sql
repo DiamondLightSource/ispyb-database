@@ -1,15 +1,16 @@
-INSERT IGNORE INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2023_12_13_cryoEM_tracking.sql', 'ONGOING');
+INSERT IGNORE INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2024_01_22_cryoEM_tracking.sql', 'ONGOING');
 
 CREATE TABLE Atlas (
   atlasId int(11) unsigned auto_increment PRIMARY KEY,
   dataCollectionGroupId int(11) NOT NULL,
   atlasImage varchar(255) NOT NULL COMMENT 'path to atlas image',
   pixelSize float NOT NULL COMMENT 'pixel size of atlas image',
+  cassetteSlot int unsigned,
   CONSTRAINT Atlas_fk_dataCollectionGroupId
     FOREIGN KEY (dataCollectionGroupId)
       REFERENCES DataCollectionGroup (dataCollectionGroupId)
         ON UPDATE CASCADE ON DELETE RESTRICT
-) COMMENT '';
+) COMMENT 'Atlas of a Cryo-EM grid';
 
 CREATE TABLE GridSquare (
   gridSquareId int(11) unsigned auto_increment PRIMARY KEY,
@@ -29,7 +30,7 @@ CREATE TABLE GridSquare (
     FOREIGN KEY (atlasId)
       REFERENCES Atlas (atlasId)
         ON UPDATE CASCADE ON DELETE RESTRICT
-) COMMENT '';
+) COMMENT 'Details of a Cryo-EM grid square including image captured at grid square magnification';
 
 CREATE TABLE FoilHole (
   foilHoleId int(11) unsigned auto_increment PRIMARY KEY,
@@ -47,13 +48,14 @@ CREATE TABLE FoilHole (
     FOREIGN KEY (gridSquareId)
       REFERENCES GridSquare (gridSquareId)
         ON UPDATE CASCADE ON DELETE RESTRICT
-) COMMENT '';
+) COMMENT 'Details of a Cryo-EM foil hole within a grid square including image captured at foil hole magnification if applicable';
 
 ALTER TABLE Movie
-  ADD foilHoleId int unsigned,
+  ADD foilHoleId int(11) unsigned,
+  ADD templateLabel int unsigned,
   ADD CONSTRAINT Movie_fk_foilHoleId
     FOREIGN KEY (foilHoleId)
       REFERENCES FoilHole (foilHoleId)
         ON UPDATE CASCADE ON DELETE RESTRICT;;
 
-UPDATE SchemaStatus SET schemaStatus = 'DONE' WHERE scriptName = '2023_12_13_cryoEM_tracking.sql';
+UPDATE SchemaStatus SET schemaStatus = 'DONE' WHERE scriptName = '2024_01_22_cryoEM_tracking.sql';
