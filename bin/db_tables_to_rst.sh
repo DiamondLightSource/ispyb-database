@@ -4,7 +4,7 @@ db=$1
 
 file=$(mktemp /tmp/tsv.XXXXXX)
 
-mysql --defaults-file=../.my.cnf -D $db --skip-column-names --batch --raw < sql/db_tables_to_tsv.sql > ${file}
+mariadb --defaults-file=../.my.cnf -D $db --skip-column-names --batch --raw < sql/db_tables_to_tsv.sql > ${file}
 sed -i 's/\t/,/g' ${file}
 
 echo ".. csv-table:: Tables, columns and comments"

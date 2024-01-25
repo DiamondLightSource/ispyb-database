@@ -16,4 +16,4 @@ MYCNF=$1
 DB=$2
 BLSAMPLEID=$3
 
-mysql --defaults-file=${MYCNF} -s -D ${DB} -e "UPDATE BLSample SET name='s-${BLSAMPLEID}', code='c-${BLSAMPLEID}', comments=NULL WHERE blSampleId='${BLSAMPLEID}';"
+mariadb --defaults-file=${MYCNF} -s -D ${DB} -e "UPDATE BLSample SET name='s-${BLSAMPLEID}', code='c-${BLSAMPLEID}', comments=NULL WHERE blSampleId='${BLSAMPLEID}';"

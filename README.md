@@ -26,11 +26,11 @@ Alternatively, do it manually:
 Run this on the command-line to create a database and import the schema stored in the SQL files:
 
 ```bash
-mysql -e "CREATE DATABASE ispyb"
-mysql ispyb < schemas/ispyb/tables.sql
-mysql ispyb < schemas/ispyb/lookups.sql
-mysql ispyb < schemas/ispyb/data.sql
-mysql ispyb < schemas/ispyb/routines.sql
+mariadb -e "CREATE DATABASE ispyb"
+mariadb ispyb < schemas/ispyb/tables.sql
+mariadb ispyb < schemas/ispyb/lookups.sql
+mariadb ispyb < schemas/ispyb/data.sql
+mariadb ispyb < schemas/ispyb/routines.sql
 ```
 
 Note that the `data.sql` file contains test data, so is only useful in a development environment.
@@ -40,15 +40,15 @@ Note that the `data.sql` file contains test data, so is only useful in a develop
 Then apply the grants:
 
 ```bash
-mysql ispyb < grants/ispyb_acquisition.sql
-mysql ispyb < grants/ispyb_import.sql
-mysql ispyb < grants/ispyb_processing.sql
-mysql ispyb < grants/ispyb_ro_nopii.sql
-mysql ispyb < grants/ispyb_scripts_processing.sql
-mysql ispyb < grants/ispyb_ssx_writer.sql
-mysql ispyb < grants/ispyb_touchscreen.sql
-mysql ispyb < grants/ispyb_web.sql
-mysql ispyb < grants/ispyb_web_verify_tests.sql
+mariadb ispyb < grants/ispyb_acquisition.sql
+mariadb ispyb < grants/ispyb_import.sql
+mariadb ispyb < grants/ispyb_processing.sql
+mariadb ispyb < grants/ispyb_ro_nopii.sql
+mariadb ispyb < grants/ispyb_scripts_processing.sql
+mariadb ispyb < grants/ispyb_ssx_writer.sql
+mariadb ispyb < grants/ispyb_touchscreen.sql
+mariadb ispyb < grants/ispyb_web.sql
+mariadb ispyb < grants/ispyb_web_verify_tests.sql
 ```
 
 Note that the grants files are based on roles, so to actually use these grants, you also need to create database users and grant the roles to them. This is described in the header section of the grant files.
@@ -78,17 +78,17 @@ In order to update a production database, please follow this procedure:
 
 1. For all *.sql files in `schemas/ispyb/updates` that have not already been run, read any comments inside the files to decide if/when you should run them. Run a file e.g. like this:
 ```bash
-mysql ispyb < schemas/ispyb/updates/2019_03_29_BLSession_archived.sql
+mariadb ispyb < schemas/ispyb/updates/2019_03_29_BLSession_archived.sql
 ```
 2. If `schemas/ispyb/routines.sql` has been updated since you installed it, you can simply re-run it. E.g.:
 ```bash
-mysql ispyb < schemas/ispyb/routines.sql
+mariadb ispyb < schemas/ispyb/routines.sql
 ```
 3. If you ran the `routines.sql`, then re-apply the grants for the routines. E.g.:
 ```bash
-mysql ispyb < grants/ispyb_acquisition.sql
-mysql ispyb < grants/ispyb_processing.sql
-mysql ispyb < grants/ispyb_web.sql
+mariadb ispyb < grants/ispyb_acquisition.sql
+mariadb ispyb < grants/ispyb_processing.sql
+mariadb ispyb < grants/ispyb_web.sql
 ```
 
 ## Useful scripts

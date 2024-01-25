@@ -17,7 +17,7 @@ github_api_token=`cat .github-api-token`
 owner=DiamondLightSource
 repo=ispyb-database
 db="ispyb_build"
-schema_version=`mysql --defaults-file=.my.cnf -D $db --skip-column-names --silent --raw -e "SELECT value FROM AdminVar WHERE name = 'schemaVersion';"`
+schema_version=`mariadb --defaults-file=.my.cnf -D $db --skip-column-names --silent --raw -e "SELECT value FROM AdminVar WHERE name = 'schemaVersion';"`
 tag=v${schema_version}
 archive=./dist/ispyb-database-${schema_version}.tar.gz
 filename=${archive}

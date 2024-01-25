@@ -27,24 +27,23 @@ then
 fi
 
 echo "Modifying ${db} database"
-mysql --defaults-file="${project_root}"/.my.cnf -D "${db}" < "${dir}"/tables.sql
-mysql --defaults-file="${project_root}"/.my.cnf -D "${db}" < "${dir}"/data.sql
-mysql --defaults-file="${project_root}"/.my.cnf -D "${db}" < "${dir}"/modify_ispyb.sql
+mariadb --defaults-file="${project_root}"/.my.cnf -D "${db}" < "${dir}"/tables.sql
+mariadb --defaults-file="${project_root}"/.my.cnf -D "${db}" < "${dir}"/data.sql
+mariadb --defaults-file="${project_root}"/.my.cnf -D "${db}" < "${dir}"/modify_ispyb.sql
 
 echo "Re-creating ${db_analytics} database with views"
-mysql --defaults-file="${project_root}"/.my.cnf -e "DROP DATABASE IF EXISTS $db_analytics; CREATE DATABASE IF NOT EXISTS $db_analytics; SET GLOBAL log_bin_trust_function_creators=ON;"
+mariadb --defaults-file="${project_root}"/.my.cnf -e "DROP DATABASE IF EXISTS $db_analytics; CREATE DATABASE IF NOT EXISTS $db_analytics; SET GLOBAL log_bin_trust_function_creators=ON;"
 
 # Read views.sql into variable, replace variable
 sql=$(env ispyb="${db}" envsubst < "${dir}"/views.sql)
-echo "${sql}" | mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}"
+echo "${sql}" | mariadb --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}"
 
 echo "Creating role and granting permission to access views"
-mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}" < "${dir}"/grants.sql
+mariadb --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}" < "${dir}"/grants.sql
 
 # Create views and grants for the lookup tables
 for TABLE in "${LOOKUP_TABLES[@]}"
 do :
-    mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}" -e "CREATE OR REPLACE SQL SECURITY DEFINER VIEW ${TABLE} AS SELECT * FROM $ispyb.${TABLE}"
-    mysql --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}" -e "GRANT SELECT ON ${TABLE} TO data_scientist"
+    mariadb --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}" -e "CREATE OR REPLACE SQL SECURITY DEFINER VIEW ${TABLE} AS SELECT * FROM $ispyb.${TABLE}"
+    mariadb --defaults-file="${project_root}"/.my.cnf -D "${db_analytics}" -e "GRANT SELECT ON ${TABLE} TO data_scientist"
 done
-

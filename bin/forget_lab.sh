@@ -16,4 +16,4 @@ MYCNF=$1
 DB=$2
 LABID=$3
 
-mysql --defaults-file=${MYCNF} -s -D ${DB} -e "UPDATE Laboratory SET name='lab-${LABID}', laboratoryUUID=NULL, city=NULL, address=NULL, country=NULL, url=NULL, organization=NULL, laboratoryPk=NULL, postcode=NULL WHERE laboratoryId=${LABID};"
+mariadb --defaults-file=${MYCNF} -s -D ${DB} -e "UPDATE Laboratory SET name='lab-${LABID}', laboratoryUUID=NULL, city=NULL, address=NULL, country=NULL, url=NULL, organization=NULL, laboratoryPk=NULL, postcode=NULL WHERE laboratoryId=${LABID};"

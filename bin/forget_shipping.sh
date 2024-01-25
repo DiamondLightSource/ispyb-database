@@ -16,4 +16,4 @@ MYCNF=$1
 DB=$2
 SHIPPINGID=$3
 
-mysql --defaults-file=${MYCNF} -s -D ${DB} -e "UPDATE Shipping SET shippingName='s-${SHIPPINGID}', comments=NULL, SAFETYLEVEL=NULL, deliveryAgent_agentCode=NULL, deliveryAgent_flightCode=NULL, deliveryAgent_label=NULL, deliveryAgent_productcode=NULL WHERE shippingId='${SHIPPINGID}';"
+mariadb --defaults-file=${MYCNF} -s -D ${DB} -e "UPDATE Shipping SET shippingName='s-${SHIPPINGID}', comments=NULL, SAFETYLEVEL=NULL, deliveryAgent_agentCode=NULL, deliveryAgent_flightCode=NULL, deliveryAgent_label=NULL, deliveryAgent_productcode=NULL WHERE shippingId='${SHIPPINGID}';"

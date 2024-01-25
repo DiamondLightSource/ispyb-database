@@ -16,4 +16,4 @@ MYCNF=$1
 DB=$2
 PDBID=$3
 
-mysql --defaults-file=${MYCNF} -s -D ${DB} -e "UPDATE PDB SET name=pdbId, contents=NULL, code=NULL WHERE pdbId=${PDBID};"
+mariadb --defaults-file=${MYCNF} -s -D ${DB} -e "UPDATE PDB SET name=pdbId, contents=NULL, code=NULL WHERE pdbId=${PDBID};"

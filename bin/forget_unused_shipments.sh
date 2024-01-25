@@ -22,9 +22,9 @@ SESSNUM=$4
 
 # Get the proposal PID:
 
-PID=`mysql --defaults-file=${MYCNF} -s -D ${DB} -e "SELECT proposalId FROM Proposal WHERE concat(proposalCode, proposalNumber)='${PROPOSAL}';"`
+PID=`mariadb --defaults-file=${MYCNF} -s -D ${DB} -e "SELECT proposalId FROM Proposal WHERE concat(proposalCode, proposalNumber)='${PROPOSAL}';"`
 
-SID=`mysql --defaults-extra-file=${MYCNF} -s -D ${DB} -e "SELECT sessionId FROM BLSession WHERE proposalId='${PID}' AND visit_number=${SESSNUM};"`
+SID=`mariadb --defaults-extra-file=${MYCNF} -s -D ${DB} -e "SELECT sessionId FROM BLSession WHERE proposalId='${PID}' AND visit_number=${SESSNUM};"`
 
 # Query to find all shippingIds of all used samples and sub-samples
 # on the session. Beware of NULLs!
@@ -69,7 +69,7 @@ WHERE s.proposalId=${PID}
     ${SHIPPINGID_USED_SELECT}
   )"
 
-SHIPPINGIDS=`mysql --defaults-file=${MYCNF} -D ${DB} --skip-column-names --silent --raw -e "${SHIPPINGID_UNUSED_SELECT};"`
+SHIPPINGIDS=`mariadb --defaults-file=${MYCNF} -D ${DB} --skip-column-names --silent --raw -e "${SHIPPINGID_UNUSED_SELECT};"`
 
 # Iterate over shippings and forget:
 
@@ -92,7 +92,7 @@ FROM (
   GROUP BY bls.blSampleId) q1
 WHERE q1.cnt1=0 AND q1.cnt2=0 AND q1.cnt3=0"
 
-BLSAMPLEIDS=`mysql --defaults-file=${MYCNF} -D ${DB} --skip-column-names --silent --raw -e "${BLSAMPLE_UNUSED_SELECT};"`
+BLSAMPLEIDS=`mariadb --defaults-file=${MYCNF} -D ${DB} --skip-column-names --silent --raw -e "${BLSAMPLE_UNUSED_SELECT};"`
 
 # Iterate over samples and forget:
 
@@ -117,7 +117,7 @@ FROM (
   GROUP BY blss.blSubSampleId) q2
 WHERE q2.cnt1=0 AND q2.cnt2=0 AND q2.cnt3=0"
 
-BLSUBSAMPLEIDS=`mysql --defaults-file=${MYCNF} -D ${DB} --skip-column-names --silent --raw -e "${BLSUBSAMPLE_UNUSED_SELECT};"`
+BLSUBSAMPLEIDS=`mariadb --defaults-file=${MYCNF} -D ${DB} --skip-column-names --silent --raw -e "${BLSUBSAMPLE_UNUSED_SELECT};"`
 
 # Iterate over sub-samples and forget:
 
@@ -127,7 +127,7 @@ done <<< "${BLSUBSAMPLEIDS}"
 
 # Query to find all unused proteins on the proposal
 
-PROTEINIDS=`mysql --defaults-file=${MYCNF} -D ${DB} --skip-column-names --silent --raw -e "SELECT p.proteinId
+PROTEINIDS=`mariadb --defaults-file=${MYCNF} -D ${DB} --skip-column-names --silent --raw -e "SELECT p.proteinId
 FROM Protein p
   LEFT JOIN Crystal c USING(proteinId)
   LEFT JOIN BLSample bls USING(crystalId)
@@ -147,7 +147,7 @@ done <<< "${PROTEINIDS}"
 
 # Query to find all unused PDBs on the proposal
 
-PDBIDS=`mysql --defaults-file=${MYCNF} -D ${DB} --skip-column-names --silent --raw -e "SELECT phpdb.pdbId
+PDBIDS=`mariadb --defaults-file=${MYCNF} -D ${DB} --skip-column-names --silent --raw -e "SELECT phpdb.pdbId
 FROM Protein_has_PDB phpdb
   JOIN Protein p USING(proteinId)
   WHERE p.proposalId=${PID}
