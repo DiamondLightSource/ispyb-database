@@ -33,6 +33,10 @@ GRANT SELECT,INSERT,UPDATE ON Movie TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON Tomogram TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON TiltImageAlignment TO 'ispyb_processing';
 
+GRANT SELECT,INSERT,UPDATE ON Atlas TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON GridSquare TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON FoilHole TO 'ispyb_processing';
+
 GRANT SELECT, INSERT, UPDATE ON ProcessingJob TO 'ispyb_processing';
 GRANT SELECT, INSERT, UPDATE ON ProcessingJobParameter TO 'ispyb_processing';
 
