@@ -14,26 +14,26 @@ source bin/functions.sh
 
 function drop_db {
   echo "Dropping + creating build database"
-  mysql --defaults-file=.my.cnf -e "DROP DATABASE IF EXISTS $1; CREATE DATABASE $1; SET GLOBAL log_bin_trust_function_creators=ON;"
+  mariadb --defaults-file=.my.cnf -e "DROP DATABASE IF EXISTS $1; CREATE DATABASE $1; SET GLOBAL log_bin_trust_function_creators=ON;"
 }
 
 function exec_schema {
-  mysql --defaults-file=.my.cnf -D $1 < schemas/ispyb/tables.sql
-  mysql --defaults-file=.my.cnf -D $1 < schemas/ispyb/lookups.sql
-  mysql --defaults-file=.my.cnf -D $1 < schemas/ispyb/data.sql
-  mysql --defaults-file=.my.cnf -D $1 < schemas/ispyb/routines.sql
+  mariadb --defaults-file=.my.cnf -D $1 < schemas/ispyb/tables.sql
+  mariadb --defaults-file=.my.cnf -D $1 < schemas/ispyb/lookups.sql
+  mariadb --defaults-file=.my.cnf -D $1 < schemas/ispyb/data.sql
+  mariadb --defaults-file=.my.cnf -D $1 < schemas/ispyb/routines.sql
 }
 
 function exec_grants {
-  mysql --defaults-file=.my.cnf -D $1 < grants/ispyb_acquisition.sql
-  mysql --defaults-file=.my.cnf -D $1 < grants/ispyb_import.sql
-  mysql --defaults-file=.my.cnf -D $1 < grants/ispyb_processing.sql
-  mysql --defaults-file=.my.cnf -D $1 < grants/ispyb_ro_nopii.sql
-  mysql --defaults-file=.my.cnf -D $1 < grants/ispyb_scripts_processing.sql
-  mysql --defaults-file=.my.cnf -D $1 < grants/ispyb_touchscreen.sql
-  mysql --defaults-file=.my.cnf -D $1 < grants/ispyb_web.sql
-  mysql --defaults-file=.my.cnf -D $1 < grants/ispyb_web_verify_tests.sql
-  mysql --defaults-file=.my.cnf -D $1 < grants/ispyb_ssx_writer.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_acquisition.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_import.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_processing.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_ro_nopii.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_scripts_processing.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_touchscreen.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_web.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_web_verify_tests.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_ssx_writer.sql
 }
 
 function exec_missed_updates {
@@ -43,7 +43,7 @@ function exec_missed_updates {
     echo "Running schemas/ispyb/updates/*.sql files that haven't yet been run:"
     for sql_file in ${arr[@]}; do
       echo "$sql_file"
-      mysql --defaults-file=.my.cnf -D ${1} < "schemas/ispyb/updates/${sql_file}"
+      mariadb --defaults-file=.my.cnf -D ${1} < "schemas/ispyb/updates/${sql_file}"
     done
   else
     echo "No new schemas/ispyb/updates/*.sql files."
@@ -121,11 +121,11 @@ fi
 if [ $SCHEMA = true ]; then
   exec_schema "$DB"
 fi
-if [ $GRANTS = true ]; then
-  exec_grants "$DB"
-fi
 if [ $UPDATES = true ]; then
   exec_missed_updates "$DB"
+fi
+if [ $GRANTS = true ]; then
+  exec_grants "$DB"
 fi
 
 if [ $DOCS = true ]; then
