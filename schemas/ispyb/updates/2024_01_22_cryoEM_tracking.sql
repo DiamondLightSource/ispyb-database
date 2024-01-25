@@ -50,9 +50,14 @@ CREATE TABLE FoilHole (
         ON UPDATE CASCADE ON DELETE RESTRICT
 ) COMMENT 'Details of a Cryo-EM foil hole within a grid square including image captured at foil hole magnification if applicable';
 
+SET SESSION foreign_key_checks=OFF;
+SET SESSION alter_algorithm='NOCOPY';
+
 ALTER TABLE Movie
   ADD foilHoleId int(11) unsigned,
-  ADD templateLabel int unsigned,
+  ADD templateLabel int unsigned;
+
+ALTER TABLE Movie
   ADD CONSTRAINT Movie_fk_foilHoleId
     FOREIGN KEY (foilHoleId)
       REFERENCES FoilHole (foilHoleId)
