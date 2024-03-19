@@ -1,8 +1,12 @@
 INSERT IGNORE INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2024_03_19_ContainerQueue_containerId_not_null.sql', 'ONGOING');
 
 ALTER TABLE ContainerQueue
-  DROP CONSTRAINT IF EXISTS ContainerQueue_ibfk1,
-  DROP INDEX IF EXISTS ContainerQueue_idx1,
+  DROP CONSTRAINT ContainerQueue_ibfk1;
+
+ALTER TABLE ContainerQueue
+  DROP INDEX IF EXISTS ContainerQueue_idx1;
+
+ALTER TABLE ContainerQueue
   MODIFY containerId int(10) unsigned NOT NULL;
 
 ALTER TABLE ContainerQueue
