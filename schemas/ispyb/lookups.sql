@@ -255,7 +255,8 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (284,'2024_03_19_ProcessingJobParameter_index.sql','DONE','2024-03-26 16:40:34'),
 (285,'2024_03_20_Shipping_Dewar_externalIds.sql','DONE','2024-03-26 16:40:34'),
 (286,'2024_03_26_AdminVar_bump_version.sql','DONE','2024-03-26 16:40:34'),
-(287,'2024_03_26_AutoProc_index_refined_unit_cell.sql','DONE','2024-03-26 16:40:34');
+(287,'2024_03_26_AutoProc_index_refined_unit_cell.sql','DONE','2024-03-26 16:40:34'),
+(288,'2023_11_16_AdminVar_bump_version.sql','DONE','2024-03-26 16:47:25');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
