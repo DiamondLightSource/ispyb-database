@@ -5,6 +5,28 @@ History
 Unreleased / master
 -------------------
 
+4.1.0 (2024-03-26)
+-------------------
+
+New or modified tables and columns:
+
+- New table ``Atlas``
+- New table ``GridSquare``
+- New Table ``FoilHole``
+- In table ``Movie``: New columns ``foilHoleId`` and ``templateLabel``
+- In table ``Shipping``: New column ``source`` and ``externalShippingIdToSynchrotron``
+- In table ``Dewar``: New column ``source`` and ``externalShippingIdFromSynchrotron``
+- In table ``Container``: New column ``source``
+- In table ``BLSample``: New column ``source``
+- In table ``AutoProcProgramMessage``: Make column ``severity`` not nullable
+- In table ``ContainerQueue``: Make column ``containerId`` not nullable
+
+Indexes:
+
+- In table ``BLSubSample``: Replace ``blSampleId`` FK index with compound index ``(blSampleId, source)``
+- In table ``ProcessingJobParameter``: Add compund index (parameterKey, processingJobId)
+- In table ``AutoProc``: Remove ``spaceGroup`` from compound index ``(refinedCell_a, refinedCell_b, refinedCell_c, refinedCell_alpha, refinedCell_beta, refinedCell_gamma)``
+
 4.0.1 (2024-01-09)
 -------------------
 
