@@ -10,7 +10,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.0.1');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.1.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -246,7 +246,16 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (272,'2024_01_04_drop_unused_tables.sql','DONE','2024-01-08 15:41:22'),
 (274,'2024_01_08_AdminVar_bump_version.sql','DONE','2024-01-08 17:01:43'),
 (276,'2024_01_08_BLSession_add_dropped_cols.sql','DONE','2024-01-09 14:26:50'),
-(277,'2024_01_09_AdminVar_bump_version.sql','DONE','2024-01-09 14:43:35');
+(277,'2024_01_09_AdminVar_bump_version.sql','DONE','2024-01-09 14:43:35'),
+(279,'2024_01_22_cryoEM_tracking.sql','DONE','2024-03-26 16:40:34'),
+(280,'2024_03_05_BLSubSample_replace_index.sql','DONE','2024-03-26 16:40:34'),
+(281,'2024_03_12_source_column.sql','DONE','2024-03-26 16:40:34'),
+(282,'2024_03_19_AutoProcProgramMessage_severity_not_null.sql','DONE','2024-03-26 16:40:34'),
+(283,'2024_03_19_ContainerQueue_containerId_not_null.sql','DONE','2024-03-26 16:40:34'),
+(284,'2024_03_19_ProcessingJobParameter_index.sql','DONE','2024-03-26 16:40:34'),
+(285,'2024_03_20_Shipping_Dewar_externalIds.sql','DONE','2024-03-26 16:40:34'),
+(286,'2024_03_26_AdminVar_bump_version.sql','DONE','2024-03-26 16:40:34'),
+(287,'2024_03_26_AutoProc_index_refined_unit_cell.sql','DONE','2024-03-26 16:40:34');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;

@@ -44,6 +44,20 @@ CREATE TABLE `Aperture` (
   PRIMARY KEY (`apertureId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `Atlas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Atlas` (
+  `atlasId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `dataCollectionGroupId` int(11) NOT NULL,
+  `atlasImage` varchar(255) NOT NULL COMMENT 'path to atlas image',
+  `pixelSize` float NOT NULL COMMENT 'pixel size of atlas image',
+  `cassetteSlot` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`atlasId`),
+  KEY `Atlas_fk_dataCollectionGroupId` (`dataCollectionGroupId`),
+  CONSTRAINT `Atlas_fk_dataCollectionGroupId` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Atlas of a Cryo-EM grid';
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AutoProc`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -60,7 +74,7 @@ CREATE TABLE `AutoProc` (
   `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
   PRIMARY KEY (`autoProcId`),
   KEY `AutoProc_FKIndex1` (`autoProcProgramId`),
-  KEY `AutoProc_refined_unit_cell` (`refinedCell_a`,`refinedCell_b`,`refinedCell_c`,`refinedCell_alpha`,`refinedCell_beta`,`refinedCell_gamma`,`spaceGroup`)
+  KEY `AutoProc_refined_unit_cell` (`refinedCell_a`,`refinedCell_b`,`refinedCell_c`,`refinedCell_alpha`,`refinedCell_beta`,`refinedCell_gamma`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AutoProcIntegration`;
@@ -138,7 +152,7 @@ CREATE TABLE `AutoProcProgramMessage` (
   `autoProcProgramMessageId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `autoProcProgramId` int(10) unsigned DEFAULT NULL,
   `recordTimeStamp` timestamp NOT NULL DEFAULT current_timestamp(),
-  `severity` enum('ERROR','WARNING','INFO') DEFAULT NULL,
+  `severity` enum('ERROR','WARNING','INFO') NOT NULL,
   `message` varchar(200) DEFAULT NULL,
   `description` text DEFAULT NULL,
   PRIMARY KEY (`autoProcProgramMessageId`),
@@ -413,6 +427,7 @@ CREATE TABLE `BLSample` (
   `support` varchar(50) DEFAULT NULL COMMENT 'Sample support material',
   `subLocation` smallint(5) unsigned DEFAULT NULL COMMENT 'Indicates the sample''s location on a multi-sample pin, where 1 is closest to the pin base',
   `staffComments` varchar(255) DEFAULT NULL COMMENT 'Any staff comments on the sample',
+  `source` varchar(50) DEFAULT current_user(),
   PRIMARY KEY (`blSampleId`),
   KEY `BLSample_FKIndex1` (`containerId`),
   KEY `BLSample_FKIndex3` (`diffractionPlanId`),
@@ -714,12 +729,12 @@ CREATE TABLE `BLSubSample` (
   `source` enum('manual','auto') DEFAULT 'manual',
   `type` varchar(10) DEFAULT NULL COMMENT 'The type of subsample, i.e. roi (region), poi (point), loi (line)',
   PRIMARY KEY (`blSubSampleId`),
-  KEY `BLSubSample_FKIndex1` (`blSampleId`),
   KEY `BLSubSample_FKIndex2` (`diffractionPlanId`),
   KEY `BLSubSample_FKIndex3` (`positionId`),
   KEY `BLSubSample_FKIndex4` (`motorPositionId`),
   KEY `BLSubSample_FKIndex5` (`position2Id`),
   KEY `BLSubSample_blSampleImagefk_1` (`blSampleImageId`),
+  KEY `BLSubSample_blSampleId_source` (`blSampleId`,`source`),
   CONSTRAINT `BLSubSample_blSampleImagefk_1` FOREIGN KEY (`blSampleImageId`) REFERENCES `BLSampleImage` (`blSampleImageId`),
   CONSTRAINT `BLSubSample_blSamplefk_1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSubSample_diffractionPlanfk_1` FOREIGN KEY (`diffractionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1027,6 +1042,7 @@ CREATE TABLE `Container` (
   `containerTypeId` int(10) unsigned DEFAULT NULL,
   `currentDewarId` int(10) unsigned DEFAULT NULL COMMENT 'The dewar with which the container is currently associated',
   `parentContainerId` int(10) unsigned DEFAULT NULL,
+  `source` varchar(50) DEFAULT current_user(),
   PRIMARY KEY (`containerId`),
   UNIQUE KEY `Container_UNIndex1` (`barcode`),
   KEY `Container_FKIndex` (`beamlineLocation`),
@@ -1109,13 +1125,14 @@ DROP TABLE IF EXISTS `ContainerQueue`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ContainerQueue` (
   `containerQueueId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `containerId` int(10) unsigned DEFAULT NULL,
+  `containerId` int(10) unsigned NOT NULL,
   `personId` int(10) unsigned DEFAULT NULL,
   `createdTimeStamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `completedTimeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`containerQueueId`),
   KEY `ContainerQueue_ibfk1` (`containerId`),
   KEY `ContainerQueue_ibfk2` (`personId`),
+  KEY `ContainerQueue_idx1` (`containerId`,`completedTimeStamp`),
   CONSTRAINT `ContainerQueue_ibfk1` FOREIGN KEY (`containerId`) REFERENCES `Container` (`containerId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ContainerQueue_ibfk2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
@@ -1587,6 +1604,8 @@ CREATE TABLE `Dewar` (
   `weight` float DEFAULT NULL COMMENT 'dewar weight in kg',
   `deliveryAgent_barcode` varchar(30) DEFAULT NULL COMMENT 'Courier piece barcode (not the airway bill)',
   `extra` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'JSON column for facility-specific or hard-to-define attributes, e.g. LN2 top-ups and contents checks' CHECK (json_valid(`extra`)),
+  `source` varchar(50) DEFAULT current_user(),
+  `externalShippingIdFromSynchrotron` int(11) unsigned DEFAULT NULL COMMENT 'ID for shipping from synchrotron in external application',
   PRIMARY KEY (`dewarId`),
   UNIQUE KEY `barCode` (`barCode`),
   KEY `Dewar_FKIndex1` (`shippingId`),
@@ -1883,6 +1902,26 @@ CREATE TABLE `ExperimentType` (
   PRIMARY KEY (`experimentTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='A lookup table for different types of experients';
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `FoilHole`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `FoilHole` (
+  `foilHoleId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `gridSquareId` int(11) unsigned NOT NULL,
+  `foilHoleLabel` varchar(30) NOT NULL COMMENT 'foil hole reference name from acquisition software',
+  `foilHoleImage` varchar(255) DEFAULT NULL COMMENT 'path to foil hole image, nullable as there is not always a foil hole image',
+  `pixelLocationX` int(11) DEFAULT NULL COMMENT 'pixel location of foil hole centre on grid square image (x)',
+  `pixelLocationY` int(11) DEFAULT NULL COMMENT 'pixel location of foil hole centre on grid square image (y)',
+  `diameter` int(11) DEFAULT NULL COMMENT 'foil hole diameter on grid square image in pixels',
+  `stageLocationX` float DEFAULT NULL COMMENT 'x stage position (microns)',
+  `stageLocationY` float DEFAULT NULL COMMENT 'y stage position (microns)',
+  `qualityIndicator` float DEFAULT NULL COMMENT 'metric for determining quality of foil hole',
+  `pixelSize` float DEFAULT NULL COMMENT 'pixel size of foil hole image',
+  PRIMARY KEY (`foilHoleId`),
+  KEY `FoilHole_fk_gridSquareId` (`gridSquareId`),
+  CONSTRAINT `FoilHole_fk_gridSquareId` FOREIGN KEY (`gridSquareId`) REFERENCES `GridSquare` (`gridSquareId`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Details of a Cryo-EM foil hole within a grid square including image captured at foil hole magnification if applicable';
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `GeometryClassname`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -1941,6 +1980,28 @@ CREATE TABLE `GridInfo` (
   CONSTRAINT `GridInfo_fk_dataCollectionId` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `GridInfo_ibfk_2` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `GridSquare`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `GridSquare` (
+  `gridSquareId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `atlasId` int(11) unsigned NOT NULL,
+  `gridSquareLabel` int(11) DEFAULT NULL COMMENT 'grid square reference from acquisition software',
+  `gridSquareImage` varchar(255) DEFAULT NULL COMMENT 'path to grid square image',
+  `pixelLocationX` int(11) DEFAULT NULL COMMENT 'pixel location of grid square centre on atlas image (x)',
+  `pixelLocationY` int(11) DEFAULT NULL COMMENT 'pixel location of grid square centre on atlas image (y)',
+  `height` int(11) DEFAULT NULL COMMENT 'grid square height on atlas image in pixels',
+  `width` int(11) DEFAULT NULL COMMENT 'grid square width on atlas image in pixels',
+  `angle` float DEFAULT NULL COMMENT 'angle of grid square relative to atlas image',
+  `stageLocationX` float DEFAULT NULL COMMENT 'x stage position (microns)',
+  `stageLocationY` float DEFAULT NULL COMMENT 'y stage position (microns)',
+  `qualityIndicator` float DEFAULT NULL COMMENT 'metric for determining quality of grid square',
+  `pixelSize` float DEFAULT NULL COMMENT 'pixel size of grid square image',
+  PRIMARY KEY (`gridSquareId`),
+  KEY `GridSquare_fk_atlasId` (`atlasId`),
+  CONSTRAINT `GridSquare_fk_atlasId` FOREIGN KEY (`atlasId`) REFERENCES `Atlas` (`atlasId`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Details of a Cryo-EM grid square including image captured at grid square magnification';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Image`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2241,8 +2302,12 @@ CREATE TABLE `Movie` (
   `angle` float DEFAULT NULL COMMENT 'unit: degrees relative to perpendicular to beam',
   `fluence` float DEFAULT NULL COMMENT 'accumulated electron fluence from start to end of acquisition of this movie (commonly, but incorrectly, referred to as ‘dose’)',
   `numberOfFrames` int(11) unsigned DEFAULT NULL COMMENT 'number of frames per movie. This should be equivalent to the number of MotionCorrectionDrift entries, but the latter is a property of data analysis, whereas the number of frames is an intrinsic property of acquisition.',
+  `foilHoleId` int(11) unsigned DEFAULT NULL,
+  `templateLabel` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`movieId`),
   KEY `Movie_ibfk1` (`dataCollectionId`),
+  KEY `Movie_fk_foilHoleId` (`foilHoleId`),
+  CONSTRAINT `Movie_fk_foilHoleId` FOREIGN KEY (`foilHoleId`) REFERENCES `FoilHole` (`foilHoleId`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `Movie_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2632,6 +2697,7 @@ CREATE TABLE `ProcessingJobParameter` (
   `parameterValue` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`processingJobParameterId`),
   KEY `ProcessingJobParameter_ibfk1` (`processingJobId`),
+  KEY `ProcessingJobParameter_idx_paramKey_procJobId` (`parameterKey`,`processingJobId`),
   CONSTRAINT `ProcessingJobParameter_ibfk1` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -3353,6 +3419,8 @@ CREATE TABLE `Shipping` (
   `deliveryAgent_productcode` varchar(10) DEFAULT NULL COMMENT 'A code that identifies which shipment service was used',
   `deliveryAgent_flightCodePersonId` int(10) unsigned DEFAULT NULL COMMENT 'The person who created the AWB (for auditing)',
   `extra` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'JSON column for facility-specific or hard-to-define attributes' CHECK (json_valid(`extra`)),
+  `source` varchar(50) DEFAULT current_user(),
+  `externalShippingIdToSynchrotron` int(11) unsigned DEFAULT NULL COMMENT 'ID for shipping to synchrotron in external application',
   PRIMARY KEY (`shippingId`),
   KEY `laboratoryId` (`laboratoryId`),
   KEY `Shipping_FKIndex1` (`proposalId`),
