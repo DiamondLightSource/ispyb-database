@@ -27,6 +27,11 @@ Indexes:
 - In table ``ProcessingJobParameter``: Add compund index (parameterKey, processingJobId)
 - In table ``AutoProc``: Remove ``spaceGroup`` from compound index ``(refinedCell_a, refinedCell_b, refinedCell_c, refinedCell_alpha, refinedCell_beta, refinedCell_gamma)``
 
+Roles and permissions:
+
+- Granted SELECT, INSERT, UPDATE on ``BFactorFit``, ``Atlas``, ``GridSquare``, ``FoilHole`` for ``ispyb_processing``
+- Added new role ``ispyb_propagation`` and granted SELECT, UPDATE, INSERT, DELETE on relevant tables
+
 4.0.1 (2024-01-09)
 -------------------
 
