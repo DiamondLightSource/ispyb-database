@@ -256,7 +256,9 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (285,'2024_03_20_Shipping_Dewar_externalIds.sql','DONE','2024-03-26 16:40:34'),
 (286,'2024_03_26_AdminVar_bump_version.sql','DONE','2024-03-26 16:40:34'),
 (287,'2024_03_26_AutoProc_index_refined_unit_cell.sql','DONE','2024-03-26 16:40:34'),
-(288,'2023_11_16_AdminVar_bump_version.sql','DONE','2024-03-26 16:47:25');
+(288,'2023_11_16_AdminVar_bump_version.sql','DONE','2024-03-26 16:47:25'),
+(289,'2024_05_14_DataCollectionGroup_experimentType.sql','DONE','2024-05-30 12:59:22'),
+(290,'2024_05_30_DiffractionPlan_experimentKind.sql','DONE','2024-05-30 12:59:24');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
@@ -370,7 +372,8 @@ INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `activ
 (39,'Serial Jet','mx',1),
 (40,'Still','mx',1),
 (41,'SSX-Chip','mx',1),
-(42,'SSX-Jet','mx',1);
+(42,'SSX-Jet','mx',1),
+(43,'Metal ID','mx',1);
 /*!40000 ALTER TABLE `ExperimentType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `InspectionType` DISABLE KEYS */;
