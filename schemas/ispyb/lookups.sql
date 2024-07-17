@@ -256,7 +256,11 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (285,'2024_03_20_Shipping_Dewar_externalIds.sql','DONE','2024-03-26 16:40:34'),
 (286,'2024_03_26_AdminVar_bump_version.sql','DONE','2024-03-26 16:40:34'),
 (287,'2024_03_26_AutoProc_index_refined_unit_cell.sql','DONE','2024-03-26 16:40:34'),
-(288,'2023_11_16_AdminVar_bump_version.sql','DONE','2024-03-26 16:47:25');
+(288,'2023_11_16_AdminVar_bump_version.sql','DONE','2024-03-26 16:47:25'),
+(289,'2024_05_14_DataCollectionGroup_experimentType.sql','DONE','2024-07-17 09:12:40'),
+(290,'2024_05_30_DiffractionPlan_experimentKind.sql','DONE','2024-07-17 09:12:41'),
+(291,'2024_07_08_BLSampleGroup_ownerId.sql','DONE','2024-07-17 09:12:41'),
+(292,'2024_07_16_ContainerType_insert_new.sql','DONE','2024-07-17 09:12:41');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
@@ -325,7 +329,9 @@ INSERT INTO `ContainerType` (`containerTypeId`, `name`, `proposalType`, `active`
 (32,'Box','xpdf',1,25,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (33,'Puck-22','xpdf',1,22,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (34,'I22_Grid_81','saxs',1,81,9,1,1,1,1,0,0,-1),
-(35,'I22_Capillary_Rack_25','saxs',1,25,25,1,1,1,1,0,0,-1);
+(35,'I22_Capillary_Rack_25','saxs',1,25,25,1,1,1,1,0,0,-1),
+(36,'VMXm-Cartridge','mx',1,5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(37,'VMXm-GridBox','mx',1,4,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ContainerType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ExperimentType` DISABLE KEYS */;
@@ -370,7 +376,8 @@ INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `activ
 (39,'Serial Jet','mx',1),
 (40,'Still','mx',1),
 (41,'SSX-Chip','mx',1),
-(42,'SSX-Jet','mx',1);
+(42,'SSX-Jet','mx',1),
+(43,'Metal ID','mx',1);
 /*!40000 ALTER TABLE `ExperimentType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `InspectionType` DISABLE KEYS */;

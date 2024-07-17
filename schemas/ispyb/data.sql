@@ -211,9 +211,9 @@ INSERT INTO `BLSample` (`blSampleId`, `diffractionPlanId`, `crystalId`, `contain
 /*!40000 ALTER TABLE `BLSample` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `BLSampleGroup` DISABLE KEYS */;
-INSERT INTO `BLSampleGroup` (`blSampleGroupId`, `name`, `proposalId`) VALUES (5,NULL,37027),
-(6,'foo',37027),
-(7,'bar',37027);
+INSERT INTO `BLSampleGroup` (`blSampleGroupId`, `name`, `proposalId`, `ownerId`) VALUES (5,NULL,37027,NULL),
+(6,'foo',37027,NULL),
+(7,'bar',37027,NULL);
 /*!40000 ALTER TABLE `BLSampleGroup` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `BLSampleGroup_has_BLSample` DISABLE KEYS */;

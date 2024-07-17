@@ -450,8 +450,11 @@ CREATE TABLE `BLSampleGroup` (
   `blSampleGroupId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL COMMENT 'Human-readable name',
   `proposalId` int(10) unsigned DEFAULT NULL,
+  `ownerId` int(10) unsigned DEFAULT NULL COMMENT 'Sample group owner',
   PRIMARY KEY (`blSampleGroupId`),
   KEY `BLSampleGroup_fk_proposalId` (`proposalId`),
+  KEY `BLSampleGroup_fk_ownerId` (`ownerId`),
+  CONSTRAINT `BLSampleGroup_fk_ownerId` FOREIGN KEY (`ownerId`) REFERENCES `Person` (`personId`) ON UPDATE CASCADE,
   CONSTRAINT `BLSampleGroup_fk_proposalId` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1507,7 +1510,7 @@ CREATE TABLE `DataCollectionGroup` (
   `sessionId` int(10) unsigned NOT NULL COMMENT 'references Session table',
   `comments` varchar(1024) DEFAULT NULL COMMENT 'comments',
   `blSampleId` int(10) unsigned DEFAULT NULL COMMENT 'references BLSample table',
-  `experimentType` enum('SAD','SAD - Inverse Beam','OSC','Collect - Multiwedge','MAD','Helical','Multi-positional','Mesh','Burn','MAD - Inverse Beam','Characterization','Dehydration','tomo','experiment','EM','PDF','PDF+Bragg','Bragg','single particle','Serial Fixed','Serial Jet','Standard','Time Resolved','Diamond Anvil High Pressure','Custom','XRF map','Energy scan','XRF spectrum','XRF map xas','Mesh3D','Screening','Still','SSX-Chip','SSX-Jet') DEFAULT NULL COMMENT 'Standard: Routine structure determination experiment. Time Resolved: Investigate the change of a system over time. Custom: Special or non-standard data collection.',
+  `experimentType` enum('SAD','SAD - Inverse Beam','OSC','Collect - Multiwedge','MAD','Helical','Multi-positional','Mesh','Burn','MAD - Inverse Beam','Characterization','Dehydration','tomo','experiment','EM','PDF','PDF+Bragg','Bragg','single particle','Serial Fixed','Serial Jet','Standard','Time Resolved','Diamond Anvil High Pressure','Custom','XRF map','Energy scan','XRF spectrum','XRF map xas','Mesh3D','Screening','Still','SSX-Chip','SSX-Jet','Metal ID') DEFAULT NULL COMMENT 'Standard: Routine structure determination experiment. Time Resolved: Investigate the change of a system over time. Custom: Special or non-standard data collection.',
   `startTime` datetime DEFAULT NULL COMMENT 'Start time of the dataCollectionGroup',
   `endTime` datetime DEFAULT NULL COMMENT 'end time of the dataCollectionGroup',
   `crystalClass` varchar(20) DEFAULT NULL COMMENT 'Crystal Class for industrials users',
@@ -1713,7 +1716,7 @@ DROP TABLE IF EXISTS `DiffractionPlan`;
 CREATE TABLE `DiffractionPlan` (
   `diffractionPlanId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) DEFAULT NULL,
-  `experimentKind` enum('Default','MXPressE','MXPressO','MXPressE_SAD','MXScore','MXPressM','MAD','SAD','Fixed','Ligand binding','Refinement','OSC','MAD - Inverse Beam','SAD - Inverse Beam','MESH','XFE','Stepped transmission','XChem High Symmetry','XChem Low Symmetry','Commissioning') DEFAULT NULL,
+  `experimentKind` enum('Default','MXPressE','MXPressO','MXPressE_SAD','MXScore','MXPressM','MAD','SAD','Fixed','Ligand binding','Refinement','OSC','MAD - Inverse Beam','SAD - Inverse Beam','MESH','XFE','Stepped transmission','XChem High Symmetry','XChem Low Symmetry','Commissioning','Metal ID') DEFAULT NULL,
   `observedResolution` float DEFAULT NULL,
   `minimalResolution` float DEFAULT NULL,
   `exposureTime` float DEFAULT NULL,
