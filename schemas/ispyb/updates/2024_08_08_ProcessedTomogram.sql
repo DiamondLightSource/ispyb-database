@@ -4,7 +4,7 @@ CREATE TABLE ProcessedTomogram (
     processedTomogramId int(11) unsigned PRIMARY KEY AUTO_INCREMENT,
     tomogramId int(11) unsigned NOT NULL COMMENT 'references Tomogram table',
     filePath varchar(255) DEFAULT NULL COMMENT 'location on disk for the tomogram file',
-    comments TEXT DEFAULT NULL COMMENT 'comments on the nature of the processed tomogram',
+    comments varchar(255) DEFAULT NULL COMMENT 'comments on the nature of the processed tomogram',
     FOREIGN KEY (tomogramId)
         REFERENCES Tomogram(tomogramId)
             ON DELETE CASCADE
