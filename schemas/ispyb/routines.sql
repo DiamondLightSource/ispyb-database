@@ -130,7 +130,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `retrieve_proposal_title`(p_proposal_code varchar(5), p_proposal_number int) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
+CREATE FUNCTION `retrieve_proposal_title`(p_proposal_code varchar(5), p_proposal_number int) RETURNS varchar(255) CHARSET latin1
     READS SQL DATA
 BEGIN
 	DECLARE ret_title varchar(255);
@@ -155,7 +155,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `retrieve_proposal_title_v2`(p_proposalCode varchar(5), p_proposalNumber int) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
+CREATE FUNCTION `retrieve_proposal_title_v2`(p_proposalCode varchar(5), p_proposalNumber int) RETURNS varchar(255) CHARSET latin1
     READS SQL DATA
     COMMENT 'Retrieve the title for a given proposal code and number.'
 BEGIN
@@ -206,7 +206,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `root_replace`(p_str varchar(255), p_oldroot varchar(255), p_newroot varchar(255)) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
+CREATE FUNCTION `root_replace`(p_str varchar(255), p_oldroot varchar(255), p_newroot varchar(255)) RETURNS varchar(255) CHARSET latin1
     COMMENT 'Returns a varchar where the old root p_oldroot (the leftmost part) of p_str has been replaced with a new root p_newroot'
 BEGIN
  DECLARE path_len smallint unsigned DEFAULT LENGTH(p_oldroot);
@@ -9448,7 +9448,7 @@ CREATE PROCEDURE `upsert_dc_group_v3`(
      p_sessionNumber int(10),
      p_sampleId int(10) unsigned,
      p_sampleBarcode varchar(45),
-     p_experimenttype varchar(45),
+     p_experimenttype varchar(45), 
      p_starttime datetime,
      p_endtime datetime,
      p_crystalClass varchar(20),
@@ -9459,53 +9459,57 @@ CREATE PROCEDURE `upsert_dc_group_v3`(
      p_actualContainerSlotInSC integer(10),
      p_comments varchar(1024),
      p_xtalSnapshotFullPath	varchar(255),
-		 p_scanParameters longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin
+     p_scanParameters longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin
      )
     MODIFIES SQL DATA
     COMMENT 'Inserts or updates info about data collection group (p_id).\nMandatory columns:\nFor insert: Either p_sessionId or a valid session described by (p_proposalCode, p_proposalNumber, p_sessionNumber)\nFor update: p_id\nNote: In order to associate the data collection group with a sample, one of the following sets of parameters are required:\n* p_sampleId\n* p_proposalCode, p_proposalNumber, p_sessionNumber + p_sampleBarcode\n* p_actualContainerBarcode + p_actualSampleSlotInContainer\nReturns: Record ID in p_id.'
 BEGIN
-	DECLARE row_proposal_id int(10) unsigned DEFAULT NULL;
-	DECLARE row_sample_id int(10) unsigned DEFAULT NULL;
+  DECLARE row_proposal_id int(10) unsigned DEFAULT NULL;
+  DECLARE row_sample_id int(10) unsigned DEFAULT NULL;
+  DECLARE row_experiment_id int(10) unsigned DEFAULT NULL;
 
-	IF p_sessionId IS NULL AND p_proposalCode IS NOT NULL AND p_proposalNumber IS NOT NULL AND p_sessionNumber IS NOT NULL THEN
+  IF p_sessionId IS NULL AND p_proposalCode IS NOT NULL AND p_proposalNumber IS NOT NULL AND p_sessionNumber IS NOT NULL THEN
       SELECT max(bs.sessionid), p.proposalId INTO p_sessionId, row_proposal_id
       FROM Proposal p INNER JOIN BLSession bs ON p.proposalid = bs.proposalid
       WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber AND bs.visit_number = p_sessionNumber;
 	END IF;
 
 	IF p_id IS NOT NULL OR p_sessionId IS NOT NULL THEN
-
+	  
       IF p_sessionId IS NOT NULL AND p_sampleId IS NULL AND p_sampleBarcode IS NOT NULL THEN
-	    IF row_proposal_id IS NULL THEN
-          SELECT proposalId INTO row_proposal_id
-          FROM BLSession
-          WHERE sessionId = p_sessionId;
+			    IF row_proposal_id IS NULL THEN
+		          SELECT proposalId INTO row_proposal_id
+		          FROM BLSession
+		          WHERE sessionId = p_sessionId;
+			    END IF;
+	        SELECT max(bls.blSampleId) INTO p_sampleId
+	        FROM BLSample bls
+					  INNER JOIN Container c on c.containerId = bls.containerId
+			          INNER JOIN Dewar d on d.dewarId = c.dewarId
+			          INNER JOIN Shipping s on s.shippingId = d.shippingId
+			    WHERE bls.code = p_sampleBarcode AND s.proposalId = row_proposal_id;
 	    END IF;
-        SELECT max(bls.blSampleId) INTO p_sampleId
-        FROM BLSample bls
-		  INNER JOIN Container c on c.containerId = bls.containerId
-          INNER JOIN Dewar d on d.dewarId = c.dewarId
-          INNER JOIN Shipping s on s.shippingId = d.shippingId
-        WHERE bls.code = p_sampleBarcode AND s.proposalId = row_proposal_id;
-	  END IF;
 
-	  IF p_sampleId IS NULL AND (p_actualContainerBarcode IS NOT NULL) AND (p_actualSampleSlotInContainer IS NOT NULL) THEN
-	    SELECT max(bls.blSampleId) INTO p_sampleId
-        FROM BLSample bls
-          INNER JOIN Container c on c.containerId = bls.containerId
-	    WHERE c.barcode = p_actualContainerBarcode AND bls.location = p_actualSampleSlotInContainer;
-      END IF;
+		  IF p_sampleId IS NULL AND (p_actualContainerBarcode IS NOT NULL) AND (p_actualSampleSlotInContainer IS NOT NULL) THEN
+		    SELECT max(bls.blSampleId) INTO p_sampleId
+	        FROM BLSample bls
+	          INNER JOIN Container c on c.containerId = bls.containerId
+		    WHERE c.barcode = p_actualContainerBarcode AND bls.location = p_actualSampleSlotInContainer;
+	    END IF;
 
-      INSERT INTO DataCollectionGroup (datacollectionGroupId, sessionId, blsampleId, experimenttype, starttime, endtime,
+			SELECT experimentTypeId INTO row_experiment_id FROM ExperimentType WHERE name = p_experimenttype;
+
+      INSERT INTO DataCollectionGroup (datacollectionGroupId, sessionId, blsampleId, experimenttype, experimentTypeId, starttime, endtime,
         crystalClass, detectorMode, actualSampleBarcode, actualSampleSlotInContainer, actualContainerBarcode, actualContainerSlotInSC,
         comments, xtalSnapshotFullPath, scanParameters)
-        VALUES (p_id, p_sessionId, p_sampleId, p_experimenttype, p_starttime, p_endtime, p_crystalClass, p_detectorMode,
+        VALUES (p_id, p_sessionId, p_sampleId, p_experimenttype, row_experiment_id, p_starttime, p_endtime, p_crystalClass, p_detectorMode,
         p_actualSampleBarcode, p_actualSampleSlotInContainer, p_actualContainerBarcode, p_actualContainerSlotInSC,
         p_comments, p_xtalSnapshotFullPath, p_scanParameters)
 	    ON DUPLICATE KEY UPDATE
 		  sessionId = IFNULL(p_sessionId, sessionId),
           blsampleId = IFNULL(p_sampleId, blsampleId),
           experimenttype = IFNULL(p_experimenttype, experimenttype),
+					experimentTypeId = row_experiment_id,
           starttime = IFNULL(p_starttime, starttime),
           endtime = IFNULL(p_endtime, endtime),
           crystalClass = IFNULL(p_crystalClass, crystalClass),
@@ -9518,13 +9522,13 @@ BEGIN
           xtalSnapshotFullPath = IFNULL(p_xtalSnapshotFullPath, xtalSnapshotFullPath),
 					scanParameters = IFNULL (p_scanParameters, scanParameters);
 
-	    IF p_id IS NULL THEN
-		    SET p_id = LAST_INSERT_ID();
+      IF p_id IS NULL THEN
+          SET p_id = LAST_INSERT_ID();
       END IF;
-    ELSE
-      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_sessionId OR a valid session described by (p_proposalCode and p_proposalNumber and p_sessionNumber) must be non-NULL.';
-    END IF;
-  END ;;
+  ELSE
+    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_sessionId OR a valid session described by (p_proposalCode and p_proposalNumber and p_sessionNumber) must be non-NULL.';
+  END IF;
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
