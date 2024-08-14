@@ -5,6 +5,24 @@ History
 Unreleased / master
 -------------------
 
+4.2.0 (2024-08-14)
+-------------------
+
+Roles and permissions:  grants files for new ispyb expeye roles
+
+New or modified tables, columns, lookup values:
+
+- New table ``ProcessedTomogram``
+- New rows for 'VMXm-Cartridge' and 'VMXm-Cartridge' in the ``ContainerType`` table
+- New FK column ``ownerId`` (references ``Person.personId``) in the ``BLSampleGroup`` table
+- New 'Metal ID' enum item in ``DiffractionPlan.experimentKind``
+- New 'Metal ID' enum item in ``DataCollectionGroup.experimentType``
+- New row for 'Metal ID' (for MX) in ``ExperimentType`` table
+
+Stored procedures: ``upsert_dc_group_v3`` now populates ``DataCollectionGroup.experimentTypeId`` based on ``p_experimenttype``
+
+New script to perform LVM snapshot-based backup
+
 4.1.0 (2024-03-26)
 -------------------
 
