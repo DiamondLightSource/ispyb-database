@@ -10,7 +10,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.2.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.2.1');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -262,7 +262,8 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (291,'2024_07_08_BLSampleGroup_ownerId.sql','DONE','2024-08-14 11:23:41'),
 (292,'2024_07_16_ContainerType_insert_new.sql','DONE','2024-08-14 11:23:41'),
 (293,'2024_08_08_ProcessedTomogram.sql','DONE','2024-08-14 11:23:41'),
-(294,'2024_08_14_AdminVar_bump_version.sql','DONE','2024-08-14 11:23:41');
+(294,'2024_08_14_AdminVar_bump_version.sql','DONE','2024-08-14 11:23:41'),
+(295,'2024_08_19_AdminVar_bump_version.sql','DONE','2024-08-19 12:17:10');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;

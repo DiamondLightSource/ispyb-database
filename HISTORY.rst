@@ -5,6 +5,12 @@ History
 Unreleased / master
 -------------------
 
+4.2.1 (2024-08-19)
+-------------------
+
+Roles and permissions: Granted ``SELECT``, ``INSERT``, ``UPDATE`` on ``ProcessedTomogram``
+for ``ispyb_processing``
+
 4.2.0 (2024-08-14)
 -------------------
 
