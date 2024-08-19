@@ -32,6 +32,7 @@ GRANT SELECT,INSERT,UPDATE ON Movie TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON BFactorFit TO 'ispyb_processing';
 
 GRANT SELECT,INSERT,UPDATE ON Tomogram TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON ProcessedTomogram TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON TiltImageAlignment TO 'ispyb_processing';
 
 GRANT SELECT,INSERT,UPDATE ON Atlas TO 'ispyb_processing';
