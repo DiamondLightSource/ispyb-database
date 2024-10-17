@@ -44,7 +44,7 @@ jobs:
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         with:
             token: ${{ secrets.GITHUB_TOKEN }}
             commit-message: Update database sql files
