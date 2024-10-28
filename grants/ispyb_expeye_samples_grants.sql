@@ -8,6 +8,8 @@ CREATE ROLE IF NOT EXISTS ispyb_expeye_samples_role;
 
 GRANT SELECT ON Proposal TO ispyb_expeye_samples_role;
 GRANT SELECT ON BLSession TO ispyb_expeye_samples_role;
+GRANT SELECT ON DataCollectionGroup TO ispyb_expeye_samples_role;
+GRANT SELECT ON DataCollection TO ispyb_expeye_samples_role;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON Shipping TO ispyb_expeye_samples_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ShippingHasSession TO ispyb_expeye_samples_role;
@@ -44,6 +46,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON Project_has_BLSample TO ispyb_expeye_sam
 
 GRANT SELECT ON Protein TO ispyb_expeye_samples_role;
 GRANT SELECT ON Crystal TO ispyb_expeye_samples_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON XFEFluorescenceSpectrum TO ispyb_expeye_samples_role;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON DiffractionPlan TO ispyb_expeye_samples_role;
 
