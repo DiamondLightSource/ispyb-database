@@ -21,7 +21,7 @@ CREATE TABLE `AdminActivity` (
   PRIMARY KEY (`adminActivityId`),
   UNIQUE KEY `username` (`username`),
   KEY `AdminActivity_FKAction` (`action`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AdminVar`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -33,7 +33,7 @@ CREATE TABLE `AdminVar` (
   PRIMARY KEY (`varId`),
   KEY `AdminVar_FKIndexName` (`name`),
   KEY `AdminVar_FKIndexValue` (`value`(767))
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='ISPyB administration values';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='ISPyB administration values';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Aperture`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -42,7 +42,7 @@ CREATE TABLE `Aperture` (
   `apertureId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sizeX` float DEFAULT NULL,
   PRIMARY KEY (`apertureId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Atlas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -56,7 +56,7 @@ CREATE TABLE `Atlas` (
   PRIMARY KEY (`atlasId`),
   KEY `Atlas_fk_dataCollectionGroupId` (`dataCollectionGroupId`),
   CONSTRAINT `Atlas_fk_dataCollectionGroupId` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Atlas of a Cryo-EM grid';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Atlas of a Cryo-EM grid';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AutoProc`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -75,7 +75,7 @@ CREATE TABLE `AutoProc` (
   PRIMARY KEY (`autoProcId`),
   KEY `AutoProc_FKIndex1` (`autoProcProgramId`),
   KEY `AutoProc_refined_unit_cell` (`refinedCell_a`,`refinedCell_b`,`refinedCell_c`,`refinedCell_alpha`,`refinedCell_beta`,`refinedCell_gamma`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AutoProcIntegration`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -108,7 +108,7 @@ CREATE TABLE `AutoProcIntegration` (
   KEY `AutoProcIntegration_FKIndex1` (`autoProcProgramId`),
   CONSTRAINT `AutoProcIntegration_ibfk_1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `AutoProcIntegration_ibfk_2` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AutoProcProgram`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -124,10 +124,11 @@ CREATE TABLE `AutoProcProgram` (
   `processingEnvironment` varchar(255) DEFAULT NULL COMMENT 'Cpus, Nodes,...',
   `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
   `processingJobId` int(11) unsigned DEFAULT NULL,
+  `processingPipelineId` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`autoProcProgramId`),
   KEY `AutoProcProgram_FK2` (`processingJobId`),
   CONSTRAINT `AutoProcProgram_FK2` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AutoProcProgramAttachment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -143,7 +144,7 @@ CREATE TABLE `AutoProcProgramAttachment` (
   PRIMARY KEY (`autoProcProgramAttachmentId`),
   KEY `AutoProcProgramAttachmentIdx1` (`autoProcProgramId`),
   CONSTRAINT `AutoProcProgramAttachmentFk1` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AutoProcProgramMessage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -158,7 +159,7 @@ CREATE TABLE `AutoProcProgramMessage` (
   PRIMARY KEY (`autoProcProgramMessageId`),
   KEY `AutoProcProgramMessage_fk1` (`autoProcProgramId`),
   CONSTRAINT `AutoProcProgramMessage_fk1` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AutoProcScaling`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -171,7 +172,7 @@ CREATE TABLE `AutoProcScaling` (
   KEY `AutoProcScalingFk1` (`autoProcId`),
   KEY `AutoProcScalingIdx1` (`autoProcScalingId`,`autoProcId`),
   CONSTRAINT `AutoProcScalingFk1` FOREIGN KEY (`autoProcId`) REFERENCES `AutoProc` (`autoProcId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AutoProcScalingStatistics`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -205,7 +206,7 @@ CREATE TABLE `AutoProcScalingStatistics` (
   KEY `AutoProcScalingStatistics_FKindexType` (`scalingStatisticsType`),
   KEY `AutoProcScalingStatistics_scalingId_statisticsType` (`autoProcScalingId`,`scalingStatisticsType`),
   CONSTRAINT `_AutoProcScalingStatisticsFk1` FOREIGN KEY (`autoProcScalingId`) REFERENCES `AutoProcScaling` (`autoProcScalingId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AutoProcScaling_has_Int`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -220,7 +221,7 @@ CREATE TABLE `AutoProcScaling_has_Int` (
   KEY `AutoProcScal_has_IntIdx2` (`autoProcIntegrationId`),
   CONSTRAINT `AutoProcScaling_has_IntFk1` FOREIGN KEY (`autoProcScalingId`) REFERENCES `AutoProcScaling` (`autoProcScalingId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `AutoProcScaling_has_IntFk2` FOREIGN KEY (`autoProcIntegrationId`) REFERENCES `AutoProcIntegration` (`autoProcIntegrationId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AutoProcStatus`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -235,7 +236,7 @@ CREATE TABLE `AutoProcStatus` (
   PRIMARY KEY (`autoProcStatusId`),
   KEY `AutoProcStatus_FKIndex1` (`autoProcIntegrationId`),
   CONSTRAINT `AutoProcStatus_ibfk_1` FOREIGN KEY (`autoProcIntegrationId`) REFERENCES `AutoProcIntegration` (`autoProcIntegrationId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='AutoProcStatus table is linked to AutoProcIntegration';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='AutoProcStatus table is linked to AutoProcIntegration';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BF_automationError`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -245,7 +246,7 @@ CREATE TABLE `BF_automationError` (
   `errorType` varchar(40) NOT NULL,
   `solution` text DEFAULT NULL,
   PRIMARY KEY (`automationErrorId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BF_automationFault`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -263,7 +264,7 @@ CREATE TABLE `BF_automationFault` (
   KEY `BF_automationFault_ibfk2` (`containerId`),
   CONSTRAINT `BF_automationFault_ibfk1` FOREIGN KEY (`automationErrorId`) REFERENCES `BF_automationError` (`automationErrorId`),
   CONSTRAINT `BF_automationFault_ibfk2` FOREIGN KEY (`containerId`) REFERENCES `Container` (`containerId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BF_component`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -276,7 +277,7 @@ CREATE TABLE `BF_component` (
   PRIMARY KEY (`componentId`),
   KEY `bf_component_FK1` (`systemId`),
   CONSTRAINT `bf_component_FK1` FOREIGN KEY (`systemId`) REFERENCES `BF_system` (`systemId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BF_component_beamline`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -288,7 +289,7 @@ CREATE TABLE `BF_component_beamline` (
   PRIMARY KEY (`component_beamlineId`),
   KEY `bf_component_beamline_FK1` (`componentId`),
   CONSTRAINT `bf_component_beamline_FK1` FOREIGN KEY (`componentId`) REFERENCES `BF_component` (`componentId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BF_fault`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -321,7 +322,7 @@ CREATE TABLE `BF_fault` (
   CONSTRAINT `bf_fault_FK2` FOREIGN KEY (`subcomponentId`) REFERENCES `BF_subcomponent` (`subcomponentId`),
   CONSTRAINT `bf_fault_FK3` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`),
   CONSTRAINT `bf_fault_FK4` FOREIGN KEY (`assigneeId`) REFERENCES `Person` (`personId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BF_subcomponent`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -334,7 +335,7 @@ CREATE TABLE `BF_subcomponent` (
   PRIMARY KEY (`subcomponentId`),
   KEY `bf_subcomponent_FK1` (`componentId`),
   CONSTRAINT `bf_subcomponent_FK1` FOREIGN KEY (`componentId`) REFERENCES `BF_component` (`componentId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BF_subcomponent_beamline`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -346,7 +347,7 @@ CREATE TABLE `BF_subcomponent_beamline` (
   PRIMARY KEY (`subcomponent_beamlineId`),
   KEY `bf_subcomponent_beamline_FK1` (`subcomponentId`),
   CONSTRAINT `bf_subcomponent_beamline_FK1` FOREIGN KEY (`subcomponentId`) REFERENCES `BF_subcomponent` (`subcomponentId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BF_system`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -356,7 +357,7 @@ CREATE TABLE `BF_system` (
   `name` varchar(100) DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`systemId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BF_system_beamline`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -368,7 +369,7 @@ CREATE TABLE `BF_system_beamline` (
   PRIMARY KEY (`system_beamlineId`),
   KEY `bf_system_beamline_FK1` (`systemId`),
   CONSTRAINT `bf_system_beamline_FK1` FOREIGN KEY (`systemId`) REFERENCES `BF_system` (`systemId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BFactorFit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -382,7 +383,7 @@ CREATE TABLE `BFactorFit` (
   PRIMARY KEY (`bFactorFitId`),
   KEY `BFactorFit_fk_particleClassificationId` (`particleClassificationId`),
   CONSTRAINT `BFactorFit_fk_particleClassificationId` FOREIGN KEY (`particleClassificationId`) REFERENCES `ParticleClassification` (`particleClassificationId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='CryoEM reconstruction resolution as a function of the number of particles for the creation of a Rosenthal-Henderson plot and the calculation of B-factors';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='CryoEM reconstruction resolution as a function of the number of particles for the creation of a Rosenthal-Henderson plot and the calculation of B-factors';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSample`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -429,6 +430,7 @@ CREATE TABLE `BLSample` (
   `staffComments` varchar(255) DEFAULT NULL COMMENT 'Any staff comments on the sample',
   `source` varchar(50) DEFAULT current_user(),
   PRIMARY KEY (`blSampleId`),
+  UNIQUE KEY `BLSample_uidx_containerId_location_subLocation` (`containerId`,`location`,`subLocation`),
   KEY `BLSample_FKIndex1` (`containerId`),
   KEY `BLSample_FKIndex3` (`diffractionPlanId`),
   KEY `BLSample_FKIndex_Status` (`blSampleStatus`),
@@ -441,7 +443,7 @@ CREATE TABLE `BLSample` (
   CONSTRAINT `BLSample_ibfk_1` FOREIGN KEY (`containerId`) REFERENCES `Container` (`containerId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSample_ibfk_2` FOREIGN KEY (`crystalId`) REFERENCES `Crystal` (`crystalId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSample_ibfk_3` FOREIGN KEY (`diffractionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSampleGroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -456,7 +458,7 @@ CREATE TABLE `BLSampleGroup` (
   KEY `BLSampleGroup_fk_ownerId` (`ownerId`),
   CONSTRAINT `BLSampleGroup_fk_ownerId` FOREIGN KEY (`ownerId`) REFERENCES `Person` (`personId`) ON UPDATE CASCADE,
   CONSTRAINT `BLSampleGroup_fk_proposalId` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSampleGroup_has_BLSample`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -473,7 +475,7 @@ CREATE TABLE `BLSampleGroup_has_BLSample` (
   CONSTRAINT `BLSampleGroup_has_BLSample_ibfk1` FOREIGN KEY (`blSampleGroupId`) REFERENCES `BLSampleGroup` (`blSampleGroupId`),
   CONSTRAINT `BLSampleGroup_has_BLSample_ibfk2` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`),
   CONSTRAINT `BLSampleGroup_has_BLSample_ibfk3` FOREIGN KEY (`blSampleTypeId`) REFERENCES `BLSampleType` (`blSampleTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSampleImage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -499,7 +501,7 @@ CREATE TABLE `BLSampleImage` (
   CONSTRAINT `BLSampleImage_fk1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `BLSampleImage_fk2` FOREIGN KEY (`containerInspectionId`) REFERENCES `ContainerInspection` (`containerInspectionId`),
   CONSTRAINT `BLSampleImage_fk3` FOREIGN KEY (`blSampleImageScoreId`) REFERENCES `BLSampleImageScore` (`blSampleImageScoreId`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSampleImageAnalysis`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -519,7 +521,7 @@ CREATE TABLE `BLSampleImageAnalysis` (
   PRIMARY KEY (`blSampleImageAnalysisId`),
   KEY `BLSampleImageAnalysis_ibfk1` (`blSampleImageId`),
   CONSTRAINT `BLSampleImageAnalysis_ibfk1` FOREIGN KEY (`blSampleImageId`) REFERENCES `BLSampleImage` (`blSampleImageId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSampleImageAutoScoreClass`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -531,7 +533,7 @@ CREATE TABLE `BLSampleImageAutoScoreClass` (
   PRIMARY KEY (`blSampleImageAutoScoreClassId`),
   KEY `BLSampleImageAutoScoreClass_fk1` (`blSampleImageAutoScoreSchemaId`),
   CONSTRAINT `BLSampleImageAutoScoreClass_fk1` FOREIGN KEY (`blSampleImageAutoScoreSchemaId`) REFERENCES `BLSampleImageAutoScoreSchema` (`blSampleImageAutoScoreSchemaId`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='The automated scoring classes - the thing being scored';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='The automated scoring classes - the thing being scored';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSampleImageAutoScoreSchema`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -541,7 +543,7 @@ CREATE TABLE `BLSampleImageAutoScoreSchema` (
   `schemaName` varchar(25) NOT NULL COMMENT 'Name of the schema e.g. Hampton, MARCO',
   `enabled` tinyint(1) DEFAULT 1 COMMENT 'Whether this schema is enabled (could be configurable in the UI)',
   PRIMARY KEY (`blSampleImageAutoScoreSchemaId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Scoring schema name and whether it is enabled';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Scoring schema name and whether it is enabled';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSampleImageMeasurement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -560,7 +562,7 @@ CREATE TABLE `BLSampleImageMeasurement` (
   KEY `BLSampleImageMeasurement_ibfk_2` (`blSubSampleId`),
   CONSTRAINT `BLSampleImageMeasurement_ibfk_1` FOREIGN KEY (`blSampleImageId`) REFERENCES `BLSampleImage` (`blSampleImageId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSampleImageMeasurement_ibfk_2` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='For measuring crystal growth over time';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='For measuring crystal growth over time';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSampleImageScore`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -571,7 +573,7 @@ CREATE TABLE `BLSampleImageScore` (
   `score` float DEFAULT NULL,
   `colour` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`blSampleImageScoreId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSampleImage_has_AutoScoreClass`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -584,7 +586,7 @@ CREATE TABLE `BLSampleImage_has_AutoScoreClass` (
   KEY `BLSampleImage_has_AutoScoreClass_fk2` (`blSampleImageAutoScoreClassId`),
   CONSTRAINT `BLSampleImage_has_AutoScoreClass_fk1` FOREIGN KEY (`blSampleImageId`) REFERENCES `BLSampleImage` (`blSampleImageId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSampleImage_has_AutoScoreClass_fk2` FOREIGN KEY (`blSampleImageAutoScoreClassId`) REFERENCES `BLSampleImageAutoScoreClass` (`blSampleImageAutoScoreClassId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Many-to-many relationship between drop images and thing being scored, as well as the actual probability (score) that the drop image contains that thing';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Many-to-many relationship between drop images and thing being scored, as well as the actual probability (score) that the drop image contains that thing';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSampleImage_has_Positioner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -599,7 +601,7 @@ CREATE TABLE `BLSampleImage_has_Positioner` (
   KEY `BLSampleImageHasPositioner_ibfk2` (`positionerId`),
   CONSTRAINT `BLSampleImageHasPositioner_ibfk1` FOREIGN KEY (`blSampleImageId`) REFERENCES `BLSampleImage` (`blSampleImageId`),
   CONSTRAINT `BLSampleImageHasPositioner_ibfk2` FOREIGN KEY (`positionerId`) REFERENCES `Positioner` (`positionerId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Allows a BLSampleImage to store motor positions along with the image';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Allows a BLSampleImage to store motor positions along with the image';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSampleType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -610,7 +612,7 @@ CREATE TABLE `BLSampleType` (
   `proposalType` varchar(10) DEFAULT NULL,
   `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`blSampleTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSampleType_has_Component`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -623,7 +625,7 @@ CREATE TABLE `BLSampleType_has_Component` (
   KEY `blSampleType_has_Component_fk2` (`componentId`),
   CONSTRAINT `blSampleType_has_Component_fk1` FOREIGN KEY (`blSampleTypeId`) REFERENCES `Crystal` (`crystalId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `blSampleType_has_Component_fk2` FOREIGN KEY (`componentId`) REFERENCES `Protein` (`proteinId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSample_has_DataCollectionPlan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -636,7 +638,7 @@ CREATE TABLE `BLSample_has_DataCollectionPlan` (
   KEY `BLSample_has_DataCollectionPlan_ibfk2` (`dataCollectionPlanId`),
   CONSTRAINT `BLSample_has_DataCollectionPlan_ibfk1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`),
   CONSTRAINT `BLSample_has_DataCollectionPlan_ibfk2` FOREIGN KEY (`dataCollectionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSample_has_EnergyScan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -650,7 +652,7 @@ CREATE TABLE `BLSample_has_EnergyScan` (
   KEY `BLSample_has_EnergyScan_FKIndex2` (`energyScanId`),
   CONSTRAINT `BLSample_has_EnergyScan_ibfk_1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSample_has_EnergyScan_ibfk_2` FOREIGN KEY (`energyScanId`) REFERENCES `EnergyScan` (`energyScanId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSample_has_Positioner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -664,7 +666,7 @@ CREATE TABLE `BLSample_has_Positioner` (
   KEY `BLSampleHasPositioner_ibfk2` (`positionerId`),
   CONSTRAINT `BLSampleHasPositioner_ibfk1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`),
   CONSTRAINT `BLSampleHasPositioner_ibfk2` FOREIGN KEY (`positionerId`) REFERENCES `Positioner` (`positionerId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSession`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -698,7 +700,7 @@ CREATE TABLE `BLSession` (
   CONSTRAINT `BLSession_fk_beamCalendarId` FOREIGN KEY (`beamCalendarId`) REFERENCES `BeamCalendar` (`beamCalendarId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `BLSession_ibfk_1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSession_ibfk_2` FOREIGN KEY (`beamLineSetupId`) REFERENCES `BeamLineSetup` (`beamLineSetupId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSession_has_SCPosition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -711,7 +713,7 @@ CREATE TABLE `BLSession_has_SCPosition` (
   PRIMARY KEY (`blsessionhasscpositionid`),
   KEY `blsession_has_scposition_FK1` (`blsessionid`),
   CONSTRAINT `blsession_has_scposition_FK1` FOREIGN KEY (`blsessionid`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSubSample`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -744,7 +746,7 @@ CREATE TABLE `BLSubSample` (
   CONSTRAINT `BLSubSample_motorPositionfk_1` FOREIGN KEY (`motorPositionId`) REFERENCES `MotorPosition` (`motorPositionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSubSample_positionfk_1` FOREIGN KEY (`positionId`) REFERENCES `Position` (`positionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `BLSubSample_positionfk_2` FOREIGN KEY (`position2Id`) REFERENCES `Position` (`positionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSubSample_has_Positioner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -758,7 +760,7 @@ CREATE TABLE `BLSubSample_has_Positioner` (
   KEY `BLSubSampleHasPositioner_ibfk2` (`positionerId`),
   CONSTRAINT `BLSubSampleHasPositioner_ibfk1` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`),
   CONSTRAINT `BLSubSampleHasPositioner_ibfk2` FOREIGN KEY (`positionerId`) REFERENCES `Positioner` (`positionerId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BeamApertures`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -773,7 +775,7 @@ CREATE TABLE `BeamApertures` (
   PRIMARY KEY (`beamAperturesid`),
   KEY `beamapertures_FK1` (`beamlineStatsId`),
   CONSTRAINT `beamapertures_FK1` FOREIGN KEY (`beamlineStatsId`) REFERENCES `BeamlineStats` (`beamlineStatsId`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BeamCalendar`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -785,7 +787,7 @@ CREATE TABLE `BeamCalendar` (
   `startDate` datetime NOT NULL,
   `endDate` datetime NOT NULL,
   PRIMARY KEY (`beamCalendarId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BeamCentres`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -799,7 +801,7 @@ CREATE TABLE `BeamCentres` (
   PRIMARY KEY (`beamCentresid`),
   KEY `beamCentres_FK1` (`beamlineStatsId`),
   CONSTRAINT `beamCentres_FK1` FOREIGN KEY (`beamlineStatsId`) REFERENCES `BeamlineStats` (`beamlineStatsId`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BeamLineSetup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -856,7 +858,7 @@ CREATE TABLE `BeamLineSetup` (
   PRIMARY KEY (`beamLineSetupId`),
   KEY `BeamLineSetup_ibfk_1` (`detectorId`),
   CONSTRAINT `BeamLineSetup_ibfk_1` FOREIGN KEY (`detectorId`) REFERENCES `Detector` (`detectorId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BeamlineAction`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -874,7 +876,7 @@ CREATE TABLE `BeamlineAction` (
   PRIMARY KEY (`beamlineActionId`),
   KEY `BeamlineAction_ibfk1` (`sessionId`),
   CONSTRAINT `BeamlineAction_ibfk1` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BeamlineStats`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -892,7 +894,7 @@ CREATE TABLE `BeamlineStats` (
   `scanFileW` varchar(255) DEFAULT NULL,
   `scanFileH` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`beamlineStatsId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `CTF`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -921,7 +923,7 @@ CREATE TABLE `CTF` (
   KEY `CTF_ibfk2` (`autoProcProgramId`),
   CONSTRAINT `CTF_ibfk1` FOREIGN KEY (`motionCorrectionId`) REFERENCES `MotionCorrection` (`motionCorrectionId`),
   CONSTRAINT `CTF_ibfk2` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `CalendarHash`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -932,7 +934,7 @@ CREATE TABLE `CalendarHash` (
   `hash` varchar(128) DEFAULT NULL,
   `beamline` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`calendarHashId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Lets people get to their calendars without logging in using a private (hash) url';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Lets people get to their calendars without logging in using a private (hash) url';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Component`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -948,7 +950,7 @@ CREATE TABLE `Component` (
   KEY `proposalId` (`proposalId`),
   CONSTRAINT `Component_ibfk_1` FOREIGN KEY (`componentTypeId`) REFERENCES `ComponentType` (`componentTypeId`),
   CONSTRAINT `Component_ibfk_2` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Description of a component that can be used inside a crystal or a sample.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Description of a component that can be used inside a crystal or a sample.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ComponentLattice`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -966,7 +968,7 @@ CREATE TABLE `ComponentLattice` (
   PRIMARY KEY (`componentLatticeId`),
   KEY `ComponentLattice_ibfk1` (`componentId`),
   CONSTRAINT `ComponentLattice_ibfk1` FOREIGN KEY (`componentId`) REFERENCES `Protein` (`proteinId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ComponentSubType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -978,7 +980,7 @@ CREATE TABLE `ComponentSubType` (
   `proposalType` varchar(10) DEFAULT NULL,
   `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`componentSubTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ComponentType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -988,7 +990,7 @@ CREATE TABLE `ComponentType` (
   `name` varchar(31) NOT NULL,
   PRIMARY KEY (`componentTypeId`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Component_has_SubType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1000,7 +1002,7 @@ CREATE TABLE `Component_has_SubType` (
   KEY `component_has_SubType_fk2` (`componentSubTypeId`),
   CONSTRAINT `component_has_SubType_fk1` FOREIGN KEY (`componentId`) REFERENCES `Protein` (`proteinId`) ON DELETE CASCADE,
   CONSTRAINT `component_has_SubType_fk2` FOREIGN KEY (`componentSubTypeId`) REFERENCES `ComponentSubType` (`componentSubTypeId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ConcentrationType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1012,7 +1014,7 @@ CREATE TABLE `ConcentrationType` (
   `proposalType` varchar(10) DEFAULT NULL,
   `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`concentrationTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Container`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1076,7 +1078,7 @@ CREATE TABLE `Container` (
   CONSTRAINT `Container_ibfk8` FOREIGN KEY (`containerRegistryId`) REFERENCES `ContainerRegistry` (`containerRegistryId`),
   CONSTRAINT `Container_ibfk9` FOREIGN KEY (`priorityPipelineId`) REFERENCES `ProcessingPipeline` (`processingPipelineId`),
   CONSTRAINT `Container_ibfk_1` FOREIGN KEY (`dewarId`) REFERENCES `Dewar` (`dewarId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ContainerHistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1094,7 +1096,7 @@ CREATE TABLE `ContainerHistory` (
   KEY `ContainerHistory_fk_dewarId` (`currentDewarId`),
   CONSTRAINT `ContainerHistory_fk_dewarId` FOREIGN KEY (`currentDewarId`) REFERENCES `Dewar` (`dewarId`),
   CONSTRAINT `ContainerHistory_ibfk1` FOREIGN KEY (`containerId`) REFERENCES `Container` (`containerId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ContainerInspection`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1121,7 +1123,7 @@ CREATE TABLE `ContainerInspection` (
   CONSTRAINT `ContainerInspection_fk2` FOREIGN KEY (`inspectionTypeId`) REFERENCES `InspectionType` (`inspectionTypeId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `ContainerInspection_fk3` FOREIGN KEY (`imagerId`) REFERENCES `Imager` (`imagerId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `ContainerInspection_fk4` FOREIGN KEY (`scheduleComponentid`) REFERENCES `ScheduleComponent` (`scheduleComponentId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ContainerQueue`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1138,7 +1140,7 @@ CREATE TABLE `ContainerQueue` (
   KEY `ContainerQueue_idx1` (`containerId`,`completedTimeStamp`),
   CONSTRAINT `ContainerQueue_ibfk1` FOREIGN KEY (`containerId`) REFERENCES `Container` (`containerId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ContainerQueue_ibfk2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ContainerQueueSample`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1161,7 +1163,7 @@ CREATE TABLE `ContainerQueueSample` (
   CONSTRAINT `ContainerQueueSample_dataCollectionPlanId` FOREIGN KEY (`dataCollectionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `ContainerQueueSample_ibfk1` FOREIGN KEY (`containerQueueId`) REFERENCES `ContainerQueue` (`containerQueueId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ContainerQueueSample_ibfk2` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ContainerRegistry`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1173,7 +1175,7 @@ CREATE TABLE `ContainerRegistry` (
   `recordTimestamp` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`containerRegistryId`),
   UNIQUE KEY `ContainerRegistry_uniq_barcode` (`barcode`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ContainerRegistry_has_Proposal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1191,7 +1193,7 @@ CREATE TABLE `ContainerRegistry_has_Proposal` (
   CONSTRAINT `ContainerRegistry_has_Proposal_ibfk1` FOREIGN KEY (`containerRegistryId`) REFERENCES `ContainerRegistry` (`containerRegistryId`),
   CONSTRAINT `ContainerRegistry_has_Proposal_ibfk2` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`),
   CONSTRAINT `ContainerRegistry_has_Proposal_ibfk3` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ContainerReport`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1208,7 +1210,7 @@ CREATE TABLE `ContainerReport` (
   KEY `ContainerReport_ibfk2` (`personId`),
   CONSTRAINT `ContainerReport_ibfk1` FOREIGN KEY (`containerRegistryId`) REFERENCES `ContainerRegistry` (`containerRegistryId`),
   CONSTRAINT `ContainerReport_ibfk2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ContainerType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1228,7 +1230,7 @@ CREATE TABLE `ContainerType` (
   `dropOffsetY` float DEFAULT NULL,
   `wellDrop` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`containerTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A lookup table for different types of containers';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='A lookup table for different types of containers';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `CourierTermsAccepted`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1247,7 +1249,7 @@ CREATE TABLE `CourierTermsAccepted` (
   CONSTRAINT `CourierTermsAccepted_ibfk_1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`),
   CONSTRAINT `CourierTermsAccepted_ibfk_2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`),
   CONSTRAINT `CourierTermsAccepted_ibfk_3` FOREIGN KEY (`shippingId`) REFERENCES `Shipping` (`shippingId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Records acceptances of the courier T and C';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Records acceptances of the courier T and C';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `CryoemInitialModel`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1257,7 +1259,7 @@ CREATE TABLE `CryoemInitialModel` (
   `resolution` float DEFAULT NULL COMMENT 'Unit: Angstroms',
   `numberOfParticles` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`cryoemInitialModelId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Initial cryo-EM model generation results';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Initial cryo-EM model generation results';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Crystal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1291,7 +1293,7 @@ CREATE TABLE `Crystal` (
   KEY `Crystal_FKIndex2` (`diffractionPlanId`),
   CONSTRAINT `Crystal_ibfk_1` FOREIGN KEY (`proteinId`) REFERENCES `Protein` (`proteinId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Crystal_ibfk_2` FOREIGN KEY (`diffractionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `CrystalComposition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1311,7 +1313,7 @@ CREATE TABLE `CrystalComposition` (
   CONSTRAINT `CrystalComposition_ibfk_1` FOREIGN KEY (`componentId`) REFERENCES `Component` (`componentId`),
   CONSTRAINT `CrystalComposition_ibfk_2` FOREIGN KEY (`crystalId`) REFERENCES `Crystal` (`crystalId`),
   CONSTRAINT `CrystalComposition_ibfk_3` FOREIGN KEY (`concentrationTypeId`) REFERENCES `ConcentrationType` (`concentrationTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Links a crystal to its components with a specified abundance or ratio.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Links a crystal to its components with a specified abundance or ratio.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Crystal_has_UUID`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1325,7 +1327,7 @@ CREATE TABLE `Crystal_has_UUID` (
   KEY `Crystal_has_UUID_FKIndex1` (`crystalId`),
   KEY `Crystal_has_UUID_FKIndex2` (`UUID`),
   CONSTRAINT `ibfk_1` FOREIGN KEY (`crystalId`) REFERENCES `Crystal` (`crystalId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `DataAcquisition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1338,7 +1340,7 @@ CREATE TABLE `DataAcquisition` (
   `waitTime` varchar(45) DEFAULT NULL,
   `detectorDistance` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`dataAcquisitionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `DataCollection`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1469,7 +1471,7 @@ CREATE TABLE `DataCollection` (
   CONSTRAINT `DataCollection_ibfk_6` FOREIGN KEY (`startPositionId`) REFERENCES `MotorPosition` (`motorPositionId`),
   CONSTRAINT `DataCollection_ibfk_7` FOREIGN KEY (`endPositionId`) REFERENCES `MotorPosition` (`motorPositionId`),
   CONSTRAINT `DataCollection_ibfk_8` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `DataCollectionComment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1486,7 +1488,7 @@ CREATE TABLE `DataCollectionComment` (
   KEY `dataCollectionComment_fk2` (`personId`),
   CONSTRAINT `dataCollectionComment_fk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `dataCollectionComment_fk2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `DataCollectionFileAttachment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1500,7 +1502,7 @@ CREATE TABLE `DataCollectionFileAttachment` (
   PRIMARY KEY (`dataCollectionFileAttachmentId`),
   KEY `_dataCollectionFileAttachmentId_fk1` (`dataCollectionId`),
   CONSTRAINT `_dataCollectionFileAttachmentId_fk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `DataCollectionGroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1529,7 +1531,7 @@ CREATE TABLE `DataCollectionGroup` (
   CONSTRAINT `DataCollectionGroup_ibfk_1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `DataCollectionGroup_ibfk_2` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `DataCollectionGroup_ibfk_4` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='a dataCollectionGroup is a group of dataCollection for a spe';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='a dataCollectionGroup is a group of dataCollection for a spe';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `DataCollectionPlan_has_Detector`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1546,7 +1548,7 @@ CREATE TABLE `DataCollectionPlan_has_Detector` (
   KEY `DataCollectionPlan_has_Detector_ibfk2` (`detectorId`),
   CONSTRAINT `DataCollectionPlan_has_Detector_ibfk1` FOREIGN KEY (`dataCollectionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`),
   CONSTRAINT `DataCollectionPlan_has_Detector_ibfk2` FOREIGN KEY (`detectorId`) REFERENCES `Detector` (`detectorId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Detector`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1582,7 +1584,7 @@ CREATE TABLE `Detector` (
   PRIMARY KEY (`detectorId`),
   UNIQUE KEY `Detector_ibuk1` (`detectorSerialNumber`),
   KEY `Detector_FKIndex1` (`detectorType`,`detectorManufacturer`,`detectorModel`,`detectorPixelSizeHorizontal`,`detectorPixelSizeVertical`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Detector table is linked to a dataCollection';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Detector table is linked to a dataCollection';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Dewar`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1617,7 +1619,7 @@ CREATE TABLE `Dewar` (
   KEY `Dewar_FKIndexStatus` (`dewarStatus`),
   CONSTRAINT `Dewar_fk_firstExperimentId` FOREIGN KEY (`firstExperimentId`) REFERENCES `BLSession` (`sessionId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `Dewar_ibfk_1` FOREIGN KEY (`shippingId`) REFERENCES `Shipping` (`shippingId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `DewarLocation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1631,7 +1633,7 @@ CREATE TABLE `DewarLocation` (
   `courierName` varchar(128) DEFAULT NULL COMMENT 'Carrier name who''s shipping back the dewar',
   `courierTrackingNumber` varchar(128) DEFAULT NULL COMMENT 'Tracking number of the shippment',
   PRIMARY KEY (`eventId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='ISPyB Dewar location table';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='ISPyB Dewar location table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `DewarLocationList`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1640,7 +1642,7 @@ CREATE TABLE `DewarLocationList` (
   `locationId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `locationName` varchar(128) NOT NULL DEFAULT '' COMMENT 'Location',
   PRIMARY KEY (`locationId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='List of locations for dewars';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='List of locations for dewars';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `DewarRegistry`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1659,7 +1661,7 @@ CREATE TABLE `DewarRegistry` (
   KEY `DewarRegistry_ibfk_2` (`labContactId`),
   CONSTRAINT `DewarRegistry_ibfk_1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `DewarRegistry_ibfk_2` FOREIGN KEY (`labContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `DewarRegistry_has_Proposal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1680,7 +1682,7 @@ CREATE TABLE `DewarRegistry_has_Proposal` (
   CONSTRAINT `DewarRegistry_has_Proposal_ibfk2` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`),
   CONSTRAINT `DewarRegistry_has_Proposal_ibfk3` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`),
   CONSTRAINT `DewarRegistry_has_Proposal_ibfk4` FOREIGN KEY (`labContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `DewarReport`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1694,7 +1696,7 @@ CREATE TABLE `DewarReport` (
   PRIMARY KEY (`dewarReportId`),
   KEY `DewarReportIdx1` (`facilityCode`),
   CONSTRAINT `DewarReport_ibfk_1` FOREIGN KEY (`facilityCode`) REFERENCES `DewarRegistry` (`facilityCode`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `DewarTransportHistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1708,7 +1710,7 @@ CREATE TABLE `DewarTransportHistory` (
   PRIMARY KEY (`DewarTransportHistoryId`),
   KEY `DewarTransportHistory_FKIndex1` (`dewarId`),
   CONSTRAINT `DewarTransportHistory_ibfk_1` FOREIGN KEY (`dewarId`) REFERENCES `Dewar` (`dewarId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `DiffractionPlan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1786,7 +1788,7 @@ CREATE TABLE `DiffractionPlan` (
   CONSTRAINT `DiffractionPlan_ibfk1` FOREIGN KEY (`presetForProposalId`) REFERENCES `Proposal` (`proposalId`),
   CONSTRAINT `DiffractionPlan_ibfk2` FOREIGN KEY (`purificationColumnId`) REFERENCES `PurificationColumn` (`purificationColumnId`),
   CONSTRAINT `DiffractionPlan_ibfk3` FOREIGN KEY (`experimentTypeId`) REFERENCES `ExperimentType` (`experimentTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `EnergyScan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1833,7 +1835,7 @@ CREATE TABLE `EnergyScan` (
   CONSTRAINT `ES_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ES_ibfk_2` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`),
   CONSTRAINT `ES_ibfk_3` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Event`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1855,7 +1857,7 @@ CREATE TABLE `Event` (
   CONSTRAINT `Event_ibfk_1` FOREIGN KEY (`eventChainId`) REFERENCES `EventChain` (`eventChainId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Event_ibfk_2` FOREIGN KEY (`componentId`) REFERENCES `Component` (`componentId`),
   CONSTRAINT `Event_ibfk_3` FOREIGN KEY (`eventTypeId`) REFERENCES `EventType` (`eventTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Describes an event that occurred during a data collection and should be taken into account for data analysis. Can optionally be repeated at a specified frequency.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Describes an event that occurred during a data collection and should be taken into account for data analysis. Can optionally be repeated at a specified frequency.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `EventChain`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1867,7 +1869,7 @@ CREATE TABLE `EventChain` (
   PRIMARY KEY (`eventChainId`),
   KEY `dataCollectionId` (`dataCollectionId`),
   CONSTRAINT `EventChain_ibfk_1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Groups events together in a data collection.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Groups events together in a data collection.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `EventType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1877,7 +1879,7 @@ CREATE TABLE `EventType` (
   `name` varchar(30) NOT NULL,
   PRIMARY KEY (`eventTypeId`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Defines the list of event types which can occur during a data collection.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Defines the list of event types which can occur during a data collection.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ExperimentKindDetails`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1892,7 +1894,7 @@ CREATE TABLE `ExperimentKindDetails` (
   PRIMARY KEY (`experimentKindId`),
   KEY `ExperimentKindDetails_FKIndex1` (`diffractionPlanId`),
   CONSTRAINT `EKD_ibfk_1` FOREIGN KEY (`diffractionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ExperimentType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1903,7 +1905,7 @@ CREATE TABLE `ExperimentType` (
   `proposalType` varchar(10) DEFAULT NULL,
   `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`experimentTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A lookup table for different types of experients';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='A lookup table for different types of experients';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `FoilHole`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1923,7 +1925,7 @@ CREATE TABLE `FoilHole` (
   PRIMARY KEY (`foilHoleId`),
   KEY `FoilHole_fk_gridSquareId` (`gridSquareId`),
   CONSTRAINT `FoilHole_fk_gridSquareId` FOREIGN KEY (`gridSquareId`) REFERENCES `GridSquare` (`gridSquareId`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Details of a Cryo-EM foil hole within a grid square including image captured at foil hole magnification if applicable';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Details of a Cryo-EM foil hole within a grid square including image captured at foil hole magnification if applicable';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `GeometryClassname`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1933,7 +1935,7 @@ CREATE TABLE `GeometryClassname` (
   `geometryClassname` varchar(45) DEFAULT NULL,
   `geometryOrder` int(2) NOT NULL,
   PRIMARY KEY (`geometryClassnameId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `GridImageMap`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1948,7 +1950,7 @@ CREATE TABLE `GridImageMap` (
   PRIMARY KEY (`gridImageMapId`),
   KEY `_GridImageMap_ibfk1` (`dataCollectionId`),
   CONSTRAINT `_GridImageMap_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `GridInfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1982,7 +1984,7 @@ CREATE TABLE `GridInfo` (
   KEY `GridInfo_fk_dataCollectionId` (`dataCollectionId`),
   CONSTRAINT `GridInfo_fk_dataCollectionId` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `GridInfo_ibfk_2` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `GridSquare`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2004,7 +2006,7 @@ CREATE TABLE `GridSquare` (
   PRIMARY KEY (`gridSquareId`),
   KEY `GridSquare_fk_atlasId` (`atlasId`),
   CONSTRAINT `GridSquare_fk_atlasId` FOREIGN KEY (`atlasId`) REFERENCES `Atlas` (`atlasId`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Details of a Cryo-EM grid square including image captured at grid square magnification';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Details of a Cryo-EM grid square including image captured at grid square magnification';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Image`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2033,7 +2035,7 @@ CREATE TABLE `Image` (
   KEY `motorPositionId` (`motorPositionId`),
   CONSTRAINT `Image_ibfk_1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Image_ibfk_2` FOREIGN KEY (`motorPositionId`) REFERENCES `MotorPosition` (`motorPositionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ImageQualityIndicators`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2058,7 +2060,7 @@ CREATE TABLE `ImageQualityIndicators` (
   `dozor_score` double DEFAULT NULL COMMENT 'dozor_score',
   `driftFactor` float DEFAULT NULL COMMENT 'EM movie drift factor',
   PRIMARY KEY (`dataCollectionId`,`imageNumber`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Imager`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2070,7 +2072,7 @@ CREATE TABLE `Imager` (
   `serial` varchar(45) DEFAULT NULL,
   `capacity` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`imagerId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `InspectionType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2079,7 +2081,7 @@ CREATE TABLE `InspectionType` (
   `inspectionTypeId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`inspectionTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `IspybCrystalClass`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2089,7 +2091,7 @@ CREATE TABLE `IspybCrystalClass` (
   `crystalClass_code` varchar(20) NOT NULL,
   `crystalClass_name` varchar(255) NOT NULL,
   PRIMARY KEY (`crystalClassId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='ISPyB crystal class values';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='ISPyB crystal class values';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `IspybReference`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2101,7 +2103,7 @@ CREATE TABLE `IspybReference` (
   `referenceBibtext` blob DEFAULT NULL COMMENT 'bibtext value of the reference',
   `beamline` enum('All','ID14-4','ID23-1','ID23-2','ID29','XRF','AllXRF','Mesh') DEFAULT NULL COMMENT 'beamline involved',
   PRIMARY KEY (`referenceId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `LDAPSearchBase`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2114,7 +2116,7 @@ CREATE TABLE `LDAPSearchBase` (
   PRIMARY KEY (`ldapSearchBaseId`),
   KEY `LDAPSearchBase_fk_ldapSearchParametersId` (`ldapSearchParametersId`),
   CONSTRAINT `LDAPSearchBase_fk_ldapSearchParametersId` FOREIGN KEY (`ldapSearchParametersId`) REFERENCES `LDAPSearchParameters` (`ldapSearchParametersId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='LDAP search base and the sequence number in which it should be attempted';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='LDAP search base and the sequence number in which it should be attempted';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `LDAPSearchParameters`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2128,7 +2130,7 @@ CREATE TABLE `LDAPSearchParameters` (
   `filter` varchar(200) DEFAULT NULL COMMENT 'A filter string for the search',
   `attributes` varchar(255) NOT NULL COMMENT 'Comma-separated list of search attributes',
   PRIMARY KEY (`ldapSearchParametersId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='All necessary parameters to run an LDAP search, except the search base';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='All necessary parameters to run an LDAP search, except the search base';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `LabContact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2150,7 +2152,7 @@ CREATE TABLE `LabContact` (
   KEY `LabContact_FKIndex1` (`proposalId`),
   CONSTRAINT `LabContact_ibfk_1` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `LabContact_ibfk_2` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Laboratory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2169,7 +2171,7 @@ CREATE TABLE `Laboratory` (
   `postcode` varchar(15) DEFAULT NULL,
   `EORINumber` varchar(17) DEFAULT NULL COMMENT 'An EORI number consists of an ISO Country code from an EU Member State  (2 characters) + a maximum of 15 characters',
   PRIMARY KEY (`laboratoryId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `MXMRRun`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2190,7 +2192,7 @@ CREATE TABLE `MXMRRun` (
   KEY `mxMRRun_FK2` (`autoProcProgramId`),
   CONSTRAINT `mxMRRun_FK1` FOREIGN KEY (`autoProcScalingId`) REFERENCES `AutoProcScaling` (`autoProcScalingId`),
   CONSTRAINT `mxMRRun_FK2` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `MXMRRunBlob`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2216,7 +2218,7 @@ CREATE TABLE `MXMRRunBlob` (
   PRIMARY KEY (`mxMRRunBlobId`),
   KEY `mxMRRunBlob_FK1` (`mxMRRunId`),
   CONSTRAINT `mxMRRunBlob_FK1` FOREIGN KEY (`mxMRRunId`) REFERENCES `MXMRRun` (`mxMRRunId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ModelBuilding`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2236,7 +2238,7 @@ CREATE TABLE `ModelBuilding` (
   CONSTRAINT `ModelBuilding_phasingAnalysisfk_1` FOREIGN KEY (`phasingAnalysisId`) REFERENCES `PhasingAnalysis` (`phasingAnalysisId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ModelBuilding_phasingProgramRunfk_1` FOREIGN KEY (`phasingProgramRunId`) REFERENCES `PhasingProgramRun` (`phasingProgramRunId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ModelBuilding_spaceGroupfk_1` FOREIGN KEY (`spaceGroupId`) REFERENCES `SpaceGroup` (`spaceGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `MotionCorrection`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2268,7 +2270,7 @@ CREATE TABLE `MotionCorrection` (
   CONSTRAINT `MotionCorrection_ibfk2` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`),
   CONSTRAINT `MotionCorrection_ibfk3` FOREIGN KEY (`movieId`) REFERENCES `Movie` (`movieId`),
   CONSTRAINT `_MotionCorrection_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `MotorPosition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2288,7 +2290,7 @@ CREATE TABLE `MotorPosition` (
   `gridIndexZ` int(11) DEFAULT NULL,
   `recordTimeStamp` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Creation or last update date/time',
   PRIMARY KEY (`motorPositionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Movie`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2312,7 +2314,7 @@ CREATE TABLE `Movie` (
   KEY `Movie_fk_foilHoleId` (`foilHoleId`),
   CONSTRAINT `Movie_fk_foilHoleId` FOREIGN KEY (`foilHoleId`) REFERENCES `FoilHole` (`foilHoleId`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `Movie_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `PDB`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2320,11 +2322,11 @@ DROP TABLE IF EXISTS `PDB`;
 CREATE TABLE `PDB` (
   `pdbId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
-  `contents` mediumtext /*!100301 COMPRESSED*/ CHARACTER SET utf8mb3 DEFAULT NULL,
+  `contents` mediumtext /*!100301 COMPRESSED*/ CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `code` varchar(4) DEFAULT NULL,
   `source` varchar(30) DEFAULT NULL COMMENT 'Could be e.g. AlphaFold or RoseTTAFold',
   PRIMARY KEY (`pdbId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `PDBEntry`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2353,7 +2355,7 @@ CREATE TABLE `PDBEntry` (
   PRIMARY KEY (`pdbEntryId`),
   KEY `pdbEntryIdx1` (`autoProcProgramId`),
   CONSTRAINT `pdbEntry_FK1` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `PDBEntry_has_AutoProcProgram`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2368,7 +2370,7 @@ CREATE TABLE `PDBEntry_has_AutoProcProgram` (
   KEY `pdbEntry_AutoProcProgramIdx2` (`autoProcProgramId`),
   CONSTRAINT `pdbEntry_AutoProcProgram_FK1` FOREIGN KEY (`pdbEntryId`) REFERENCES `PDBEntry` (`pdbEntryId`) ON DELETE CASCADE,
   CONSTRAINT `pdbEntry_AutoProcProgram_FK2` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ParticleClassification`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2391,7 +2393,7 @@ CREATE TABLE `ParticleClassification` (
   PRIMARY KEY (`particleClassificationId`),
   KEY `ParticleClassification_fk_particleClassificationGroupId` (`particleClassificationGroupId`),
   CONSTRAINT `ParticleClassification_fk_particleClassificationGroupId` FOREIGN KEY (`particleClassificationGroupId`) REFERENCES `ParticleClassificationGroup` (`particleClassificationGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Results of 2D or 2D classification';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Results of 2D or 2D classification';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ParticleClassificationGroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2410,7 +2412,7 @@ CREATE TABLE `ParticleClassificationGroup` (
   KEY `ParticleClassificationGroup_fk_programId` (`programId`),
   CONSTRAINT `ParticleClassificationGroup_fk_particlePickerId` FOREIGN KEY (`particlePickerId`) REFERENCES `ParticlePicker` (`particlePickerId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ParticleClassificationGroup_fk_programId` FOREIGN KEY (`programId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ParticleClassification_has_CryoemInitialModel`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2422,7 +2424,7 @@ CREATE TABLE `ParticleClassification_has_CryoemInitialModel` (
   KEY `ParticleClassification_has_InitialModel_fk2` (`cryoemInitialModelId`),
   CONSTRAINT `ParticleClassification_has_CryoemInitialModel_fk1` FOREIGN KEY (`particleClassificationId`) REFERENCES `ParticleClassification` (`particleClassificationId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ParticleClassification_has_InitialModel_fk2` FOREIGN KEY (`cryoemInitialModelId`) REFERENCES `CryoemInitialModel` (`cryoemInitialModelId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ParticlePicker`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2440,7 +2442,7 @@ CREATE TABLE `ParticlePicker` (
   KEY `ParticlePicker_fk_motionCorrectionId` (`firstMotionCorrectionId`),
   CONSTRAINT `ParticlePicker_fk_motionCorrectionId` FOREIGN KEY (`firstMotionCorrectionId`) REFERENCES `MotionCorrection` (`motionCorrectionId`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `ParticlePicker_fk_programId` FOREIGN KEY (`programId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='An instance of a particle picker program that was run';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='An instance of a particle picker program that was run';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Permission`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2450,7 +2452,7 @@ CREATE TABLE `Permission` (
   `type` varchar(15) NOT NULL,
   `description` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`permissionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Person`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2476,7 +2478,7 @@ CREATE TABLE `Person` (
   KEY `Person_FKIndexFamilyName` (`familyName`),
   KEY `siteId` (`siteId`),
   CONSTRAINT `Person_ibfk_1` FOREIGN KEY (`laboratoryId`) REFERENCES `Laboratory` (`laboratoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Phasing`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2499,7 +2501,7 @@ CREATE TABLE `Phasing` (
   CONSTRAINT `Phasing_phasingAnalysisfk_1` FOREIGN KEY (`phasingAnalysisId`) REFERENCES `PhasingAnalysis` (`phasingAnalysisId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Phasing_phasingProgramRunfk_1` FOREIGN KEY (`phasingProgramRunId`) REFERENCES `PhasingProgramRun` (`phasingProgramRunId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Phasing_spaceGroupfk_1` FOREIGN KEY (`spaceGroupId`) REFERENCES `SpaceGroup` (`spaceGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `PhasingAnalysis`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2508,7 +2510,7 @@ CREATE TABLE `PhasingAnalysis` (
   `phasingAnalysisId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
   PRIMARY KEY (`phasingAnalysisId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `PhasingProgramAttachment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2523,7 +2525,7 @@ CREATE TABLE `PhasingProgramAttachment` (
   PRIMARY KEY (`phasingProgramAttachmentId`),
   KEY `PhasingProgramAttachment_FKIndex1` (`phasingProgramRunId`),
   CONSTRAINT `Phasing_phasingProgramAttachmentfk_1` FOREIGN KEY (`phasingProgramRunId`) REFERENCES `PhasingProgramRun` (`phasingProgramRunId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `PhasingProgramRun`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2539,7 +2541,7 @@ CREATE TABLE `PhasingProgramRun` (
   `phasingEnvironment` varchar(255) DEFAULT NULL COMMENT 'Cpus, Nodes,...',
   `recordTimeStamp` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`phasingProgramRunId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `PhasingStatistics`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2564,7 +2566,7 @@ CREATE TABLE `PhasingStatistics` (
   CONSTRAINT `PhasingStatistics_phasingHasScalingfk_1` FOREIGN KEY (`phasingHasScalingId1`) REFERENCES `Phasing_has_Scaling` (`phasingHasScalingId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `PhasingStatistics_phasingHasScalingfk_2` FOREIGN KEY (`phasingHasScalingId2`) REFERENCES `Phasing_has_Scaling` (`phasingHasScalingId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_PhasingStatistics_phasingStep` FOREIGN KEY (`phasingStepId`) REFERENCES `PhasingStep` (`phasingStepId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `PhasingStep`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2591,7 +2593,7 @@ CREATE TABLE `PhasingStep` (
   CONSTRAINT `FK_autoprocScaling` FOREIGN KEY (`autoProcScalingId`) REFERENCES `AutoProcScaling` (`autoProcScalingId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_program` FOREIGN KEY (`programRunId`) REFERENCES `PhasingProgramRun` (`phasingProgramRunId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_spacegroup` FOREIGN KEY (`spaceGroupId`) REFERENCES `SpaceGroup` (`spaceGroupId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Phasing_has_Scaling`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2607,7 +2609,7 @@ CREATE TABLE `Phasing_has_Scaling` (
   KEY `PhasingHasScaling_FKIndex2` (`autoProcScalingId`),
   CONSTRAINT `PhasingHasScaling_autoProcScalingfk_1` FOREIGN KEY (`autoProcScalingId`) REFERENCES `AutoProcScaling` (`autoProcScalingId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `PhasingHasScaling_phasingAnalysisfk_1` FOREIGN KEY (`phasingAnalysisId`) REFERENCES `PhasingAnalysis` (`phasingAnalysisId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Position`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2626,7 +2628,7 @@ CREATE TABLE `Position` (
   PRIMARY KEY (`positionId`),
   KEY `Position_FKIndex1` (`relativePositionId`),
   CONSTRAINT `Position_relativePositionfk_1` FOREIGN KEY (`relativePositionId`) REFERENCES `Position` (`positionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Positioner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2636,7 +2638,7 @@ CREATE TABLE `Positioner` (
   `positioner` varchar(50) NOT NULL,
   `value` float NOT NULL,
   PRIMARY KEY (`positionerId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='An arbitrary positioner and its value, could be e.g. a motor. Allows for instance to store some positions with a sample or subsample';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='An arbitrary positioner and its value, could be e.g. a motor. Allows for instance to store some positions with a sample or subsample';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `PreparePhasingData`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2656,7 +2658,7 @@ CREATE TABLE `PreparePhasingData` (
   CONSTRAINT `PreparePhasingData_phasingAnalysisfk_1` FOREIGN KEY (`phasingAnalysisId`) REFERENCES `PhasingAnalysis` (`phasingAnalysisId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `PreparePhasingData_phasingProgramRunfk_1` FOREIGN KEY (`phasingProgramRunId`) REFERENCES `PhasingProgramRun` (`phasingProgramRunId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `PreparePhasingData_spaceGroupfk_1` FOREIGN KEY (`spaceGroupId`) REFERENCES `SpaceGroup` (`spaceGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ProcessedTomogram`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2669,7 +2671,7 @@ CREATE TABLE `ProcessedTomogram` (
   PRIMARY KEY (`processedTomogramId`),
   KEY `tomogramId` (`tomogramId`),
   CONSTRAINT `ProcessedTomogram_ibfk_1` FOREIGN KEY (`tomogramId`) REFERENCES `Tomogram` (`tomogramId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='References to processed tomogram paths';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Indicates the sample''s location on a multi-sample pin, where 1 is closest to the pin base or a sample''s position in a cryo-EM cassette';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ProcessingJob`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2685,7 +2687,7 @@ CREATE TABLE `ProcessingJob` (
   PRIMARY KEY (`processingJobId`),
   KEY `ProcessingJob_ibfk1` (`dataCollectionId`),
   CONSTRAINT `ProcessingJob_ibfk1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='From this we get both job times and lag times';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='From this we get both job times and lag times';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ProcessingJobImageSweep`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2701,7 +2703,7 @@ CREATE TABLE `ProcessingJobImageSweep` (
   KEY `ProcessingJobImageSweep_ibfk2` (`dataCollectionId`),
   CONSTRAINT `ProcessingJobImageSweep_ibfk1` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`),
   CONSTRAINT `ProcessingJobImageSweep_ibfk2` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='This allows multiple sweeps per processing job for multi-xia2';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='This allows multiple sweeps per processing job for multi-xia2';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ProcessingJobParameter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2715,7 +2717,7 @@ CREATE TABLE `ProcessingJobParameter` (
   KEY `ProcessingJobParameter_ibfk1` (`processingJobId`),
   KEY `ProcessingJobParameter_idx_paramKey_procJobId` (`parameterKey`,`processingJobId`),
   CONSTRAINT `ProcessingJobParameter_ibfk1` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ProcessingPipeline`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2730,7 +2732,7 @@ CREATE TABLE `ProcessingPipeline` (
   PRIMARY KEY (`processingPipelineId`),
   KEY `ProcessingPipeline_fk1` (`processingPipelineCategoryId`),
   CONSTRAINT `ProcessingPipeline_fk1` FOREIGN KEY (`processingPipelineCategoryId`) REFERENCES `ProcessingPipelineCategory` (`processingPipelineCategoryId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A lookup table for different processing pipelines and their categories';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='A lookup table for different processing pipelines and their categories';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ProcessingPipelineCategory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2739,7 +2741,7 @@ CREATE TABLE `ProcessingPipelineCategory` (
   `processingPipelineCategoryId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
   PRIMARY KEY (`processingPipelineCategoryId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A lookup table for the category of processing pipeline';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='A lookup table for the category of processing pipeline';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Project`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2753,7 +2755,7 @@ CREATE TABLE `Project` (
   PRIMARY KEY (`projectId`),
   KEY `Project_FK1` (`personId`),
   CONSTRAINT `Project_FK1` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Project_has_BLSample`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2765,7 +2767,7 @@ CREATE TABLE `Project_has_BLSample` (
   KEY `Project_has_BLSample_FK2` (`blSampleId`),
   CONSTRAINT `Project_has_BLSample_FK1` FOREIGN KEY (`projectId`) REFERENCES `Project` (`projectId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Project_has_BLSample_FK2` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Project_has_DCGroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2777,7 +2779,7 @@ CREATE TABLE `Project_has_DCGroup` (
   KEY `Project_has_DCGroup_FK2` (`dataCollectionGroupId`),
   CONSTRAINT `Project_has_DCGroup_FK1` FOREIGN KEY (`projectId`) REFERENCES `Project` (`projectId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Project_has_DCGroup_FK2` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Project_has_EnergyScan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2789,7 +2791,7 @@ CREATE TABLE `Project_has_EnergyScan` (
   KEY `project_has_energyscan_FK2` (`energyScanId`),
   CONSTRAINT `project_has_energyscan_FK1` FOREIGN KEY (`projectId`) REFERENCES `Project` (`projectId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `project_has_energyscan_FK2` FOREIGN KEY (`energyScanId`) REFERENCES `EnergyScan` (`energyScanId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Project_has_Person`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2801,7 +2803,7 @@ CREATE TABLE `Project_has_Person` (
   KEY `project_has_person_FK2` (`personId`),
   CONSTRAINT `project_has_person_FK1` FOREIGN KEY (`projectId`) REFERENCES `Project` (`projectId`) ON DELETE CASCADE,
   CONSTRAINT `project_has_person_FK2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Project_has_Protein`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2813,7 +2815,7 @@ CREATE TABLE `Project_has_Protein` (
   KEY `project_has_protein_FK2` (`proteinId`),
   CONSTRAINT `project_has_protein_FK1` FOREIGN KEY (`projectId`) REFERENCES `Project` (`projectId`) ON DELETE CASCADE,
   CONSTRAINT `project_has_protein_FK2` FOREIGN KEY (`proteinId`) REFERENCES `Protein` (`proteinId`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Project_has_Session`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2825,7 +2827,7 @@ CREATE TABLE `Project_has_Session` (
   KEY `project_has_session_FK2` (`sessionId`),
   CONSTRAINT `project_has_session_FK1` FOREIGN KEY (`projectId`) REFERENCES `Project` (`projectId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `project_has_session_FK2` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Project_has_Shipping`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2837,7 +2839,7 @@ CREATE TABLE `Project_has_Shipping` (
   KEY `project_has_shipping_FK2` (`shippingId`),
   CONSTRAINT `project_has_shipping_FK1` FOREIGN KEY (`projectId`) REFERENCES `Project` (`projectId`) ON DELETE CASCADE,
   CONSTRAINT `project_has_shipping_FK2` FOREIGN KEY (`shippingId`) REFERENCES `Shipping` (`shippingId`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Project_has_User`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2849,7 +2851,7 @@ CREATE TABLE `Project_has_User` (
   PRIMARY KEY (`projecthasuserid`),
   KEY `Project_Has_user_FK1` (`projectid`),
   CONSTRAINT `Project_Has_user_FK1` FOREIGN KEY (`projectid`) REFERENCES `Project` (`projectId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Project_has_XFEFSpectrum`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2861,7 +2863,7 @@ CREATE TABLE `Project_has_XFEFSpectrum` (
   KEY `project_has_xfefspectrum_FK2` (`xfeFluorescenceSpectrumId`),
   CONSTRAINT `project_has_xfefspectrum_FK1` FOREIGN KEY (`projectId`) REFERENCES `Project` (`projectId`) ON DELETE CASCADE,
   CONSTRAINT `project_has_xfefspectrum_FK2` FOREIGN KEY (`xfeFluorescenceSpectrumId`) REFERENCES `XFEFluorescenceSpectrum` (`xfeFluorescenceSpectrumId`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Proposal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2880,7 +2882,7 @@ CREATE TABLE `Proposal` (
   UNIQUE KEY `Proposal_FKIndexCodeNumber` (`proposalCode`,`proposalNumber`),
   KEY `Proposal_FKIndex1` (`personId`),
   CONSTRAINT `Proposal_ibfk_1` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ProposalHasPerson`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2895,7 +2897,7 @@ CREATE TABLE `ProposalHasPerson` (
   KEY `fk_ProposalHasPerson_Personal` (`personId`),
   CONSTRAINT `fk_ProposalHasPerson_Personal` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_ProposalHasPerson_Proposal` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Protein`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2932,7 +2934,7 @@ CREATE TABLE `Protein` (
   CONSTRAINT `Protein_ibfk_1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `protein_fk3` FOREIGN KEY (`componentTypeId`) REFERENCES `ComponentType` (`componentTypeId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `protein_fk4` FOREIGN KEY (`concentrationTypeId`) REFERENCES `ConcentrationType` (`concentrationTypeId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Protein_has_PDB`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2946,7 +2948,7 @@ CREATE TABLE `Protein_has_PDB` (
   KEY `Protein_Has_PDB_fk2` (`pdbid`),
   CONSTRAINT `Protein_Has_PDB_fk1` FOREIGN KEY (`proteinid`) REFERENCES `Protein` (`proteinId`),
   CONSTRAINT `Protein_Has_PDB_fk2` FOREIGN KEY (`pdbid`) REFERENCES `PDB` (`pdbId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `PurificationColumn`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2956,7 +2958,7 @@ CREATE TABLE `PurificationColumn` (
   `name` varchar(100) DEFAULT NULL,
   `active` tinyint(1) DEFAULT 1 COMMENT '1=active, 0=inactive',
   PRIMARY KEY (`purificationColumnId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Size exclusion chromotography (SEC) lookup table for BioSAXS';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Size exclusion chromotography (SEC) lookup table for BioSAXS';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `RelativeIceThickness`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2999,7 +3001,7 @@ CREATE TABLE `RobotAction` (
   KEY `RobotAction_FK2` (`blsampleId`),
   CONSTRAINT `RobotAction_FK1` FOREIGN KEY (`blsessionId`) REFERENCES `BLSession` (`sessionId`),
   CONSTRAINT `RobotAction_FK2` FOREIGN KEY (`blsampleId`) REFERENCES `BLSample` (`blSampleId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Robot actions as reported by GDA';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Robot actions as reported by GDA';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `SSXDataCollection`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3018,7 +3020,7 @@ CREATE TABLE `SSXDataCollection` (
   `experimentName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`dataCollectionId`),
   CONSTRAINT `SSXDataCollection_ibfk_1` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Extends DataCollection with SSX-specific fields.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Extends DataCollection with SSX-specific fields.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `SW_onceToken`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3036,7 +3038,7 @@ CREATE TABLE `SW_onceToken` (
   KEY `SW_onceToken_recordTimeStamp_idx` (`recordTimeStamp`),
   CONSTRAINT `SW_onceToken_fk1` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`),
   CONSTRAINT `SW_onceToken_fk2` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='One-time use tokens needed for token auth in order to grant access to file downloads and webcams (and some images)';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='One-time use tokens needed for token auth in order to grant access to file downloads and webcams (and some images)';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `SampleComposition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3056,7 +3058,7 @@ CREATE TABLE `SampleComposition` (
   CONSTRAINT `SampleComposition_ibfk_1` FOREIGN KEY (`componentId`) REFERENCES `Component` (`componentId`),
   CONSTRAINT `SampleComposition_ibfk_2` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`),
   CONSTRAINT `SampleComposition_ibfk_3` FOREIGN KEY (`concentrationTypeId`) REFERENCES `ConcentrationType` (`concentrationTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Links a sample to its components with a specified abundance or ratio.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Links a sample to its components with a specified abundance or ratio.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ScanParametersModel`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3076,7 +3078,7 @@ CREATE TABLE `ScanParametersModel` (
   KEY `PDF_Model_ibfk2` (`dataCollectionPlanId`),
   CONSTRAINT `PDF_Model_ibfk1` FOREIGN KEY (`scanParametersServiceId`) REFERENCES `ScanParametersService` (`scanParametersServiceId`) ON UPDATE CASCADE,
   CONSTRAINT `PDF_Model_ibfk2` FOREIGN KEY (`dataCollectionPlanId`) REFERENCES `DiffractionPlan` (`diffractionPlanId`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ScanParametersService`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3086,7 +3088,7 @@ CREATE TABLE `ScanParametersService` (
   `name` varchar(45) DEFAULT NULL,
   `description` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`scanParametersServiceId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Schedule`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3095,7 +3097,7 @@ CREATE TABLE `Schedule` (
   `scheduleId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`scheduleId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ScheduleComponent`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3110,7 +3112,7 @@ CREATE TABLE `ScheduleComponent` (
   KEY `ScheduleComponent_fk2` (`inspectionTypeId`),
   CONSTRAINT `ScheduleComponent_fk1` FOREIGN KEY (`scheduleId`) REFERENCES `Schedule` (`scheduleId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ScheduleComponent_fk2` FOREIGN KEY (`inspectionTypeId`) REFERENCES `InspectionType` (`inspectionTypeId`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `SchemaStatus`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3122,7 +3124,7 @@ CREATE TABLE `SchemaStatus` (
   `recordTimeStamp` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`schemaStatusId`),
   UNIQUE KEY `scriptName` (`scriptName`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Screen`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3138,7 +3140,7 @@ CREATE TABLE `Screen` (
   KEY `Screen_fk_containerTypeId` (`containerTypeId`),
   CONSTRAINT `Screen_fk1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`),
   CONSTRAINT `Screen_fk_containerTypeId` FOREIGN KEY (`containerTypeId`) REFERENCES `ContainerType` (`containerTypeId`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ScreenComponent`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3154,7 +3156,7 @@ CREATE TABLE `ScreenComponent` (
   KEY `ScreenComponent_fk2` (`componentId`),
   CONSTRAINT `ScreenComponent_fk1` FOREIGN KEY (`screenComponentGroupId`) REFERENCES `ScreenComponentGroup` (`screenComponentGroupId`),
   CONSTRAINT `ScreenComponent_fk2` FOREIGN KEY (`componentId`) REFERENCES `Protein` (`proteinId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ScreenComponentGroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3166,7 +3168,7 @@ CREATE TABLE `ScreenComponentGroup` (
   PRIMARY KEY (`screenComponentGroupId`),
   KEY `ScreenComponentGroup_fk1` (`screenId`),
   CONSTRAINT `ScreenComponentGroup_fk1` FOREIGN KEY (`screenId`) REFERENCES `Screen` (`screenId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Screening`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3190,7 +3192,7 @@ CREATE TABLE `Screening` (
   CONSTRAINT `Screening_fk_autoProcProgramId` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `Screening_ibfk_1` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `_Screening_ibfk2` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ScreeningInput`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3209,7 +3211,7 @@ CREATE TABLE `ScreeningInput` (
   PRIMARY KEY (`screeningInputId`),
   KEY `ScreeningInput_FKIndex1` (`screeningId`),
   CONSTRAINT `ScreeningInput_ibfk_1` FOREIGN KEY (`screeningId`) REFERENCES `Screening` (`screeningId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ScreeningOutput`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3245,7 +3247,7 @@ CREATE TABLE `ScreeningOutput` (
   PRIMARY KEY (`screeningOutputId`),
   KEY `ScreeningOutput_FKIndex1` (`screeningId`),
   CONSTRAINT `ScreeningOutput_ibfk_1` FOREIGN KEY (`screeningId`) REFERENCES `Screening` (`screeningId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ScreeningOutputLattice`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3276,7 +3278,7 @@ CREATE TABLE `ScreeningOutputLattice` (
   PRIMARY KEY (`screeningOutputLatticeId`),
   KEY `ScreeningOutputLattice_FKIndex1` (`screeningOutputId`),
   CONSTRAINT `ScreeningOutputLattice_ibfk_1` FOREIGN KEY (`screeningOutputId`) REFERENCES `ScreeningOutput` (`screeningOutputId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ScreeningRank`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3292,7 +3294,7 @@ CREATE TABLE `ScreeningRank` (
   KEY `ScreeningRank_FKIndex2` (`screeningRankSetId`),
   CONSTRAINT `ScreeningRank_ibfk_1` FOREIGN KEY (`screeningId`) REFERENCES `Screening` (`screeningId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ScreeningRank_ibfk_2` FOREIGN KEY (`screeningRankSetId`) REFERENCES `ScreeningRankSet` (`screeningRankSetId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ScreeningRankSet`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3303,7 +3305,7 @@ CREATE TABLE `ScreeningRankSet` (
   `rankingProjectFileName` varchar(255) DEFAULT NULL,
   `rankingSummaryFileName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`screeningRankSetId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ScreeningStrategy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3325,7 +3327,7 @@ CREATE TABLE `ScreeningStrategy` (
   PRIMARY KEY (`screeningStrategyId`),
   KEY `ScreeningStrategy_FKIndex1` (`screeningOutputId`),
   CONSTRAINT `ScreeningStrategy_ibfk_1` FOREIGN KEY (`screeningOutputId`) REFERENCES `ScreeningOutput` (`screeningOutputId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ScreeningStrategySubWedge`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3349,7 +3351,7 @@ CREATE TABLE `ScreeningStrategySubWedge` (
   PRIMARY KEY (`screeningStrategySubWedgeId`),
   KEY `ScreeningStrategySubWedge_FK1` (`screeningStrategyWedgeId`),
   CONSTRAINT `ScreeningStrategySubWedge_FK1` FOREIGN KEY (`screeningStrategyWedgeId`) REFERENCES `ScreeningStrategyWedge` (`screeningStrategyWedgeId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ScreeningStrategyWedge`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3371,7 +3373,7 @@ CREATE TABLE `ScreeningStrategyWedge` (
   PRIMARY KEY (`screeningStrategyWedgeId`),
   KEY `ScreeningStrategyWedge_IBFK_1` (`screeningStrategyId`),
   CONSTRAINT `ScreeningStrategyWedge_IBFK_1` FOREIGN KEY (`screeningStrategyId`) REFERENCES `ScreeningStrategy` (`screeningStrategyId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `SessionType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3383,7 +3385,7 @@ CREATE TABLE `SessionType` (
   PRIMARY KEY (`sessionTypeId`),
   KEY `SessionType_FKIndex1` (`sessionId`),
   CONSTRAINT `SessionType_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Session_has_Person`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3397,7 +3399,7 @@ CREATE TABLE `Session_has_Person` (
   KEY `Session_has_Person_FKIndex2` (`personId`),
   CONSTRAINT `Session_has_Person_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Session_has_Person_ibfk_2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Shipping`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3450,7 +3452,7 @@ CREATE TABLE `Shipping` (
   CONSTRAINT `Shipping_ibfk_2` FOREIGN KEY (`sendingLabContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Shipping_ibfk_3` FOREIGN KEY (`returnLabContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Shipping_ibfk_4` FOREIGN KEY (`deliveryAgent_flightCodePersonId`) REFERENCES `Person` (`personId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ShippingHasSession`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3462,7 +3464,7 @@ CREATE TABLE `ShippingHasSession` (
   KEY `ShippingHasSession_FKIndex2` (`sessionId`),
   CONSTRAINT `ShippingHasSession_ibfk_1` FOREIGN KEY (`shippingId`) REFERENCES `Shipping` (`shippingId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `ShippingHasSession_ibfk_2` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Sleeve`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3473,7 +3475,7 @@ CREATE TABLE `Sleeve` (
   `lastMovedToFreezer` timestamp NOT NULL DEFAULT current_timestamp(),
   `lastMovedFromFreezer` timestamp NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`sleeveId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Registry of ice-filled sleeves used to cool plates whilst on the goniometer';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='Registry of ice-filled sleeves used to cool plates whilst on the goniometer';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `SpaceGroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3492,7 +3494,7 @@ CREATE TABLE `SpaceGroup` (
   KEY `geometryClassnameId` (`geometryClassnameId`),
   KEY `SpaceGroup_FKShortName` (`spaceGroupShortName`),
   CONSTRAINT `SpaceGroup_ibfk_1` FOREIGN KEY (`geometryClassnameId`) REFERENCES `GeometryClassname` (`geometryClassnameId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `SubstructureDetermination`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3513,7 +3515,7 @@ CREATE TABLE `SubstructureDetermination` (
   CONSTRAINT `SubstructureDetermination_phasingAnalysisfk_1` FOREIGN KEY (`phasingAnalysisId`) REFERENCES `PhasingAnalysis` (`phasingAnalysisId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `SubstructureDetermination_phasingProgramRunfk_1` FOREIGN KEY (`phasingProgramRunId`) REFERENCES `PhasingProgramRun` (`phasingProgramRunId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `SubstructureDetermination_spaceGroupfk_1` FOREIGN KEY (`spaceGroupId`) REFERENCES `SpaceGroup` (`spaceGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `TiltImageAlignment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3534,7 +3536,7 @@ CREATE TABLE `TiltImageAlignment` (
   KEY `TiltImageAlignment_fk_tomogramId` (`tomogramId`),
   CONSTRAINT `TiltImageAlignment_fk_movieId` FOREIGN KEY (`movieId`) REFERENCES `Movie` (`movieId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `TiltImageAlignment_fk_tomogramId` FOREIGN KEY (`tomogramId`) REFERENCES `Tomogram` (`tomogramId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='For storing per-movie analysis results (reconstruction)';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='For storing per-movie analysis results (reconstruction)';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Tomogram`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3567,7 +3569,7 @@ CREATE TABLE `Tomogram` (
   KEY `Tomogram_fk_autoProcProgramId` (`autoProcProgramId`),
   CONSTRAINT `Tomogram_fk_autoProcProgramId` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `Tomogram_fk_dataCollectionId` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='For storing per-sample, per-position data analysis results (reconstruction)';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='For storing per-sample, per-position data analysis results (reconstruction)';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `UserGroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3577,7 +3579,7 @@ CREATE TABLE `UserGroup` (
   `name` varchar(31) NOT NULL,
   PRIMARY KEY (`userGroupId`),
   UNIQUE KEY `UserGroup_idx1` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `UserGroup_has_LDAPSearchParameters`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3590,7 +3592,7 @@ CREATE TABLE `UserGroup_has_LDAPSearchParameters` (
   KEY `UserGroup_has_LDAPSearchParameters_fk2` (`ldapSearchParametersId`),
   CONSTRAINT `UserGroup_has_LDAPSearchParameters_fk1` FOREIGN KEY (`userGroupId`) REFERENCES `UserGroup` (`userGroupId`),
   CONSTRAINT `UserGroup_has_LDAPSearchParameters_fk2` FOREIGN KEY (`ldapSearchParametersId`) REFERENCES `LDAPSearchParameters` (`ldapSearchParametersId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Gives the LDAP search parameters needed to find a set of usergroup members';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Gives the LDAP search parameters needed to find a set of usergroup members';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `UserGroup_has_Permission`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3602,7 +3604,7 @@ CREATE TABLE `UserGroup_has_Permission` (
   KEY `UserGroup_has_Permission_fk2` (`permissionId`),
   CONSTRAINT `UserGroup_has_Permission_fk1` FOREIGN KEY (`userGroupId`) REFERENCES `UserGroup` (`userGroupId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `UserGroup_has_Permission_fk2` FOREIGN KEY (`permissionId`) REFERENCES `Permission` (`permissionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `UserGroup_has_Person`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3614,7 +3616,7 @@ CREATE TABLE `UserGroup_has_Person` (
   KEY `userGroup_has_Person_fk2` (`personId`),
   CONSTRAINT `userGroup_has_Person_fk1` FOREIGN KEY (`userGroupId`) REFERENCES `UserGroup` (`userGroupId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `userGroup_has_Person_fk2` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `XFEFluorescenceComposite`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3635,7 +3637,7 @@ CREATE TABLE `XFEFluorescenceComposite` (
   CONSTRAINT `XFEFluorescenceComposite_ibfk1` FOREIGN KEY (`r`) REFERENCES `XRFFluorescenceMapping` (`xrfFluorescenceMappingId`),
   CONSTRAINT `XFEFluorescenceComposite_ibfk2` FOREIGN KEY (`g`) REFERENCES `XRFFluorescenceMapping` (`xrfFluorescenceMappingId`),
   CONSTRAINT `XFEFluorescenceComposite_ibfk3` FOREIGN KEY (`b`) REFERENCES `XRFFluorescenceMapping` (`xrfFluorescenceMappingId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='A composite XRF map composed of three XRFFluorescenceMapping entries creating r, g, b layers';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='A composite XRF map composed of three XRFFluorescenceMapping entries creating r, g, b layers';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `XFEFluorescenceSpectrum`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3670,7 +3672,7 @@ CREATE TABLE `XFEFluorescenceSpectrum` (
   CONSTRAINT `XFE_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `BLSession` (`sessionId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `XFE_ibfk_2` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `XFE_ibfk_3` FOREIGN KEY (`blSubSampleId`) REFERENCES `BLSubSample` (`blSubSampleId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `XRFFluorescenceMapping`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3694,7 +3696,7 @@ CREATE TABLE `XRFFluorescenceMapping` (
   CONSTRAINT `XRFFluorescenceMapping_ibfk1` FOREIGN KEY (`xrfFluorescenceMappingROIId`) REFERENCES `XRFFluorescenceMappingROI` (`xrfFluorescenceMappingROIId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `XRFFluorescenceMapping_ibfk2` FOREIGN KEY (`gridInfoId`) REFERENCES `GridInfo` (`gridInfoId`),
   CONSTRAINT `XRFFluorescenceMapping_ibfk3` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='An XRF map generated from an XRF Mapping ROI based on data from a gridscan of a sample';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci COMMENT='An XRF map generated from an XRF Mapping ROI based on data from a gridscan of a sample';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `XRFFluorescenceMappingROI`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3713,7 +3715,7 @@ CREATE TABLE `XRFFluorescenceMappingROI` (
   PRIMARY KEY (`xrfFluorescenceMappingROIId`),
   KEY `XRFFluorescenceMappingROI_FKblSampleId` (`blSampleId`),
   CONSTRAINT `XRFFluorescenceMappingROI_FKblSampleId` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `XrayCentring`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3726,7 +3728,7 @@ CREATE TABLE `XrayCentring` (
   PRIMARY KEY (`xrayCentringId`),
   KEY `dataCollectionGroupId` (`dataCollectionGroupId`),
   CONSTRAINT `XrayCentring_ibfk_1` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Xray Centring analysis associated with one or more grid scans.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Xray Centring analysis associated with one or more grid scans.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `XrayCentringResult`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3753,7 +3755,7 @@ CREATE TABLE `XrayCentringResult` (
   PRIMARY KEY (`xrayCentringResultId`),
   KEY `xrayCentringId` (`xrayCentringId`),
   CONSTRAINT `XrayCentringResult_ibfk_1` FOREIGN KEY (`xrayCentringId`) REFERENCES `XrayCentring` (`xrayCentringId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Xray Centring result.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Xray Centring result.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `v_run`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3765,7 +3767,7 @@ CREATE TABLE `v_run` (
   `endDate` datetime DEFAULT NULL,
   PRIMARY KEY (`runId`),
   KEY `v_run_idx1` (`startDate`,`endDate`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `zc_ZocaloBuffer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -3776,7 +3778,7 @@ CREATE TABLE `zc_ZocaloBuffer` (
   `Reference` int(10) unsigned DEFAULT NULL COMMENT 'Context-dependent reference to primary key IDs in other ISPyB tables',
   PRIMARY KEY (`AutoProcProgramID`,`UUID`),
   CONSTRAINT `AutoProcProgram_fk_AutoProcProgramId` FOREIGN KEY (`AutoProcProgramID`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
