@@ -5,6 +5,33 @@ History
 Unreleased / master
 -------------------
 
+4.3.0 (2024-12-05)
+-------------------
+
+Note: The schema files now include a command in the first line to set the sanbox
+mode which is incompatible with older clients. For more info and to disable, see:
+https://mariadb.org/mariadb-dump-file-compatibility-change/
+
+Admin: Changes to GitHub workflows as 'main' is now the default branch (previously 'master')
+
+New or modified tables and columns:
+
+- Add ``processingPipelineId`` column to the ``AutoProcProgram`` table
+- Add new boolean column ``deleted`` to the ``AutoProcProgramAttachment`` table
+- Add unique index on ``BLSample(containerId, location, subLocation)``
+- Update the ``ProcessedTomogram`` table comment
+
+Roles and permissions:
+
+- Add new grants for Expeye and combine grants into two roles instead of three
+- Add roles and grants for MaxScale
+- Add role with grants for fragment screening
+
+Scripts and data changes:
+
+- Trim trailing '1' in the ``SpaceGroup`` table's ``spaceGroupShortName`` column
+- Add scripts that can delete ``DataCollection`` and ``DataCollectionGroup`` rows and referenced rows in other tables
+
 4.2.1 (2024-08-19)
 -------------------
 

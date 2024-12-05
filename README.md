@@ -2,19 +2,19 @@
 
 # ispyb-database
 
-This package provides everything needed to create the Diamond flavour of the ISPyB database schema. As the schema evolves the update scripts will also be published here, so other users of the schema should be able to stay up-to-date.
+This repository provides everything needed to create the Diamond flavour of the ISPyB database schema. As the schema evolves the update scripts will also be published here, so other users of the schema should be able to stay up-to-date.
 
 ## Requirements
 
-* Server and a client packages of MariaDB 10.3 or later.
+* Server and a client packages of MariaDB 10.6 or later.
 * A Unix-like OS with `bash` shell.
 * The pandoc package (only required to build documentation at the end of the `build.sh` script.)
 * If binary logging is enabled in the DB system, then execute this before importing the test schema: `SET GLOBAL log_bin_trust_function_creators=ON;`
 
 ## Installation
 
-1. Install MariaDB. See the Wiki for ideas on how to install in a particular environment.
-2. Copy `.my.example.cnf` to `.my.cnf` and then edit that file to set the `user` and `password`, e.g. `user = root` and use the `password` you set when securing. Optionally, you can also set e.g. `host` and `port`.
+1. Install MariaDB. Please see the Wiki for ideas on how to install in a particular environment.
+2. Copy `.my.example.cnf` to `.my.cnf` and then edit that file to set the `user` and `password`, e.g. `user = root` and correspond `password`. Optionally, you can also set e.g. `host` and `port`.
 3. In a test environment run the `build.sh` file. This creates the database schema and applies the grants as described in the "Schema" and "Grants" sections below.
 
 ### Schema
