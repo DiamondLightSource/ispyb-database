@@ -1,3 +1,4 @@
+/*M!999999\- enable the sandbox mode */ 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -10,7 +11,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.2.1');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.3.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -263,7 +264,13 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (292,'2024_07_16_ContainerType_insert_new.sql','DONE','2024-08-14 11:23:41'),
 (293,'2024_08_08_ProcessedTomogram.sql','DONE','2024-08-14 11:23:41'),
 (294,'2024_08_14_AdminVar_bump_version.sql','DONE','2024-08-14 11:23:41'),
-(295,'2024_08_19_AdminVar_bump_version.sql','DONE','2024-08-19 12:17:10');
+(295,'2024_08_19_AdminVar_bump_version.sql','DONE','2024-08-19 12:17:10'),
+(296,'2024_09_04_ProcessedTomogram_comment','ONGOING','2024-12-05 13:27:18'),
+(297,'2024_09_17_SpaceGroup_trim','ONGOING','2024-12-05 13:27:18'),
+(298,'2024_09_25_AutoProcProgram_processingPipelineId.sql','DONE','2024-12-05 13:27:18'),
+(299,'2024_10_15_BLSample_unique_index.sql','DONE','2024-12-05 13:27:18'),
+(300,'2024_12_04_AutoProcProgramAttachment_deleted.sql','DONE','2024-12-05 13:27:18'),
+(301,'2024_12_05_AdminVar_bump_version.sql','DONE','2024-12-05 13:27:18');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
@@ -523,20 +530,20 @@ INSERT INTO `SpaceGroup` (`spaceGroupId`, `spaceGroupNumber`, `spaceGroupShortNa
 (48,48,'Pnnn','P nn n',NULL,NULL,NULL,NULL,0),
 (49,49,'Pccm','P cc m',NULL,NULL,NULL,NULL,0),
 (50,50,'Pban','P ba n',NULL,NULL,NULL,NULL,0),
-(51,51,'Pmma1','P mm a1',NULL,NULL,NULL,NULL,0),
-(52,52,'Pnna1','P nn a1',NULL,NULL,NULL,NULL,0),
-(53,53,'Pmna1','P mn a1',NULL,NULL,NULL,NULL,0),
-(54,54,'Pcca1','P cc a1',NULL,NULL,NULL,NULL,0),
-(55,55,'Pbam1','P ba m1',NULL,NULL,NULL,NULL,0),
-(56,56,'Pccn1','P cc n1',NULL,NULL,NULL,NULL,0),
-(57,57,'Pbcm1','P bc m1',NULL,NULL,NULL,NULL,0),
-(58,58,'Pnnm1','P nn m1',NULL,NULL,NULL,NULL,0),
-(59,59,'Pmmn1','P mm n1',NULL,NULL,NULL,NULL,0),
-(60,60,'Pbcn1','P bc n1',NULL,NULL,NULL,NULL,0),
-(61,61,'Pbca1','P bc a1',NULL,NULL,NULL,NULL,0),
-(62,62,'Pnma1','P nm a1',NULL,NULL,NULL,NULL,0),
-(63,63,'Cmcm1','C mc m1',NULL,NULL,NULL,NULL,0),
-(64,64,'Cmca1','C mc a1',NULL,NULL,NULL,NULL,0),
+(51,51,'Pmma','P mm a1',NULL,NULL,NULL,NULL,0),
+(52,52,'Pnna','P nn a1',NULL,NULL,NULL,NULL,0),
+(53,53,'Pmna','P mn a1',NULL,NULL,NULL,NULL,0),
+(54,54,'Pcca','P cc a1',NULL,NULL,NULL,NULL,0),
+(55,55,'Pbam','P ba m1',NULL,NULL,NULL,NULL,0),
+(56,56,'Pccn','P cc n1',NULL,NULL,NULL,NULL,0),
+(57,57,'Pbcm','P bc m1',NULL,NULL,NULL,NULL,0),
+(58,58,'Pnnm','P nn m1',NULL,NULL,NULL,NULL,0),
+(59,59,'Pmmn','P mm n1',NULL,NULL,NULL,NULL,0),
+(60,60,'Pbcn','P bc n1',NULL,NULL,NULL,NULL,0),
+(61,61,'Pbca','P bc a1',NULL,NULL,NULL,NULL,0),
+(62,62,'Pnma','P nm a1',NULL,NULL,NULL,NULL,0),
+(63,63,'Cmcm','C mc m1',NULL,NULL,NULL,NULL,0),
+(64,64,'Cmca','C mc a1',NULL,NULL,NULL,NULL,0),
 (65,65,'Cmmm','C mm m',NULL,NULL,NULL,NULL,0),
 (66,66,'Cccm','C cc m',NULL,NULL,NULL,NULL,0),
 (67,67,'Cmma','C mm a',NULL,NULL,NULL,NULL,0),
@@ -545,8 +552,8 @@ INSERT INTO `SpaceGroup` (`spaceGroupId`, `spaceGroupNumber`, `spaceGroupShortNa
 (70,70,'Fddd','F dd d',NULL,NULL,NULL,NULL,0),
 (71,71,'Immm','I mm m',NULL,NULL,NULL,NULL,0),
 (72,72,'Ibam','I ba m',NULL,NULL,NULL,NULL,0),
-(73,73,'Ibca1','I b c a1',NULL,NULL,NULL,NULL,0),
-(74,74,'Imma1','I mm a1',NULL,NULL,NULL,NULL,0),
+(73,73,'Ibca','I b c a1',NULL,NULL,NULL,NULL,0),
+(74,74,'Imma','I mm a1',NULL,NULL,NULL,NULL,0),
 (75,75,'P4','P4','tP',NULL,NULL,NULL,1),
 (76,76,'P41','P41','tP',NULL,NULL,NULL,1),
 (77,77,'P42','P42','tP',NULL,NULL,NULL,1),
@@ -599,10 +606,10 @@ INSERT INTO `SpaceGroup` (`spaceGroupId`, `spaceGroupNumber`, `spaceGroupShortNa
 (124,124,'P4/mcc','P4/m c c',NULL,NULL,NULL,NULL,0),
 (125,125,'P4/nbm','P4/n b m',NULL,NULL,NULL,NULL,0),
 (126,126,'P4/nnc','P4/n n c',NULL,NULL,NULL,NULL,0),
-(127,127,'P4/mbm1','P4/m b m1',NULL,NULL,NULL,NULL,0),
-(128,128,'P4/mnc1','P4/m n c1',NULL,NULL,NULL,NULL,0),
-(129,129,'P4/nmm1','P4/n m m1',NULL,NULL,NULL,NULL,0),
-(130,130,'P4/ncc1','P4/n c c1',NULL,NULL,NULL,NULL,0),
+(127,127,'P4/mbm','P4/m b m1',NULL,NULL,NULL,NULL,0),
+(128,128,'P4/mnc','P4/m n c1',NULL,NULL,NULL,NULL,0),
+(129,129,'P4/nmm','P4/n m m1',NULL,NULL,NULL,NULL,0),
+(130,130,'P4/ncc','P4/n c c1',NULL,NULL,NULL,NULL,0),
 (131,131,'P42/mmc','P42/m m c',NULL,NULL,NULL,NULL,0),
 (132,132,'P42/mcm','P42/m c m',NULL,NULL,NULL,NULL,0),
 (133,133,'P42/nbc','P42/n b c',NULL,NULL,NULL,NULL,0),
@@ -677,8 +684,8 @@ INSERT INTO `SpaceGroup` (`spaceGroupId`, `spaceGroupNumber`, `spaceGroupShortNa
 (202,202,'Fm-3','Fm -3',NULL,NULL,NULL,NULL,0),
 (203,203,'Fd-3','Fd -3',NULL,NULL,NULL,NULL,0),
 (204,204,'Im-3','Im -3',NULL,NULL,NULL,NULL,0),
-(205,205,'Pa-31','Pa -31',NULL,NULL,NULL,NULL,0),
-(206,206,'Ia-31','Ia -31',NULL,NULL,NULL,NULL,0),
+(205,205,'Pa-3','Pa -31',NULL,NULL,NULL,NULL,0),
+(206,206,'Ia-3','Ia -31',NULL,NULL,NULL,NULL,0),
 (207,207,'P432','P4 3 2','cP',NULL,NULL,NULL,1),
 (208,208,'P4232','P42 3 2','cP',NULL,NULL,NULL,1),
 (209,209,'F432','F4 3 2','cF',NULL,NULL,NULL,1),
@@ -695,14 +702,14 @@ INSERT INTO `SpaceGroup` (`spaceGroupId`, `spaceGroupNumber`, `spaceGroupShortNa
 (220,220,'I-43d','I-4 3 d',NULL,NULL,NULL,NULL,0),
 (221,221,'Pm-3m','Pm -3 m',NULL,NULL,NULL,NULL,0),
 (222,222,'Pn-3n','Pn -3 n',NULL,NULL,NULL,NULL,0),
-(223,223,'Pm-3n1','Pm -3 n1',NULL,NULL,NULL,NULL,0),
-(224,224,'Pn-3m1','Pn -3 m1',NULL,NULL,NULL,NULL,0),
+(223,223,'Pm-3n','Pm -3 n1',NULL,NULL,NULL,NULL,0),
+(224,224,'Pn-3m','Pn -3 m1',NULL,NULL,NULL,NULL,0),
 (225,225,'Fm-3m','Fm -3 m',NULL,NULL,NULL,NULL,0),
 (226,226,'Fm-3c','Fm -3 c',NULL,NULL,NULL,NULL,0),
-(227,227,'Fd-3m1','Fd -3 m1',NULL,NULL,NULL,NULL,0),
-(228,228,'Fd-3c1','Fd -3 c1',NULL,NULL,NULL,NULL,0),
+(227,227,'Fd-3m','Fd -3 m1',NULL,NULL,NULL,NULL,0),
+(228,228,'Fd-3c','Fd -3 c1',NULL,NULL,NULL,NULL,0),
 (229,229,'Im-3m','Im -3 m',NULL,NULL,NULL,NULL,0),
-(230,230,'Ia-3d1','Ia -3 d1',NULL,NULL,NULL,NULL,0);
+(230,230,'Ia-3d','Ia -3 d1',NULL,NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `SpaceGroup` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ProcessingPipelineCategory` DISABLE KEYS */;

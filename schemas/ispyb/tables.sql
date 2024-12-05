@@ -1,3 +1,4 @@
+/*M!999999\- enable the sandbox mode */ 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -124,6 +125,7 @@ CREATE TABLE `AutoProcProgram` (
   `processingEnvironment` varchar(255) DEFAULT NULL COMMENT 'Cpus, Nodes,...',
   `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
   `processingJobId` int(11) unsigned DEFAULT NULL,
+  `processingPipelineId` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`autoProcProgramId`),
   KEY `AutoProcProgram_FK2` (`processingJobId`),
   CONSTRAINT `AutoProcProgram_FK2` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
@@ -140,6 +142,7 @@ CREATE TABLE `AutoProcProgramAttachment` (
   `filePath` varchar(255) DEFAULT NULL COMMENT 'Attachment filepath to disk storage',
   `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
   `importanceRank` tinyint(3) unsigned DEFAULT NULL COMMENT 'For the particular autoProcProgramId and fileType, indicate the importance of the attachment. Higher numbers are more important',
+  `deleted` tinyint(1) DEFAULT 0 COMMENT '1/TRUE if the file has been deleted',
   PRIMARY KEY (`autoProcProgramAttachmentId`),
   KEY `AutoProcProgramAttachmentIdx1` (`autoProcProgramId`),
   CONSTRAINT `AutoProcProgramAttachmentFk1` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -429,6 +432,7 @@ CREATE TABLE `BLSample` (
   `staffComments` varchar(255) DEFAULT NULL COMMENT 'Any staff comments on the sample',
   `source` varchar(50) DEFAULT current_user(),
   PRIMARY KEY (`blSampleId`),
+  UNIQUE KEY `BLSample_uidx_containerId_location_subLocation` (`containerId`,`location`,`subLocation`),
   KEY `BLSample_FKIndex1` (`containerId`),
   KEY `BLSample_FKIndex3` (`diffractionPlanId`),
   KEY `BLSample_FKIndex_Status` (`blSampleStatus`),
@@ -2669,7 +2673,7 @@ CREATE TABLE `ProcessedTomogram` (
   PRIMARY KEY (`processedTomogramId`),
   KEY `tomogramId` (`tomogramId`),
   CONSTRAINT `ProcessedTomogram_ibfk_1` FOREIGN KEY (`tomogramId`) REFERENCES `Tomogram` (`tomogramId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='References to processed tomogram paths';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Indicates the sample''s location on a multi-sample pin, where 1 is closest to the pin base or a sample''s position in a cryo-EM cassette';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ProcessingJob`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
