@@ -1,4 +1,4 @@
-FROM docker.io/library/mariadb:10.10.3
+FROM docker.io/library/mariadb:10.6.19
 
 WORKDIR /ispyb
 
