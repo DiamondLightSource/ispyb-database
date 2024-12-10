@@ -13,7 +13,7 @@ This repository provides everything needed to create the Diamond flavour of the 
 
 ## Installation
 
-1. Install MariaDB. Please see the Wiki for ideas on how to install in a particular environment.
+1. Install MariaDB. The Wiki has ideas on how to install in a particular environment, including OS packages or containers via the provided Dockerfile. If you use the container approach with the provided Dockerfile, then steps 2 and 3 below are done for you automatically.
 2. Copy `.my.example.cnf` to `.my.cnf` and then edit that file to set the `user` and `password`, e.g. `user = root` and correspond `password`. Optionally, you can also set e.g. `host` and `port`.
 3. In a test environment run the `build.sh` file. This creates the database schema and applies the grants as described in the "Schema" and "Grants" sections below.
 
