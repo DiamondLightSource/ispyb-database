@@ -94,8 +94,8 @@ mariadb ispyb < grants/ispyb_web.sql
 ## Useful scripts
 
 * `build.sh`: Creates a development `ispyb_build` database and imports all the schema and grants files into it.
-* `release.sh`: Makes a release, see the Releasing section.
-* `bin/backup.sh`: Makes a backup of the development database.
+* `release.sh`: Makes a release, see the `RELEASE.md` file for details.
+* `bin/backup.sh`: Makes a backup of the development database, producing four files: `tables.sql`, `routines.sql`, `lookups.sql`, `data.sql`.
 * `bin/missed_updates.sh`: Generates a list of files in the `schemas/ispyb/updates/` folder that haven't been applied.
 * `bin/export_session.sh`: Exports a given session's database rows to SQL files. These can then easily be imported into an empty ispyb database. This can be used e.g. to create a single-session ISPyB/SynchWeb instance if combined with all the relevant data files and processing files for the session, and an instance of SynchWeb.
 
