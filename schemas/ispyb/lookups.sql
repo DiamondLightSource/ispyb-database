@@ -11,7 +11,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.3.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.4.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -270,7 +270,10 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (298,'2024_09_25_AutoProcProgram_processingPipelineId.sql','DONE','2024-12-05 13:27:18'),
 (299,'2024_10_15_BLSample_unique_index.sql','DONE','2024-12-05 13:27:18'),
 (300,'2024_12_04_AutoProcProgramAttachment_deleted.sql','DONE','2024-12-05 13:27:18'),
-(301,'2024_12_05_AdminVar_bump_version.sql','DONE','2024-12-05 13:27:18');
+(301,'2024_12_05_AdminVar_bump_version.sql','DONE','2024-12-05 13:27:18'),
+(302,'2025_01_08_ParticleClassificationGroup_binnedPixelSize.sql','DONE','2025-01-29 10:29:27'),
+(303,'2025_01_24_Tomogram_gridSquare.sql','DONE','2025-01-29 10:29:27'),
+(304,'2025_01_29_AdminVar_bump_version.sql','DONE','2025-01-29 10:29:27');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;

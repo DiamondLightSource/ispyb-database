@@ -2409,6 +2409,7 @@ CREATE TABLE `ParticleClassificationGroup` (
   `numberOfParticlesPerBatch` int(10) unsigned DEFAULT NULL COMMENT 'total number of particles per batch (a large integer)',
   `numberOfClassesPerBatch` int(10) unsigned DEFAULT NULL,
   `symmetry` varchar(20) DEFAULT NULL,
+  `binnedPixelSize` float DEFAULT NULL COMMENT 'Binned pixel size. Unit: Angstroms',
   PRIMARY KEY (`particleClassificationGroupId`),
   KEY `ParticleClassificationGroup_fk_particlePickerId` (`particlePickerId`),
   KEY `ParticleClassificationGroup_fk_programId` (`programId`),
@@ -3566,11 +3567,14 @@ CREATE TABLE `Tomogram` (
   `projXZ` varchar(255) DEFAULT NULL COMMENT 'XZ projection file',
   `recordTimeStamp` datetime DEFAULT current_timestamp() COMMENT 'Creation or last update date/time',
   `globalAlignmentQuality` float DEFAULT NULL COMMENT 'Quality of fit metric for the alignment of the tilt series corresponding to this tomogram',
+  `gridSquareId` int(11) unsigned DEFAULT NULL COMMENT 'FK, references medium mag map in GridSquare',
   PRIMARY KEY (`tomogramId`),
   KEY `Tomogram_fk_dataCollectionId` (`dataCollectionId`),
   KEY `Tomogram_fk_autoProcProgramId` (`autoProcProgramId`),
+  KEY `Tomogram_fk_gridSquareId` (`gridSquareId`),
   CONSTRAINT `Tomogram_fk_autoProcProgramId` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `Tomogram_fk_dataCollectionId` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `Tomogram_fk_dataCollectionId` FOREIGN KEY (`dataCollectionId`) REFERENCES `DataCollection` (`dataCollectionId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Tomogram_fk_gridSquareId` FOREIGN KEY (`gridSquareId`) REFERENCES `GridSquare` (`gridSquareId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='For storing per-sample, per-position data analysis results (reconstruction)';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `UserGroup`;
