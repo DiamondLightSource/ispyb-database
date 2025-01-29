@@ -5,6 +5,14 @@ History
 Unreleased / master
 -------------------
 
+4.4.0 (2025-29-01)
+-------------------
+
+New or modified tables and columns:
+
+- Add ``binnedPixelSize`` column to the ``ParticleClassificationGroup`` table
+- Add ``gridSquareId`` column to the ``Tomogram`` table
+
 4.3.0 (2024-12-05)
 -------------------
 
