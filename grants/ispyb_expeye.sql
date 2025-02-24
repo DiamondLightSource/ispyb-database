@@ -10,8 +10,8 @@ GRANT ispyb_propagation TO ispyb_expeye_core_role;
 
 CREATE ROLE ispyb_expeye_acquisition_role;
 
-GRANT SELECT ON Proposal TO ispyb_expeye_acquisition_role;
-GRANT SELECT ON BLSession TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Proposal TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON BLSession TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON DataCollectionGroup TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON DataCollection TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON Position TO ispyb_expeye_acquisition_role;
