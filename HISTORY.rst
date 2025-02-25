@@ -5,7 +5,16 @@ History
 Unreleased / master
 -------------------
 
-4.4.0 (2025-29-01)
+4.5.0 (2025-02-25)
+-------------------
+
+New or modified tables and columns:
+
+- Add ``purgedProcessedData`` boolean column to the ``BLSession`` table. This is
+a flag to indicate whether the ``processed`` folder in the associated visit
+directory has been purged.
+
+4.4.0 (2025-01-29)
 -------------------
 
 New or modified tables and columns:
