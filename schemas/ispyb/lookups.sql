@@ -391,6 +391,7 @@ INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `activ
 (41,'SSX-Chip','mx',1),
 (42,'SSX-Jet','mx',1),
 (43,'Metal ID','mx',1);
+(44,'Atlas','em',1);
 /*!40000 ALTER TABLE `ExperimentType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `InspectionType` DISABLE KEYS */;
