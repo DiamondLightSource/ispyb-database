@@ -88,6 +88,7 @@ GRANT EXECUTE ON PROCEDURE `retrieve_reprocessing_by_dc` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `update_reprocessing_status` TO 'ispyb_processing';
 
 GRANT EXECUTE ON PROCEDURE `upsert_processing_program` TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE `upsert_processing_program_v2` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `upsert_processing_program_attachment` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE upsert_processing_program_attachment_v2 TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE upsert_processing_program_message TO 'ispyb_processing';
