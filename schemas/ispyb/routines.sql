@@ -1,3 +1,4 @@
+/*M!999999\- enable the sandbox mode */ 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -11126,15 +11127,15 @@ CREATE PROCEDURE `upsert_processing_program`(
 	 p_recordTimestamp datetime
   )
     MODIFIES SQL DATA
-    COMMENT 'If p_id is not provided, inserts new row. Otherwise updates exis'
+    COMMENT 'If p_id is not provided, inserts new row. Otherwise updates existing row if uts processingStatus is NULL + other conditions.'
 BEGIN
 	DECLARE row_processingStatus tinyint(1) DEFAULT NULL;
 	DECLARE row_processingEndTime datetime DEFAULT NULL;
 
-
+    
 
 	IF p_id IS NULL THEN
-
+        
 	    INSERT INTO AutoProcProgram (processingStatus, processingStartTime, processingEndTime, processingMessage, processingJobId,
 		  processingCommandLine, processingPrograms, processingEnvironment, recordTimestamp)
 		  VALUES (
@@ -11146,45 +11147,43 @@ BEGIN
               p_commandLine,
               p_programs,
               p_environment,
-
+              
               IFNULL(p_recordTimestamp, NOW())
 		  );
         SET p_id = LAST_INSERT_ID();
 	ELSE
 		START TRANSACTION;
-	    SELECT processingStatus, processingEndTime INTO row_processingStatus, row_processingEndTime
+	  SELECT processingStatus, processingEndTime INTO row_processingStatus, row_processingEndTime
 		FROM AutoProcProgram
-        WHERE autoProcProgramId = p_id;
+    WHERE autoProcProgramId = p_id;
 
-
-
-
-
+          
+          
+          
+          
 		IF row_processingStatus IS NULL AND (
             row_processingEndTime IS NULL OR p_updateTimestamp IS NULL OR
               row_processingEndTime <= p_updateTimestamp OR p_status IS NOT NULL) THEN
 
 		    UPDATE AutoProcProgram
             SET
-
+              
               processingStatus = p_status,
-
-
+			  
+			  
               processingStartTime = COALESCE(processingStartTime, p_startTimestamp, NOW()),
-
+              
               processingEndTime = IFNULL(p_updateTimestamp, NOW()),
-
+              
               processingMessage = IFNULL(p_updateMessage, processingMessage),
               processingJobId = IFNULL(p_processingJobId, processingJobId),
               processingCommandLine = IFNULL(p_commandLine, processingCommandLine),
               processingPrograms = IFNULL(p_programs, processingPrograms),
 			  processingEnvironment = IFNULL(p_environment, processingEnvironment)
 		    WHERE autoProcProgramId = p_id;
-        END IF;
-        COMMIT;
     END IF;
-
     COMMIT;
+  END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -11310,6 +11309,95 @@ BEGIN
         autoProcProgramMessageId = p_id;
 	ELSE
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Both arguments p_id and p_programId cannot be NULL';
+  END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `upsert_processing_program_v2` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
+DELIMITER ;;
+CREATE PROCEDURE `upsert_processing_program_v2`(
+     INOUT p_id int(11) unsigned,
+     p_commandLine varchar(255),
+     p_programs varchar(255),
+     p_status int(11),
+     p_updateMessage varchar(80),
+     p_startTimestamp datetime,
+     p_updateTimestamp datetime,
+     p_environment varchar(255),
+     p_processingJobId int(11) unsigned,
+     p_processingPipelineId int(11) unsigned,
+     p_recordTimestamp datetime
+  )
+    MODIFIES SQL DATA
+    COMMENT 'If p_id is not provided, inserts new row. Otherwise updates existing row if uts processingStatus is NULL + other conditions.'
+BEGIN
+	DECLARE row_processingStatus tinyint(1) DEFAULT NULL;
+	DECLARE row_processingEndTime datetime DEFAULT NULL;
+
+    
+
+	IF p_id IS NULL THEN
+        
+	    INSERT INTO AutoProcProgram (processingStatus, processingStartTime, processingEndTime, processingMessage, processingJobId,
+		  processingPipelineId, processingCommandLine, processingPrograms, processingEnvironment, recordTimestamp)
+		  VALUES (
+              p_status,
+              p_startTimestamp,
+              p_updateTimestamp,
+              p_updateMessage,
+              p_processingJobId,
+              p_processingPipelineId,
+              p_commandLine,
+              p_programs,
+              p_environment,
+              
+              IFNULL(p_recordTimestamp, NOW())
+		  );
+		  SET p_id = LAST_INSERT_ID();
+	ELSE
+		START TRANSACTION;
+		SELECT processingStatus, processingEndTime INTO row_processingStatus, row_processingEndTime
+		FROM AutoProcProgram
+		WHERE autoProcProgramId = p_id;
+
+    
+    
+    
+    
+		IF row_processingStatus IS NULL AND (
+            row_processingEndTime IS NULL OR p_updateTimestamp IS NULL OR
+            row_processingEndTime <= p_updateTimestamp OR p_status IS NOT NULL) THEN
+
+		    UPDATE AutoProcProgram
+        SET
+              
+              processingStatus = p_status,
+			  
+			  
+              processingStartTime = COALESCE(processingStartTime, p_startTimestamp, NOW()),
+              
+              processingEndTime = IFNULL(p_updateTimestamp, NOW()),
+              
+              processingMessage = IFNULL(p_updateMessage, processingMessage),
+              processingJobId = IFNULL(p_processingJobId, processingJobId),
+              processingPipelineId = IFNULL(p_processingPipelineId, processingPipelineId),
+              processingCommandLine = IFNULL(p_commandLine, processingCommandLine),
+              processingPrograms = IFNULL(p_programs, processingPrograms),
+			        processingEnvironment = IFNULL(p_environment, processingEnvironment)
+		    WHERE autoProcProgramId = p_id;
+    END IF;
+    COMMIT;
   END IF;
 END ;;
 DELIMITER ;
@@ -12115,6 +12203,7 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+/*M!999999\- enable the sandbox mode */ 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
