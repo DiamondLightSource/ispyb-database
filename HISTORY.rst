@@ -5,6 +5,27 @@ History
 Unreleased / master
 -------------------
 
+4.6.0 (2025-03-06)
+-------------------
+
+New columns:
+
+- Add a ``dewarRegistryId`` FK to the ``Dewar`` table
+
+Data in lookup tables:
+
+- Add 'Atlas' experiment type
+
+Stored procedures:
+
+- Remove superfluous commit in procedure ``upsert_processing_program``
+- New procedure ``upsert_processing_program_v2`` with additional param for pipeline ID
+
+Permissions:
+
+- Add ``SELECT`` grant for Expeye role on table ``AutoProcIntegration``
+- Add ``EXECUTE`` grant for processing role on new procedure ``upsert_processing_program_v2``
+
 4.5.0 (2025-02-25)
 -------------------
 

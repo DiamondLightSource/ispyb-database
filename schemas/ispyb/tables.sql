@@ -1614,12 +1614,15 @@ CREATE TABLE `Dewar` (
   `extra` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'JSON column for facility-specific or hard-to-define attributes, e.g. LN2 top-ups and contents checks' CHECK (json_valid(`extra`)),
   `source` varchar(50) DEFAULT current_user(),
   `externalShippingIdFromSynchrotron` int(11) unsigned DEFAULT NULL COMMENT 'ID for shipping from synchrotron in external application',
+  `dewarRegistryId` int(11) unsigned DEFAULT NULL COMMENT 'Reference to the registered dewar i.e. the physical item',
   PRIMARY KEY (`dewarId`),
   UNIQUE KEY `barCode` (`barCode`),
   KEY `Dewar_FKIndex1` (`shippingId`),
   KEY `Dewar_FKIndex2` (`firstExperimentId`),
   KEY `Dewar_FKIndexCode` (`code`),
   KEY `Dewar_FKIndexStatus` (`dewarStatus`),
+  KEY `Dewar_fk_dewarRegistryId` (`dewarRegistryId`),
+  CONSTRAINT `Dewar_fk_dewarRegistryId` FOREIGN KEY (`dewarRegistryId`) REFERENCES `DewarRegistry` (`dewarRegistryId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Dewar_fk_firstExperimentId` FOREIGN KEY (`firstExperimentId`) REFERENCES `BLSession` (`sessionId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `Dewar_ibfk_1` FOREIGN KEY (`shippingId`) REFERENCES `Shipping` (`shippingId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

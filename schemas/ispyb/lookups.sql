@@ -11,7 +11,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.5.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.6.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -275,7 +275,10 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (303,'2025_01_24_Tomogram_gridSquare.sql','DONE','2025-01-29 10:29:27'),
 (304,'2025_01_29_AdminVar_bump_version.sql','DONE','2025-01-29 10:29:27'),
 (305,'2025_02_14_BLSession_purgedProcessedData.sql','DONE','2025-02-25 15:51:29'),
-(306,'2025_02_25_AdminVar_bump_version.sql','DONE','2025-02-25 15:51:30');
+(306,'2025_02_25_AdminVar_bump_version.sql','DONE','2025-02-25 15:51:30'),
+(307,'2025_02_27_ExperimentType_atlas.sql','DONE','2025-03-06 11:58:07'),
+(308,'2025_03_05_Dewar_dewarRegistryId.sql','DONE','2025-03-06 11:58:07'),
+(309,'2025_03_06_AdminVar_bump_version.sql','DONE','2025-03-06 11:58:07');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
@@ -392,7 +395,8 @@ INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `activ
 (40,'Still','mx',1),
 (41,'SSX-Chip','mx',1),
 (42,'SSX-Jet','mx',1),
-(43,'Metal ID','mx',1);
+(43,'Metal ID','mx',1),
+(44,'Atlas','em',1);
 /*!40000 ALTER TABLE `ExperimentType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `InspectionType` DISABLE KEYS */;
