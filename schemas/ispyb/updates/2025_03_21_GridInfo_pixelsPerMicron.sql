@@ -1,6 +1,9 @@
 INSERT IGNORE INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2025_03_21_GridInfo_pixelsPerMicron.sql', 'ONGOING');
 
-ALTER TABLE GridInfo 
+UPDATE GridInfo SET micronsPerPixelX = pixelsPerMicronX WHERE micronsPerPixelX IS NULL;
+UPDATE GridInfo SET micronsPerPixelY = pixelsPerMicronY WHERE micronsPerPixelY IS NULL;
+
+ALTER TABLE GridInfo
 	DROP COLUMN pixelsPerMicronX,
 	DROP COLUMN pixelsPerMicronY;
 
