@@ -20,3 +20,6 @@ GRANT SELECT ON DataCollection TO ispyb_scripts_processing;
 GRANT SELECT ON Proposal TO ispyb_scripts_processing;
 GRANT SELECT ON ProcessingJob TO ispyb_scripts_processing;
 GRANT SELECT ON ProcessingJobImageSweep TO ispyb_scripts_processing;
+GRANT SELECT ON Container TO ispyb_scripts_processing;
+GRANT SELECT ON BLSample TO ispyb_scripts_processing;
+GRANT SELECT ON BLSampleImage TO ispyb_scripts_processing;
