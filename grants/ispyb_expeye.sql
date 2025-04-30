@@ -50,7 +50,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON BLSubSample TO ispyb_expeye_acquisition_
 GRANT SELECT, INSERT, UPDATE, DELETE ON Project_has_BLSample TO ispyb_expeye_acquisition_role;
 
 GRANT SELECT ON Protein TO ispyb_expeye_acquisition_role;
-GRANT SELECT ON Crystal TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE ON Crystal TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON XFEFluorescenceSpectrum TO ispyb_expeye_acquisition_role;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON DiffractionPlan TO ispyb_expeye_acquisition_role;
