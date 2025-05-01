@@ -16,6 +16,7 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON ContainerRegistry_has_Proposal TO ispyb_
 GRANT SELECT, UPDATE, INSERT, DELETE ON Person TO ispyb_propagation;
 GRANT SELECT, UPDATE, INSERT, DELETE ON UserGroup_has_Person TO ispyb_propagation;
 GRANT SELECT ON BF_fault TO ispyb_propagation;
+GRANT SELECT ON BLSampleGroup to ispyb_propagation;
 GRANT SELECT ON Container TO ispyb_propagation;
 GRANT SELECT ON ContainerQueue TO ispyb_propagation;
 GRANT SELECT ON ContainerReport TO ispyb_propagation;
