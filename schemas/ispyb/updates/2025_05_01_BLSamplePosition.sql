@@ -1,5 +1,10 @@
 INSERT IGNORE INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2025_05_01_BLSamplePosition.sql', 'ONGOING');
 
+ALTER TABLE Position
+  DROP CONSTRAINT IF EXISTS Position_fk_blSampleId,
+  DROP IF EXISTS positionType,
+  DROP IF EXISTS blSampleId;
+
 CREATE TABLE `BLSamplePosition` (
   `positionId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
   `blSampleId` int(11) unsigned NOT NULL COMMENT 'FK, references parent sample',
