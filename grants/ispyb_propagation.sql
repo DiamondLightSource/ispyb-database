@@ -39,3 +39,4 @@ GRANT SELECT ON LDAPSearchBase TO ispyb_propagation;
 GRANT SELECT ON UserGroup TO ispyb_propagation;
 GRANT SELECT, UPDATE, INSERT ON BeamCalendar TO ispyb_propagation;
 GRANT SELECT, UPDATE, INSERT ON v_run TO ispyb_propagation;
+GRANT SELECT, DELETE ON SW_onceToken TO ispyb_propagation;
