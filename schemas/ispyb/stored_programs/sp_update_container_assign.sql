@@ -20,6 +20,7 @@ BEGIN
     DECLARE row_proposalCode varchar(45) DEFAULT NULL;
     DECLARE row_proposalNumber varchar(45) DEFAULT NULL;
     DECLARE row_queuedCount int(11) unsigned DEFAULT NULL;
+    DECLARE row_samples varchar(255) DEFAULT NULL;
 
     IF p_beamline IS NULL THEN
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_beamline is NULL';
@@ -50,7 +51,7 @@ BEGIN
             INNER JOIN ContainerRegistry cr ON c.containerRegistryId = cr.containerRegistryId
             INNER JOIN Dewar d ON d.dewarId = c.dewarId
             INNER JOIN Shipping s ON s.shippingId = d.shippingId
-            INNER JOIN Proposal p ON p.proposalId = s.proposalId 
+            INNER JOIN Proposal p ON p.proposalId = s.proposalId
             LEFT OUTER JOIN ContainerQueue cq ON cq.containerId = c.containerId
         WHERE cr.barcode = p_registry_barcode
         GROUP BY c.containerId,
@@ -116,10 +117,18 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_registry_barcode is NULL';
     END IF;
+
+    SELECT group_concat(location ORDER BY cast(location AS integer) SEPARATOR ',')
+      INTO row_samples
+    FROM BLSample
+    WHERE containerId = row_containerId
+    GROUP BY containerId;
+
     SELECT row_containerId as "containerId",
       currentContainerStatus as "containerStatus",
       row_proposalCode as "proposalCode",
       row_proposalNumber as "proposalNumber",
-      row_queuedCount as "queuedCount";
+      row_queuedCount as "queuedCount",
+      row_samples as "samples";
 END ;;
 DELIMITER ;
