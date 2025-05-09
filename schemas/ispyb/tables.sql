@@ -605,6 +605,22 @@ CREATE TABLE `BLSampleImage_has_Positioner` (
   CONSTRAINT `BLSampleImageHasPositioner_ibfk2` FOREIGN KEY (`positionerId`) REFERENCES `Positioner` (`positionerId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Allows a BLSampleImage to store motor positions along with the image';
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `BLSamplePosition`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `BLSamplePosition` (
+  `blSamplePositionId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key (auto-incremented)',
+  `blSampleId` int(11) unsigned NOT NULL COMMENT 'FK, references parent sample',
+  `posX` double DEFAULT NULL,
+  `posY` double DEFAULT NULL,
+  `posZ` double DEFAULT NULL,
+  `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
+  `positionType` enum('dispensing') DEFAULT NULL COMMENT 'Type of marked position (e.g.: dispensing location)',
+  PRIMARY KEY (`blSamplePositionId`),
+  KEY `BLSamplePosition_fk_blSampleId` (`blSampleId`),
+  CONSTRAINT `BLSamplePosition_fk_blSampleId` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSampleType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -1687,7 +1703,7 @@ CREATE TABLE `DewarRegistry_has_Proposal` (
   CONSTRAINT `DewarRegistry_has_Proposal_ibfk1` FOREIGN KEY (`dewarRegistryId`) REFERENCES `DewarRegistry` (`dewarRegistryId`),
   CONSTRAINT `DewarRegistry_has_Proposal_ibfk2` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`),
   CONSTRAINT `DewarRegistry_has_Proposal_ibfk3` FOREIGN KEY (`personId`) REFERENCES `Person` (`personId`),
-  CONSTRAINT `DewarRegistry_has_Proposal_ibfk4` FOREIGN KEY (`labContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE NO ACTION ON UPDATE CASCADE
+  CONSTRAINT `DewarRegistry_has_Proposal_ibfk4` FOREIGN KEY (`labContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `DewarReport`;
@@ -2396,6 +2412,8 @@ CREATE TABLE `ParticleClassification` (
   `bFactorFitIntercept` float DEFAULT NULL COMMENT 'Intercept of quadratic fit to refinement resolution against the logarithm of the number of particles',
   `bFactorFitLinear` float DEFAULT NULL COMMENT 'Linear coefficient of quadratic fit to refinement resolution against the logarithm of the number of particles, equal to half of the B factor',
   `bFactorFitQuadratic` float DEFAULT NULL COMMENT 'Quadratic coefficient of quadratic fit to refinement resolution against the logarithm of the number of particles',
+  `angularEfficiency` double DEFAULT NULL COMMENT 'Variation in resolution across different angles, 1-2sig/mean',
+  `suggestedTilt` double DEFAULT NULL COMMENT 'Suggested stage tilt angle to improve angular efficiency. Unit: degrees',
   PRIMARY KEY (`particleClassificationId`),
   KEY `ParticleClassification_fk_particleClassificationGroupId` (`particleClassificationGroupId`),
   CONSTRAINT `ParticleClassification_fk_particleClassificationGroupId` FOREIGN KEY (`particleClassificationGroupId`) REFERENCES `ParticleClassificationGroup` (`particleClassificationGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -3456,9 +3474,9 @@ CREATE TABLE `Shipping` (
   KEY `Shipping_FKIndexStatus` (`shippingStatus`),
   KEY `Shipping_ibfk_4` (`deliveryAgent_flightCodePersonId`),
   CONSTRAINT `Shipping_ibfk_1` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `Shipping_ibfk_2` FOREIGN KEY (`sendingLabContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `Shipping_ibfk_3` FOREIGN KEY (`returnLabContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `Shipping_ibfk_4` FOREIGN KEY (`deliveryAgent_flightCodePersonId`) REFERENCES `Person` (`personId`)
+  CONSTRAINT `Shipping_ibfk_2` FOREIGN KEY (`sendingLabContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `Shipping_ibfk_3` FOREIGN KEY (`returnLabContactId`) REFERENCES `LabContact` (`labContactId`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `Shipping_ibfk_4` FOREIGN KEY (`deliveryAgent_flightCodePersonId`) REFERENCES `Person` (`personId`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ShippingHasSession`;
@@ -3762,8 +3780,11 @@ CREATE TABLE `XrayCentringResult` (
   `boundingBoxMaxZ` float DEFAULT NULL COMMENT 'Maximum z-coordinate of the bounding box containing the crystal (in voxels)',
   `status` enum('success','failure','pending') DEFAULT NULL COMMENT 'to be removed',
   `gridInfoId` int(11) unsigned DEFAULT NULL COMMENT 'to be removed',
+  `blSampleId` int(11) unsigned DEFAULT NULL COMMENT 'The BLSample attributed for this x-ray centring result, i.e. the actual sample even for multi-pins',
   PRIMARY KEY (`xrayCentringResultId`),
   KEY `xrayCentringId` (`xrayCentringId`),
+  KEY `XrayCentringResult_fk_blSampleId` (`blSampleId`),
+  CONSTRAINT `XrayCentringResult_fk_blSampleId` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `XrayCentringResult_ibfk_1` FOREIGN KEY (`xrayCentringId`) REFERENCES `XrayCentring` (`xrayCentringId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Xray Centring result.';
 /*!40101 SET character_set_client = @saved_cs_client */;
