@@ -11,7 +11,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.6.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.7.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -278,7 +278,16 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (306,'2025_02_25_AdminVar_bump_version.sql','DONE','2025-02-25 15:51:30'),
 (307,'2025_02_27_ExperimentType_atlas.sql','DONE','2025-03-06 11:58:07'),
 (308,'2025_03_05_Dewar_dewarRegistryId.sql','DONE','2025-03-06 11:58:07'),
-(309,'2025_03_06_AdminVar_bump_version.sql','DONE','2025-03-06 11:58:07');
+(309,'2025_03_06_AdminVar_bump_version.sql','DONE','2025-03-06 11:58:07'),
+(310,'2025_03_20_ParticleClassification_angularEfficiency_suggestedTilt.sql','DONE','2025-05-09 15:21:06'),
+(311,'2025_04_11_Position_blSampleId_positionType.sql','DONE','2025-05-09 15:21:06'),
+(312,'2025_04_16_labContacts_fk_on_delete_set_null.sql','DONE','2025-05-09 15:21:06'),
+(313,'2025_04_29_DewarRegistry_fk_labContactId_on_delete_set_null.sql','DONE','2025-05-09 15:21:06'),
+(314,'2025_04_30_Shipping_fk_personId_on_delete_set_null.sql','DONE','2025-05-09 15:21:06'),
+(315,'2025_05_01_BLSamplePosition.sql','DONE','2025-05-09 15:21:06'),
+(316,'2025_05_01_XrayCentringResult_fk_blSampleId.sql','DONE','2025-05-09 15:21:06'),
+(317,'2025_05_02_BLSamplePosition_rename_column.sql','DONE','2025-05-09 15:21:06'),
+(318,'2025_05_12_AdminVar_bump_version.sql','DONE','2025-05-09 15:21:06');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;

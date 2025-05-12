@@ -7456,30 +7456,61 @@ BEGIN
     DECLARE row_beamlineLocation varchar(20) DEFAULT NULL;
     DECLARE row_sampleChangerLocation varchar(20) DEFAULT NULL;
     DECLARE row_proposalId int(10) unsigned DEFAULT NULL;
+    DECLARE row_proposalCode varchar(45) DEFAULT NULL;
+    DECLARE row_proposalNumber varchar(45) DEFAULT NULL;
     DECLARE row_queuedCount int(11) unsigned DEFAULT NULL;
+    DECLARE row_samples varchar(255) DEFAULT NULL;
+
+    IF p_beamline IS NULL THEN
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_beamline is NULL';
+    END IF;
 
     IF NOT (p_registry_barcode IS NULL) THEN
         START TRANSACTION;
 
-        SELECT c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId, count(cq.containerQueueId)
-          INTO row_containerId, row_containerStatus, row_dewarId, row_beamlineLocation, row_sampleChangerLocation, row_proposalId, row_queuedCount
+        SELECT c.containerId,
+          c.containerStatus,
+          c.dewarId,
+          c.beamlineLocation,
+          c.sampleChangerLocation,
+          p.proposalId,
+          p.proposalCode,
+          p.proposalNumber,
+          count(cq.containerQueueId)
+        INTO row_containerId,
+          row_containerStatus,
+          row_dewarId,
+          row_beamlineLocation,
+          row_sampleChangerLocation,
+          row_proposalId,
+          row_proposalCode,
+          row_proposalNumber,
+          row_queuedCount
         FROM Container c
             INNER JOIN ContainerRegistry cr ON c.containerRegistryId = cr.containerRegistryId
             INNER JOIN Dewar d ON d.dewarId = c.dewarId
             INNER JOIN Shipping s ON s.shippingId = d.shippingId
+            INNER JOIN Proposal p ON p.proposalId = s.proposalId
             LEFT OUTER JOIN ContainerQueue cq ON cq.containerId = c.containerId
         WHERE cr.barcode = p_registry_barcode
-        GROUP BY c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId
+        GROUP BY c.containerId,
+          c.containerStatus,
+          c.dewarId,
+          c.beamlineLocation,
+          c.sampleChangerLocation,
+          p.proposalId,
+          p.proposalCode,
+          p.proposalNumber
         ORDER BY c.containerId DESC
         LIMIT 1;
 
         SELECT row_containerStatus INTO currentContainerStatus;
 
-
+        
         IF NOT row_containerId IS NULL THEN
           IF (NOT row_containerStatus <=> 'processing') OR (row_beamlineLocation = p_beamline AND row_sampleChangerLocation = p_position) THEN
 
-
+            
             UPDATE Container c
               INNER JOIN Dewar d ON d.dewarId = c.dewarId
               INNER JOIN Shipping s ON s.shippingId = d.shippingId
@@ -7496,8 +7527,8 @@ BEGIN
             SELECT IF(row_containerStatus<=>'processing', 'at facility', 'processing') INTO currentContainerStatus;
 
             IF NOT row_containerStatus <=> 'processing' THEN
-
-
+              
+              
               UPDATE Container c
                 INNER JOIN Dewar d ON d.dewarId = c.dewarId
                 INNER JOIN Shipping s ON s.shippingId = d.shippingId
@@ -7506,12 +7537,12 @@ BEGIN
               WHERE s.proposalId = row_proposalId AND c.beamlineLocation = p_beamline AND
                 c.sampleChangerLocation = p_position AND c.containerId <> row_containerId;
 
-
+              
               INSERT INTO DewarTransportHistory (dewarId, dewarStatus, storageLocation, arrivalDate)
                 VALUES (row_dewarId, 'processing', p_beamline, NOW());
             END IF;
 
-
+            
             INSERT INTO ContainerHistory (containerId, location, status, beamlineName, currentDewarId)
               SELECT row_containerId, p_position, IF(row_containerStatus<=>'processing', 'at facility', 'processing'), p_beamline, currentDewarId
               FROM Container
@@ -7525,9 +7556,19 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_registry_barcode is NULL';
     END IF;
+
+    SELECT group_concat(location ORDER BY cast(location AS integer) SEPARATOR ',')
+      INTO row_samples
+    FROM BLSample
+    WHERE containerId = row_containerId
+    GROUP BY containerId;
+
     SELECT row_containerId as "containerId",
       currentContainerStatus as "containerStatus",
-      row_queuedCount as "queuedCount";
+      row_proposalCode as "proposalCode",
+      row_proposalNumber as "proposalNumber",
+      row_queuedCount as "queuedCount",
+      row_samples as "samples";
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
