@@ -5,6 +5,27 @@ History
 Unreleased / master
 -------------------
 
+4.7.0 (2025-05-12)
+-------------------
+
+New or modified tables, columns, lookup values:
+
+- New table ``BLSamplePosition``
+- Add a ``blSampleId`` FK to the ``XrayCentringResult`` table
+- Add ``angularEfficiency`` and ``suggestedTilt`` columns to ``ParticleClassification``
+- Recreate FK constraints referencing ``LabContact(labContactId)`` with 'on delete set null
+- Make ``Shipping`` FK ``deliveryAgent_flightCodePersonId`` "on delete set null"
+
+Roles and permissions:
+
+- Add new grants for Expeye 
+- Add new permissions for ``ispyb_propagation``
+- Add new permissions for ``ispyb_scripts_processing.sql``
+
+Stored procedures:
+
+- Also return sample locations for ``update_container_assign``
+
 4.6.0 (2025-03-06)
 -------------------
 
