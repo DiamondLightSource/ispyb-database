@@ -2457,8 +2457,6 @@ CREATE TABLE `ParticleClassification` (
   `bFactorFitQuadratic` float DEFAULT NULL COMMENT 'Quadratic coefficient of quadratic fit to refinement resolution against the logarithm of the number of particles',
   `angularEfficiency` double DEFAULT NULL COMMENT 'Variation in resolution across different angles, 1-2sig/mean',
   `suggestedTilt` double DEFAULT NULL COMMENT 'Suggested stage tilt angle to improve angular efficiency. Unit: degrees',
-  `pixelLocationX` int(11) DEFAULT NULL COMMENT 'pixel location of tomogram centre on search map image (x)',
-  `pixelLocationY` int(11) DEFAULT NULL COMMENT 'pixel location of tomogram centre on search map image (y)',
   PRIMARY KEY (`particleClassificationId`),
   KEY `ParticleClassification_fk_particleClassificationGroupId` (`particleClassificationGroupId`),
   CONSTRAINT `ParticleClassification_fk_particleClassificationGroupId` FOREIGN KEY (`particleClassificationGroupId`) REFERENCES `ParticleClassificationGroup` (`particleClassificationGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -3635,6 +3633,8 @@ CREATE TABLE `Tomogram` (
   `recordTimeStamp` datetime DEFAULT current_timestamp() COMMENT 'Creation or last update date/time',
   `globalAlignmentQuality` float DEFAULT NULL COMMENT 'Quality of fit metric for the alignment of the tilt series corresponding to this tomogram',
   `gridSquareId` int(11) unsigned DEFAULT NULL COMMENT 'FK, references medium mag map in GridSquare',
+  `pixelLocationX` int(11) DEFAULT NULL COMMENT 'pixel location of tomogram centre on search map image (x)',
+  `pixelLocationY` int(11) DEFAULT NULL COMMENT 'pixel location of tomogram centre on search map image (y)',
   PRIMARY KEY (`tomogramId`),
   KEY `Tomogram_fk_dataCollectionId` (`dataCollectionId`),
   KEY `Tomogram_fk_autoProcProgramId` (`autoProcProgramId`),
