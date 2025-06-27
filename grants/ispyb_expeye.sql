@@ -8,7 +8,7 @@ CREATE ROLE IF NOT EXISTS ispyb_expeye_core_role;
 
 GRANT ispyb_propagation TO ispyb_expeye_core_role;
 
-CREATE ROLE ispyb_expeye_acquisition_role;
+CREATE ROLE IF NOT EXISTS ispyb_expeye_acquisition_role;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON Proposal TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSession TO ispyb_expeye_acquisition_role;

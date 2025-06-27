@@ -287,7 +287,13 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (315,'2025_05_01_BLSamplePosition.sql','DONE','2025-05-09 15:21:06'),
 (316,'2025_05_01_XrayCentringResult_fk_blSampleId.sql','DONE','2025-05-09 15:21:06'),
 (317,'2025_05_02_BLSamplePosition_rename_column.sql','DONE','2025-05-09 15:21:06'),
-(318,'2025_05_12_AdminVar_bump_version.sql','DONE','2025-05-09 15:21:06');
+(318,'2025_05_12_AdminVar_bump_version.sql','DONE','2025-05-09 15:21:06'),
+(319,'2025_05_14_BLSamplePosition_recordTimeStamp_default.sql','DONE','2025-06-27 16:04:05'),
+(320,'2025_05_23_Ligand_and_junction_tables.sql','DONE','2025-06-27 16:04:05'),
+(321,'2025_05_28_BLSession_icatId.sql','DONE','2025-06-27 16:04:05'),
+(322,'2025_06_02_DewarRegistry_type.sql','DONE','2025-06-27 16:04:05'),
+(323,'2025_06_26_ContainerType_cryoem_puck.sql','DONE','2025-06-27 16:04:05'),
+(324,'2025_06_27_Tomogram_pixelLocation.sql','DONE','2025-06-27 16:04:05');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
@@ -358,7 +364,8 @@ INSERT INTO `ContainerType` (`containerTypeId`, `name`, `proposalType`, `active`
 (34,'I22_Grid_81','saxs',1,81,9,1,1,1,1,0,0,-1),
 (35,'I22_Capillary_Rack_25','saxs',1,25,25,1,1,1,1,0,0,-1),
 (36,'VMXm-Cartridge','mx',1,5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(37,'VMXm-GridBox','mx',1,4,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+(37,'VMXm-GridBox','mx',1,4,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(38,'Cryo-EM Puck','mx',1,12,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ContainerType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ExperimentType` DISABLE KEYS */;

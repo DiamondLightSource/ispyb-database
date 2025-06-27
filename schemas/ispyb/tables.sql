@@ -614,12 +614,12 @@ CREATE TABLE `BLSamplePosition` (
   `posX` double DEFAULT NULL,
   `posY` double DEFAULT NULL,
   `posZ` double DEFAULT NULL,
-  `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
+  `recordTimeStamp` datetime DEFAULT current_timestamp(),
   `positionType` enum('dispensing') DEFAULT NULL COMMENT 'Type of marked position (e.g.: dispensing location)',
   PRIMARY KEY (`blSamplePositionId`),
   KEY `BLSamplePosition_fk_blSampleId` (`blSampleId`),
   CONSTRAINT `BLSamplePosition_fk_blSampleId` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSampleType`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -672,6 +672,18 @@ CREATE TABLE `BLSample_has_EnergyScan` (
   CONSTRAINT `BLSample_has_EnergyScan_ibfk_2` FOREIGN KEY (`energyScanId`) REFERENCES `EnergyScan` (`energyScanId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `BLSample_has_Ligand`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `BLSample_has_Ligand` (
+  `blSampleId` int(10) unsigned NOT NULL,
+  `ligandId` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`blSampleId`,`ligandId`),
+  KEY `BLSample_has_Ligand_fk2` (`ligandId`),
+  CONSTRAINT `BLSample_has_Ligand_fk1` FOREIGN KEY (`blSampleId`) REFERENCES `BLSample` (`blSampleId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `BLSample_has_Ligand_fk2` FOREIGN KEY (`ligandId`) REFERENCES `Ligand` (`ligandId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Junction table for BLSample and Ligand';
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `BLSample_has_Positioner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -709,6 +721,7 @@ CREATE TABLE `BLSession` (
   `archived` tinyint(1) DEFAULT 0 COMMENT 'The data for the session is archived and no longer available on disk',
   `riskRating` enum('Low','Medium','High','Not Permitted') DEFAULT NULL COMMENT 'ERA in user admin system',
   `purgedProcessedData` tinyint(1) DEFAULT 0 COMMENT 'Flag to indicate whether the processed folder in the associated visit directory has been purged',
+  `icatId` int(11) unsigned DEFAULT NULL COMMENT 'The internal ICAT ID for this BLSession',
   PRIMARY KEY (`sessionId`),
   UNIQUE KEY `proposalId` (`proposalId`,`visit_number`),
   KEY `Session_FKIndex2` (`beamLineSetupId`),
@@ -1677,6 +1690,7 @@ CREATE TABLE `DewarRegistry` (
   `purchaseDate` datetime DEFAULT NULL,
   `bltimestamp` datetime NOT NULL DEFAULT current_timestamp(),
   `manufacturerSerialNumber` varchar(15) DEFAULT NULL COMMENT 'Dewar serial number as given by manufacturer. Used to be typically 5 or 6 digits, more likely to be 11 alphanumeric chars in future',
+  `type` enum('Dewar','Toolbox','Thermal Shipper') NOT NULL DEFAULT 'Dewar',
   PRIMARY KEY (`dewarRegistryId`),
   UNIQUE KEY `facilityCode` (`facilityCode`),
   KEY `DewarRegistry_ibfk_1` (`proposalId`),
@@ -2195,6 +2209,35 @@ CREATE TABLE `Laboratory` (
   PRIMARY KEY (`laboratoryId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `Ligand`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Ligand` (
+  `ligandId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `proposalId` int(10) unsigned NOT NULL COMMENT 'References Proposal table',
+  `name` varchar(30) NOT NULL COMMENT 'Ligand name',
+  `SMILES` varchar(400) DEFAULT NULL COMMENT 'Chemical structure',
+  `libraryName` varchar(30) DEFAULT NULL COMMENT 'Name of ligand library, to preserve provenance',
+  `libraryBatchNumber` varchar(30) DEFAULT NULL COMMENT 'Batch number of library, to preserve provenance',
+  `plateBarcode` varchar(30) DEFAULT NULL COMMENT 'Specific barcode of the plate it came from, to preserve provenance',
+  `sourceWell` varchar(30) DEFAULT NULL COMMENT 'Location within that plate, to preserve provenance',
+  PRIMARY KEY (`ligandId`),
+  KEY `Ligand_fk_proposalId` (`proposalId`),
+  CONSTRAINT `Ligand_fk_proposalId` FOREIGN KEY (`proposalId`) REFERENCES `Proposal` (`proposalId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Ligands in biochemistry are substances that bind to biomolecules';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `Ligand_has_PDB`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Ligand_has_PDB` (
+  `ligandId` int(11) unsigned NOT NULL,
+  `pdbId` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`ligandId`,`pdbId`),
+  KEY `Ligand_Has_PDB_fk2` (`pdbId`),
+  CONSTRAINT `Ligand_Has_PDB_fk1` FOREIGN KEY (`ligandId`) REFERENCES `Ligand` (`ligandId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Ligand_Has_PDB_fk2` FOREIGN KEY (`pdbId`) REFERENCES `PDB` (`pdbId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Junction table for Ligand and PDB';
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `MXMRRun`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -2414,6 +2457,8 @@ CREATE TABLE `ParticleClassification` (
   `bFactorFitQuadratic` float DEFAULT NULL COMMENT 'Quadratic coefficient of quadratic fit to refinement resolution against the logarithm of the number of particles',
   `angularEfficiency` double DEFAULT NULL COMMENT 'Variation in resolution across different angles, 1-2sig/mean',
   `suggestedTilt` double DEFAULT NULL COMMENT 'Suggested stage tilt angle to improve angular efficiency. Unit: degrees',
+  `pixelLocationX` int(11) DEFAULT NULL COMMENT 'pixel location of tomogram centre on search map image (x)',
+  `pixelLocationY` int(11) DEFAULT NULL COMMENT 'pixel location of tomogram centre on search map image (y)',
   PRIMARY KEY (`particleClassificationId`),
   KEY `ParticleClassification_fk_particleClassificationGroupId` (`particleClassificationGroupId`),
   CONSTRAINT `ParticleClassification_fk_particleClassificationGroupId` FOREIGN KEY (`particleClassificationGroupId`) REFERENCES `ParticleClassificationGroup` (`particleClassificationGroupId`) ON DELETE CASCADE ON UPDATE CASCADE
