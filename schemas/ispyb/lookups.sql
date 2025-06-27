@@ -293,7 +293,8 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (321,'2025_05_28_BLSession_icatId.sql','DONE','2025-06-27 16:04:05'),
 (322,'2025_06_02_DewarRegistry_type.sql','DONE','2025-06-27 16:04:05'),
 (323,'2025_06_26_ContainerType_cryoem_puck.sql','DONE','2025-06-27 16:04:05'),
-(324,'2025_06_27_Tomogram_pixelLocation.sql','DONE','2025-06-27 16:04:05');
+(324,'2025_06_27_Tomogram_pixelLocation.sql','DONE','2025-06-27 16:04:05'),
+(325,'2025_06_27_undo_ParticleClassification_set_Tomogram_pixelLocation.sql','DONE','2025-06-27 16:40:00');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
