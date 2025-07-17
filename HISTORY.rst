@@ -5,6 +5,20 @@ History
 Unreleased / master
 -------------------
 
+4.8.0 (2025-07-17)
+-------------------
+
+New or modified tables, columns, lookup values:
+
+- New table ``Ligand``
+- New table ``BLSample_has_Ligand``
+- New table ``Ligand_has_PDB``
+- Add ``pixelLocationX`` and ``pixelLocationY`` columns to ``Tomogram`` table
+- Add ``cryoEM`` container type to ``ContainerType``
+- Add ``type`` enum column to ``DewarRegistry``
+- Add ``icatId`` column to ``BLSession``
+- Set ``recordTimeStamp`` column in ``BLSamplePosition`` to default to current time
+
 4.7.0 (2025-05-12)
 -------------------
 
