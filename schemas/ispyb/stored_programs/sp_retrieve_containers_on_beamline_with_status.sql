@@ -1,5 +1,5 @@
 DELIMITER ;;
-CREATE DEFINER=`ispyb_root`@`%` PROCEDURE `retrieve_containers_on_beamline_with_status`(IN p_beamline varchar(20), IN p_status varchar(40))
+CREATE DEFINER=`ispyb_root`@`%` PROCEDURE `retrieve_containers_on_beamline_with_status`(IN p_beamline varchar(20), IN p_status varchar(45))
     READS SQL DATA
     COMMENT 'Returns a multi-row result-set with info about when containers on beamline p_beamline last had status p_status'
 BEGIN
