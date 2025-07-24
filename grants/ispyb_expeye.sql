@@ -71,3 +71,7 @@ GRANT SELECT, INSERT, UPDATE ON AutoProcProgramAttachment TO ispyb_expeye_core_r
 GRANT SELECT ON AutoProcIntegration TO ispyb_expeye_core_role;
 
 GRANT SELECT ON ProcessingJob TO ispyb_expeye_core_role;
+
+GRANT SELECT, INSERT, UPDATE ON Ligand TO ispyb_expeye_core_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Ligand_has_PDB TO ispyb_expeye_core_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON BLSample_has_Ligand TO ispyb_expeye_core_role;
