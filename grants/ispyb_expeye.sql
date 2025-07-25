@@ -44,6 +44,7 @@ GRANT SELECT ON ProcessingPipeline TO ispyb_expeye_acquisition_role;
 GRANT SELECT ON ProcessingPipelineCategory TO ispyb_expeye_acquisition_role;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSample TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE, DELETE on BLSampleImage TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSampleGroup TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSampleGroup_has_BLSample TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSubSample TO ispyb_expeye_acquisition_role;
