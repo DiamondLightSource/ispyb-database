@@ -11,7 +11,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.7.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.8.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -294,7 +294,10 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (322,'2025_06_02_DewarRegistry_type.sql','DONE','2025-06-27 16:04:05'),
 (323,'2025_06_26_ContainerType_cryoem_puck.sql','DONE','2025-06-27 16:04:05'),
 (324,'2025_06_27_Tomogram_pixelLocation.sql','DONE','2025-06-27 16:04:05'),
-(325,'2025_06_27_undo_ParticleClassification_set_Tomogram_pixelLocation.sql','DONE','2025-06-27 16:40:00');
+(325,'2025_06_27_undo_ParticleClassification_set_Tomogram_pixelLocation.sql','DONE','2025-06-27 16:40:00'),
+(326,'2025_07_17_AdminVar_bump_version.sql','DONE','2025-09-24 11:36:21'),
+(327,'2025_07_25_Container_parentContainerLocation.sql','DONE','2025-09-24 11:36:21'),
+(328,'2025_09_24_Proposal_start_end_date.sql','DONE','2025-09-24 15:56:17');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
