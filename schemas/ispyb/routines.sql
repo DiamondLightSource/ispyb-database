@@ -131,7 +131,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `retrieve_proposal_title`(p_proposal_code varchar(5), p_proposal_number int) RETURNS varchar(255) CHARSET latin1
+CREATE FUNCTION `retrieve_proposal_title`(p_proposal_code varchar(5), p_proposal_number int) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
     READS SQL DATA
 BEGIN
 	DECLARE ret_title varchar(255);
@@ -156,7 +156,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `retrieve_proposal_title_v2`(p_proposalCode varchar(5), p_proposalNumber int) RETURNS varchar(255) CHARSET latin1
+CREATE FUNCTION `retrieve_proposal_title_v2`(p_proposalCode varchar(5), p_proposalNumber int) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
     READS SQL DATA
     COMMENT 'Retrieve the title for a given proposal code and number.'
 BEGIN
@@ -207,7 +207,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `root_replace`(p_str varchar(255), p_oldroot varchar(255), p_newroot varchar(255)) RETURNS varchar(255) CHARSET latin1
+CREATE FUNCTION `root_replace`(p_str varchar(255), p_oldroot varchar(255), p_newroot varchar(255)) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
     COMMENT 'Returns a varchar where the old root p_oldroot (the leftmost part) of p_str has been replaced with a new root p_newroot'
 BEGIN
  DECLARE path_len smallint unsigned DEFAULT LENGTH(p_oldroot);
@@ -2329,6 +2329,45 @@ BEGIN
         phi, kappa, chi, comments, wavelength)
         VALUES (p_screeningStrategyId, p_wedgeNumber, p_resolution, p_completeness, p_multiplicity, p_doseTotal, p_numberOfImages,
         p_phi, p_kappa, p_chi, p_comments, p_wavelength);
+
+	  IF LAST_INSERT_ID() <> 0 THEN
+		  SET p_id = LAST_INSERT_ID();
+      END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insert_screening_v2` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
+DELIMITER ;;
+CREATE PROCEDURE `insert_screening_v2`(
+     OUT p_id int(11) unsigned,
+     p_dcgId int(11) unsigned,
+     p_dcId int(11) unsigned,
+     p_programVersion varchar(45),
+     p_shortComments varchar(20),
+     p_comments varchar(255),
+     p_autoProcProgramId int(10) unsigned
+)
+    MODIFIES SQL DATA
+    COMMENT 'Insert a row with info about a screening. Returns the ID in p_id.'
+BEGIN
+    IF p_dcgId IS NULL AND p_dcId IS NOT NULL THEN
+		    SELECT dataCollectionGroupId INTO p_dcgId FROM DataCollection WHERE dataCollectionId = p_dcId;
+    END IF;
+
+    INSERT INTO Screening (dataCollectionGroupId, dataCollectionId, programVersion, shortComments, comments, autoProcProgramId)
+        VALUES (p_dcgId, p_dcId, p_programVersion, p_shortComments, p_comments, p_autoProcProgramId);
 
 	  IF LAST_INSERT_ID() <> 0 THEN
 		  SET p_id = LAST_INSERT_ID();

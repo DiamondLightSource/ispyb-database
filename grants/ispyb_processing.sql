@@ -77,6 +77,7 @@ GRANT EXECUTE ON PROCEDURE retrieve_most_recent_session TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_containers_submitted_non_ls TO 'ispyb_processing';
 
 GRANT EXECUTE ON PROCEDURE `insert_screening` TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE `insert_screening_v2` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE insert_screening_input TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `insert_screening_output` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `insert_screening_output_v2` TO 'ispyb_processing';
