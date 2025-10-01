@@ -5,6 +5,33 @@ History
 Unreleased / master
 -------------------
 
+4.9.0 (2025-10-01)
+-------------------
+
+New columns:
+
+- Add ``startDate`` and ``endDate`` columns to the ``Proposal`` table
+- Add ``parentContainerLocation`` column to the ``Container`` table
+
+Table permissions for the expeye role:
+
+- ``BLSampleImage``
+- ``Protein_has_PDB``
+- The ``Ligand`` tables
+
+Stored procedures:
+
+- Updated procedure ``update_container_status`` to allow more statuses
+- New procedure ``insert_screening_v2`` with relevant grants
+- In source file for procedure ``retrieve_containers_on_beamline_with_status``:
+
+  - Use ``CREATE OR REPLACE ... PROCEDURE`` syntax
+  - Update maximum string length for ``p_status`` parameter
+
+Lookups:
+
+- A new type "SWISSCI 2 Drop" was added to ``ContainerType``  
+
 4.8.0 (2025-07-17)
 -------------------
 
@@ -32,7 +59,7 @@ New or modified tables, columns, lookup values:
 
 Roles and permissions:
 
-- Add new grants for Expeye 
+- Add new grants for Expeye
 - Add new permissions for ``ispyb_propagation``
 - Add new permissions for ``ispyb_scripts_processing.sql``
 
