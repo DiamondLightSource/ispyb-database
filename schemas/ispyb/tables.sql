@@ -2225,7 +2225,7 @@ CREATE TABLE `LaserParameters` (
   PRIMARY KEY (`laserParametersId`),
   KEY `LaserParameters_fk_robotActionId` (`robotActionId`),
   CONSTRAINT `LaserParameters_fk_robotActionId` FOREIGN KEY (`robotActionId`) REFERENCES `RobotAction` (`robotActionId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Laser parameters';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Laser parameters';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `LaserPoint`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -2241,7 +2241,7 @@ CREATE TABLE `LaserPoint` (
   PRIMARY KEY (`laserPointId`),
   KEY `LaserPoint_fk_laserParametersId` (`laserParametersId`),
   CONSTRAINT `LaserPoint_fk_laserParametersId` FOREIGN KEY (`laserParametersId`) REFERENCES `LaserParameters` (`laserParametersId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Laser points';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Laser points';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Ligand`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
