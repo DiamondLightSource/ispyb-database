@@ -2210,6 +2210,39 @@ CREATE TABLE `Laboratory` (
   PRIMARY KEY (`laboratoryId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `LaserParameters`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `LaserParameters` (
+  `laserParametersId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `robotActionId` int(11) unsigned DEFAULT NULL,
+  `laserRepetitionRate` float DEFAULT NULL COMMENT 'Laser repetition rate, in kHz',
+  `scanheadMoveSpeed` float DEFAULT NULL COMMENT 'Scanhead move speed, in m/s',
+  `laserTransmission` float DEFAULT NULL COMMENT 'Laser transmission, in %',
+  `numberOfPasses` int(10) unsigned DEFAULT NULL,
+  `gonioRotationSpeed` int(10) DEFAULT NULL COMMENT 'Goniometer rotation speed, in deg/s',
+  `totalMarkingTime` float DEFAULT NULL COMMENT 'Total marking time, in s',
+  PRIMARY KEY (`laserParametersId`),
+  KEY `LaserParameters_fk_robotActionId` (`robotActionId`),
+  CONSTRAINT `LaserParameters_fk_robotActionId` FOREIGN KEY (`robotActionId`) REFERENCES `RobotAction` (`robotActionId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Laser parameters';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `LaserPoint`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `LaserPoint` (
+  `laserPointId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `laserParametersId` int(11) unsigned DEFAULT NULL,
+  `x` int(10) unsigned NOT NULL COMMENT 'X coordinate of point, in microns',
+  `y` int(10) unsigned NOT NULL COMMENT 'Y coordinate of point, in microns',
+  `pointIndex` int(10) NOT NULL COMMENT 'Index of point, expresses ordinality',
+  `radius` int(10) unsigned DEFAULT NULL COMMENT 'Radius of point, in microns',
+  `laserOn` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`laserPointId`),
+  KEY `LaserPoint_fk_laserParametersId` (`laserParametersId`),
+  CONSTRAINT `LaserPoint_fk_laserParametersId` FOREIGN KEY (`laserParametersId`) REFERENCES `LaserParameters` (`laserParametersId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci COMMENT='Laser points';
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Ligand`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -3057,7 +3090,7 @@ CREATE TABLE `RobotAction` (
   `robotActionId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `blsessionId` int(11) unsigned NOT NULL,
   `blsampleId` int(11) unsigned DEFAULT NULL,
-  `actionType` enum('LOAD','UNLOAD','DISPOSE','STORE','WASH','ANNEAL','MOSAIC') DEFAULT NULL,
+  `actionType` enum('LOAD','UNLOAD','DISPOSE','STORE','WASH','ANNEAL','MOSAIC','LASER') DEFAULT NULL,
   `startTimestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `endTimestamp` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `status` enum('SUCCESS','ERROR','CRITICAL','WARNING','EPICSFAIL','COMMANDNOTSENT') DEFAULT NULL,

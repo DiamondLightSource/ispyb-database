@@ -11,7 +11,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.9.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.10.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -299,7 +299,11 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (327,'2025_07_25_Container_parentContainerLocation.sql','DONE','2025-09-24 11:36:21'),
 (328,'2025_09_24_Proposal_start_end_date.sql','DONE','2025-09-24 15:56:17'),
 (329,'2025_10_01_AdminVar_bump_version.sql','DONE','2025-10-01 15:40:02'),
-(330,'2025_07_29_ContainerType_insert.sql','DONE','2025-10-01 15:51:03');
+(330,'2025_07_29_ContainerType_insert.sql','DONE','2025-10-01 15:51:03'),
+(331,'2025_11_03_LaserParameters_tables.sql','DONE','2025-11-20 15:47:48'),
+(332,'2025_11_05_RobotAction_new_type.sql','DONE','2025-11-20 15:47:48'),
+(333,'2025_11_13_ExperimentType_clem_and_fib.sql','DONE','2025-11-20 15:47:48'),
+(334,'2025_11_20_AdminVar_bump_version.sql','DONE','2025-11-20 15:47:48');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
@@ -419,7 +423,9 @@ INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `activ
 (41,'SSX-Chip','mx',1),
 (42,'SSX-Jet','mx',1),
 (43,'Metal ID','mx',1),
-(44,'Atlas','em',1);
+(44,'Atlas','em',1),
+(45,'CLEM','em',1),
+(46,'FIB','em',1);
 /*!40000 ALTER TABLE `ExperimentType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `InspectionType` DISABLE KEYS */;
@@ -849,63 +855,63 @@ INSERT INTO `Permission` (`permissionId`, `type`, `description`) VALUES (1,'mx_a
 
 /*!40000 ALTER TABLE `UserGroup_has_Permission` DISABLE KEYS */;
 INSERT INTO `UserGroup_has_Permission` (`userGroupId`, `permissionId`) VALUES (1,1),
-(1,7),
-(1,8),
-(1,9),
-(1,10),
-(1,11),
-(1,18),
-(1,20),
-(1,23),
-(1,49),
 (2,1),
-(2,6),
-(2,23),
-(2,80),
-(3,7),
-(3,23),
-(4,20),
-(5,10),
-(6,8),
-(6,23),
 (8,1),
+(9,1),
+(14,1),
+(24,1),
 (8,2),
 (8,4),
+(2,6),
 (8,6),
-(8,7),
-(8,8),
-(8,9),
-(8,10),
-(8,11),
-(8,18),
-(8,20),
-(8,23),
-(8,26),
-(8,29),
-(8,37),
-(8,49),
-(9,1),
 (9,6),
+(1,7),
+(3,7),
+(8,7),
+(1,8),
+(6,8),
+(8,8),
+(1,9),
+(8,9),
+(1,10),
+(5,10),
+(8,10),
+(1,11),
+(8,11),
 (10,12),
-(10,77),
 (11,13),
 (11,15),
 (11,16),
 (11,17),
+(1,18),
+(8,18),
+(12,18),
+(1,20),
+(4,20),
+(8,20),
+(1,23),
+(2,23),
+(3,23),
+(6,23),
+(8,23),
+(28,23),
+(8,26),
+(17,26),
+(8,29),
+(20,29),
 (11,32),
+(8,37),
+(28,37),
 (11,43),
+(1,49),
+(8,49),
+(34,49),
 (11,55),
 (11,58),
 (11,64),
-(12,18),
-(14,1),
-(17,26),
-(20,29),
-(24,1),
-(28,23),
-(28,37),
-(34,49),
-(39,69);
+(39,69),
+(10,77),
+(2,80);
 /*!40000 ALTER TABLE `UserGroup_has_Permission` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ScanParametersService` DISABLE KEYS */;

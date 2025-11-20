@@ -5,6 +5,22 @@ History
 Unreleased / master
 -------------------
 
+4.10.0 (2025-11-20)
+-------------------
+
+Thank you so much, Karl! / Tusen takk, Karl!
+
+Lookups:
+
+- Add ``CLEM`` experiment type
+- Add ``FIB`` experiment type
+
+New or modified tables, columns, lookup values:
+
+- New table ``LaserParameters``
+- New table ``LaserPoint``
+- Add ``LASER`` to ``RobotAction`` ``actionType`` column
+
 4.9.0 (2025-10-01)
 -------------------
 

@@ -332,19 +332,19 @@ INSERT INTO `ComponentLattice` (`componentLatticeId`, `componentId`, `spaceGroup
 /*!40000 ALTER TABLE `Component_has_SubType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Container` DISABLE KEYS */;
-INSERT INTO `Container` (`containerId`, `dewarId`, `code`, `containerType`, `capacity`, `sampleChangerLocation`, `containerStatus`, `bltimeStamp`, `beamlineLocation`, `screenId`, `scheduleId`, `barcode`, `imagerId`, `sessionId`, `ownerId`, `requestedImagerId`, `requestedReturn`, `comments`, `experimentType`, `storageTemperature`, `containerRegistryId`, `scLocationUpdated`, `priorityPipelineId`, `experimentTypeId`, `containerTypeId`, `currentDewarId`, `parentContainerId`, `source`) VALUES (1326,573,'Container-1-cm0001-1','Puck-16',16,'3','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000001',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(1329,573,'Container-2-cm0001-1','Puck-16',16,'4','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000002',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(1332,576,'Container-3-cm0001-1','Puck-16',16,'5','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000003',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(1335,579,'Container-4-cm0001-2','Puck-16',16,'6','processing',NULL,'i03',NULL,NULL,'container-cm0001-2-0001335',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(1338,582,'Container-5-cm0001-3','Puck-16',16,'7','processing',NULL,'i03',NULL,NULL,'container-cm0001-3-0001338',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(1341,573,'Manual',NULL,NULL,'9',NULL,NULL,'i03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(33049,8287,'cm14451-1_i03r-002','Puck',16,NULL,'at DLS',NULL,'i03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(34864,8572,'I03R-001','Puck',16,'29','processing','2016-02-24 12:13:05','i03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(34874,8572,'test_plate2','CrystalQuickX',192,'3','in_storage','2016-02-12 09:20:44','i03',NULL,2,'test_plate2',2,NULL,NULL,2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(34877,8572,'test_plate3','CrystalQuickX',192,'3','in_storage','2016-10-04 10:50:05','i03',NULL,2,'test_plate3',2,NULL,NULL,2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(34879,8572,'test_plate4','CrystalQuickX',192,'4','processing',NULL,'i02-2',NULL,2,'test_plate4',2,NULL,NULL,2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(34883,NULL,'XPDF-container-1','XPDF container',NULL,NULL,'processing',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(34888,8578,'TestSim01','CrystalQuickX',192,'1','in_storage',NULL,'i02-2',NULL,2,'VMXiSim-001',7,339535,1,7,0,NULL,NULL,NULL,5,NULL,NULL,NULL,NULL,NULL,NULL,'root@%');
+INSERT INTO `Container` (`containerId`, `dewarId`, `code`, `containerType`, `capacity`, `sampleChangerLocation`, `containerStatus`, `bltimeStamp`, `beamlineLocation`, `screenId`, `scheduleId`, `barcode`, `imagerId`, `sessionId`, `ownerId`, `requestedImagerId`, `requestedReturn`, `comments`, `experimentType`, `storageTemperature`, `containerRegistryId`, `scLocationUpdated`, `priorityPipelineId`, `experimentTypeId`, `containerTypeId`, `currentDewarId`, `parentContainerId`, `source`, `parentContainerLocation`) VALUES (1326,573,'Container-1-cm0001-1','Puck-16',16,'3','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000001',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(1329,573,'Container-2-cm0001-1','Puck-16',16,'4','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000002',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(1332,576,'Container-3-cm0001-1','Puck-16',16,'5','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000003',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(1335,579,'Container-4-cm0001-2','Puck-16',16,'6','processing',NULL,'i03',NULL,NULL,'container-cm0001-2-0001335',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(1338,582,'Container-5-cm0001-3','Puck-16',16,'7','processing',NULL,'i03',NULL,NULL,'container-cm0001-3-0001338',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(1341,573,'Manual',NULL,NULL,'9',NULL,NULL,'i03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(33049,8287,'cm14451-1_i03r-002','Puck',16,NULL,'at DLS',NULL,'i03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(34864,8572,'I03R-001','Puck',16,'29','processing','2016-02-24 12:13:05','i03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(34874,8572,'test_plate2','CrystalQuickX',192,'3','in_storage','2016-02-12 09:20:44','i03',NULL,2,'test_plate2',2,NULL,NULL,2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(34877,8572,'test_plate3','CrystalQuickX',192,'3','in_storage','2016-10-04 10:50:05','i03',NULL,2,'test_plate3',2,NULL,NULL,2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(34879,8572,'test_plate4','CrystalQuickX',192,'4','processing',NULL,'i02-2',NULL,2,'test_plate4',2,NULL,NULL,2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(34883,NULL,'XPDF-container-1','XPDF container',NULL,NULL,'processing',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(34888,8578,'TestSim01','CrystalQuickX',192,'1','in_storage',NULL,'i02-2',NULL,2,'VMXiSim-001',7,339535,1,7,0,NULL,NULL,NULL,5,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL);
 /*!40000 ALTER TABLE `Container` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ContainerHistory` DISABLE KEYS */;
@@ -560,6 +560,12 @@ INSERT INTO `ImageQualityIndicators` (`dataCollectionId`, `imageNumber`, `imageI
 /*!40000 ALTER TABLE `Laboratory` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Laboratory` ENABLE KEYS */;
 
+/*!40000 ALTER TABLE `LaserParameters` DISABLE KEYS */;
+/*!40000 ALTER TABLE `LaserParameters` ENABLE KEYS */;
+
+/*!40000 ALTER TABLE `LaserPoint` DISABLE KEYS */;
+/*!40000 ALTER TABLE `LaserPoint` ENABLE KEYS */;
+
 /*!40000 ALTER TABLE `Ligand` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Ligand` ENABLE KEYS */;
 
@@ -694,8 +700,8 @@ INSERT INTO `ProcessingJobParameter` (`processingJobParameterId`, `processingJob
 /*!40000 ALTER TABLE `Project_has_XFEFSpectrum` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Proposal` DISABLE KEYS */;
-INSERT INTO `Proposal` (`proposalId`, `personId`, `title`, `proposalCode`, `proposalNumber`, `bltimeStamp`, `proposalType`, `externalId`, `state`) VALUES (37027,1,'I03 Commissioning Directory 2016','cm','14451','2015-12-21 15:20:43',NULL,NULL,'Open'),
-(141666,46266,'Test Proposal cm-0001','cm','1','2016-03-16 16:01:34',NULL,NULL,'Open');
+INSERT INTO `Proposal` (`proposalId`, `personId`, `title`, `proposalCode`, `proposalNumber`, `bltimeStamp`, `proposalType`, `externalId`, `state`, `startDate`, `endDate`) VALUES (37027,1,'I03 Commissioning Directory 2016','cm','14451','2015-12-21 15:20:43',NULL,NULL,'Open',NULL,NULL),
+(141666,46266,'Test Proposal cm-0001','cm','1','2016-03-16 16:01:34',NULL,NULL,'Open',NULL,NULL);
 /*!40000 ALTER TABLE `Proposal` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ProposalHasPerson` DISABLE KEYS */;
@@ -944,11 +950,11 @@ INSERT INTO `Shipping` (`shippingId`, `proposalId`, `shippingName`, `deliveryAge
 /*!40000 ALTER TABLE `Shipping` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ShippingHasSession` DISABLE KEYS */;
-INSERT INTO `ShippingHasSession` (`shippingId`, `sessionId`) VALUES (474,339525),
+INSERT INTO `ShippingHasSession` (`shippingId`, `sessionId`) VALUES (6988,55167),
+(7227,55168),
+(474,339525),
 (477,339528),
-(480,339531),
-(6988,55167),
-(7227,55168);
+(480,339531);
 /*!40000 ALTER TABLE `ShippingHasSession` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Sleeve` DISABLE KEYS */;
