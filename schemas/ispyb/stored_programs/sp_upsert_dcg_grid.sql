@@ -25,7 +25,7 @@ BEGIN
         micronsPerPixelX, micronsPerPixelY,
         snapshot_offsetXPixel, snapshot_offsetYPixel, orientation, snaked)
         VALUES (p_id, p_dcgId, p_dxInMm, p_dyInMm, p_stepsX, p_stepsY, p_meshAngle,
-        p_pixelsPerMicronX, p_pixelsPerMicronY, p_pixelsPerMicronX, p_pixelsPerMicronY,
+        p_micronsPerPixelX, p_micronsPerPixelY,
         p_snapshotOffsetXPixel, p_snapshotOffsetYPixel, p_orientation, p_snaked)
         ON DUPLICATE KEY UPDATE
 		  dataCollectionGroupId = IFNULL(p_dcgId, dataCollectionGroupId),
