@@ -22,7 +22,7 @@ CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `upsert_dcg_grid`(
 BEGIN
 	IF p_dcgId IS NOT NULL THEN
       INSERT INTO GridInfo (gridInfoId, dataCollectionGroupId, dx_mm, dy_mm, steps_x, steps_y, meshAngle,
-        pixelsPerMicronX, pixelsPerMicronY, micronsPerPixelX, micronsPerPixelY,
+        micronsPerPixelX, micronsPerPixelY,
         snapshot_offsetXPixel, snapshot_offsetYPixel, orientation, snaked)
         VALUES (p_id, p_dcgId, p_dxInMm, p_dyInMm, p_stepsX, p_stepsY, p_meshAngle,
         p_pixelsPerMicronX, p_pixelsPerMicronY, p_pixelsPerMicronX, p_pixelsPerMicronY,
