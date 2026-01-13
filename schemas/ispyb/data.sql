@@ -950,11 +950,11 @@ INSERT INTO `Shipping` (`shippingId`, `proposalId`, `shippingName`, `deliveryAge
 /*!40000 ALTER TABLE `Shipping` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ShippingHasSession` DISABLE KEYS */;
-INSERT INTO `ShippingHasSession` (`shippingId`, `sessionId`) VALUES (6988,55167),
-(7227,55168),
-(474,339525),
+INSERT INTO `ShippingHasSession` (`shippingId`, `sessionId`) VALUES (474,339525),
 (477,339528),
-(480,339531);
+(480,339531),
+(6988,55167),
+(7227,55168);
 /*!40000 ALTER TABLE `ShippingHasSession` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Sleeve` DISABLE KEYS */;
