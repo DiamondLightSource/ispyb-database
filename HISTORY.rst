@@ -5,6 +5,14 @@ History
 Unreleased / master
 -------------------
 
+4.11.0 (2026-01-13)
+-------------------
+
+New or modified tables, columns, lookup values:
+
+- Add colour channel and mode columns to ``Atlas`` and ``GridSquare`` (``hasRed``, ``hasGreen``, ``hasBlue``, ``hasYellow``, ``hasCyan``, ``hasMagenta``, ``mode``)
+- Add ``iceRingDensity`` to ``CTF``
+
 4.10.0 (2025-11-20)
 -------------------
 
