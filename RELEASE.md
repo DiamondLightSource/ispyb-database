@@ -7,5 +7,5 @@ This procedure requires write permission to the repository and a valid `.github-
 3. Manually import any stored programs committed since the previous release.
 4. Create a backup: `cd bin && ./backup.sh /tmp/`.
 5. Copy `/tmp/lookups.sql` to `schemas/ispyb/`. If other changes have been made since the previous release, then you might need to copy other files to the same folder: If any changes to the tables or views, then also copy `/tmp/tables.sql`. If any changes to the stored programs, then also copy `/tmp/routines.sql`. If any changes to the test data, then also copy `/tmp/data.sql`.
-6. Commit and push your changes to master.
+6. Commit and push your changes to main.
 7. Finally, run the `release.sh` script to create a tag and create a Github release against that tag. The new release should then become available on the project's Github page.

@@ -134,9 +134,12 @@ CREATE TABLE `AutoProcProgram` (
   `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
   `processingJobId` int(11) unsigned DEFAULT NULL,
   `processingPipelineId` int(11) unsigned DEFAULT NULL,
+  `parentAutoProcProgramId` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`autoProcProgramId`),
   KEY `AutoProcProgram_FK2` (`processingJobId`),
-  CONSTRAINT `AutoProcProgram_FK2` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`)
+  KEY `AutoProcProgram_fk_parentAutoProcProgramId` (`parentAutoProcProgramId`),
+  CONSTRAINT `AutoProcProgram_FK2` FOREIGN KEY (`processingJobId`) REFERENCES `ProcessingJob` (`processingJobId`),
+  CONSTRAINT `AutoProcProgram_fk_parentAutoProcProgramId` FOREIGN KEY (`parentAutoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AutoProcProgramAttachment`;
@@ -2787,6 +2790,7 @@ CREATE TABLE `ProcessedTomogram` (
   `tomogramId` int(11) unsigned NOT NULL COMMENT 'references Tomogram table',
   `filePath` varchar(255) DEFAULT NULL COMMENT 'location on disk for the tomogram file',
   `processingType` varchar(255) DEFAULT NULL COMMENT 'nature of the processed tomogram',
+  `feature` enum('Membrane','Microtubule','Ribosome','Tric','Actin','Cytoplasm','Cytoplasmic granule','Lipid droplet','Mitochondrial granule','Mitochondrion','Npc','Nuclear envelope','Nucleus','Prohibitin','Proteasome','Vault','Vimentin','Void') DEFAULT NULL COMMENT 'Tomogram feature',
   PRIMARY KEY (`processedTomogramId`),
   KEY `tomogramId` (`tomogramId`),
   CONSTRAINT `ProcessedTomogram_ibfk_1` FOREIGN KEY (`tomogramId`) REFERENCES `Tomogram` (`tomogramId`) ON DELETE CASCADE ON UPDATE CASCADE

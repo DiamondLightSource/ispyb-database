@@ -50,19 +50,19 @@ INSERT INTO `AutoProcIntegration` (`autoProcIntegrationId`, `dataCollectionId`, 
 /*!40000 ALTER TABLE `AutoProcIntegration` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `AutoProcProgram` DISABLE KEYS */;
-INSERT INTO `AutoProcProgram` (`autoProcProgramId`, `processingCommandLine`, `processingPrograms`, `processingStatus`, `processingMessage`, `processingStartTime`, `processingEndTime`, `processingEnvironment`, `recordTimeStamp`, `processingJobId`, `processingPipelineId`) VALUES (56425592,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-14 12:46:22',NULL,NULL),
-(56425944,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 13:09:51',NULL,NULL),
-(56425952,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 13:24:22',NULL,NULL),
-(56425963,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xtlysjan41,/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/,tlys_jan_4_1_####.cbf,1,3600 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_J','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-14 13:34:34',NULL,NULL),
-(56426286,'xia2 min_images=3 -dials -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 14:01:57',NULL,NULL),
-(56426287,'xia2 min_images=3 -3dii -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 14:13:57',NULL,NULL),
-(56983954,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-22 11:34:03',NULL,NULL),
-(56985584,'xia2 min_images=3 -3d -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3d',1,NULL,NULL,NULL,NULL,'2016-01-22 11:52:36',NULL,NULL),
-(56985589,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xins22,/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/,ins2_2_####.cbf,1,7200 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_JOBS=4 Sto','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-22 11:53:38',NULL,NULL),
-(56985592,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-22 11:54:01',NULL,NULL),
-(56986673,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-22 12:01:59',5,NULL),
-(56986674,'/dls_sw/apps/dimple/git-master/main.py  --dls-naming --slow -fpng /dls/i24/data/2018/cm19649-3/processed/test180731/hewlmesh_1/line4/hewlmesh_1_1_/xia2/3d-run/DataFiles/cm19649v3_xhewlmesh11_free.mtz /dls/i24/data/2018/cm19649-3/tmp/hewlmesh_1.4308.pdb /d','dimple',1,'Blob scores: 78','2018-07-31 08:55:52','2018-07-31 08:57:10',NULL,'2018-07-31 08:57:10',NULL,NULL),
-(56986675,NULL,'dimple',0,'Unknown error','2018-07-31 08:57:12',NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `AutoProcProgram` (`autoProcProgramId`, `processingCommandLine`, `processingPrograms`, `processingStatus`, `processingMessage`, `processingStartTime`, `processingEndTime`, `processingEnvironment`, `recordTimeStamp`, `processingJobId`, `processingPipelineId`, `parentAutoProcProgramId`) VALUES (56425592,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-14 12:46:22',NULL,NULL,NULL),
+(56425944,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 13:09:51',NULL,NULL,NULL),
+(56425952,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 13:24:22',NULL,NULL,NULL),
+(56425963,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xtlysjan41,/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/,tlys_jan_4_1_####.cbf,1,3600 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_J','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-14 13:34:34',NULL,NULL,NULL),
+(56426286,'xia2 min_images=3 -dials -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 14:01:57',NULL,NULL,NULL),
+(56426287,'xia2 min_images=3 -3dii -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 14:13:57',NULL,NULL,NULL),
+(56983954,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-22 11:34:03',NULL,NULL,NULL),
+(56985584,'xia2 min_images=3 -3d -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3d',1,NULL,NULL,NULL,NULL,'2016-01-22 11:52:36',NULL,NULL,NULL),
+(56985589,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xins22,/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/,ins2_2_####.cbf,1,7200 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_JOBS=4 Sto','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-22 11:53:38',NULL,NULL,NULL),
+(56985592,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-22 11:54:01',NULL,NULL,NULL),
+(56986673,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-22 12:01:59',5,NULL,NULL),
+(56986674,'/dls_sw/apps/dimple/git-master/main.py  --dls-naming --slow -fpng /dls/i24/data/2018/cm19649-3/processed/test180731/hewlmesh_1/line4/hewlmesh_1_1_/xia2/3d-run/DataFiles/cm19649v3_xhewlmesh11_free.mtz /dls/i24/data/2018/cm19649-3/tmp/hewlmesh_1.4308.pdb /d','dimple',1,'Blob scores: 78','2018-07-31 08:55:52','2018-07-31 08:57:10',NULL,'2018-07-31 08:57:10',NULL,NULL,NULL),
+(56986675,NULL,'dimple',0,'Unknown error','2018-07-31 08:57:12',NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `AutoProcProgram` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `AutoProcProgramAttachment` DISABLE KEYS */;
@@ -950,11 +950,11 @@ INSERT INTO `Shipping` (`shippingId`, `proposalId`, `shippingName`, `deliveryAge
 /*!40000 ALTER TABLE `Shipping` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ShippingHasSession` DISABLE KEYS */;
-INSERT INTO `ShippingHasSession` (`shippingId`, `sessionId`) VALUES (474,339525),
+INSERT INTO `ShippingHasSession` (`shippingId`, `sessionId`) VALUES (6988,55167),
+(7227,55168),
+(474,339525),
 (477,339528),
-(480,339531),
-(6988,55167),
-(7227,55168);
+(480,339531);
 /*!40000 ALTER TABLE `ShippingHasSession` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Sleeve` DISABLE KEYS */;
