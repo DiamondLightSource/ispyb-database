@@ -5,6 +5,14 @@ History
 Unreleased / master
 -------------------
 
+4.12.0 (2026-02-17)
+-------------------
+
+New or modified tables, columns, lookup values:
+
+- Add ``feature`` column to ``ProcessedTomogram``
+- Add ``parentAutoProcProgramId`` column to ``AutoProcProgram``
+
 4.11.0 (2026-01-13)
 -------------------
 
