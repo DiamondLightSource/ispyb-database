@@ -69,7 +69,7 @@ GRANT SELECT, INSERT, UPDATE ON GridInfo TO ispyb_expeye_acquisition_role;
 
 GRANT ispyb_expeye_acquisition_role TO ispyb_expeye_core_role;
 
-GRANT SELECT ON AutoProcProgram TO ispyb_expeye_core_role;
+GRANT SELECT, INSERT, UPDATE ON AutoProcProgram TO ispyb_expeye_core_role;
 GRANT SELECT, INSERT, UPDATE ON AutoProcProgramAttachment TO ispyb_expeye_core_role;
 GRANT SELECT ON AutoProcIntegration TO ispyb_expeye_core_role;
 
