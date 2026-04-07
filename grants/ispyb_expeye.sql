@@ -14,6 +14,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON Proposal TO ispyb_expeye_acquisition_rol
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSession TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON DataCollectionGroup TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON DataCollection TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE ON DataCollectionFileAttachment TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON Position TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON EnergyScan TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON Aperture TO ispyb_expeye_acquisition_role;
