@@ -2243,6 +2243,7 @@ CREATE TABLE `LaserParameters` (
   `gonioRotationSpeed` int(10) DEFAULT NULL COMMENT 'Goniometer rotation speed, in deg/s',
   `totalMarkingTime` float DEFAULT NULL COMMENT 'Total marking time, in s',
   PRIMARY KEY (`laserParametersId`),
+  UNIQUE KEY `LaserParameters_robotActionId_uc1` (`robotActionId`),
   KEY `LaserParameters_fk_robotActionId` (`robotActionId`),
   CONSTRAINT `LaserParameters_fk_robotActionId` FOREIGN KEY (`robotActionId`) REFERENCES `RobotAction` (`robotActionId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Laser parameters';
@@ -2259,6 +2260,7 @@ CREATE TABLE `LaserPoint` (
   `radius` int(10) unsigned DEFAULT NULL COMMENT 'Radius of point, in microns',
   `laserOn` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`laserPointId`),
+  UNIQUE KEY `LaserPoint_laserParametersId_pointIndex_uc1` (`laserParametersId`,`pointIndex`),
   KEY `LaserPoint_fk_laserParametersId` (`laserParametersId`),
   CONSTRAINT `LaserPoint_fk_laserParametersId` FOREIGN KEY (`laserParametersId`) REFERENCES `LaserParameters` (`laserParametersId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Laser points';
@@ -3060,6 +3062,20 @@ CREATE TABLE `Protein` (
   CONSTRAINT `protein_fk3` FOREIGN KEY (`componentTypeId`) REFERENCES `ComponentType` (`componentTypeId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `protein_fk4` FOREIGN KEY (`concentrationTypeId`) REFERENCES `ConcentrationType` (`concentrationTypeId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `Protein_has_Component`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Protein_has_Component` (
+  `proteinHasComponentId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `proteinId` int(10) unsigned NOT NULL COMMENT 'References Protein table',
+  `componentId` int(10) unsigned NOT NULL COMMENT 'References Component table',
+  PRIMARY KEY (`proteinHasComponentId`),
+  KEY `Protein_has_Component_fk_proteinId` (`proteinId`),
+  KEY `Protein_has_Component_fk_componentId` (`componentId`),
+  CONSTRAINT `Protein_has_Component_fk_componentId` FOREIGN KEY (`componentId`) REFERENCES `Component` (`componentId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Protein_has_Component_fk_proteinId` FOREIGN KEY (`proteinId`) REFERENCES `Protein` (`proteinId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Which elements are contained inside a molecule';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `Protein_has_PDB`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

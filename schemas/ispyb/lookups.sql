@@ -11,7 +11,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.12.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.13.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -309,12 +309,19 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (337,'2026_01_13_AdminVar_bump_version.sql','DONE','2026-01-13 15:16:00'),
 (338,'2026_01_27_AutoProcProgram_parentAutoProcProgramId.sql','DONE','2026-02-12 10:30:32'),
 (339,'2026_02_09_ProcessedTomogram_feature.sql','DONE','2026-02-12 10:30:33'),
-(340,'2026_02_10_AdminVar_bump_version.sql','DONE','2026-02-12 10:30:33');
+(340,'2026_02_10_AdminVar_bump_version.sql','DONE','2026-02-12 10:30:33'),
+(341,'2026_03_02_LaserParameters_unique_contraints.sql','DONE','2026-04-10 12:18:14'),
+(342,'2026_03_16_ProcessingPipeline_new_pipelines.sql  ','DONE','2026-04-10 12:18:14'),
+(343,'2026_03_18_ExperimentType_sxt.sql','DONE','2026-04-10 12:18:14'),
+(344,'2026_04_08_Protein_has_Component.sql','DONE','2026-04-10 12:18:14'),
+(345,'2026_04_10_Component_element.sql','DONE','2026-04-10 12:18:14'),
+(346,'2026_04_10_AdminVar_bump_version.sql','DONE','2026-04-10 12:18:14');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
 INSERT INTO `ComponentType` (`componentTypeId`, `name`) VALUES (6,'Buffer'),
 (2,'DNA'),
+(8,'Element'),
 (7,'JetMaterial'),
 (5,'Ligand'),
 (1,'Protein'),
@@ -431,7 +438,9 @@ INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `activ
 (43,'Metal ID','mx',1),
 (44,'Atlas','em',1),
 (45,'CLEM','em',1),
-(46,'FIB','em',1);
+(46,'FIB','em',1),
+(47,'Soft X-Ray Tomography','em',1),
+(48,'CryoSIM','em',1);
 /*!40000 ALTER TABLE `ExperimentType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `InspectionType` DISABLE KEYS */;
@@ -766,16 +775,19 @@ INSERT INTO `ProcessingPipelineCategory` (`processingPipelineCategoryId`, `name`
 INSERT INTO `ProcessingPipeline` (`processingPipelineId`, `processingPipelineCategoryId`, `name`, `discipline`, `pipelineStatus`, `reprocessing`) VALUES (1,1,'Mosflm','MX','automatic',0),
 (2,1,'EDNA','MX','automatic',0),
 (3,2,'Fast DP','MX','automatic',1),
-(4,2,'xia2/3dii','MX','deprecated',0),
+(4,2,'xia2/XDS','MX','deprecated',0),
 (5,2,'xia2/Multiplex','MX','automatic',1),
 (6,2,'xia2/DIALS','MX','optional',1),
-(7,2,'xia2/XDS','MX','optional',1),
+(7,2,'xia2/3dii','MX','optional',1),
 (8,2,'autoPROC','MX','optional',1),
 (9,3,'Fast EP','MX','automatic',0),
 (10,3,'Dimple','MX','automatic',0),
 (11,3,'MrBUMP','MX','automatic',0),
 (12,3,'Big EP/XDS','MX','automatic',0),
-(13,3,'Big EP/DIALS','MX','automatic',0);
+(13,3,'Big EP/DIALS','MX','automatic',0),
+(14,2,'autoPROC+STARANISO','MX','automatic',0),
+(15,2,'xia2/DIALS (multi)','MX','automatic',0),
+(16,2,'xia2/3dii (multi)','MX','automatic',0);
 /*!40000 ALTER TABLE `ProcessingPipeline` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `BLSampleType` DISABLE KEYS */;
@@ -861,63 +873,63 @@ INSERT INTO `Permission` (`permissionId`, `type`, `description`) VALUES (1,'mx_a
 
 /*!40000 ALTER TABLE `UserGroup_has_Permission` DISABLE KEYS */;
 INSERT INTO `UserGroup_has_Permission` (`userGroupId`, `permissionId`) VALUES (1,1),
+(1,7),
+(1,8),
+(1,9),
+(1,10),
+(1,11),
+(1,18),
+(1,20),
+(1,23),
+(1,49),
 (2,1),
+(2,6),
+(2,23),
+(2,80),
+(3,7),
+(3,23),
+(4,20),
+(5,10),
+(6,8),
+(6,23),
 (8,1),
-(9,1),
-(14,1),
-(24,1),
 (8,2),
 (8,4),
-(2,6),
 (8,6),
-(9,6),
-(1,7),
-(3,7),
 (8,7),
-(1,8),
-(6,8),
 (8,8),
-(1,9),
 (8,9),
-(1,10),
-(5,10),
 (8,10),
-(1,11),
 (8,11),
+(8,18),
+(8,20),
+(8,23),
+(8,26),
+(8,29),
+(8,37),
+(8,49),
+(9,1),
+(9,6),
 (10,12),
+(10,77),
 (11,13),
 (11,15),
 (11,16),
 (11,17),
-(1,18),
-(8,18),
-(12,18),
-(1,20),
-(4,20),
-(8,20),
-(1,23),
-(2,23),
-(3,23),
-(6,23),
-(8,23),
-(28,23),
-(8,26),
-(17,26),
-(8,29),
-(20,29),
 (11,32),
-(8,37),
-(28,37),
 (11,43),
-(1,49),
-(8,49),
-(34,49),
 (11,55),
 (11,58),
 (11,64),
-(39,69),
-(10,77),
-(2,80);
+(12,18),
+(14,1),
+(17,26),
+(20,29),
+(24,1),
+(28,23),
+(28,37),
+(34,49),
+(39,69);
 /*!40000 ALTER TABLE `UserGroup_has_Permission` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ScanParametersService` DISABLE KEYS */;
