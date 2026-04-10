@@ -1,7 +1,7 @@
 INSERT IGNORE INTO SchemaStatus (scriptName, schemaStatus) VALUES ('2026_04_10_Component_element.sql', 'ONGOING');
 
-INSERT INTO ispyb.ComponentType (name) VALUES ('Element');
-INSERT INTO ispyb.Component (componentTypeId, name, composition) VALUES
+INSERT INTO ComponentType (name) VALUES ('Element');
+INSERT INTO Component (componentTypeId, name, composition) VALUES
   ('8', 'H', 'Hydrogen'),
   ('8', 'He', 'Helium'),
   ('8', 'Li', 'Lithium'),
