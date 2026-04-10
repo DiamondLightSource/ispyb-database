@@ -106,6 +106,7 @@ GRANT INSERT, UPDATE, DELETE ON ComponentSubType TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON ComponentType TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON Component_has_SubType TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON ConcentrationType TO 'ispyb_web';
+GRANT INSERT, UPDATE, DELETE ON Protein_has_Component TO `ispyb_web`;
 
 GRANT INSERT, UPDATE, DELETE ON BLSampleImageScore TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON BLSampleImage TO 'ispyb_web';
