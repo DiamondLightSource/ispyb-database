@@ -5,6 +5,17 @@ History
 Unreleased / master
 -------------------
 
+4.13.0 (2026-04-13)
+-------------------
+
+New or modified tables, columns, lookup values:
+
+- Add ``Protein_has_Component`` table 
+- Add ``CryoSXT`` and ``CryoSIM`` experiment types
+- Add elements to ``Component`` and element type to ``ComponentType``
+- Add new pipelines to ``ProcessingPipeline``
+- Add unique constraints to ``LaserParameters``
+
 4.12.0 (2026-02-17)
 -------------------
 
