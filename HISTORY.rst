@@ -5,6 +5,18 @@ History
 Unreleased / master
 -------------------
 
+5.0.0 (2026-04-22)
+-------------------
+
+New or modified tables, columns, lookup values:
+
+- Update max length of ``name`` in ``Ligand`` to 255 characters
+
+Breaking changes:
+
+- Remove ``pixelsPerMicronX`` and ``pixelsPerMicronY`` columns from ``GridInfo``
+- Remove ``pixelsPerMicronX`` and ``pixelsPerMicronY`` columns from ``upsert_dcg_grid``
+
 4.13.0 (2026-04-13)
 -------------------
 

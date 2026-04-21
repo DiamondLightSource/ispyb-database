@@ -2017,8 +2017,6 @@ CREATE TABLE `GridInfo` (
   `workflowMeshId` int(11) unsigned DEFAULT NULL,
   `orientation` enum('vertical','horizontal') DEFAULT 'horizontal',
   `dataCollectionGroupId` int(11) DEFAULT NULL,
-  `pixelsPerMicronX` float DEFAULT NULL,
-  `pixelsPerMicronY` float DEFAULT NULL,
   `snapshot_offsetXPixel` float DEFAULT NULL,
   `snapshot_offsetYPixel` float DEFAULT NULL,
   `snaked` tinyint(1) DEFAULT 0 COMMENT 'True: The images associated with the DCG were collected in a snaked pattern',
@@ -2271,7 +2269,7 @@ DROP TABLE IF EXISTS `Ligand`;
 CREATE TABLE `Ligand` (
   `ligandId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `proposalId` int(10) unsigned NOT NULL COMMENT 'References Proposal table',
-  `name` varchar(30) NOT NULL COMMENT 'Ligand name',
+  `name` varchar(255) NOT NULL,
   `SMILES` varchar(400) DEFAULT NULL COMMENT 'Chemical structure',
   `libraryName` varchar(30) DEFAULT NULL COMMENT 'Name of ligand library, to preserve provenance',
   `libraryBatchNumber` varchar(30) DEFAULT NULL COMMENT 'Batch number of library, to preserve provenance',

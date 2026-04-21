@@ -638,7 +638,7 @@ INSERT INTO `EnergyScan` (`energyScanId`, `sessionId`, `blSampleId`, `fluorescen
 /*!40000 ALTER TABLE `GridImageMap` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `GridInfo` DISABLE KEYS */;
-INSERT INTO `GridInfo` (`gridInfoId`, `xOffset`, `yOffset`, `dx_mm`, `dy_mm`, `steps_x`, `steps_y`, `meshAngle`, `recordTimeStamp`, `workflowMeshId`, `orientation`, `dataCollectionGroupId`, `pixelsPerMicronX`, `pixelsPerMicronY`, `snapshot_offsetXPixel`, `snapshot_offsetYPixel`, `snaked`, `dataCollectionId`, `patchesX`, `patchesY`, `micronsPerPixelX`, `micronsPerPixelY`) VALUES (1281212,NULL,NULL,0.02,0.02,30,16,NULL,'2021-02-25 10:15:06',NULL,'horizontal',5440739,0.83,0.83,304,229.75,1,6017405,1,1,NULL,NULL);
+INSERT INTO `GridInfo` (`gridInfoId`, `xOffset`, `yOffset`, `dx_mm`, `dy_mm`, `steps_x`, `steps_y`, `meshAngle`, `recordTimeStamp`, `workflowMeshId`, `orientation`, `dataCollectionGroupId`, `snapshot_offsetXPixel`, `snapshot_offsetYPixel`, `snaked`, `dataCollectionId`, `patchesX`, `patchesY`, `micronsPerPixelX`, `micronsPerPixelY`) VALUES (1281212,NULL,NULL,0.02,0.02,30,16,NULL,'2021-02-25 10:15:06',NULL,'horizontal',5440739,304,229.75,1,6017405,1,1,0.83,0.83);
 /*!40000 ALTER TABLE `GridInfo` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `GridSquare` DISABLE KEYS */;

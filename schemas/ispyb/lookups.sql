@@ -11,7 +11,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.13.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','5.0.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -315,7 +315,10 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (343,'2026_03_18_ExperimentType_sxt.sql','DONE','2026-04-10 12:18:14'),
 (344,'2026_04_08_Protein_has_Component.sql','DONE','2026-04-10 12:18:14'),
 (345,'2026_04_10_Component_element.sql','DONE','2026-04-10 12:18:14'),
-(346,'2026_04_10_AdminVar_bump_version.sql','DONE','2026-04-10 12:18:14');
+(346,'2026_04_10_AdminVar_bump_version.sql','DONE','2026-04-10 12:18:14'),
+(348,'2026_04_20_Ligand_name.sql','DONE','2026-04-21 14:34:29'),
+(349,'2026_04_22_GridInfo_pixelsPerMicron.sql','DONE','2026-04-21 14:34:29'),
+(350,'2026_04_23_AdminVar_bump_version.sql','DONE','2026-04-21 14:34:29');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
