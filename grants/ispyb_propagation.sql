@@ -22,6 +22,8 @@ GRANT SELECT ON ContainerQueue TO ispyb_propagation;
 GRANT SELECT ON ContainerReport TO ispyb_propagation;
 GRANT SELECT ON CourierTermsAccepted TO ispyb_propagation;
 GRANT SELECT ON DataCollectionComment TO ispyb_propagation;
+GRANT SELECT ON Dewar TO ispyb_propagation;
+GRANT SELECT ON ShippingHasSession TO ispyb_propagation;
 GRANT SELECT ON DewarRegistry_has_Proposal TO ispyb_propagation;
 GRANT SELECT, DELETE ON LabContact TO ispyb_propagation;
 GRANT SELECT, DELETE ON Laboratory TO ispyb_propagation;
