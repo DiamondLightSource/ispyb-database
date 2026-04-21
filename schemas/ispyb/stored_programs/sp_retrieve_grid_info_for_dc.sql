@@ -1,5 +1,5 @@
 DELIMITER ;;
-CREATE PROCEDURE `retrieve_grid_info_for_dc`(IN p_dcId int unsigned, p_authLogin varchar(45))
+CREATE OR REPLACE DEFINER=`ispyb_root`@`%` PROCEDURE `retrieve_grid_info_for_dc`(IN p_dcId int unsigned, p_authLogin varchar(45))
     READS SQL DATA
     COMMENT 'Return multi-row result-set with grid info values for the dc'
 BEGIN
@@ -12,8 +12,8 @@ BEGIN
                 gi.steps_x,
                 gi.steps_y,
                 gi.meshAngle,
-                gi.pixelsPerMicronX,
-                gi.pixelsPerMicronY,
+                gi.micronsPerPixelX,
+                gi.micronsPerPixelY,
                 gi.snapshot_offsetXPixel,
                 gi.snapshot_offsetYPixel,
                 gi.orientation,
@@ -30,8 +30,8 @@ BEGIN
                 gi.steps_x,
                 gi.steps_y,
                 gi.meshAngle,
-                gi.pixelsPerMicronX,
-                gi.pixelsPerMicronY,
+                gi.micronsPerPixelX,
+                gi.micronsPerPixelY,
                 gi.snapshot_offsetXPixel,
                 gi.snapshot_offsetYPixel,
                 gi.orientation,
@@ -45,8 +45,8 @@ BEGIN
                 gi.steps_x,
                 gi.steps_y,
                 gi.meshAngle,
-                gi.pixelsPerMicronX,
-                gi.pixelsPerMicronY,
+                gi.micronsPerPixelX,
+                gi.micronsPerPixelY,
                 gi.snapshot_offsetXPixel,
                 gi.snapshot_offsetYPixel,
                 gi.orientation,

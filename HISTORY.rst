@@ -16,6 +16,12 @@ Breaking changes:
 
 - Remove ``pixelsPerMicronX`` and ``pixelsPerMicronY`` columns from ``GridInfo``
 - Remove ``pixelsPerMicronX`` and ``pixelsPerMicronY`` columns from ``upsert_dcg_grid``
+- Remove ``pixelsPerMicronX`` and ``pixelsPerMicronY`` columns from ``retrieve_grid_info_for_dc``
+- Remove ``pixelsPerMicronX`` and ``pixelsPerMicronY`` columns from ``retrieve_grid_info_for_dc_ids``
+- Remove ``pixelsPerMicronX`` and ``pixelsPerMicronY`` columns from ``retrieve_grid_info_for_dcg``
+- Remove ``pixelsPerMicronX`` and ``pixelsPerMicronY`` columns from ``retrieve_grid_info_for_dcg_v2``
+- Remove ``pixelsPerMicronX`` and ``pixelsPerMicronY`` columns from ``upsert_dc_grid``
+- Remove ``pixelsPerMicronX`` and ``pixelsPerMicronY`` columns from ``upsert_dcg_grid``
 
 4.13.0 (2026-04-13)
 -------------------
