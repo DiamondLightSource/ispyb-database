@@ -56,6 +56,10 @@ GRANT INSERT, UPDATE, DELETE ON Project_has_Shipping TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON Project_has_User TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON Project_has_XFEFSpectrum TO 'ispyb_web';
 
+GRANT INSERT, UPDATE ON Ligand TO 'ispyb_web';
+GRANT INSERT, UPDATE, DELETE ON Ligand_has_PDB TO 'ispyb_web';
+GRANT INSERT, UPDATE, DELETE ON BLSample_has_Ligand TO 'ispyb_web';
+
 GRANT INSERT, UPDATE, DELETE ON UserGroup_has_Permission TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON Permission TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON UserGroup_has_Person TO 'ispyb_web';
@@ -102,9 +106,11 @@ GRANT INSERT, UPDATE, DELETE ON ComponentSubType TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON ComponentType TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON Component_has_SubType TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON ConcentrationType TO 'ispyb_web';
+GRANT INSERT, UPDATE, DELETE ON Protein_has_Component TO `ispyb_web`;
 
 GRANT INSERT, UPDATE, DELETE ON BLSampleImageScore TO 'ispyb_web';
 GRANT INSERT, UPDATE, DELETE ON BLSampleImage TO 'ispyb_web';
+GRANT SELECT, INSERT, UPDATE, DELETE ON BLSamplePosition TO 'ispyb_web';
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSampleImageMeasurement TO 'ispyb_web';
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON SW_onceToken TO 'ispyb_web';

@@ -26,14 +26,18 @@ function exec_schema {
 
 function exec_grants {
   mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_acquisition.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_propagation.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_expeye.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_fragment_screening.sql
   mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_import.sql
   mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_processing.sql
   mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_ro_nopii.sql
   mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_scripts_processing.sql
-  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_touchscreen.sql
-  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_web.sql
-  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_web_verify_tests.sql
   mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_ssx_writer.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_touchscreen.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_web_verify_tests.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/ispyb_web.sql
+  mariadb --defaults-file=.my.cnf -D $1 < grants/maxscale.sql
 }
 
 function exec_missed_updates {

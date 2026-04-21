@@ -11,7 +11,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.6.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','4.13.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
@@ -278,12 +278,50 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (306,'2025_02_25_AdminVar_bump_version.sql','DONE','2025-02-25 15:51:30'),
 (307,'2025_02_27_ExperimentType_atlas.sql','DONE','2025-03-06 11:58:07'),
 (308,'2025_03_05_Dewar_dewarRegistryId.sql','DONE','2025-03-06 11:58:07'),
-(309,'2025_03_06_AdminVar_bump_version.sql','DONE','2025-03-06 11:58:07');
+(309,'2025_03_06_AdminVar_bump_version.sql','DONE','2025-03-06 11:58:07'),
+(310,'2025_03_20_ParticleClassification_angularEfficiency_suggestedTilt.sql','DONE','2025-05-09 15:21:06'),
+(311,'2025_04_11_Position_blSampleId_positionType.sql','DONE','2025-05-09 15:21:06'),
+(312,'2025_04_16_labContacts_fk_on_delete_set_null.sql','DONE','2025-05-09 15:21:06'),
+(313,'2025_04_29_DewarRegistry_fk_labContactId_on_delete_set_null.sql','DONE','2025-05-09 15:21:06'),
+(314,'2025_04_30_Shipping_fk_personId_on_delete_set_null.sql','DONE','2025-05-09 15:21:06'),
+(315,'2025_05_01_BLSamplePosition.sql','DONE','2025-05-09 15:21:06'),
+(316,'2025_05_01_XrayCentringResult_fk_blSampleId.sql','DONE','2025-05-09 15:21:06'),
+(317,'2025_05_02_BLSamplePosition_rename_column.sql','DONE','2025-05-09 15:21:06'),
+(318,'2025_05_12_AdminVar_bump_version.sql','DONE','2025-05-09 15:21:06'),
+(319,'2025_05_14_BLSamplePosition_recordTimeStamp_default.sql','DONE','2025-06-27 16:04:05'),
+(320,'2025_05_23_Ligand_and_junction_tables.sql','DONE','2025-06-27 16:04:05'),
+(321,'2025_05_28_BLSession_icatId.sql','DONE','2025-06-27 16:04:05'),
+(322,'2025_06_02_DewarRegistry_type.sql','DONE','2025-06-27 16:04:05'),
+(323,'2025_06_26_ContainerType_cryoem_puck.sql','DONE','2025-06-27 16:04:05'),
+(324,'2025_06_27_Tomogram_pixelLocation.sql','DONE','2025-06-27 16:04:05'),
+(325,'2025_06_27_undo_ParticleClassification_set_Tomogram_pixelLocation.sql','DONE','2025-06-27 16:40:00'),
+(326,'2025_07_17_AdminVar_bump_version.sql','DONE','2025-09-24 11:36:21'),
+(327,'2025_07_25_Container_parentContainerLocation.sql','DONE','2025-09-24 11:36:21'),
+(328,'2025_09_24_Proposal_start_end_date.sql','DONE','2025-09-24 15:56:17'),
+(329,'2025_10_01_AdminVar_bump_version.sql','DONE','2025-10-01 15:40:02'),
+(330,'2025_07_29_ContainerType_insert.sql','DONE','2025-10-01 15:51:03'),
+(331,'2025_11_03_LaserParameters_tables.sql','DONE','2025-11-20 15:47:48'),
+(332,'2025_11_05_RobotAction_new_type.sql','DONE','2025-11-20 15:47:48'),
+(333,'2025_11_13_ExperimentType_clem_and_fib.sql','DONE','2025-11-20 15:47:48'),
+(334,'2025_11_20_AdminVar_bump_version.sql','DONE','2025-11-20 15:47:48'),
+(335,'2026_01_05_GridSquare_Atlas_channels.sql ','DONE','2026-01-13 15:16:00'),
+(336,'2026_01_12_CTF_iceRingDensity.sql','DONE','2026-01-13 15:16:00'),
+(337,'2026_01_13_AdminVar_bump_version.sql','DONE','2026-01-13 15:16:00'),
+(338,'2026_01_27_AutoProcProgram_parentAutoProcProgramId.sql','DONE','2026-02-12 10:30:32'),
+(339,'2026_02_09_ProcessedTomogram_feature.sql','DONE','2026-02-12 10:30:33'),
+(340,'2026_02_10_AdminVar_bump_version.sql','DONE','2026-02-12 10:30:33'),
+(341,'2026_03_02_LaserParameters_unique_contraints.sql','DONE','2026-04-10 12:18:14'),
+(342,'2026_03_16_ProcessingPipeline_new_pipelines.sql  ','DONE','2026-04-10 12:18:14'),
+(343,'2026_03_18_ExperimentType_sxt.sql','DONE','2026-04-10 12:18:14'),
+(344,'2026_04_08_Protein_has_Component.sql','DONE','2026-04-10 12:18:14'),
+(345,'2026_04_10_Component_element.sql','DONE','2026-04-10 12:18:14'),
+(346,'2026_04_10_AdminVar_bump_version.sql','DONE','2026-04-10 12:18:14');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
 INSERT INTO `ComponentType` (`componentTypeId`, `name`) VALUES (6,'Buffer'),
 (2,'DNA'),
+(8,'Element'),
 (7,'JetMaterial'),
 (5,'Ligand'),
 (1,'Protein'),
@@ -349,7 +387,9 @@ INSERT INTO `ContainerType` (`containerTypeId`, `name`, `proposalType`, `active`
 (34,'I22_Grid_81','saxs',1,81,9,1,1,1,1,0,0,-1),
 (35,'I22_Capillary_Rack_25','saxs',1,25,25,1,1,1,1,0,0,-1),
 (36,'VMXm-Cartridge','mx',1,5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(37,'VMXm-GridBox','mx',1,4,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+(37,'VMXm-GridBox','mx',1,4,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(38,'Cryo-EM Puck','mx',1,12,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(39,'SWISSCI 2 Drop','mx',1,192,12,1,2,1,1,0,0,1);
 /*!40000 ALTER TABLE `ContainerType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ExperimentType` DISABLE KEYS */;
@@ -396,7 +436,11 @@ INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `activ
 (41,'SSX-Chip','mx',1),
 (42,'SSX-Jet','mx',1),
 (43,'Metal ID','mx',1),
-(44,'Atlas','em',1);
+(44,'Atlas','em',1),
+(45,'CLEM','em',1),
+(46,'FIB','em',1),
+(47,'Soft X-Ray Tomography','em',1),
+(48,'CryoSIM','em',1);
 /*!40000 ALTER TABLE `ExperimentType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `InspectionType` DISABLE KEYS */;
@@ -731,16 +775,19 @@ INSERT INTO `ProcessingPipelineCategory` (`processingPipelineCategoryId`, `name`
 INSERT INTO `ProcessingPipeline` (`processingPipelineId`, `processingPipelineCategoryId`, `name`, `discipline`, `pipelineStatus`, `reprocessing`) VALUES (1,1,'Mosflm','MX','automatic',0),
 (2,1,'EDNA','MX','automatic',0),
 (3,2,'Fast DP','MX','automatic',1),
-(4,2,'xia2/3dii','MX','deprecated',0),
+(4,2,'xia2/XDS','MX','deprecated',0),
 (5,2,'xia2/Multiplex','MX','automatic',1),
 (6,2,'xia2/DIALS','MX','optional',1),
-(7,2,'xia2/XDS','MX','optional',1),
+(7,2,'xia2/3dii','MX','optional',1),
 (8,2,'autoPROC','MX','optional',1),
 (9,3,'Fast EP','MX','automatic',0),
 (10,3,'Dimple','MX','automatic',0),
 (11,3,'MrBUMP','MX','automatic',0),
 (12,3,'Big EP/XDS','MX','automatic',0),
-(13,3,'Big EP/DIALS','MX','automatic',0);
+(13,3,'Big EP/DIALS','MX','automatic',0),
+(14,2,'autoPROC+STARANISO','MX','automatic',0),
+(15,2,'xia2/DIALS (multi)','MX','automatic',0),
+(16,2,'xia2/3dii (multi)','MX','automatic',0);
 /*!40000 ALTER TABLE `ProcessingPipeline` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `BLSampleType` DISABLE KEYS */;

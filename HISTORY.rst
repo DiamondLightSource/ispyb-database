@@ -5,6 +5,111 @@ History
 Unreleased / master
 -------------------
 
+4.13.0 (2026-04-13)
+-------------------
+
+New or modified tables, columns, lookup values:
+
+- Add ``Protein_has_Component`` table 
+- Add ``CryoSXT`` and ``CryoSIM`` experiment types
+- Add elements to ``Component`` and element type to ``ComponentType``
+- Add new pipelines to ``ProcessingPipeline``
+- Add unique constraints to ``LaserParameters``
+
+4.12.0 (2026-02-17)
+-------------------
+
+New or modified tables, columns, lookup values:
+
+- Add ``feature`` column to ``ProcessedTomogram``
+- Add ``parentAutoProcProgramId`` column to ``AutoProcProgram``
+
+4.11.0 (2026-01-13)
+-------------------
+
+New or modified tables, columns, lookup values:
+
+- Add colour channel and mode columns to ``Atlas`` and ``GridSquare`` (``hasRed``, ``hasGreen``, ``hasBlue``, ``hasYellow``, ``hasCyan``, ``hasMagenta``, ``mode``)
+- Add ``iceRingDensity`` to ``CTF``
+
+4.10.0 (2025-11-20)
+-------------------
+
+Thank you so much, Karl! / Tusen takk, Karl!
+
+Lookups:
+
+- Add ``CLEM`` experiment type
+- Add ``FIB`` experiment type
+
+New or modified tables, columns, lookup values:
+
+- New table ``LaserParameters``
+- New table ``LaserPoint``
+- Add ``LASER`` to ``RobotAction`` ``actionType`` column
+
+4.9.0 (2025-10-01)
+-------------------
+
+New columns:
+
+- Add ``startDate`` and ``endDate`` columns to the ``Proposal`` table
+- Add ``parentContainerLocation`` column to the ``Container`` table
+
+Table permissions for the expeye role:
+
+- ``BLSampleImage``
+- ``Protein_has_PDB``
+- The ``Ligand`` tables
+
+Stored procedures:
+
+- Updated procedure ``update_container_status`` to allow more statuses
+- New procedure ``insert_screening_v2`` with relevant grants
+- In source file for procedure ``retrieve_containers_on_beamline_with_status``:
+
+  - Use ``CREATE OR REPLACE ... PROCEDURE`` syntax
+  - Update maximum string length for ``p_status`` parameter
+
+Lookups:
+
+- A new type "SWISSCI 2 Drop" was added to ``ContainerType``  
+
+4.8.0 (2025-07-17)
+-------------------
+
+New or modified tables, columns, lookup values:
+
+- New table ``Ligand``
+- New table ``BLSample_has_Ligand``
+- New table ``Ligand_has_PDB``
+- Add ``pixelLocationX`` and ``pixelLocationY`` columns to ``Tomogram`` table
+- Add ``cryoEM`` container type to ``ContainerType``
+- Add ``type`` enum column to ``DewarRegistry``
+- Add ``icatId`` column to ``BLSession``
+- Set ``recordTimeStamp`` column in ``BLSamplePosition`` to default to current time
+
+4.7.0 (2025-05-12)
+-------------------
+
+New or modified tables, columns, lookup values:
+
+- New table ``BLSamplePosition``
+- Add a ``blSampleId`` FK to the ``XrayCentringResult`` table
+- Add ``angularEfficiency`` and ``suggestedTilt`` columns to ``ParticleClassification``
+- Recreate FK constraints referencing ``LabContact(labContactId)`` with 'on delete set null
+- Make ``Shipping`` FK ``deliveryAgent_flightCodePersonId`` "on delete set null"
+
+Roles and permissions:
+
+- Add new grants for Expeye
+- Add new permissions for ``ispyb_propagation``
+- Add new permissions for ``ispyb_scripts_processing.sql``
+
+Stored procedures:
+
+- Also return sample locations for ``update_container_assign``
+
 4.6.0 (2025-03-06)
 -------------------
 

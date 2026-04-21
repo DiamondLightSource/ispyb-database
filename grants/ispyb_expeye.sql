@@ -8,13 +8,17 @@ CREATE ROLE IF NOT EXISTS ispyb_expeye_core_role;
 
 GRANT ispyb_propagation TO ispyb_expeye_core_role;
 
-CREATE ROLE ispyb_expeye_acquisition_role;
+CREATE ROLE IF NOT EXISTS ispyb_expeye_acquisition_role;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON Proposal TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSession TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON DataCollectionGroup TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON DataCollection TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE ON DataCollectionFileAttachment TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON Position TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE ON EnergyScan TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE ON Aperture TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE ON ImageQualityIndicators TO ispyb_expeye_acquisition_role;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON Shipping TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ShippingHasSession TO ispyb_expeye_acquisition_role;
@@ -44,13 +48,16 @@ GRANT SELECT ON ProcessingPipeline TO ispyb_expeye_acquisition_role;
 GRANT SELECT ON ProcessingPipelineCategory TO ispyb_expeye_acquisition_role;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSample TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE, DELETE on BLSampleImage TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSampleGroup TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSampleGroup_has_BLSample TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSubSample TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON Project_has_BLSample TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE ON BLSamplePosition TO ispyb_expeye_acquisition_role;
 
+GRANT SELECT ON SpaceGroup TO ispyb_expeye_acquisition_role;
 GRANT SELECT ON Protein TO ispyb_expeye_acquisition_role;
-GRANT SELECT ON Crystal TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE ON Crystal TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON XFEFluorescenceSpectrum TO ispyb_expeye_acquisition_role;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON DiffractionPlan TO ispyb_expeye_acquisition_role;
@@ -64,8 +71,18 @@ GRANT SELECT, INSERT, UPDATE ON GridInfo TO ispyb_expeye_acquisition_role;
 
 GRANT ispyb_expeye_acquisition_role TO ispyb_expeye_core_role;
 
-GRANT SELECT ON AutoProcProgram TO ispyb_expeye_core_role;
+GRANT SELECT, INSERT, UPDATE ON AutoProcProgram TO ispyb_expeye_core_role;
 GRANT SELECT, INSERT, UPDATE ON AutoProcProgramAttachment TO ispyb_expeye_core_role;
 GRANT SELECT ON AutoProcIntegration TO ispyb_expeye_core_role;
 
 GRANT SELECT ON ProcessingJob TO ispyb_expeye_core_role;
+
+GRANT SELECT On ExperimentType TO ispyb_expeye_core_role;
+
+GRANT SELECT, INSERT, UPDATE ON Ligand TO ispyb_expeye_core_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Ligand_has_PDB TO ispyb_expeye_core_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON BLSample_has_Ligand TO ispyb_expeye_core_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Protein_has_PDB TO ispyb_expeye_core_role;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON LaserParameters TO ispyb_expeye_core_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON LaserPoint TO ispyb_expeye_core_role;

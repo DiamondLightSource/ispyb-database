@@ -131,7 +131,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `retrieve_proposal_title`(p_proposal_code varchar(5), p_proposal_number int) RETURNS varchar(255) CHARSET latin1
+CREATE FUNCTION `retrieve_proposal_title`(p_proposal_code varchar(5), p_proposal_number int) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
     READS SQL DATA
 BEGIN
 	DECLARE ret_title varchar(255);
@@ -156,7 +156,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `retrieve_proposal_title_v2`(p_proposalCode varchar(5), p_proposalNumber int) RETURNS varchar(255) CHARSET latin1
+CREATE FUNCTION `retrieve_proposal_title_v2`(p_proposalCode varchar(5), p_proposalNumber int) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
     READS SQL DATA
     COMMENT 'Retrieve the title for a given proposal code and number.'
 BEGIN
@@ -207,7 +207,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb3 */ ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 DELIMITER ;;
-CREATE FUNCTION `root_replace`(p_str varchar(255), p_oldroot varchar(255), p_newroot varchar(255)) RETURNS varchar(255) CHARSET latin1
+CREATE FUNCTION `root_replace`(p_str varchar(255), p_oldroot varchar(255), p_newroot varchar(255)) RETURNS varchar(255) CHARSET latin1 COLLATE latin1_swedish_ci
     COMMENT 'Returns a varchar where the old root p_oldroot (the leftmost part) of p_str has been replaced with a new root p_newroot'
 BEGIN
  DECLARE path_len smallint unsigned DEFAULT LENGTH(p_oldroot);
@@ -2342,6 +2342,45 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insert_screening_v2` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
+DELIMITER ;;
+CREATE PROCEDURE `insert_screening_v2`(
+     OUT p_id int(11) unsigned,
+     p_dcgId int(11) unsigned,
+     p_dcId int(11) unsigned,
+     p_programVersion varchar(45),
+     p_shortComments varchar(20),
+     p_comments varchar(255),
+     p_autoProcProgramId int(10) unsigned
+)
+    MODIFIES SQL DATA
+    COMMENT 'Insert a row with info about a screening. Returns the ID in p_id.'
+BEGIN
+    IF p_dcgId IS NULL AND p_dcId IS NOT NULL THEN
+		    SELECT dataCollectionGroupId INTO p_dcgId FROM DataCollection WHERE dataCollectionId = p_dcId;
+    END IF;
+
+    INSERT INTO Screening (dataCollectionGroupId, dataCollectionId, programVersion, shortComments, comments, autoProcProgramId)
+        VALUES (p_dcgId, p_dcId, p_programVersion, p_shortComments, p_comments, p_autoProcProgramId);
+
+	  IF LAST_INSERT_ID() <> 0 THEN
+		  SET p_id = LAST_INSERT_ID();
+      END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `insert_subsample_for_image_full_path` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -4190,25 +4229,27 @@ BEGIN
             SELECT
                 d.dewarId "id", d.shippingId "shippingId", d.code "name", d.comments "comments", d.storageLocation "storageLocation",
                 d.dewarStatus "status", d.isStorageDewar "isStorageDewar", d.barCode "barCode", d.firstExperimentId "firstSessionId",
-				d.type "type", d.facilityCode "facilityCode", d.weight "weight", d.deliveryAgent_barcode "deliveryAgentBarcode"
+				        dr.type "type", d.facilityCode "facilityCode", d.weight "weight", d.deliveryAgent_barcode "deliveryAgentBarcode"
             FROM Dewar d
+                LEFT JOIN DewarRegistry dr ON dr.facilityCode = d.facilityCode
                 INNER JOIN Shipping s ON s.shippingId = d.shippingId
-		        INNER JOIN Proposal p ON p.proposalId = s.proposalId
+		            INNER JOIN Proposal p ON p.proposalId = s.proposalId
                 INNER JOIN BLSession bs ON bs.proposalId = s.proposalId
                 INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
                 INNER JOIN Person per ON per.personId = shp.personId
             WHERE per.login = p_authLogin AND p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber
             GROUP BY d.dewarId, d.shippingId, d.code, d.comments, d.storageLocation,
                 d.dewarStatus, d.isStorageDewar, d.barCode, d.firstExperimentId,
-				d.type, d.facilityCode, d.weight, d.deliveryAgent_barcode;
+				        dr.type, d.facilityCode, d.weight, d.deliveryAgent_barcode;
         ELSE
             SELECT
                 d.dewarId "id", d.shippingId "shippingId", d.code "name", d.comments "comments", d.storageLocation "storageLocation",
                 d.dewarStatus "status", d.isStorageDewar "isStorageDewar", d.barCode "barCode", d.firstExperimentId "firstSessionId",
-				d.type "type", d.facilityCode "facilityCode", d.weight "weight", d.deliveryAgent_barcode "deliveryAgentBarcode"
+				        dr.type "type", d.facilityCode "facilityCode", d.weight "weight", d.deliveryAgent_barcode "deliveryAgentBarcode"
             FROM Dewar d
+                LEFT JOIN DewarRegistry dr ON dr.facilityCode = d.facilityCode
                 INNER JOIN Shipping s ON s.shippingId = d.shippingId
-		        INNER JOIN Proposal p ON p.proposalId = s.proposalId
+		            INNER JOIN Proposal p ON p.proposalId = s.proposalId
             WHERE p.proposalCode = p_proposalCode AND p.proposalNumber = p_proposalNumber;
         END IF;
 
@@ -7456,30 +7497,61 @@ BEGIN
     DECLARE row_beamlineLocation varchar(20) DEFAULT NULL;
     DECLARE row_sampleChangerLocation varchar(20) DEFAULT NULL;
     DECLARE row_proposalId int(10) unsigned DEFAULT NULL;
+    DECLARE row_proposalCode varchar(45) DEFAULT NULL;
+    DECLARE row_proposalNumber varchar(45) DEFAULT NULL;
     DECLARE row_queuedCount int(11) unsigned DEFAULT NULL;
+    DECLARE row_samples varchar(255) DEFAULT NULL;
+
+    IF p_beamline IS NULL THEN
+      SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_beamline is NULL';
+    END IF;
 
     IF NOT (p_registry_barcode IS NULL) THEN
         START TRANSACTION;
 
-        SELECT c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId, count(cq.containerQueueId)
-          INTO row_containerId, row_containerStatus, row_dewarId, row_beamlineLocation, row_sampleChangerLocation, row_proposalId, row_queuedCount
+        SELECT c.containerId,
+          c.containerStatus,
+          c.dewarId,
+          c.beamlineLocation,
+          c.sampleChangerLocation,
+          p.proposalId,
+          p.proposalCode,
+          p.proposalNumber,
+          count(cq.containerQueueId)
+        INTO row_containerId,
+          row_containerStatus,
+          row_dewarId,
+          row_beamlineLocation,
+          row_sampleChangerLocation,
+          row_proposalId,
+          row_proposalCode,
+          row_proposalNumber,
+          row_queuedCount
         FROM Container c
             INNER JOIN ContainerRegistry cr ON c.containerRegistryId = cr.containerRegistryId
             INNER JOIN Dewar d ON d.dewarId = c.dewarId
             INNER JOIN Shipping s ON s.shippingId = d.shippingId
+            INNER JOIN Proposal p ON p.proposalId = s.proposalId
             LEFT OUTER JOIN ContainerQueue cq ON cq.containerId = c.containerId
         WHERE cr.barcode = p_registry_barcode
-        GROUP BY c.containerId, c.containerStatus, c.dewarId, c.beamlineLocation, c.sampleChangerLocation, s.proposalId
+        GROUP BY c.containerId,
+          c.containerStatus,
+          c.dewarId,
+          c.beamlineLocation,
+          c.sampleChangerLocation,
+          p.proposalId,
+          p.proposalCode,
+          p.proposalNumber
         ORDER BY c.containerId DESC
         LIMIT 1;
 
         SELECT row_containerStatus INTO currentContainerStatus;
 
-
+        
         IF NOT row_containerId IS NULL THEN
           IF (NOT row_containerStatus <=> 'processing') OR (row_beamlineLocation = p_beamline AND row_sampleChangerLocation = p_position) THEN
 
-
+            
             UPDATE Container c
               INNER JOIN Dewar d ON d.dewarId = c.dewarId
               INNER JOIN Shipping s ON s.shippingId = d.shippingId
@@ -7496,8 +7568,8 @@ BEGIN
             SELECT IF(row_containerStatus<=>'processing', 'at facility', 'processing') INTO currentContainerStatus;
 
             IF NOT row_containerStatus <=> 'processing' THEN
-
-
+              
+              
               UPDATE Container c
                 INNER JOIN Dewar d ON d.dewarId = c.dewarId
                 INNER JOIN Shipping s ON s.shippingId = d.shippingId
@@ -7506,12 +7578,12 @@ BEGIN
               WHERE s.proposalId = row_proposalId AND c.beamlineLocation = p_beamline AND
                 c.sampleChangerLocation = p_position AND c.containerId <> row_containerId;
 
-
+              
               INSERT INTO DewarTransportHistory (dewarId, dewarStatus, storageLocation, arrivalDate)
                 VALUES (row_dewarId, 'processing', p_beamline, NOW());
             END IF;
 
-
+            
             INSERT INTO ContainerHistory (containerId, location, status, beamlineName, currentDewarId)
               SELECT row_containerId, p_position, IF(row_containerStatus<=>'processing', 'at facility', 'processing'), p_beamline, currentDewarId
               FROM Container
@@ -7525,9 +7597,19 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_registry_barcode is NULL';
     END IF;
+
+    SELECT group_concat(location ORDER BY cast(location AS integer) SEPARATOR ',')
+      INTO row_samples
+    FROM BLSample
+    WHERE containerId = row_containerId
+    GROUP BY containerId;
+
     SELECT row_containerId as "containerId",
       currentContainerStatus as "containerStatus",
-      row_queuedCount as "queuedCount";
+      row_proposalCode as "proposalCode",
+      row_proposalNumber as "proposalNumber",
+      row_queuedCount as "queuedCount",
+      row_samples as "samples";
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -7745,7 +7827,8 @@ BEGIN
   DECLARE row_scLoc varchar(20) DEFAULT NULL;
 
   IF NOT (p_barcode IS NULL) AND p_status IN ('in_storage', 'in_localstorage', 'processing', 'disposed',
-	'in_transit_to_localstorage', 'in_transit_to_storage', 'in_transit_loading', 'in_transit_unloading', 'in_loadlock', 'in_transit_to_loadlock') THEN
+	'in_transit_to_localstorage', 'in_transit_to_storage', 'in_transit_loading', 'in_transit_unloading', 'in_loadlock', 'in_transit_to_loadlock',
+	'in_transit_to_loadlock_from_hotel', 'in_transit_to_loadlock_from_local_storage') THEN
 
 	SELECT containerId, sampleChangerLocation INTO row_containerId, row_scLoc
     FROM Container
@@ -9943,6 +10026,112 @@ BEGIN
 
 		IF row_storageLocation <> p_storageLocation THEN
 
+      UPDATE Container
+			SET sampleChangerLocation = '', containerStatus = 'at facility'
+			WHERE dewarId = p_id;
+		END IF;
+	END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `upsert_dewar_v3` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb3 */ ;
+/*!50003 SET character_set_results = utf8mb3 */ ;
+/*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
+DELIMITER ;;
+CREATE PROCEDURE `upsert_dewar_v3`(
+
+	 INOUT p_id int(10) unsigned,
+	 p_authLogin varchar(45),
+	 p_shippingId int(10) unsigned,
+	 p_name varchar(45),
+	 p_comments tinytext,
+	 p_storageLocation varchar(45),
+	 p_status varchar(45),
+	 p_isStorageDewar tinyint(1),
+	 p_barcode varchar(45),
+	 p_firstSessionId int(10) unsigned,
+	 p_customsValue int(11) unsigned,
+	 p_transportValue int(11) unsigned,
+	 p_trackingNumberToSynchrotron varchar(30),
+	 p_trackingNumberFromSynchrotron varchar(30),
+	 p_facilityCode varchar(20),
+	 p_weight float,
+	 p_deliveryAgentBarcode varchar(30)
+ )
+    MODIFIES SQL DATA
+    COMMENT 'Inserts or updates info about a dewar/parcel (p_id).\nMandatory columns:\nFor insert: none\nFor update: p_id \nReturns: Record ID in p_id.'
+BEGIN
+	DECLARE row_storageLocation varchar(45) DEFAULT NULL;
+	DECLARE row_dewarStatus varchar(45) DEFAULT NULL;
+  DECLARE row_count int unsigned DEFAULT 0;
+
+	IF p_storageLocation IS NULL THEN
+		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_storageLocation is NULL';
+	END IF;
+
+  IF p_authLogin IS NOT NULL AND p_shippingId IS NOT NULL THEN
+
+    
+    
+    SELECT count(*) INTO row_count
+    FROM Shipping s
+      INNER JOIN BLSession bs ON bs.proposalId = s.proposalId
+      INNER JOIN Session_has_Person shp ON bs.sessionId = shp.sessionId
+      INNER JOIN Person p ON p.personId = shp.personId
+    WHERE p.login = p_authLogin AND s.shippingId = p_shippingId;
+
+    IF row_count = 0 THEN
+        SIGNAL SQLSTATE '02000'
+            SET MYSQL_ERRNO=1643, MESSAGE_TEXT = 'Dewar not in a shipping belonging to one of the p_authLogin Person sessions';
+    END IF;
+  END IF;
+
+  IF p_id IS NULL THEN
+    INSERT INTO Dewar(dewarId,shippingId,code,comments,storageLocation,dewarStatus,isStorageDewar,barCode,firstExperimentId,customsValue,transportValue,
+	    trackingNumberToSynchrotron,trackingNumberFromSynchrotron,FACILITYCODE,weight,deliveryAgent_barcode)
+	    VALUES (p_id, p_shippingId, p_name, p_comments, p_storageLocation, p_status, p_isStorageDewar, p_barcode, p_firstSessionId, p_customsValue, p_transportValue,
+		    p_trackingNumberToSynchrotron, p_trackingNumberFromSynchrotron, p_facilityCode, p_weight, p_deliveryAgentBarcode);
+	  SET p_id = LAST_INSERT_ID();
+	ELSE
+
+    SELECT storageLocation, dewarStatus INTO row_storageLocation, row_dewarStatus FROM Dewar WHERE dewarId = p_id;
+
+		UPDATE Dewar
+			SET shippingId = IFNULL(p_shippingId, shippingId),
+			code = IFNULL(p_name, code),
+			comments = IFNULL(p_comments, comments),
+			storageLocation = IFNULL(p_storageLocation, storageLocation),
+			dewarStatus = IFNULL(p_status, dewarStatus),
+			isStorageDewar = IFNULL(p_isStorageDewar, isStorageDewar),
+			barCode = IFNULL(p_barcode, barCode),
+			firstExperimentId = IFNULL(p_firstSessionId, firstExperimentId),
+			customsValue = IFNULL(p_customsValue, customsValue),
+			transportValue = IFNULL(p_transportValue, transportValue),
+			trackingNumberToSynchrotron = IFNULL(p_trackingNumberToSynchrotron, trackingNumberToSynchrotron),
+			trackingNumberFromSynchrotron = IFNULL(p_trackingNumberFromSynchrotron, trackingNumberFromSynchrotron),
+			FACILITYCODE = IFNULL(p_facilityCode, FACILITYCODE),
+			weight = IFNULL(p_weight, weight),
+			deliveryAgent_barcode = IFNULL(p_deliveryAgentBarcode, deliveryAgent_barcode)
+		WHERE dewarId = p_id;
+
+		
+    IF row_storageLocation <> p_storageLocation OR row_dewarStatus <> p_status THEN
+      INSERT INTO DewarTransportHistory (dewarId, dewarStatus, storageLocation, arrivalDate)
+				VALUES (p_id, p_status, p_storageLocation, NOW());
+    END IF;
+
+		
+		IF row_storageLocation <> p_storageLocation THEN
+			
       UPDATE Container
 			SET sampleChangerLocation = '', containerStatus = 'at facility'
 			WHERE dewarId = p_id;

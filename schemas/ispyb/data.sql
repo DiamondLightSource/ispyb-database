@@ -50,19 +50,19 @@ INSERT INTO `AutoProcIntegration` (`autoProcIntegrationId`, `dataCollectionId`, 
 /*!40000 ALTER TABLE `AutoProcIntegration` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `AutoProcProgram` DISABLE KEYS */;
-INSERT INTO `AutoProcProgram` (`autoProcProgramId`, `processingCommandLine`, `processingPrograms`, `processingStatus`, `processingMessage`, `processingStartTime`, `processingEndTime`, `processingEnvironment`, `recordTimeStamp`, `processingJobId`, `processingPipelineId`) VALUES (56425592,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-14 12:46:22',NULL,NULL),
-(56425944,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 13:09:51',NULL,NULL),
-(56425952,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 13:24:22',NULL,NULL),
-(56425963,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xtlysjan41,/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/,tlys_jan_4_1_####.cbf,1,3600 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_J','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-14 13:34:34',NULL,NULL),
-(56426286,'xia2 min_images=3 -dials -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 14:01:57',NULL,NULL),
-(56426287,'xia2 min_images=3 -3dii -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 14:13:57',NULL,NULL),
-(56983954,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-22 11:34:03',NULL,NULL),
-(56985584,'xia2 min_images=3 -3d -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3d',1,NULL,NULL,NULL,NULL,'2016-01-22 11:52:36',NULL,NULL),
-(56985589,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xins22,/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/,ins2_2_####.cbf,1,7200 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_JOBS=4 Sto','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-22 11:53:38',NULL,NULL),
-(56985592,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-22 11:54:01',NULL,NULL),
-(56986673,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-22 12:01:59',5,NULL),
-(56986674,'/dls_sw/apps/dimple/git-master/main.py  --dls-naming --slow -fpng /dls/i24/data/2018/cm19649-3/processed/test180731/hewlmesh_1/line4/hewlmesh_1_1_/xia2/3d-run/DataFiles/cm19649v3_xhewlmesh11_free.mtz /dls/i24/data/2018/cm19649-3/tmp/hewlmesh_1.4308.pdb /d','dimple',1,'Blob scores: 78','2018-07-31 08:55:52','2018-07-31 08:57:10',NULL,'2018-07-31 08:57:10',NULL,NULL),
-(56986675,NULL,'dimple',0,'Unknown error','2018-07-31 08:57:12',NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `AutoProcProgram` (`autoProcProgramId`, `processingCommandLine`, `processingPrograms`, `processingStatus`, `processingMessage`, `processingStartTime`, `processingEndTime`, `processingEnvironment`, `recordTimeStamp`, `processingJobId`, `processingPipelineId`, `parentAutoProcProgramId`) VALUES (56425592,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-14 12:46:22',NULL,NULL,NULL),
+(56425944,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 13:09:51',NULL,NULL,NULL),
+(56425952,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 13:24:22',NULL,NULL,NULL),
+(56425963,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xtlysjan41,/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/,tlys_jan_4_1_####.cbf,1,3600 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_J','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-14 13:34:34',NULL,NULL,NULL),
+(56426286,'xia2 min_images=3 -dials -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-14 14:01:57',NULL,NULL,NULL),
+(56426287,'xia2 min_images=3 -3dii -atom s -blend -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/linediffraction_1_0001.cbf image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 14:13:57',NULL,NULL,NULL),
+(56983954,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-22 11:34:03',NULL,NULL,NULL),
+(56985584,'xia2 min_images=3 -3d -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3d',1,NULL,NULL,NULL,NULL,'2016-01-22 11:52:36',NULL,NULL,NULL),
+(56985589,'/dls_sw/apps/GPhL/autoPROC/20151214/autoPROC/bin/linux64/process -xml -Id xins22,/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/,ins2_2_####.cbf,1,7200 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_PROCESSORS=12 autoPROC_XdsKeyword_MAXIMUM_NUMBER_OF_JOBS=4 Sto','autoPROC 1.0.4 (see: http://www.globalphasing.com/autoproc/)',1,NULL,NULL,NULL,NULL,'2016-01-22 11:53:38',NULL,NULL,NULL),
+(56985592,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-22 11:54:01',NULL,NULL,NULL),
+(56986673,'xia2 min_images=3 -dials -xparallel -1 -atom s -blend -project cm14451v1 -crystal xins22 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/ins2_2_0001.cbf','xia2 dials',1,NULL,NULL,NULL,NULL,'2016-01-22 12:01:59',5,NULL,NULL),
+(56986674,'/dls_sw/apps/dimple/git-master/main.py  --dls-naming --slow -fpng /dls/i24/data/2018/cm19649-3/processed/test180731/hewlmesh_1/line4/hewlmesh_1_1_/xia2/3d-run/DataFiles/cm19649v3_xhewlmesh11_free.mtz /dls/i24/data/2018/cm19649-3/tmp/hewlmesh_1.4308.pdb /d','dimple',1,'Blob scores: 78','2018-07-31 08:55:52','2018-07-31 08:57:10',NULL,'2018-07-31 08:57:10',NULL,NULL,NULL),
+(56986675,NULL,'dimple',0,'Unknown error','2018-07-31 08:57:12',NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `AutoProcProgram` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `AutoProcProgramAttachment` DISABLE KEYS */;
@@ -256,6 +256,9 @@ INSERT INTO `BLSampleImageScore` (`blSampleImageScoreId`, `name`, `score`, `colo
 /*!40000 ALTER TABLE `BLSampleImage_has_Positioner` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSampleImage_has_Positioner` ENABLE KEYS */;
 
+/*!40000 ALTER TABLE `BLSamplePosition` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BLSamplePosition` ENABLE KEYS */;
+
 /*!40000 ALTER TABLE `BLSampleType_has_Component` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSampleType_has_Component` ENABLE KEYS */;
 
@@ -267,16 +270,19 @@ INSERT INTO `BLSample_has_DataCollectionPlan` (`blSampleId`, `dataCollectionPlan
 /*!40000 ALTER TABLE `BLSample_has_EnergyScan` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSample_has_EnergyScan` ENABLE KEYS */;
 
+/*!40000 ALTER TABLE `BLSample_has_Ligand` DISABLE KEYS */;
+/*!40000 ALTER TABLE `BLSample_has_Ligand` ENABLE KEYS */;
+
 /*!40000 ALTER TABLE `BLSample_has_Positioner` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSample_has_Positioner` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `BLSession` DISABLE KEYS */;
-INSERT INTO `BLSession` (`sessionId`, `beamLineSetupId`, `proposalId`, `beamCalendarId`, `startDate`, `endDate`, `beamLineName`, `scheduled`, `nbShifts`, `comments`, `beamLineOperator`, `bltimeStamp`, `visit_number`, `usedFlag`, `lastUpdate`, `externalId`, `archived`, `riskRating`) VALUES (55167,1,37027,NULL,'2016-01-01 09:00:00','2016-01-01 17:00:00','i03',NULL,NULL,'ghfg',NULL,'2015-12-21 15:20:43',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL),
-(55168,1,37027,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,'jhgjh',NULL,'2015-12-21 15:20:44',2,NULL,'0000-00-00 00:00:00',NULL,0,NULL),
-(339525,NULL,141666,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-16 16:08:29',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL),
-(339528,NULL,141666,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-17 15:07:42',2,NULL,'0000-00-00 00:00:00',NULL,0,NULL),
-(339531,NULL,141666,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-17 15:08:09',3,NULL,'0000-00-00 00:00:00',NULL,0,NULL),
-(339535,NULL,37027,NULL,'2018-03-27 09:00:00','2018-07-27 09:00:00','i02-2',NULL,NULL,NULL,NULL,'2018-04-05 15:48:37',99,NULL,'0000-00-00 00:00:00',NULL,0,NULL);
+INSERT INTO `BLSession` (`sessionId`, `beamLineSetupId`, `proposalId`, `beamCalendarId`, `startDate`, `endDate`, `beamLineName`, `scheduled`, `nbShifts`, `comments`, `beamLineOperator`, `bltimeStamp`, `visit_number`, `usedFlag`, `lastUpdate`, `externalId`, `archived`, `riskRating`, `purgedProcessedData`, `icatId`) VALUES (55167,1,37027,NULL,'2016-01-01 09:00:00','2016-01-01 17:00:00','i03',NULL,NULL,'ghfg',NULL,'2015-12-21 15:20:43',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
+(55168,1,37027,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,'jhgjh',NULL,'2015-12-21 15:20:44',2,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
+(339525,NULL,141666,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-16 16:08:29',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
+(339528,NULL,141666,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-17 15:07:42',2,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
+(339531,NULL,141666,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-17 15:08:09',3,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
+(339535,NULL,37027,NULL,'2018-03-27 09:00:00','2018-07-27 09:00:00','i02-2',NULL,NULL,NULL,NULL,'2018-04-05 15:48:37',99,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL);
 /*!40000 ALTER TABLE `BLSession` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `BLSession_has_SCPosition` DISABLE KEYS */;
@@ -316,6 +322,124 @@ INSERT INTO `BeamLineSetup` (`beamLineSetupId`, `detectorId`, `synchrotronMode`,
 /*!40000 ALTER TABLE `CalendarHash` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Component` DISABLE KEYS */;
+INSERT INTO `Component` (`componentId`, `componentTypeId`, `proposalId`, `name`, `composition`) VALUES (1,8,NULL,'H','Hydrogen'),
+(2,8,NULL,'He','Helium'),
+(3,8,NULL,'Li','Lithium'),
+(4,8,NULL,'Be','Beryllium'),
+(5,8,NULL,'B','Boron'),
+(6,8,NULL,'C','Carbon'),
+(7,8,NULL,'N','Nitrogen'),
+(8,8,NULL,'O','Oxygen'),
+(9,8,NULL,'F','Fluorine'),
+(10,8,NULL,'Ne','Neon'),
+(11,8,NULL,'Na','Sodium'),
+(12,8,NULL,'Mg','Magnesium'),
+(13,8,NULL,'Al','Aluminum'),
+(14,8,NULL,'Si','Silicon'),
+(15,8,NULL,'P','Phosphorus'),
+(16,8,NULL,'S','Sulfur'),
+(17,8,NULL,'Cl','Chlorine'),
+(18,8,NULL,'Ar','Argon'),
+(19,8,NULL,'K','Potassium'),
+(20,8,NULL,'Ca','Calcium'),
+(21,8,NULL,'Sc','Scandium'),
+(22,8,NULL,'Ti','Titanium'),
+(23,8,NULL,'V','Vanadium'),
+(24,8,NULL,'Cr','Chromium'),
+(25,8,NULL,'Mn','Manganese'),
+(26,8,NULL,'Fe','Iron'),
+(27,8,NULL,'Co','Cobalt'),
+(28,8,NULL,'Ni','Nickel'),
+(29,8,NULL,'Cu','Copper'),
+(30,8,NULL,'Zn','Zinc'),
+(31,8,NULL,'Ga','Gallium'),
+(32,8,NULL,'Ge','Germanium'),
+(33,8,NULL,'As','Arsenic'),
+(34,8,NULL,'Se','Selenium'),
+(35,8,NULL,'Br','Bromine'),
+(36,8,NULL,'Kr','Krypton'),
+(37,8,NULL,'Rb','Rubidium'),
+(38,8,NULL,'Sr','Strontium'),
+(39,8,NULL,'Y','Yttrium'),
+(40,8,NULL,'Zr','Zirconium'),
+(41,8,NULL,'Nb','Niobium'),
+(42,8,NULL,'Mo','Molybdenum'),
+(43,8,NULL,'Tc','Technetium'),
+(44,8,NULL,'Ru','Ruthenium'),
+(45,8,NULL,'Rh','Rhodium'),
+(46,8,NULL,'Pd','Palladium'),
+(47,8,NULL,'Ag','Silver'),
+(48,8,NULL,'Cd','Cadmium'),
+(49,8,NULL,'In','Indium'),
+(50,8,NULL,'Sn','Tin'),
+(51,8,NULL,'Sb','Antimony'),
+(52,8,NULL,'Te','Tellurium'),
+(53,8,NULL,'I','Iodine'),
+(54,8,NULL,'Xe','Xenon'),
+(55,8,NULL,'Cs','Cesium'),
+(56,8,NULL,'Ba','Barium'),
+(57,8,NULL,'La','Lanthanum'),
+(58,8,NULL,'Ce','Cerium'),
+(59,8,NULL,'Pr','Praseodymium'),
+(60,8,NULL,'Nd','Neodymium'),
+(61,8,NULL,'Pm','Promethium'),
+(62,8,NULL,'Sm','Samarium'),
+(63,8,NULL,'Eu','Europium'),
+(64,8,NULL,'Gd','Gadolinium'),
+(65,8,NULL,'Tb','Terbium'),
+(66,8,NULL,'Dy','Dysprosium'),
+(67,8,NULL,'Ho','Holmium'),
+(68,8,NULL,'Er','Erbium'),
+(69,8,NULL,'Tm','Thulium'),
+(70,8,NULL,'Yb','Ytterbium'),
+(71,8,NULL,'Lu','Lutetium'),
+(72,8,NULL,'Hf','Hafnium'),
+(73,8,NULL,'Ta','Tantalum'),
+(74,8,NULL,'W','Tungsten'),
+(75,8,NULL,'Re','Rhenium'),
+(76,8,NULL,'Os','Osmium'),
+(77,8,NULL,'Ir','Iridium'),
+(78,8,NULL,'Pt','Platinum'),
+(79,8,NULL,'Au','Gold'),
+(80,8,NULL,'Hg','Mercury'),
+(81,8,NULL,'Tl','Thallium'),
+(82,8,NULL,'Pb','Lead'),
+(83,8,NULL,'Bi','Bismuth'),
+(84,8,NULL,'Po','Polonium'),
+(85,8,NULL,'At','Astatine'),
+(86,8,NULL,'Rn','Radon'),
+(87,8,NULL,'Fr','Francium'),
+(88,8,NULL,'Ra','Radium'),
+(89,8,NULL,'Ac','Actinium'),
+(90,8,NULL,'Th','Thorium'),
+(91,8,NULL,'Pa','Protactinium'),
+(92,8,NULL,'U','Uranium'),
+(93,8,NULL,'Np','Neptunium'),
+(94,8,NULL,'Pu','Plutonium'),
+(95,8,NULL,'Am','Americium'),
+(96,8,NULL,'Cm','Curium'),
+(97,8,NULL,'Bk','Berkelium'),
+(98,8,NULL,'Cf','Californium'),
+(99,8,NULL,'Es','Einsteinium'),
+(100,8,NULL,'Fm','Fermium'),
+(101,8,NULL,'Md','Mendelevium'),
+(102,8,NULL,'No','Nobelium'),
+(103,8,NULL,'Lr','Lawrencium'),
+(104,8,NULL,'Rf','Rutherfordium'),
+(105,8,NULL,'Db','Dubnium'),
+(106,8,NULL,'Sg','Seaborgium'),
+(107,8,NULL,'Bh','Bohrium'),
+(108,8,NULL,'Hs','Hassium'),
+(109,8,NULL,'Mt','Meitnerium'),
+(110,8,NULL,'Ds','Darmstadtium'),
+(111,8,NULL,'Rg','Roentgenium'),
+(112,8,NULL,'Cn','Copernicium'),
+(113,8,NULL,'Nh','Nihonium'),
+(114,8,NULL,'Fl','Flerovium'),
+(115,8,NULL,'Mc','Moscovium'),
+(116,8,NULL,'Lv','Livermorium'),
+(117,8,NULL,'Ts','Tennessine'),
+(118,8,NULL,'Og','Oganesson');
 /*!40000 ALTER TABLE `Component` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ComponentLattice` DISABLE KEYS */;
@@ -326,19 +450,19 @@ INSERT INTO `ComponentLattice` (`componentLatticeId`, `componentId`, `spaceGroup
 /*!40000 ALTER TABLE `Component_has_SubType` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Container` DISABLE KEYS */;
-INSERT INTO `Container` (`containerId`, `dewarId`, `code`, `containerType`, `capacity`, `sampleChangerLocation`, `containerStatus`, `bltimeStamp`, `beamlineLocation`, `screenId`, `scheduleId`, `barcode`, `imagerId`, `sessionId`, `ownerId`, `requestedImagerId`, `requestedReturn`, `comments`, `experimentType`, `storageTemperature`, `containerRegistryId`, `scLocationUpdated`, `priorityPipelineId`, `experimentTypeId`, `containerTypeId`, `currentDewarId`, `parentContainerId`, `source`) VALUES (1326,573,'Container-1-cm0001-1','Puck-16',16,'3','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000001',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(1329,573,'Container-2-cm0001-1','Puck-16',16,'4','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000002',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(1332,576,'Container-3-cm0001-1','Puck-16',16,'5','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000003',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(1335,579,'Container-4-cm0001-2','Puck-16',16,'6','processing',NULL,'i03',NULL,NULL,'container-cm0001-2-0001335',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(1338,582,'Container-5-cm0001-3','Puck-16',16,'7','processing',NULL,'i03',NULL,NULL,'container-cm0001-3-0001338',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(1341,573,'Manual',NULL,NULL,'9',NULL,NULL,'i03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(33049,8287,'cm14451-1_i03r-002','Puck',16,NULL,'at DLS',NULL,'i03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(34864,8572,'I03R-001','Puck',16,'29','processing','2016-02-24 12:13:05','i03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(34874,8572,'test_plate2','CrystalQuickX',192,'3','in_storage','2016-02-12 09:20:44','i03',NULL,2,'test_plate2',2,NULL,NULL,2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(34877,8572,'test_plate3','CrystalQuickX',192,'3','in_storage','2016-10-04 10:50:05','i03',NULL,2,'test_plate3',2,NULL,NULL,2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(34879,8572,'test_plate4','CrystalQuickX',192,'4','processing',NULL,'i02-2',NULL,2,'test_plate4',2,NULL,NULL,2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(34883,NULL,'XPDF-container-1','XPDF container',NULL,NULL,'processing',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
-(34888,8578,'TestSim01','CrystalQuickX',192,'1','in_storage',NULL,'i02-2',NULL,2,'VMXiSim-001',7,339535,1,7,0,NULL,NULL,NULL,5,NULL,NULL,NULL,NULL,NULL,NULL,'root@%');
+INSERT INTO `Container` (`containerId`, `dewarId`, `code`, `containerType`, `capacity`, `sampleChangerLocation`, `containerStatus`, `bltimeStamp`, `beamlineLocation`, `screenId`, `scheduleId`, `barcode`, `imagerId`, `sessionId`, `ownerId`, `requestedImagerId`, `requestedReturn`, `comments`, `experimentType`, `storageTemperature`, `containerRegistryId`, `scLocationUpdated`, `priorityPipelineId`, `experimentTypeId`, `containerTypeId`, `currentDewarId`, `parentContainerId`, `source`, `parentContainerLocation`) VALUES (1326,573,'Container-1-cm0001-1','Puck-16',16,'3','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000001',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(1329,573,'Container-2-cm0001-1','Puck-16',16,'4','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000002',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(1332,576,'Container-3-cm0001-1','Puck-16',16,'5','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000003',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(1335,579,'Container-4-cm0001-2','Puck-16',16,'6','processing',NULL,'i03',NULL,NULL,'container-cm0001-2-0001335',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(1338,582,'Container-5-cm0001-3','Puck-16',16,'7','processing',NULL,'i03',NULL,NULL,'container-cm0001-3-0001338',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(1341,573,'Manual',NULL,NULL,'9',NULL,NULL,'i03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(33049,8287,'cm14451-1_i03r-002','Puck',16,NULL,'at DLS',NULL,'i03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(34864,8572,'I03R-001','Puck',16,'29','processing','2016-02-24 12:13:05','i03',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(34874,8572,'test_plate2','CrystalQuickX',192,'3','in_storage','2016-02-12 09:20:44','i03',NULL,2,'test_plate2',2,NULL,NULL,2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(34877,8572,'test_plate3','CrystalQuickX',192,'3','in_storage','2016-10-04 10:50:05','i03',NULL,2,'test_plate3',2,NULL,NULL,2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(34879,8572,'test_plate4','CrystalQuickX',192,'4','processing',NULL,'i02-2',NULL,2,'test_plate4',2,NULL,NULL,2,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(34883,NULL,'XPDF-container-1','XPDF container',NULL,NULL,'processing',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
+(34888,8578,'TestSim01','CrystalQuickX',192,'1','in_storage',NULL,'i02-2',NULL,2,'VMXiSim-001',7,339535,1,7,0,NULL,NULL,NULL,5,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL);
 /*!40000 ALTER TABLE `Container` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ContainerHistory` DISABLE KEYS */;
@@ -435,13 +559,13 @@ INSERT INTO `DataCollectionPlan_has_Detector` (`dataCollectionPlanHasDetectorId`
 /*!40000 ALTER TABLE `DataCollectionPlan_has_Detector` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Dewar` DISABLE KEYS */;
-INSERT INTO `Dewar` (`dewarId`, `shippingId`, `code`, `comments`, `storageLocation`, `dewarStatus`, `bltimeStamp`, `isStorageDewar`, `barCode`, `firstExperimentId`, `customsValue`, `transportValue`, `trackingNumberToSynchrotron`, `trackingNumberFromSynchrotron`, `type`, `facilityCode`, `weight`, `deliveryAgent_barcode`, `extra`, `source`, `externalShippingIdFromSynchrotron`) VALUES (573,474,'Dewar-1-cm0001-1',NULL,NULL,'processing',NULL,0,'dewar-cm0001-1-0000001',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL),
-(576,474,'Dewar-2-cm0001-1',NULL,NULL,'at DLS',NULL,0,'dewar-cm0001-1-0000002',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL),
-(579,477,'Dewar-3-cm0001-2',NULL,NULL,'processing',NULL,0,'dewar-cm0001-2-0000477',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL),
-(582,480,'Dewar-4-cm0001-3',NULL,NULL,'processing',NULL,0,'dewar-cm0001-3-0000480',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL),
-(8287,6988,'Default Dewar:cm14451-1',NULL,NULL,'processing',NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL),
-(8572,7227,'cm14451-2_Dewar1',NULL,NULL,'processing','2016-02-10 13:03:07',0,NULL,NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL),
-(8578,7231,'Dewar_1',NULL,NULL,'opened',NULL,0,'cm14451-12345',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL);
+INSERT INTO `Dewar` (`dewarId`, `shippingId`, `code`, `comments`, `storageLocation`, `dewarStatus`, `bltimeStamp`, `isStorageDewar`, `barCode`, `firstExperimentId`, `customsValue`, `transportValue`, `trackingNumberToSynchrotron`, `trackingNumberFromSynchrotron`, `type`, `facilityCode`, `weight`, `deliveryAgent_barcode`, `extra`, `source`, `externalShippingIdFromSynchrotron`, `dewarRegistryId`) VALUES (573,474,'Dewar-1-cm0001-1',NULL,NULL,'processing',NULL,0,'dewar-cm0001-1-0000001',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
+(576,474,'Dewar-2-cm0001-1',NULL,NULL,'at DLS',NULL,0,'dewar-cm0001-1-0000002',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
+(579,477,'Dewar-3-cm0001-2',NULL,NULL,'processing',NULL,0,'dewar-cm0001-2-0000477',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
+(582,480,'Dewar-4-cm0001-3',NULL,NULL,'processing',NULL,0,'dewar-cm0001-3-0000480',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
+(8287,6988,'Default Dewar:cm14451-1',NULL,NULL,'processing',NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
+(8572,7227,'cm14451-2_Dewar1',NULL,NULL,'processing','2016-02-10 13:03:07',0,NULL,NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
+(8578,7231,'Dewar_1',NULL,NULL,'opened',NULL,0,'cm14451-12345',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL);
 /*!40000 ALTER TABLE `Dewar` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `DewarLocation` DISABLE KEYS */;
@@ -553,6 +677,18 @@ INSERT INTO `ImageQualityIndicators` (`dataCollectionId`, `imageNumber`, `imageI
 
 /*!40000 ALTER TABLE `Laboratory` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Laboratory` ENABLE KEYS */;
+
+/*!40000 ALTER TABLE `LaserParameters` DISABLE KEYS */;
+/*!40000 ALTER TABLE `LaserParameters` ENABLE KEYS */;
+
+/*!40000 ALTER TABLE `LaserPoint` DISABLE KEYS */;
+/*!40000 ALTER TABLE `LaserPoint` ENABLE KEYS */;
+
+/*!40000 ALTER TABLE `Ligand` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Ligand` ENABLE KEYS */;
+
+/*!40000 ALTER TABLE `Ligand_has_PDB` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Ligand_has_PDB` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `MXMRRun` DISABLE KEYS */;
 INSERT INTO `MXMRRun` (`mxMRRunId`, `autoProcScalingId`, `rValueStart`, `rValueEnd`, `rFreeValueStart`, `rFreeValueEnd`, `LLG`, `TFZ`, `spaceGroup`, `autoProcProgramId`) VALUES (672897,603470,0.1812,0.1682,0.1896,0.1888,NULL,NULL,NULL,56986674),
@@ -682,8 +818,8 @@ INSERT INTO `ProcessingJobParameter` (`processingJobParameterId`, `processingJob
 /*!40000 ALTER TABLE `Project_has_XFEFSpectrum` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Proposal` DISABLE KEYS */;
-INSERT INTO `Proposal` (`proposalId`, `personId`, `title`, `proposalCode`, `proposalNumber`, `bltimeStamp`, `proposalType`, `externalId`, `state`) VALUES (37027,1,'I03 Commissioning Directory 2016','cm','14451','2015-12-21 15:20:43',NULL,NULL,'Open'),
-(141666,46266,'Test Proposal cm-0001','cm','1','2016-03-16 16:01:34',NULL,NULL,'Open');
+INSERT INTO `Proposal` (`proposalId`, `personId`, `title`, `proposalCode`, `proposalNumber`, `bltimeStamp`, `proposalType`, `externalId`, `state`, `startDate`, `endDate`) VALUES (37027,1,'I03 Commissioning Directory 2016','cm','14451','2015-12-21 15:20:43',NULL,NULL,'Open',NULL,NULL),
+(141666,46266,'Test Proposal cm-0001','cm','1','2016-03-16 16:01:34',NULL,NULL,'Open',NULL,NULL);
 /*!40000 ALTER TABLE `Proposal` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `ProposalHasPerson` DISABLE KEYS */;
@@ -707,6 +843,9 @@ INSERT INTO `Protein` (`proteinId`, `proposalId`, `name`, `acronym`, `descriptio
 (123491,37027,NULL,'thau',NULL,1,1,NULL,NULL,NULL,NULL,'2016-02-24 12:12:16',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (123497,37027,'XPDF comp1','xpdf-comp-01',NULL,1,1,NULL,NULL,NULL,NULL,'2017-03-23 22:03:40',0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `Protein` ENABLE KEYS */;
+
+/*!40000 ALTER TABLE `Protein_has_Component` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Protein_has_Component` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `Protein_has_PDB` DISABLE KEYS */;
 INSERT INTO `Protein_has_PDB` (`proteinhaspdbid`, `proteinid`, `pdbid`) VALUES (5,123497,6);

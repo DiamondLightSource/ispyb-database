@@ -7,7 +7,8 @@ BEGIN
   DECLARE row_scLoc varchar(20) DEFAULT NULL;
 
   IF NOT (p_barcode IS NULL) AND p_status IN ('in_storage', 'in_localstorage', 'processing', 'disposed',
-	'in_transit_to_localstorage', 'in_transit_to_storage', 'in_transit_loading', 'in_transit_unloading', 'in_loadlock', 'in_transit_to_loadlock') THEN
+	'in_transit_to_localstorage', 'in_transit_to_storage', 'in_transit_loading', 'in_transit_unloading', 'in_loadlock', 'in_transit_to_loadlock',
+	'in_transit_to_loadlock_from_hotel', 'in_transit_to_loadlock_from_local_storage') THEN
 
 	SELECT containerId, sampleChangerLocation INTO row_containerId, row_scLoc
     FROM Container

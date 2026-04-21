@@ -9,11 +9,13 @@ CREATE ROLE IF NOT EXISTS ispyb_processing;
 -- Grants for ispyb_processing
 GRANT SELECT ON AdminVar TO 'ispyb_processing'; -- Hack TO allow ispyb_processing to connect through MaxScale
 GRANT SELECT,INSERT ON ImageQualityIndicators TO 'ispyb_processing'; -- Needed for bulk insertion of aggregated IQIs
+GRANT SELECT,INSERT,UPDATE ON BLSamplePosition TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON BLSampleImage TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON BLSampleImageAnalysis TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON BLSampleImage_has_AutoScoreClass TO 'ispyb_processing';
 GRANT SELECT,INSERT ON PDB TO 'ispyb_processing';
 GRANT SELECT,INSERT ON Protein_has_PDB TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON Container TO 'ispyb_processing';
 
 GRANT SELECT,INSERT,UPDATE ON AutoProcProgram TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON AutoProcProgramAttachment TO 'ispyb_processing';
@@ -30,6 +32,7 @@ GRANT SELECT,INSERT,UPDATE ON RelativeIceThickness TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON CTF TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON Movie TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON BFactorFit TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON DataCollectionFileAttachment TO 'ispyb_processing';
 
 GRANT SELECT,INSERT,UPDATE ON Tomogram TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON ProcessedTomogram TO 'ispyb_processing';
@@ -74,6 +77,7 @@ GRANT EXECUTE ON PROCEDURE retrieve_most_recent_session TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE retrieve_containers_submitted_non_ls TO 'ispyb_processing';
 
 GRANT EXECUTE ON PROCEDURE `insert_screening` TO 'ispyb_processing';
+GRANT EXECUTE ON PROCEDURE `insert_screening_v2` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE insert_screening_input TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `insert_screening_output` TO 'ispyb_processing';
 GRANT EXECUTE ON PROCEDURE `insert_screening_output_v2` TO 'ispyb_processing';
