@@ -73,7 +73,9 @@ GRANT ispyb_expeye_acquisition_role TO ispyb_expeye_core_role;
 
 GRANT SELECT, INSERT, UPDATE ON AutoProcProgram TO ispyb_expeye_core_role;
 GRANT SELECT, INSERT, UPDATE ON AutoProcProgramAttachment TO ispyb_expeye_core_role;
+GRANT SELECT ON AutoProcScalingStatistics TO ispyb_expeye_core_role;
 GRANT SELECT ON AutoProcIntegration TO ispyb_expeye_core_role;
+GRANT SELECT ON AutoProcScaling TO ispyb_expeye_core_role;
 GRANT SELECT ON AutoProc TO ispyb_expeye_core_role;
 
 GRANT SELECT ON ProcessingJob TO ispyb_expeye_core_role;
