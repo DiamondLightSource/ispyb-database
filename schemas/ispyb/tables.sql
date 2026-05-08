@@ -83,7 +83,8 @@ CREATE TABLE `AutoProc` (
   `recordTimeStamp` datetime DEFAULT NULL COMMENT 'Creation or last update date/time',
   PRIMARY KEY (`autoProcId`),
   KEY `AutoProc_FKIndex1` (`autoProcProgramId`),
-  KEY `AutoProc_refined_unit_cell` (`refinedCell_a`,`refinedCell_b`,`refinedCell_c`,`refinedCell_alpha`,`refinedCell_beta`,`refinedCell_gamma`)
+  KEY `AutoProc_refined_unit_cell` (`refinedCell_a`,`refinedCell_b`,`refinedCell_c`,`refinedCell_alpha`,`refinedCell_beta`,`refinedCell_gamma`),
+  CONSTRAINT `AutoProc_fk_autoProcProgramId` FOREIGN KEY (`autoProcProgramId`) REFERENCES `AutoProcProgram` (`autoProcProgramId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `AutoProcIntegration`;
@@ -2338,6 +2339,50 @@ CREATE TABLE `MXMRRunBlob` (
   KEY `mxMRRunBlob_FK1` (`mxMRRunId`),
   CONSTRAINT `mxMRRunBlob_FK1` FOREIGN KEY (`mxMRRunId`) REFERENCES `MXMRRun` (`mxMRRunId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `MillingStep`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `MillingStep` (
+  `millingStepId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `millingStepNameId` int(11) unsigned DEFAULT NULL,
+  `isEnabled` tinyint(1) DEFAULT 0 COMMENT 'This marks whether the milling step is enabled and queued up; when the FIB starts this step, it will be set to False',
+  `status` enum('Finished','Failed','Aborted') DEFAULT NULL COMMENT 'Describes the status of the milling step',
+  `executionTime` float DEFAULT NULL COMMENT 'The time in seconds the step took to complete',
+  `stageX` float DEFAULT NULL COMMENT 'Stage position in metres',
+  `stageY` float DEFAULT NULL COMMENT 'Stage position in metres',
+  `stageZ` float DEFAULT NULL COMMENT 'Stage position in metres',
+  `rotation` float DEFAULT NULL COMMENT 'Rotation of stage in xy plane in degrees',
+  `alphaTilt` float DEFAULT NULL COMMENT 'Unit: degrees',
+  `beamType` enum('Electron','Ion') DEFAULT NULL COMMENT 'Type of beam used',
+  `beamVoltage` float DEFAULT NULL COMMENT 'Unit: volts',
+  `beamCurrent` float DEFAULT NULL COMMENT 'Unit: amperes',
+  `millingAngle` float DEFAULT NULL COMMENT 'The angle the stage is tilted to for milling, in degrees',
+  `depthCorrection` float DEFAULT NULL,
+  `lamellaOffset` float DEFAULT NULL COMMENT 'Unit: metres',
+  `trenchHeightFront` float DEFAULT NULL COMMENT 'Unit: metres',
+  `trenchHeightRear` float DEFAULT NULL COMMENT 'Unit: metres',
+  `widthOverlapFrontLeft` float DEFAULT NULL COMMENT 'Unit: metres',
+  `widthOverlapFrontRight` float DEFAULT NULL COMMENT 'Unit: metres',
+  `widthOverlapRearLeft` float DEFAULT NULL COMMENT 'Unit: metres',
+  `widthOverlapRearRight` float DEFAULT NULL COMMENT 'Unit: metres',
+  `gridSquareId` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`millingStepId`),
+  KEY `MillingStep_fk_gridSquareId` (`gridSquareId`),
+  KEY `MillingStep_fk_millingStepNameId` (`millingStepNameId`),
+  CONSTRAINT `MillingStep_fk_gridSquareId` FOREIGN KEY (`gridSquareId`) REFERENCES `GridSquare` (`gridSquareId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `MillingStep_fk_millingStepNameId` FOREIGN KEY (`millingStepNameId`) REFERENCES `MillingStepName` (`millingStepNameId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='FIB Milling Step';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `MillingStepName`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `MillingStepName` (
+  `millingStepNameId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `step` varchar(45) NOT NULL,
+  `recipe` varchar(45) NOT NULL,
+  PRIMARY KEY (`millingStepNameId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Milling step names and recipes';
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ModelBuilding`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
