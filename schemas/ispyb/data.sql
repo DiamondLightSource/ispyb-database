@@ -6,19 +6,30 @@
 /*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*M!100616 SET @OLD_NOTE_VERBOSITY=@@NOTE_VERBOSITY, NOTE_VERBOSITY=0 */;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AdminActivity` DISABLE KEYS */;
 /*!40000 ALTER TABLE `AdminActivity` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Aperture` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Aperture` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Atlas` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Atlas` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProc` DISABLE KEYS */;
 INSERT INTO `AutoProc` (`autoProcId`, `autoProcProgramId`, `spaceGroup`, `refinedCell_a`, `refinedCell_b`, `refinedCell_c`, `refinedCell_alpha`, `refinedCell_beta`, `refinedCell_gamma`, `recordTimeStamp`) VALUES (596406,56425592,'P 6 2 2',92.5546,92.5546,129.784,90,90,120,'2016-01-14 12:46:22'),
 (596411,56425944,'P 63 2 2',92.53,92.53,129.75,90,90,120,'2016-01-14 13:09:51'),
@@ -32,7 +43,10 @@ INSERT INTO `AutoProc` (`autoProcId`, `autoProcProgramId`, `spaceGroup`, `refine
 (603735,56985592,'I 2 3',78.15,78.15,78.15,90,90,90,'2016-01-22 11:54:01'),
 (603744,56986673,'I 2 3',78.1381,78.1381,78.1381,90,90,90,'2016-01-22 12:01:59');
 /*!40000 ALTER TABLE `AutoProc` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcIntegration` DISABLE KEYS */;
 INSERT INTO `AutoProcIntegration` (`autoProcIntegrationId`, `dataCollectionId`, `autoProcProgramId`, `startImageNumber`, `endImageNumber`, `refinedDetectorDistance`, `refinedXBeam`, `refinedYBeam`, `rotationAxisX`, `rotationAxisY`, `rotationAxisZ`, `beamVectorX`, `beamVectorY`, `beamVectorZ`, `cell_a`, `cell_b`, `cell_c`, `cell_alpha`, `cell_beta`, `cell_gamma`, `recordTimeStamp`, `anomalous`) VALUES (592508,993677,56425592,NULL,NULL,NULL,209.131,215.722,NULL,NULL,NULL,NULL,NULL,NULL,92.5546,92.5546,129.784,90,90,120,'2016-01-14 12:46:22',0),
 (592513,993677,56425944,1,3600,193.939,209.052,215.618,NULL,NULL,NULL,NULL,NULL,NULL,92.532,92.532,129.747,90,90,120,'2016-01-14 13:09:51',0),
@@ -48,7 +62,10 @@ INSERT INTO `AutoProcIntegration` (`autoProcIntegrationId`, `dataCollectionId`, 
 (600366,1002287,56985592,1,7200,176.239,209.177,215.651,NULL,NULL,NULL,NULL,NULL,NULL,78.153,78.153,78.153,90,90,90,'2016-01-22 11:54:01',0),
 (600376,1002287,56986673,1,7200,176.219,209.178,215.653,NULL,NULL,NULL,NULL,NULL,NULL,78.1381,78.1381,78.1381,90,90,90,'2016-01-22 12:01:59',0);
 /*!40000 ALTER TABLE `AutoProcIntegration` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcProgram` DISABLE KEYS */;
 INSERT INTO `AutoProcProgram` (`autoProcProgramId`, `processingCommandLine`, `processingPrograms`, `processingStatus`, `processingMessage`, `processingStartTime`, `processingEndTime`, `processingEnvironment`, `recordTimeStamp`, `processingJobId`, `processingPipelineId`, `parentAutoProcProgramId`) VALUES (56425592,'/dls_sw/apps/fast_dp/2395/src/fast_dp.py -a S -j 0 -J 18 /dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','fast_dp',1,NULL,NULL,NULL,NULL,'2016-01-14 12:46:22',NULL,NULL,NULL),
 (56425944,'xia2 min_images=3 -3dii -xparallel -1 -atom s -blend -project cm14451v1 -crystal xtlysjan41 -ispyb_xml_out ispyb.xml image=/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/tlys_jan_4_1_0001.cbf','xia2 3dii',1,NULL,NULL,NULL,NULL,'2016-01-14 13:09:51',NULL,NULL,NULL),
@@ -64,7 +81,10 @@ INSERT INTO `AutoProcProgram` (`autoProcProgramId`, `processingCommandLine`, `pr
 (56986674,'/dls_sw/apps/dimple/git-master/main.py  --dls-naming --slow -fpng /dls/i24/data/2018/cm19649-3/processed/test180731/hewlmesh_1/line4/hewlmesh_1_1_/xia2/3d-run/DataFiles/cm19649v3_xhewlmesh11_free.mtz /dls/i24/data/2018/cm19649-3/tmp/hewlmesh_1.4308.pdb /d','dimple',1,'Blob scores: 78','2018-07-31 08:55:52','2018-07-31 08:57:10',NULL,'2018-07-31 08:57:10',NULL,NULL,NULL),
 (56986675,NULL,'dimple',0,'Unknown error','2018-07-31 08:57:12',NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `AutoProcProgram` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcProgramAttachment` DISABLE KEYS */;
 INSERT INTO `AutoProcProgramAttachment` (`autoProcProgramAttachmentId`, `autoProcProgramId`, `fileType`, `fileName`, `filePath`, `recordTimeStamp`, `importanceRank`, `deleted`) VALUES (1023947,56425592,'Log','fast_dp.log','/dls/i03/data/2016/cm14451-1/processed/20160114/tlys_jan_4/tlys_jan_4_1_/fast_dp','2016-01-14 12:46:22',NULL,0),
 (1023955,56425944,'Result','cm14451v1_xtlysjan41_free.mtz','/dls/i03/data/2016/cm14451-1/processed/20160114/tlys_jan_4/tlys_jan_4_1_/xia2/3dii-run/DataFiles','2016-01-14 13:09:51',NULL,0),
@@ -92,10 +112,16 @@ INSERT INTO `AutoProcProgramAttachment` (`autoProcProgramAttachmentId`, `autoPro
 (1037188,56986674,'Result','final.mtz','/dls/i24/data/2018/cm19649-3/processed/test180731/hewlmesh_1/line4/hewlmesh_1_1_/xia2/3d-run/dimple','2018-07-31 08:57:10',NULL,0),
 (1037189,56986674,'Log','dimple.log','/dls/i24/data/2018/cm19649-3/processed/test180731/hewlmesh_1/line4/hewlmesh_1_1_/xia2/3d-run/dimple','2018-07-31 08:57:10',0,0);
 /*!40000 ALTER TABLE `AutoProcProgramAttachment` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcProgramMessage` DISABLE KEYS */;
 /*!40000 ALTER TABLE `AutoProcProgramMessage` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcScaling` DISABLE KEYS */;
 INSERT INTO `AutoProcScaling` (`autoProcScalingId`, `autoProcId`, `recordTimeStamp`) VALUES (596133,596406,'2016-01-14 12:46:22'),
 (596138,596411,'2016-01-14 13:09:51'),
@@ -109,7 +135,10 @@ INSERT INTO `AutoProcScaling` (`autoProcScalingId`, `autoProcId`, `recordTimeSta
 (603461,603735,'2016-01-22 11:54:01'),
 (603470,603744,'2016-01-22 12:01:59');
 /*!40000 ALTER TABLE `AutoProcScaling` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcScalingStatistics` DISABLE KEYS */;
 INSERT INTO `AutoProcScalingStatistics` (`autoProcScalingStatisticsId`, `autoProcScalingId`, `scalingStatisticsType`, `comments`, `resolutionLimitLow`, `resolutionLimitHigh`, `rMerge`, `rMeasWithinIPlusIMinus`, `rMeasAllIPlusIMinus`, `rPimWithinIPlusIMinus`, `rPimAllIPlusIMinus`, `fractionalPartialBias`, `nTotalObservations`, `nTotalUniqueObservations`, `meanIOverSigI`, `completeness`, `multiplicity`, `anomalousCompleteness`, `anomalousMultiplicity`, `recordTimeStamp`, `anomalous`, `ccHalf`, `ccAnomalous`, `resIOverSigI2`) VALUES (1770617,596133,'outerShell',NULL,1.65,1.61,0.766,NULL,0.789,NULL,NULL,NULL,105090,3089,5.5,97.8,34,96.8,17.8,'2016-01-14 12:46:22',0,91.7,15.8,NULL),
 (1770618,596133,'innerShell',NULL,29.5,7.18,0.061,NULL,0.063,NULL,NULL,NULL,17093,593,61.7,98.6,28.8,100,19.5,'2016-01-14 12:46:22',0,99.9,73.4,NULL),
@@ -145,7 +174,10 @@ INSERT INTO `AutoProcScalingStatistics` (`autoProcScalingStatisticsId`, `autoPro
 (1792629,603470,'innerShell',NULL,39.07,5.95,0.051,NULL,0.053,0.008,0.006,NULL,16799,235,117.7,99.7,71.5,100,41.9,'2016-01-22 12:01:59',0,1,0.654,NULL),
 (1792630,603470,'overall',NULL,39.07,1.33,0.08,NULL,0.082,0.013,0.009,NULL,1305126,18395,30.9,100,71,100,36.1,'2016-01-22 12:01:59',0,1,0.482,NULL);
 /*!40000 ALTER TABLE `AutoProcScalingStatistics` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcScaling_has_Int` DISABLE KEYS */;
 INSERT INTO `AutoProcScaling_has_Int` (`autoProcScaling_has_IntId`, `autoProcScalingId`, `autoProcIntegrationId`, `recordTimeStamp`) VALUES (592507,596133,592508,'2016-01-14 12:46:22'),
 (592512,596138,592513,'2016-01-14 13:09:51'),
@@ -161,31 +193,58 @@ INSERT INTO `AutoProcScaling_has_Int` (`autoProcScaling_has_IntId`, `autoProcSca
 (600365,603461,600366,'2016-01-22 11:54:01'),
 (600375,603470,600376,'2016-01-22 12:01:59');
 /*!40000 ALTER TABLE `AutoProcScaling_has_Int` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AutoProcStatus` DISABLE KEYS */;
 /*!40000 ALTER TABLE `AutoProcStatus` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_automationError` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_automationError` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_automationFault` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_automationFault` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_component_beamline` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_component_beamline` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_fault` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_fault` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_subcomponent_beamline` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_subcomponent_beamline` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_system_beamline` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_system_beamline` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BFactorFit` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BFactorFit` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSample` DISABLE KEYS */;
 INSERT INTO `BLSample` (`blSampleId`, `diffractionPlanId`, `crystalId`, `containerId`, `name`, `code`, `location`, `holderLength`, `loopLength`, `loopType`, `wireWidth`, `comments`, `completionStage`, `structureStage`, `publicationStage`, `publicationComments`, `blSampleStatus`, `isInSampleChanger`, `lastKnownCenteringPosition`, `POSITIONID`, `recordTimeStamp`, `SMILES`, `blSubSampleId`, `lastImageURL`, `screenComponentGroupId`, `volume`, `dimension1`, `dimension2`, `dimension3`, `shape`, `packingFraction`, `preparationTemeprature`, `preparationHumidity`, `blottingTime`, `blottingForce`, `blottingDrainTime`, `support`, `subLocation`, `staffComments`, `source`) VALUES (11550,NULL,3918,1326,'Sample-001','SAM-011550','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:16:11',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (11553,NULL,3921,1326,'Sample-002','SAM-011553','2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:21:43',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
@@ -210,13 +269,19 @@ INSERT INTO `BLSample` (`blSampleId`, `diffractionPlanId`, `crystalId`, `contain
 (398827,NULL,333308,34883,'XPDF-2','XPDF-0002',NULL,NULL,NULL,NULL,NULL,'Test sample for XPDF',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-10-26 14:51:23',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%'),
 (398828,NULL,NULL,34888,'hello','hello','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2020-10-14 18:33:06',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%');
 /*!40000 ALTER TABLE `BLSample` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleGroup` DISABLE KEYS */;
 INSERT INTO `BLSampleGroup` (`blSampleGroupId`, `name`, `proposalId`, `ownerId`) VALUES (5,NULL,37027,NULL),
 (6,'foo',37027,NULL),
 (7,'bar',37027,NULL);
 /*!40000 ALTER TABLE `BLSampleGroup` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleGroup_has_BLSample` DISABLE KEYS */;
 INSERT INTO `BLSampleGroup_has_BLSample` (`blSampleGroupId`, `blSampleId`, `groupOrder`, `type`, `blSampleTypeId`) VALUES (5,398824,1,'background',NULL),
 (5,398827,2,'sample',NULL),
@@ -224,19 +289,31 @@ INSERT INTO `BLSampleGroup_has_BLSample` (`blSampleGroupId`, `blSampleId`, `grou
 (7,374695,NULL,NULL,NULL),
 (7,398810,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `BLSampleGroup_has_BLSample` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImage` DISABLE KEYS */;
 INSERT INTO `BLSampleImage` (`blSampleImageId`, `blSampleId`, `micronsPerPixelX`, `micronsPerPixelY`, `imageFullPath`, `blSampleImageScoreId`, `comments`, `blTimeStamp`, `containerInspectionId`, `modifiedTimeStamp`, `offsetX`, `offsetY`) VALUES (2,398819,NULL,NULL,'/dls/i03/data/2016/cm1234-5/something.jpg',NULL,NULL,'2016-10-05 11:23:33',NULL,NULL,0,0),
 (5,398816,1.1,1.2,'/dls/i03/data/2016/cm1234-5/something-else.jpg',NULL,NULL,'2016-10-10 14:31:06',4,NULL,0,0);
 /*!40000 ALTER TABLE `BLSampleImage` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImageAnalysis` DISABLE KEYS */;
 INSERT INTO `BLSampleImageAnalysis` (`blSampleImageAnalysisId`, `blSampleImageId`, `oavSnapshotBefore`, `oavSnapshotAfter`, `deltaX`, `deltaY`, `goodnessOfFit`, `scaleFactor`, `resultCode`, `matchStartTimeStamp`, `matchEndTimeStamp`) VALUES (4,5,'/dls/i02-2/data/2016/cm14559-5/.ispyb/something.jpg',NULL,10,11,0.94,0.5,'OK','2016-12-09 12:32:24','2016-12-09 12:32:25');
 /*!40000 ALTER TABLE `BLSampleImageAnalysis` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImageMeasurement` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSampleImageMeasurement` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImageScore` DISABLE KEYS */;
 INSERT INTO `BLSampleImageScore` (`blSampleImageScoreId`, `name`, `score`, `colour`) VALUES (1,'Clear',0,'#cccccc'),
 (2,'Contaminated',1,'#fffd96'),
@@ -249,33 +326,60 @@ INSERT INTO `BLSampleImageScore` (`blSampleImageScoreId`, `name`, `score`, `colo
 (9,'3D Crystals',9,'#77dd77'),
 (10,'Heavy Precipitate',3,'#ff6961');
 /*!40000 ALTER TABLE `BLSampleImageScore` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImage_has_AutoScoreClass` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSampleImage_has_AutoScoreClass` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImage_has_Positioner` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSampleImage_has_Positioner` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSamplePosition` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSamplePosition` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleType_has_Component` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSampleType_has_Component` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSample_has_DataCollectionPlan` DISABLE KEYS */;
 INSERT INTO `BLSample_has_DataCollectionPlan` (`blSampleId`, `dataCollectionPlanId`, `planOrder`) VALUES (398824,197792,1),
 (398827,197792,2);
 /*!40000 ALTER TABLE `BLSample_has_DataCollectionPlan` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSample_has_EnergyScan` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSample_has_EnergyScan` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSample_has_Ligand` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSample_has_Ligand` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSample_has_Positioner` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSample_has_Positioner` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSession` DISABLE KEYS */;
 INSERT INTO `BLSession` (`sessionId`, `beamLineSetupId`, `proposalId`, `beamCalendarId`, `startDate`, `endDate`, `beamLineName`, `scheduled`, `nbShifts`, `comments`, `beamLineOperator`, `bltimeStamp`, `visit_number`, `usedFlag`, `lastUpdate`, `externalId`, `archived`, `riskRating`, `purgedProcessedData`, `icatId`) VALUES (55167,1,37027,NULL,'2016-01-01 09:00:00','2016-01-01 17:00:00','i03',NULL,NULL,'ghfg',NULL,'2015-12-21 15:20:43',1,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
 (55168,1,37027,NULL,'2016-03-11 09:00:00','2016-03-11 17:00:00','i03',NULL,NULL,'jhgjh',NULL,'2015-12-21 15:20:44',2,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
@@ -284,43 +388,79 @@ INSERT INTO `BLSession` (`sessionId`, `beamLineSetupId`, `proposalId`, `beamCale
 (339531,NULL,141666,NULL,NULL,NULL,'i03',NULL,NULL,NULL,NULL,'2016-03-17 15:08:09',3,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL),
 (339535,NULL,37027,NULL,'2018-03-27 09:00:00','2018-07-27 09:00:00','i02-2',NULL,NULL,NULL,NULL,'2018-04-05 15:48:37',99,NULL,'0000-00-00 00:00:00',NULL,0,NULL,0,NULL);
 /*!40000 ALTER TABLE `BLSession` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSession_has_SCPosition` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSession_has_SCPosition` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSubSample` DISABLE KEYS */;
 INSERT INTO `BLSubSample` (`blSubSampleId`, `blSampleId`, `diffractionPlanId`, `blSampleImageId`, `positionId`, `position2Id`, `motorPositionId`, `blSubSampleUUID`, `imgFileName`, `imgFilePath`, `comments`, `recordTimeStamp`, `source`, `type`) VALUES (2,398816,197784,NULL,2,5,NULL,NULL,NULL,NULL,NULL,'2016-09-30 14:25:19','manual',NULL),
 (5,398819,197784,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-10-05 10:16:44','manual',NULL);
 /*!40000 ALTER TABLE `BLSubSample` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSubSample_has_Positioner` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BLSubSample_has_Positioner` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BeamApertures` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BeamApertures` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BeamCalendar` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BeamCalendar` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BeamCentres` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BeamCentres` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BeamLineSetup` DISABLE KEYS */;
 INSERT INTO `BeamLineSetup` (`beamLineSetupId`, `detectorId`, `synchrotronMode`, `undulatorType1`, `undulatorType2`, `undulatorType3`, `focalSpotSizeAtSample`, `focusingOptic`, `beamDivergenceHorizontal`, `beamDivergenceVertical`, `polarisation`, `monochromatorType`, `setupDate`, `synchrotronName`, `maxExpTimePerDataCollection`, `maxExposureTimePerImage`, `minExposureTimePerImage`, `goniostatMaxOscillationSpeed`, `goniostatMaxOscillationWidth`, `goniostatMinOscillationWidth`, `maxTransmission`, `minTransmission`, `recordTimeStamp`, `CS`, `beamlineName`, `beamSizeXMin`, `beamSizeXMax`, `beamSizeYMin`, `beamSizeYMax`, `energyMin`, `energyMax`, `omegaMin`, `omegaMax`, `kappaMin`, `kappaMax`, `phiMin`, `phiMax`, `active`, `numberOfImagesMax`, `numberOfImagesMin`, `boxSizeXMin`, `boxSizeXMax`, `boxSizeYMin`, `boxSizeYMax`, `monoBandwidthMin`, `monoBandwidthMax`, `preferredDataCentre`, `amplitudeContrast`) VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2007-04-26 00:00:00','Diamond Light Source',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-19 22:56:25',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `BeamLineSetup` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BeamlineAction` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BeamlineAction` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BeamlineStats` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BeamlineStats` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `CTF` DISABLE KEYS */;
 /*!40000 ALTER TABLE `CTF` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `CalendarHash` DISABLE KEYS */;
 /*!40000 ALTER TABLE `CalendarHash` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Component` DISABLE KEYS */;
 INSERT INTO `Component` (`componentId`, `componentTypeId`, `proposalId`, `name`, `composition`) VALUES (1,8,NULL,'H','Hydrogen'),
 (2,8,NULL,'He','Helium'),
@@ -441,14 +581,23 @@ INSERT INTO `Component` (`componentId`, `componentTypeId`, `proposalId`, `name`,
 (117,8,NULL,'Ts','Tennessine'),
 (118,8,NULL,'Og','Oganesson');
 /*!40000 ALTER TABLE `Component` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ComponentLattice` DISABLE KEYS */;
 INSERT INTO `ComponentLattice` (`componentLatticeId`, `componentId`, `spaceGroup`, `cell_a`, `cell_b`, `cell_c`, `cell_alpha`, `cell_beta`, `cell_gamma`) VALUES (1,123497,'P21',10.1,11.1,12.1,90.1,90.2,90.3);
 /*!40000 ALTER TABLE `ComponentLattice` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Component_has_SubType` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Component_has_SubType` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Container` DISABLE KEYS */;
 INSERT INTO `Container` (`containerId`, `dewarId`, `code`, `containerType`, `capacity`, `sampleChangerLocation`, `containerStatus`, `bltimeStamp`, `beamlineLocation`, `screenId`, `scheduleId`, `barcode`, `imagerId`, `sessionId`, `ownerId`, `requestedImagerId`, `requestedReturn`, `comments`, `experimentType`, `storageTemperature`, `containerRegistryId`, `scLocationUpdated`, `priorityPipelineId`, `experimentTypeId`, `containerTypeId`, `currentDewarId`, `parentContainerId`, `source`, `parentContainerLocation`) VALUES (1326,573,'Container-1-cm0001-1','Puck-16',16,'3','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000001',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,4,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
 (1329,573,'Container-2-cm0001-1','Puck-16',16,'4','processing',NULL,'i03',NULL,NULL,'container-cm0001-1-0000002',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
@@ -464,42 +613,72 @@ INSERT INTO `Container` (`containerId`, `dewarId`, `code`, `containerType`, `cap
 (34883,NULL,'XPDF-container-1','XPDF container',NULL,NULL,'processing',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
 (34888,8578,'TestSim01','CrystalQuickX',192,'1','in_storage',NULL,'i02-2',NULL,2,'VMXiSim-001',7,339535,1,7,0,NULL,NULL,NULL,5,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL);
 /*!40000 ALTER TABLE `Container` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerHistory` DISABLE KEYS */;
 INSERT INTO `ContainerHistory` (`containerHistoryId`, `containerId`, `location`, `blTimeStamp`, `status`, `beamlineName`, `currentDewarId`) VALUES (6,34874,'3','2016-09-30 12:56:21','in_localstorage','i03',NULL),
 (7,34874,'3','2017-10-19 13:35:34','in_storage','i02-2',NULL);
 /*!40000 ALTER TABLE `ContainerHistory` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerInspection` DISABLE KEYS */;
 INSERT INTO `ContainerInspection` (`containerInspectionId`, `containerId`, `inspectionTypeId`, `imagerId`, `temperature`, `blTimeStamp`, `scheduleComponentid`, `state`, `priority`, `manual`, `scheduledTimeStamp`, `completedTimeStamp`) VALUES (4,34874,1,NULL,NULL,'2018-08-07 15:20:00',NULL,'Completed',99,NULL,'2018-08-07 12:08:00','2018-08-07 15:36:00');
 /*!40000 ALTER TABLE `ContainerInspection` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerQueue` DISABLE KEYS */;
 INSERT INTO `ContainerQueue` (`containerQueueId`, `containerId`, `personId`, `createdTimeStamp`, `completedTimeStamp`) VALUES (2,34874,NULL,'2016-09-30 12:56:21',NULL),
 (8,34877,NULL,'2016-10-05 09:09:59',NULL);
 /*!40000 ALTER TABLE `ContainerQueue` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerQueueSample` DISABLE KEYS */;
 INSERT INTO `ContainerQueueSample` (`containerQueueSampleId`, `containerQueueId`, `blSubSampleId`, `status`, `startTime`, `endTime`, `dataCollectionPlanId`, `blSampleId`) VALUES (2,2,2,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ContainerQueueSample` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerRegistry` DISABLE KEYS */;
 INSERT INTO `ContainerRegistry` (`containerRegistryId`, `barcode`, `comments`, `recordTimestamp`) VALUES (4,'DLS-0001',NULL,'2017-09-21 10:01:07'),
 (5,'VMXiSim-001',NULL,'2019-03-22 11:48:43');
 /*!40000 ALTER TABLE `ContainerRegistry` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerRegistry_has_Proposal` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ContainerRegistry_has_Proposal` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerReport` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ContainerReport` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `CourierTermsAccepted` DISABLE KEYS */;
 /*!40000 ALTER TABLE `CourierTermsAccepted` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `CryoemInitialModel` DISABLE KEYS */;
 /*!40000 ALTER TABLE `CryoemInitialModel` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Crystal` DISABLE KEYS */;
 INSERT INTO `Crystal` (`crystalId`, `diffractionPlanId`, `proteinId`, `crystalUUID`, `name`, `spaceGroup`, `morphology`, `color`, `size_X`, `size_Y`, `size_Z`, `cell_a`, `cell_b`, `cell_c`, `cell_alpha`, `cell_beta`, `cell_gamma`, `comments`, `pdbFileName`, `pdbFilePath`, `recordTimeStamp`, `abundance`, `theoreticalDensity`) VALUES (3918,NULL,4380,NULL,'Crystal 01',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),
 (3921,NULL,4383,NULL,'Crystal 02',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-17 16:11:19',NULL,NULL),
@@ -520,16 +699,28 @@ INSERT INTO `Crystal` (`crystalId`, `diffractionPlanId`, `proteinId`, `crystalUU
 (333301,NULL,123491,NULL,NULL,'P41212',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-19 22:58:00',NULL,NULL),
 (333308,NULL,123497,NULL,'SampleType01','P12121',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'sample type comments ...',NULL,NULL,'2017-03-23 22:06:42',NULL,NULL);
 /*!40000 ALTER TABLE `Crystal` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `CrystalComposition` DISABLE KEYS */;
 /*!40000 ALTER TABLE `CrystalComposition` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Crystal_has_UUID` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Crystal_has_UUID` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DataAcquisition` DISABLE KEYS */;
 /*!40000 ALTER TABLE `DataAcquisition` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DataCollection` DISABLE KEYS */;
 INSERT INTO `DataCollection` (`dataCollectionId`, `BLSAMPLEID`, `SESSIONID`, `experimenttype`, `dataCollectionNumber`, `startTime`, `endTime`, `runStatus`, `axisStart`, `axisEnd`, `axisRange`, `overlap`, `numberOfImages`, `startImageNumber`, `numberOfPasses`, `exposureTime`, `imageDirectory`, `imagePrefix`, `imageSuffix`, `imageContainerSubPath`, `fileTemplate`, `wavelength`, `resolution`, `detectorDistance`, `xBeam`, `yBeam`, `comments`, `printableForReport`, `CRYSTALCLASS`, `slitGapVertical`, `slitGapHorizontal`, `transmission`, `synchrotronMode`, `xtalSnapshotFullPath1`, `xtalSnapshotFullPath2`, `xtalSnapshotFullPath3`, `xtalSnapshotFullPath4`, `rotationAxis`, `phiStart`, `kappaStart`, `omegaStart`, `chiStart`, `resolutionAtCorner`, `detector2Theta`, `DETECTORMODE`, `undulatorGap1`, `undulatorGap2`, `undulatorGap3`, `beamSizeAtSampleX`, `beamSizeAtSampleY`, `centeringMethod`, `averageTemperature`, `ACTUALSAMPLEBARCODE`, `ACTUALSAMPLESLOTINCONTAINER`, `ACTUALCONTAINERBARCODE`, `ACTUALCONTAINERSLOTINSC`, `actualCenteringPosition`, `beamShape`, `dataCollectionGroupId`, `POSITIONID`, `detectorId`, `FOCALSPOTSIZEATSAMPLEX`, `POLARISATION`, `FOCALSPOTSIZEATSAMPLEY`, `APERTUREID`, `screeningOrigId`, `startPositionId`, `endPositionId`, `flux`, `strategySubWedgeOrigId`, `blSubSampleId`, `flux_end`, `bestWilsonPlotPath`, `processedDataFile`, `datFullPath`, `magnification`, `totalAbsorbedDose`, `binning`, `particleDiameter`, `boxSize_CTF`, `minResolution`, `minDefocus`, `maxDefocus`, `defocusStepSize`, `amountAstigmatism`, `extractSize`, `bgRadius`, `voltage`, `objAperture`, `c1aperture`, `c2aperture`, `c3aperture`, `c1lens`, `c2lens`, `c3lens`, `totalExposedDose`, `nominalMagnification`, `nominalDefocus`, `imageSizeX`, `imageSizeY`, `pixelSizeOnImage`, `phasePlate`, `dataCollectionPlanId`) VALUES (993677,374695,55167,NULL,1,'2016-01-14 12:40:34','2016-01-14 12:41:54','DataCollection Successful',45,0.1,0.1,0,3600,1,1,0.02,'/dls/i03/data/2016/cm14451-1/20160114/tlys_jan_4/','tlys_jan_4','cbf',NULL,'tlys_jan_4_1_####.cbf',1.28255,1.6,193.087,215.62,208.978,'(-402,345,142) EDNAStrategy4: subWedge:1Aperture: Medium',1,NULL,0.059918,0.099937,40.1936,'User','/dls/i03/data/2016/cm14451-1/jpegs/20160114/tlys_jan_4/tlys_jan_4_1_1_315.0.png','/dls/i03/data/2016/cm14451-1/jpegs/20160114/tlys_jan_4/tlys_jan_4_1_1_225.0.png','/dls/i03/data/2016/cm14451-1/jpegs/20160114/tlys_jan_4/tlys_jan_4_1_1_135.0.png','/dls/i03/data/2016/cm14451-1/jpegs/20160114/tlys_jan_4/tlys_jan_4_1_1_45.0.png','Omega',NULL,NULL,45,NULL,NULL,NULL,NULL,5.685,NULL,NULL,0.05,0.02,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,988855,595236,NULL,80,NULL,20,6,NULL,NULL,NULL,833107367454.3083,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (1002287,NULL,55167,NULL,2,'2016-01-22 11:25:18','2016-01-22 11:28:23','DataCollection Successful',0,0.1,0.1,0,7200,1,1,0.025,'/dls/i03/data/2016/cm14451-1/20160122/gw/ins2/001/','ins2','cbf',NULL,'ins2_2_####.cbf',1.2,1.41777,175,215.618,209.102,'(-307,322,-184) Aperture: Large',1,NULL,0.059918,0.099937,0.999423,'User','/dls/i03/data/2016/cm14451-1/jpegs/20160122/gw/ins2/001/ins2_2_1_270.0.png','/dls/i03/data/2016/cm14451-1/jpegs/20160122/gw/ins2/001/ins2_2_1_180.0.png','/dls/i03/data/2016/cm14451-1/jpegs/20160122/gw/ins2/001/ins2_2_1_90.0.png','/dls/i03/data/2016/cm14451-1/jpegs/20160122/gw/ins2/001/ins2_2_1_0.0.png','Omega',NULL,NULL,0,NULL,NULL,NULL,NULL,6.1213,NULL,NULL,0.08,0.02,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,996311,602072,NULL,80,NULL,20,3752,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -538,13 +729,22 @@ INSERT INTO `DataCollection` (`dataCollectionId`, `BLSAMPLEID`, `SESSIONID`, `ex
 (1066786,398810,55168,NULL,2,'2016-04-18 11:04:44','2016-04-18 11:04:57','DataCollection Successful',0,0.5,0.5,-44.5,3,1,1,0.1,'/dls/i03/data/2016/cm14451-2/gw/20160418/thau/edna_test/','thau','cbf',NULL,'thau_2_####.cbf',0.976253,1.5,266.693,214.372,208.299,'(-345,-241,-185) Aperture: Large',1,NULL,0.059918,0.099937,5.00016,'User','/dls/i03/data/2016/cm14451-2/jpegs/gw/20160418/thau/edna_test/thau_2_1_90.0.png','/dls/i03/data/2016/cm14451-2/jpegs/gw/20160418/thau/edna_test/thau_2_1_0.0.png',NULL,NULL,'Omega',NULL,NULL,0,NULL,NULL,NULL,NULL,5.301,NULL,NULL,0.08,0.02,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1054243,661459,NULL,80,NULL,20,3752,NULL,NULL,NULL,57087013071.909134,NULL,2,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (6017405,374695,55167,NULL,1,'2021-02-25 10:15:06','2021-02-25 10:15:47','DataCollection Successful',210,0,0,0,480,1,1,0.004,'/dls/i03/data/2021/cm28170-1/xraycentring/screening/TestLysozyme/Lys_6/','Lys_6','h5',NULL,'Lys_6_1_master.h5',0.976254,4.2989,337,78.0483,83.9258,'Xray centring - Diffraction grid scan of 30 by 16 images, Top left [304,229], Bottom right [1024,599]',1,NULL,0.499922,0.49994,100,'User','/dls/i03/data/2021/cm28170-1/jpegs/xraycentring/screening/TestLysozyme/Lys_6/Lys_6_1_210.0.png','/dls/i03/data/2021/cm28170-1/jpegs/xraycentring/screening/TestLysozyme/Lys_6/Lys_6_1_210.0.png','/dls/i03/data/2021/cm28170-1/jpegs/xraycentring/screening/TestLysozyme/Lys_6/Lys_6_1_210.0.png',NULL,NULL,0,NULL,210,-0.000047,NULL,NULL,NULL,5.28695,NULL,NULL,0.02,0.02,'UNSPECIFIED',NULL,NULL,NULL,NULL,NULL,NULL,NULL,5440739,4642226,78,80,NULL,20,NULL,NULL,NULL,NULL,731694586254.7522,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `DataCollection` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DataCollectionComment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `DataCollectionComment` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DataCollectionFileAttachment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `DataCollectionFileAttachment` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DataCollectionGroup` DISABLE KEYS */;
 INSERT INTO `DataCollectionGroup` (`dataCollectionGroupId`, `sessionId`, `comments`, `blSampleId`, `experimentType`, `startTime`, `endTime`, `crystalClass`, `detectorMode`, `actualSampleBarcode`, `actualSampleSlotInContainer`, `actualContainerBarcode`, `actualContainerSlotInSC`, `xtalSnapshotFullPath`, `scanParameters`, `experimentTypeId`) VALUES (988855,55167,NULL,374695,'SAD',NULL,NULL,NULL,'Ext. Trigger','HA00AU3712',NULL,NULL,NULL,NULL,NULL,NULL),
 (996311,55167,NULL,NULL,'SAD',NULL,NULL,NULL,'Ext. Trigger',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -553,11 +753,17 @@ INSERT INTO `DataCollectionGroup` (`dataCollectionGroupId`, `sessionId`, `commen
 (1054243,55168,NULL,398810,'SAD',NULL,NULL,NULL,'Ext. Trigger','CA00AG9993',NULL,NULL,NULL,NULL,NULL,NULL),
 (5440739,55167,NULL,374695,'Mesh',NULL,NULL,NULL,NULL,'NR',NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `DataCollectionGroup` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DataCollectionPlan_has_Detector` DISABLE KEYS */;
 INSERT INTO `DataCollectionPlan_has_Detector` (`dataCollectionPlanHasDetectorId`, `dataCollectionPlanId`, `detectorId`, `exposureTime`, `distance`, `roll`) VALUES (4,197792,8,5.4,136.86,45);
 /*!40000 ALTER TABLE `DataCollectionPlan_has_Detector` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Dewar` DISABLE KEYS */;
 INSERT INTO `Dewar` (`dewarId`, `shippingId`, `code`, `comments`, `storageLocation`, `dewarStatus`, `bltimeStamp`, `isStorageDewar`, `barCode`, `firstExperimentId`, `customsValue`, `transportValue`, `trackingNumberToSynchrotron`, `trackingNumberFromSynchrotron`, `type`, `facilityCode`, `weight`, `deliveryAgent_barcode`, `extra`, `source`, `externalShippingIdFromSynchrotron`, `dewarRegistryId`) VALUES (573,474,'Dewar-1-cm0001-1',NULL,NULL,'processing',NULL,0,'dewar-cm0001-1-0000001',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
 (576,474,'Dewar-2-cm0001-1',NULL,NULL,'at DLS',NULL,0,'dewar-cm0001-1-0000002',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
@@ -567,28 +773,49 @@ INSERT INTO `Dewar` (`dewarId`, `shippingId`, `code`, `comments`, `storageLocati
 (8572,7227,'cm14451-2_Dewar1',NULL,NULL,'processing','2016-02-10 13:03:07',0,NULL,NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL),
 (8578,7231,'Dewar_1',NULL,NULL,'opened',NULL,0,'cm14451-12345',NULL,NULL,NULL,NULL,NULL,'Dewar',NULL,NULL,NULL,NULL,'root@%',NULL,NULL);
 /*!40000 ALTER TABLE `Dewar` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DewarLocation` DISABLE KEYS */;
 /*!40000 ALTER TABLE `DewarLocation` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DewarRegistry` DISABLE KEYS */;
 /*!40000 ALTER TABLE `DewarRegistry` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DewarRegistry_has_Proposal` DISABLE KEYS */;
 /*!40000 ALTER TABLE `DewarRegistry_has_Proposal` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DewarReport` DISABLE KEYS */;
 /*!40000 ALTER TABLE `DewarReport` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DewarTransportHistory` DISABLE KEYS */;
 /*!40000 ALTER TABLE `DewarTransportHistory` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DiffractionPlan` DISABLE KEYS */;
 INSERT INTO `DiffractionPlan` (`diffractionPlanId`, `name`, `experimentKind`, `observedResolution`, `minimalResolution`, `exposureTime`, `oscillationRange`, `maximalResolution`, `screeningResolution`, `radiationSensitivity`, `anomalousScatterer`, `preferredBeamSizeX`, `preferredBeamSizeY`, `preferredBeamDiameter`, `comments`, `DIFFRACTIONPLANUUID`, `aimedCompleteness`, `aimedIOverSigmaAtHighestRes`, `aimedMultiplicity`, `aimedResolution`, `anomalousData`, `complexity`, `estimateRadiationDamage`, `forcedSpaceGroup`, `requiredCompleteness`, `requiredMultiplicity`, `requiredResolution`, `strategyOption`, `kappaStrategyOption`, `numberOfPositions`, `minDimAccrossSpindleAxis`, `maxDimAccrossSpindleAxis`, `radiationSensitivityBeta`, `radiationSensitivityGamma`, `minOscWidth`, `recordTimeStamp`, `monochromator`, `energy`, `transmission`, `boxSizeX`, `boxSizeY`, `kappaStart`, `axisStart`, `axisRange`, `numberOfImages`, `presetForProposalId`, `beamLineName`, `detectorId`, `distance`, `orientation`, `monoBandwidth`, `centringMethod`, `userPath`, `robotPlateTemperature`, `exposureTemperature`, `experimentTypeId`, `purificationColumnId`, `collectionMode`, `priority`, `qMin`, `qMax`, `reductionParametersAveraging`, `scanParameters`) VALUES (197784,NULL,'OSC',NULL,NULL,0.2,NULL,NULL,NULL,NULL,NULL,10.5,10.5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,1.1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-20 23:50:27',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (197788,NULL,NULL,NULL,NULL,10,NULL,NULL,NULL,NULL,NULL,160,100,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-10-26 15:28:12',NULL,150,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,4,162.5,45,330.6,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (197792,'XPDF-1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2017-03-22 10:56:32',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `DiffractionPlan` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `EnergyScan` DISABLE KEYS */;
 INSERT INTO `EnergyScan` (`energyScanId`, `sessionId`, `blSampleId`, `fluorescenceDetector`, `scanFileFullPath`, `jpegChoochFileFullPath`, `element`, `startEnergy`, `endEnergy`, `transmissionFactor`, `exposureTime`, `axisPosition`, `synchrotronCurrent`, `temperature`, `peakEnergy`, `peakFPrime`, `peakFDoublePrime`, `inflectionEnergy`, `inflectionFPrime`, `inflectionFDoublePrime`, `xrayDose`, `startTime`, `endTime`, `edgeEnergy`, `filename`, `beamSizeVertical`, `beamSizeHorizontal`, `choochFileFullPath`, `crystalClass`, `comments`, `flux`, `flux_end`, `workingDirectory`, `blSubSampleId`) VALUES (49661,55167,NULL,'Vortex1_MCAScaler','/dls/i03/data/2016/cm14451-1/fe1.fluo','/dls/i03/data/2016/cm14451-1/fluorescence_scans/fe1_chooch.png','Fe',7062.75,7170.88,0.016,1,NULL,298.569,100,7115.73,-4.79,4.66,7095.13,-7.26,1.66,0,'2016-01-12 14:51:20','2016-01-12 14:58:33','K',NULL,20,50,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (49662,55167,NULL,'Vortex1_MCAScaler','/dls/i03/data/2016/cm14451-1/fe1.fluo','/dls/i03/data/2016/cm14451-1/fluorescence_scans/fe1_chooch.png','Fe',7062.75,7170.88,0.256,1,NULL,299.986,100,7131.44,-6.26,5.1,7122.6,-8.69,2.52,0,'2016-01-12 15:00:34','2016-01-12 15:05:28','K',NULL,20,50,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -618,32 +845,59 @@ INSERT INTO `EnergyScan` (`energyScanId`, `sessionId`, `blSampleId`, `fluorescen
 (50287,55168,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (50290,55168,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `EnergyScan` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Event` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Event` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `EventChain` DISABLE KEYS */;
 /*!40000 ALTER TABLE `EventChain` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ExperimentKindDetails` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ExperimentKindDetails` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `FoilHole` DISABLE KEYS */;
 /*!40000 ALTER TABLE `FoilHole` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `GeometryClassname` DISABLE KEYS */;
 /*!40000 ALTER TABLE `GeometryClassname` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `GridImageMap` DISABLE KEYS */;
 /*!40000 ALTER TABLE `GridImageMap` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `GridInfo` DISABLE KEYS */;
 INSERT INTO `GridInfo` (`gridInfoId`, `xOffset`, `yOffset`, `dx_mm`, `dy_mm`, `steps_x`, `steps_y`, `meshAngle`, `recordTimeStamp`, `workflowMeshId`, `orientation`, `dataCollectionGroupId`, `snapshot_offsetXPixel`, `snapshot_offsetYPixel`, `snaked`, `dataCollectionId`, `patchesX`, `patchesY`, `micronsPerPixelX`, `micronsPerPixelY`) VALUES (1281212,NULL,NULL,0.02,0.02,30,16,NULL,'2021-02-25 10:15:06',NULL,'horizontal',5440739,304,229.75,1,6017405,1,1,0.83,0.83);
 /*!40000 ALTER TABLE `GridInfo` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `GridSquare` DISABLE KEYS */;
 /*!40000 ALTER TABLE `GridSquare` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Image` DISABLE KEYS */;
 INSERT INTO `Image` (`imageId`, `dataCollectionId`, `imageNumber`, `fileName`, `fileLocation`, `measuredIntensity`, `jpegFileFullPath`, `jpegThumbnailFileFullPath`, `temperature`, `cumulativeIntensity`, `synchrotronCurrent`, `comments`, `machineMessage`, `BLTIMESTAMP`, `motorPositionId`, `recordTimeStamp`) VALUES (274837165,1052494,1,'xtal1_1_0001.cbf','/dls/i03/data/2016/cm14451-2/20160413/test_xtal',0,'/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_1_0001.jpeg','/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_1_0001.thumb.jpeg',294,0,298.847,NULL,NULL,'2016-04-13 11:18:39',NULL,'2016-04-13 11:18:39'),
 (274837168,1052494,2,'xtal1_1_0002.cbf','/dls/i03/data/2016/cm14451-2/20160413/test_xtal',0,'/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_1_0002.jpeg','/dls/i03/data/2016/cm14451-2/jpegs/20160413/test_xtal/xtal1_1_0002.thumb.jpeg',294,0,298.74,NULL,NULL,'2016-04-13 11:18:50',NULL,'2016-04-13 11:18:50'),
@@ -654,7 +908,10 @@ INSERT INTO `Image` (`imageId`, `dataCollectionId`, `imageNumber`, `fileName`, `
 (284718055,1066786,2,'thau_2_0002.cbf','/dls/i03/data/2016/cm14451-2/gw/20160418/thau/edna_test',0,'/dls/i03/data/2016/cm14451-2/jpegs/gw/20160418/thau/edna_test/thau_2_0002.jpeg','/dls/i03/data/2016/cm14451-2/jpegs/gw/20160418/thau/edna_test/thau_2_0002.thumb.jpeg',294,0,299.933,NULL,NULL,'2016-04-14 02:19:04',NULL,'2016-04-14 02:19:04'),
 (284718118,1066786,3,'thau_2_0003.cbf','/dls/i03/data/2016/cm14451-2/gw/20160418/thau/edna_test',0,'/dls/i03/data/2016/cm14451-2/jpegs/gw/20160418/thau/edna_test/thau_2_0003.jpeg','/dls/i03/data/2016/cm14451-2/jpegs/gw/20160418/thau/edna_test/thau_2_0003.thumb.jpeg',294,0,299.908,NULL,NULL,'2016-04-14 02:19:04',NULL,'2016-04-14 02:19:04');
 /*!40000 ALTER TABLE `Image` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ImageQualityIndicators` DISABLE KEYS */;
 INSERT INTO `ImageQualityIndicators` (`dataCollectionId`, `imageNumber`, `imageId`, `autoProcProgramId`, `spotTotal`, `inResTotal`, `goodBraggCandidates`, `iceRings`, `method1Res`, `method2Res`, `maxUnitCell`, `pctSaturationTop50Peaks`, `inResolutionOvrlSpots`, `binPopCutOffMethod2Res`, `recordTimeStamp`, `totalIntegratedSignal`, `dozor_score`, `driftFactor`) VALUES (1052494,1,NULL,NULL,296,296,259,0,2.03,2.03,0,0,0,0,NULL,2.61,NULL,NULL),
 (1052494,2,NULL,NULL,239,239,224,0,2.12,2.12,0,0,0,0,NULL,2.95,NULL,NULL),
@@ -665,167 +922,353 @@ INSERT INTO `ImageQualityIndicators` (`dataCollectionId`, `imageNumber`, `imageI
 (1066786,2,284718055,NULL,848,848,652,0,1.56,1.56,0,0,0,0,NULL,2.03,NULL,NULL),
 (1066786,3,284718118,NULL,922,922,735,0,1.57,1.57,0,0,0,0,NULL,2.13,NULL,NULL);
 /*!40000 ALTER TABLE `ImageQualityIndicators` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `IspybCrystalClass` DISABLE KEYS */;
 /*!40000 ALTER TABLE `IspybCrystalClass` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `IspybReference` DISABLE KEYS */;
 /*!40000 ALTER TABLE `IspybReference` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `LabContact` DISABLE KEYS */;
 /*!40000 ALTER TABLE `LabContact` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Laboratory` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Laboratory` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `LaserParameters` DISABLE KEYS */;
 /*!40000 ALTER TABLE `LaserParameters` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `LaserPoint` DISABLE KEYS */;
 /*!40000 ALTER TABLE `LaserPoint` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Ligand` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Ligand` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Ligand_has_PDB` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Ligand_has_PDB` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `MXMRRun` DISABLE KEYS */;
 INSERT INTO `MXMRRun` (`mxMRRunId`, `autoProcScalingId`, `rValueStart`, `rValueEnd`, `rFreeValueStart`, `rFreeValueEnd`, `LLG`, `TFZ`, `spaceGroup`, `autoProcProgramId`) VALUES (672897,603470,0.1812,0.1682,0.1896,0.1888,NULL,NULL,NULL,56986674),
 (672900,603470,NULL,NULL,NULL,NULL,NULL,NULL,NULL,56986675);
 /*!40000 ALTER TABLE `MXMRRun` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `MXMRRunBlob` DISABLE KEYS */;
 /*!40000 ALTER TABLE `MXMRRunBlob` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+/*!40000 ALTER TABLE `MillingStep` DISABLE KEYS */;
+/*!40000 ALTER TABLE `MillingStep` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+/*!40000 ALTER TABLE `MillingStepName` DISABLE KEYS */;
+INSERT INTO `MillingStepName` (`millingStepNameId`, `step`, `recipe`) VALUES (1,'Eucentric Tilt','Preparation'),
+(2,'Artificial Features','Preparation'),
+(3,'Milling Angle','Preparation'),
+(4,'Image Acquisition','Preparation'),
+(5,'Lamella Placement','Preparation'),
+(6,'Milling','Preparation'),
+(7,'Delay','Milling'),
+(8,'Reference Definition','Milling'),
+(9,'Electron Reference Definition','Milling'),
+(10,'Stress Relief Cuts','Milling'),
+(11,'Reference Redefinition 1','Milling'),
+(12,'Rough Milling','Milling'),
+(13,'Rough Milling - Electron Image','Milling'),
+(14,'Reference Redefinition 2','Milling'),
+(15,'Medium Milling','Milling'),
+(16,'Medium Milling - Electron Image','Milling'),
+(17,'Fine Milling','Milling'),
+(18,'Fine Milling - Electron Image','Milling'),
+(19,'Finer Milling','Milling'),
+(20,'Finer Milling - Electron Image','Milling'),
+(21,'Thinning','Milling'),
+(22,'Delay','Thinning'),
+(23,'Polishing 1','Thinning'),
+(24,'Polishing 1 - Electron Image','Thinning'),
+(25,'Polishing 2','Thinning'),
+(26,'Polishing 2 - Ion Image','Thinning'),
+(27,'Polishing 2 - Electron Image','Thinning');
+/*!40000 ALTER TABLE `MillingStepName` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ModelBuilding` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ModelBuilding` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `MotionCorrection` DISABLE KEYS */;
 /*!40000 ALTER TABLE `MotionCorrection` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `MotorPosition` DISABLE KEYS */;
 /*!40000 ALTER TABLE `MotorPosition` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Movie` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Movie` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PDB` DISABLE KEYS */;
 INSERT INTO `PDB` (`pdbId`, `name`, `contents`, `code`, `source`) VALUES (6,'ceo2','\r\ndata_\r\n_chemical_name_mineral ?CeO2?\r\n_cell_length_a  5.411223\r\n_cell_length_b  5.411223\r\n_cell_length_c  5.411223\r\n_cell_angle_alpha 90\r\n_cell_angle_beta  90\r\n_cell_angle_gamma 90\r\n_cell_volume 158.4478\r\n_symmetry_space_group_name_H-M     \'Fm3m\'\r\nloop_\r\n_symmetry_equiv_pos_as_xyz\r\n	\'-x, -y, -z\'\r\n	\'-x, -y, z\'\r\n	\'-x, -y+1/2, -z+1/2\'\r\n	\'-x, -y+1/2, z+1/2\'\r\n	\'-x, -z, -y\'\r\n	\'-x, -z, y\'\r\n	\'-x, -z+1/2, -y+1/2\'\r\n	\'-x, -z+1/2, y+1/2\'\r\n	\'-x, z, -y\'\r\n	\'-x, z, y\'\r\n	\'-x, z+1/2, -y+1/2\'\r\n	\'-x, z+1/2, y+1/2\'\r\n	\'-x, y, -z\'\r\n	\'-x, y, z\'\r\n	\'-x, y+1/2, -z+1/2\'\r\n	\'-x, y+1/2, z+1/2\'\r\n	\'-x+1/2, -y, -z+1/2\'\r\n	\'-x+1/2, -y, z+1/2\'\r\n	\'-x+1/2, -y+1/2, -z\'\r\n	\'-x+1/2, -y+1/2, z\'\r\n	\'-x+1/2, -z, -y+1/2\'\r\n	\'-x+1/2, -z, y+1/2\'\r\n	\'-x+1/2, -z+1/2, -y\'\r\n	\'-x+1/2, -z+1/2, y\'\r\n	\'-x+1/2, z, -y+1/2\'\r\n	\'-x+1/2, z, y+1/2\'\r\n	\'-x+1/2, z+1/2, -y\'\r\n	\'-x+1/2, z+1/2, y\'\r\n	\'-x+1/2, y, -z+1/2\'\r\n	\'-x+1/2, y, z+1/2\'\r\n	\'-x+1/2, y+1/2, -z\'\r\n	\'-x+1/2, y+1/2, z\'\r\n	\'-y, -x, -z\'\r\n	\'-y, -x, z\'\r\n	\'-y, -x+1/2, -z+1/2\'\r\n	\'-y, -x+1/2, z+1/2\'\r\n	\'-y, -z, -x\'\r\n	\'-y, -z, x\'\r\n	\'-y, -z+1/2, -x+1/2\'\r\n	\'-y, -z+1/2, x+1/2\'\r\n	\'-y, z, -x\'\r\n	\'-y, z, x\'\r\n	\'-y, z+1/2, -x+1/2\'\r\n	\'-y, z+1/2, x+1/2\'\r\n	\'-y, x, -z\'\r\n	\'-y, x, z\'\r\n	\'-y, x+1/2, -z+1/2\'\r\n	\'-y, x+1/2, z+1/2\'\r\n	\'-y+1/2, -x, -z+1/2\'\r\n	\'-y+1/2, -x, z+1/2\'\r\n	\'-y+1/2, -x+1/2, -z\'\r\n	\'-y+1/2, -x+1/2, z\'\r\n	\'-y+1/2, -z, -x+1/2\'\r\n	\'-y+1/2, -z, x+1/2\'\r\n	\'-y+1/2, -z+1/2, -x\'\r\n	\'-y+1/2, -z+1/2, x\'\r\n	\'-y+1/2, z, -x+1/2\'\r\n	\'-y+1/2, z, x+1/2\'\r\n	\'-y+1/2, z+1/2, -x\'\r\n	\'-y+1/2, z+1/2, x\'\r\n	\'-y+1/2, x, -z+1/2\'\r\n	\'-y+1/2, x, z+1/2\'\r\n	\'-y+1/2, x+1/2, -z\'\r\n	\'-y+1/2, x+1/2, z\'\r\n	\'-z, -x, -y\'\r\n	\'-z, -x, y\'\r\n	\'-z, -x+1/2, -y+1/2\'\r\n	\'-z, -x+1/2, y+1/2\'\r\n	\'-z, -y, -x\'\r\n	\'-z, -y, x\'\r\n	\'-z, -y+1/2, -x+1/2\'\r\n	\'-z, -y+1/2, x+1/2\'\r\n	\'-z, y, -x\'\r\n	\'-z, y, x\'\r\n	\'-z, y+1/2, -x+1/2\'\r\n	\'-z, y+1/2, x+1/2\'\r\n	\'-z, x, -y\'\r\n	\'-z, x, y\'\r\n	\'-z, x+1/2, -y+1/2\'\r\n	\'-z, x+1/2, y+1/2\'\r\n	\'-z+1/2, -x, -y+1/2\'\r\n	\'-z+1/2, -x, y+1/2\'\r\n	\'-z+1/2, -x+1/2, -y\'\r\n	\'-z+1/2, -x+1/2, y\'\r\n	\'-z+1/2, -y, -x+1/2\'\r\n	\'-z+1/2, -y, x+1/2\'\r\n	\'-z+1/2, -y+1/2, -x\'\r\n	\'-z+1/2, -y+1/2, x\'\r\n	\'-z+1/2, y, -x+1/2\'\r\n	\'-z+1/2, y, x+1/2\'\r\n	\'-z+1/2, y+1/2, -x\'\r\n	\'-z+1/2, y+1/2, x\'\r\n	\'-z+1/2, x, -y+1/2\'\r\n	\'-z+1/2, x, y+1/2\'\r\n	\'-z+1/2, x+1/2, -y\'\r\n	\'-z+1/2, x+1/2, y\'\r\n	\'z, -x, -y\'\r\n	\'z, -x, y\'\r\n	\'z, -x+1/2, -y+1/2\'\r\n	\'z, -x+1/2, y+1/2\'\r\n	\'z, -y, -x\'\r\n	\'z, -y, x\'\r\n	\'z, -y+1/2, -x+1/2\'\r\n	\'z, -y+1/2, x+1/2\'\r\n	\'z, y, -x\'\r\n	\'z, y, x\'\r\n	\'z, y+1/2, -x+1/2\'\r\n	\'z, y+1/2, x+1/2\'\r\n	\'z, x, -y\'\r\n	\'z, x, y\'\r\n	\'z, x+1/2, -y+1/2\'\r\n	\'z, x+1/2, y+1/2\'\r\n	\'z+1/2, -x, -y+1/2\'\r\n	\'z+1/2, -x, y+1/2\'\r\n	\'z+1/2, -x+1/2, -y\'\r\n	\'z+1/2, -x+1/2, y\'\r\n	\'z+1/2, -y, -x+1/2\'\r\n	\'z+1/2, -y, x+1/2\'\r\n	\'z+1/2, -y+1/2, -x\'\r\n	\'z+1/2, -y+1/2, x\'\r\n	\'z+1/2, y, -x+1/2\'\r\n	\'z+1/2, y, x+1/2\'\r\n	\'z+1/2, y+1/2, -x\'\r\n	\'z+1/2, y+1/2, x\'\r\n	\'z+1/2, x, -y+1/2\'\r\n	\'z+1/2, x, y+1/2\'\r\n	\'z+1/2, x+1/2, -y\'\r\n	\'z+1/2, x+1/2, y\'\r\n	\'y, -x, -z\'\r\n	\'y, -x, z\'\r\n	\'y, -x+1/2, -z+1/2\'\r\n	\'y, -x+1/2, z+1/2\'\r\n	\'y, -z, -x\'\r\n	\'y, -z, x\'\r\n	\'y, -z+1/2, -x+1/2\'\r\n	\'y, -z+1/2, x+1/2\'\r\n	\'y, z, -x\'\r\n	\'y, z, x\'\r\n	\'y, z+1/2, -x+1/2\'\r\n	\'y, z+1/2, x+1/2\'\r\n	\'y, x, -z\'\r\n	\'y, x, z\'\r\n	\'y, x+1/2, -z+1/2\'\r\n	\'y, x+1/2, z+1/2\'\r\n	\'y+1/2, -x, -z+1/2\'\r\n	\'y+1/2, -x, z+1/2\'\r\n	\'y+1/2, -x+1/2, -z\'\r\n	\'y+1/2, -x+1/2, z\'\r\n	\'y+1/2, -z, -x+1/2\'\r\n	\'y+1/2, -z, x+1/2\'\r\n	\'y+1/2, -z+1/2, -x\'\r\n	\'y+1/2, -z+1/2, x\'\r\n	\'y+1/2, z, -x+1/2\'\r\n	\'y+1/2, z, x+1/2\'\r\n	\'y+1/2, z+1/2, -x\'\r\n	\'y+1/2, z+1/2, x\'\r\n	\'y+1/2, x, -z+1/2\'\r\n	\'y+1/2, x, z+1/2\'\r\n	\'y+1/2, x+1/2, -z\'\r\n	\'y+1/2, x+1/2, z\'\r\n	\'x, -y, -z\'\r\n	\'x, -y, z\'\r\n	\'x, -y+1/2, -z+1/2\'\r\n	\'x, -y+1/2, z+1/2\'\r\n	\'x, -z, -y\'\r\n	\'x, -z, y\'\r\n	\'x, -z+1/2, -y+1/2\'\r\n	\'x, -z+1/2, y+1/2\'\r\n	\'x, z, -y\'\r\n	\'x, z, y\'\r\n	\'x, z+1/2, -y+1/2\'\r\n	\'x, z+1/2, y+1/2\'\r\n	\'x, y, -z\'\r\n	\'x, y, z\'\r\n	\'x, y+1/2, -z+1/2\'\r\n	\'x, y+1/2, z+1/2\'\r\n	\'x+1/2, -y, -z+1/2\'\r\n	\'x+1/2, -y, z+1/2\'\r\n	\'x+1/2, -y+1/2, -z\'\r\n	\'x+1/2, -y+1/2, z\'\r\n	\'x+1/2, -z, -y+1/2\'\r\n	\'x+1/2, -z, y+1/2\'\r\n	\'x+1/2, -z+1/2, -y\'\r\n	\'x+1/2, -z+1/2, y\'\r\n	\'x+1/2, z, -y+1/2\'\r\n	\'x+1/2, z, y+1/2\'\r\n	\'x+1/2, z+1/2, -y\'\r\n	\'x+1/2, z+1/2, y\'\r\n	\'x+1/2, y, -z+1/2\'\r\n	\'x+1/2, y, z+1/2\'\r\n	\'x+1/2, y+1/2, -z\'\r\n	\'x+1/2, y+1/2, z\'\r\nloop_\r\n_atom_site_label\r\n_atom_site_type_symbol\r\n_atom_site_symmetry_multiplicity\r\n_atom_site_fract_x\r\n_atom_site_fract_y\r\n_atom_site_fract_z\r\n_atom_site_occupancy\r\n_atom_site_B_iso_or_equiv\r\nCe1 Ce   0 0 0 0 1 0.127911\r\nO1 O   0 0.25 0.25 0.25 1 0.07795472',NULL,NULL);
 /*!40000 ALTER TABLE `PDB` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PDBEntry` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PDBEntry` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PDBEntry_has_AutoProcProgram` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PDBEntry_has_AutoProcProgram` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ParticleClassification` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ParticleClassification` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ParticleClassificationGroup` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ParticleClassificationGroup` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ParticleClassification_has_CryoemInitialModel` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ParticleClassification_has_CryoemInitialModel` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ParticlePicker` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ParticlePicker` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Person` DISABLE KEYS */;
 INSERT INTO `Person` (`personId`, `laboratoryId`, `siteId`, `personUUID`, `familyName`, `givenName`, `title`, `emailAddress`, `phoneNumber`, `login`, `faxNumber`, `recordTimeStamp`, `cache`, `externalId`) VALUES (1,NULL,NULL,NULL,'McBoatface','Boaty','Mr',NULL,NULL,'boaty',NULL,'2016-03-20 13:56:45','a:1:{s:9:\"container\";N;}',NULL),
 (46266,NULL,NULL,NULL,NULL,NULL,'User',NULL,NULL,NULL,NULL,'2016-03-16 15:53:55',NULL,NULL),
 (46269,NULL,NULL,NULL,NULL,NULL,'User',NULL,NULL,NULL,NULL,'2016-03-16 15:59:22',NULL,NULL);
 /*!40000 ALTER TABLE `Person` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Phasing` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Phasing` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PhasingAnalysis` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PhasingAnalysis` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PhasingProgramAttachment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PhasingProgramAttachment` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PhasingProgramRun` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PhasingProgramRun` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PhasingStatistics` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PhasingStatistics` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PhasingStep` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PhasingStep` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Phasing_has_Scaling` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Phasing_has_Scaling` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Position` DISABLE KEYS */;
 INSERT INTO `Position` (`positionId`, `relativePositionId`, `posX`, `posY`, `posZ`, `scale`, `recordTimeStamp`, `X`, `Y`, `Z`) VALUES (2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `Position` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Positioner` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Positioner` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PreparePhasingData` DISABLE KEYS */;
 /*!40000 ALTER TABLE `PreparePhasingData` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProcessedTomogram` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ProcessedTomogram` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProcessingJob` DISABLE KEYS */;
 INSERT INTO `ProcessingJob` (`processingJobId`, `dataCollectionId`, `displayName`, `comments`, `recordTimestamp`, `recipe`, `automatic`) VALUES (5,1002287,'test job 01','Testing the job submission system','2017-10-16 11:02:12','DIALS/xia2',0);
 /*!40000 ALTER TABLE `ProcessingJob` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProcessingJobImageSweep` DISABLE KEYS */;
 INSERT INTO `ProcessingJobImageSweep` (`processingJobImageSweepId`, `processingJobId`, `dataCollectionId`, `startImage`, `endImage`) VALUES (5,5,1002287,1,270),
 (8,5,1002287,271,360);
 /*!40000 ALTER TABLE `ProcessingJobImageSweep` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProcessingJobParameter` DISABLE KEYS */;
 INSERT INTO `ProcessingJobParameter` (`processingJobParameterId`, `processingJobId`, `parameterKey`, `parameterValue`) VALUES (5,5,'vortex factor','1.8*10^102'),
 (8,5,'80s factor','0.87*10^-93');
 /*!40000 ALTER TABLE `ProcessingJobParameter` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_BLSample` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_BLSample` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_DCGroup` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_DCGroup` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_EnergyScan` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_EnergyScan` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_Person` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_Person` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_Protein` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_Protein` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_Session` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_Session` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_Shipping` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_Shipping` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_User` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_User` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Project_has_XFEFSpectrum` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Project_has_XFEFSpectrum` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Proposal` DISABLE KEYS */;
 INSERT INTO `Proposal` (`proposalId`, `personId`, `title`, `proposalCode`, `proposalNumber`, `bltimeStamp`, `proposalType`, `externalId`, `state`, `startDate`, `endDate`) VALUES (37027,1,'I03 Commissioning Directory 2016','cm','14451','2015-12-21 15:20:43',NULL,NULL,'Open',NULL,NULL),
 (141666,46266,'Test Proposal cm-0001','cm','1','2016-03-16 16:01:34',NULL,NULL,'Open',NULL,NULL);
 /*!40000 ALTER TABLE `Proposal` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProposalHasPerson` DISABLE KEYS */;
 INSERT INTO `ProposalHasPerson` (`proposalHasPersonId`, `proposalId`, `personId`, `role`) VALUES (4,37027,1,'Principal Investigator');
 /*!40000 ALTER TABLE `ProposalHasPerson` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Protein` DISABLE KEYS */;
 INSERT INTO `Protein` (`proteinId`, `proposalId`, `name`, `acronym`, `description`, `hazardGroup`, `containmentLevel`, `safetyLevel`, `molecularMass`, `proteinType`, `personId`, `bltimeStamp`, `isCreatedBySampleSheet`, `sequence`, `MOD_ID`, `componentTypeId`, `concentrationTypeId`, `global`, `externalId`, `density`, `abundance`, `isotropy`) VALUES (4380,141666,'Protein 01','PRT-01',NULL,1,1,NULL,NULL,NULL,NULL,'2016-03-17 15:57:52',0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL),
 (4383,141666,'Protein 02','PRT-02',NULL,1,1,NULL,NULL,NULL,NULL,'2016-03-17 16:02:07',0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL),
@@ -843,29 +1286,53 @@ INSERT INTO `Protein` (`proteinId`, `proposalId`, `name`, `acronym`, `descriptio
 (123491,37027,NULL,'thau',NULL,1,1,NULL,NULL,NULL,NULL,'2016-02-24 12:12:16',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (123497,37027,'XPDF comp1','xpdf-comp-01',NULL,1,1,NULL,NULL,NULL,NULL,'2017-03-23 22:03:40',0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `Protein` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Protein_has_Component` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Protein_has_Component` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Protein_has_PDB` DISABLE KEYS */;
 INSERT INTO `Protein_has_PDB` (`proteinhaspdbid`, `proteinid`, `pdbid`) VALUES (5,123497,6);
 /*!40000 ALTER TABLE `Protein_has_PDB` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `RelativeIceThickness` DISABLE KEYS */;
 /*!40000 ALTER TABLE `RelativeIceThickness` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `RobotAction` DISABLE KEYS */;
 /*!40000 ALTER TABLE `RobotAction` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `SSXDataCollection` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SSXDataCollection` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `SW_onceToken` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SW_onceToken` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `SampleComposition` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SampleComposition` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScanParametersModel` DISABLE KEYS */;
 INSERT INTO `ScanParametersModel` (`scanParametersModelId`, `scanParametersServiceId`, `dataCollectionPlanId`, `sequenceNumber`, `start`, `stop`, `step`, `array`, `duration`) VALUES (4,4,197788,1,0,90,10,NULL,NULL),
 (7,4,197788,2,90,180,5,NULL,NULL),
@@ -875,16 +1342,28 @@ INSERT INTO `ScanParametersModel` (`scanParametersModelId`, `scanParametersServi
 (20,7,197792,1,0,90,5,NULL,NULL),
 (23,7,197792,2,90,120,1,NULL,NULL);
 /*!40000 ALTER TABLE `ScanParametersModel` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Screen` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Screen` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreenComponent` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ScreenComponent` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreenComponentGroup` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ScreenComponentGroup` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Screening` DISABLE KEYS */;
 INSERT INTO `Screening` (`screeningId`, `dataCollectionId`, `bltimeStamp`, `programVersion`, `comments`, `shortComments`, `diffractionPlanId`, `dataCollectionGroupId`, `xmlSampleInformation`, `autoProcProgramId`) VALUES (1894770,1052494,'2016-10-26 08:50:31','mosflm',NULL,'Mosflm native',NULL,1040398,NULL,NULL),
 (1894773,1052494,'2016-10-26 08:50:31','mosflm',NULL,'Mosflm anomalous',NULL,1040398,NULL,NULL),
@@ -908,7 +1387,10 @@ INSERT INTO `Screening` (`screeningId`, `dataCollectionId`, `bltimeStamp`, `prog
 (1927987,1066786,'2016-10-26 08:50:31','EDNA MXv1','Standard Anomalous Dataset Multiplicity=3 I/sig=2 Maxlifespan=4034 s','EDNAStrategy2',NULL,1054243,NULL,NULL),
 (1927990,1066786,'2016-10-26 08:50:31','EDNA MXv1','UnderDEV Anomalous Dataset, RadDamage of standard protein','EDNAStrategy5',NULL,1054243,NULL,NULL);
 /*!40000 ALTER TABLE `Screening` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningInput` DISABLE KEYS */;
 INSERT INTO `ScreeningInput` (`screeningInputId`, `screeningId`, `beamX`, `beamY`, `rmsErrorLimits`, `minimumFractionIndexed`, `maximumFractionRejected`, `minimumSignalToNoise`, `diffractionPlanId`, `xmlSampleInformation`) VALUES (983791,1894774,208.731,214.298,NULL,NULL,NULL,NULL,NULL,NULL),
 (983794,1894777,208.731,214.298,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -926,7 +1408,10 @@ INSERT INTO `ScreeningInput` (`screeningInputId`, `screeningId`, `beamX`, `beamY
 (1013161,1927987,208.32,214.339,NULL,NULL,NULL,NULL,NULL,NULL),
 (1013164,1927990,208.32,214.339,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ScreeningInput` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningOutput` DISABLE KEYS */;
 INSERT INTO `ScreeningOutput` (`screeningOutputId`, `screeningId`, `statusDescription`, `rejectedReflections`, `resolutionObtained`, `spotDeviationR`, `spotDeviationTheta`, `beamShiftX`, `beamShiftY`, `numSpotsFound`, `numSpotsUsed`, `numSpotsRejected`, `mosaicity`, `iOverSigma`, `diffractionRings`, `SCREENINGSUCCESS`, `mosaicityEstimated`, `rankingResolution`, `program`, `doseTotal`, `totalExposureTime`, `totalRotationRange`, `totalNumberOfImages`, `rFriedel`, `indexingSuccess`, `strategySuccess`, `alignmentSuccess`) VALUES (1489401,1894770,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,0),
 (1489404,1894773,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,0),
@@ -950,7 +1435,10 @@ INSERT INTO `ScreeningOutput` (`screeningOutputId`, `screeningId`, `statusDescri
 (1522615,1927987,'Labelit: Indexing successful (P4). Integration successful. Strategy calculation successful.',NULL,NULL,0.166,NULL,0.0195,-0.0105,434,434,0,0.7,NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,0),
 (1522618,1927990,'Labelit: Indexing successful (P4). Integration successful. Strategy calculation successful.',NULL,NULL,0.166,NULL,0.0195,-0.0105,434,434,0,0.7,NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,0,0);
 /*!40000 ALTER TABLE `ScreeningOutput` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningOutputLattice` DISABLE KEYS */;
 INSERT INTO `ScreeningOutputLattice` (`screeningOutputLatticeId`, `screeningOutputId`, `spaceGroup`, `pointGroup`, `bravaisLattice`, `rawOrientationMatrix_a_x`, `rawOrientationMatrix_a_y`, `rawOrientationMatrix_a_z`, `rawOrientationMatrix_b_x`, `rawOrientationMatrix_b_y`, `rawOrientationMatrix_b_z`, `rawOrientationMatrix_c_x`, `rawOrientationMatrix_c_y`, `rawOrientationMatrix_c_z`, `unitCell_a`, `unitCell_b`, `unitCell_c`, `unitCell_alpha`, `unitCell_beta`, `unitCell_gamma`, `bltimeStamp`, `labelitIndexing`) VALUES (1309566,1489401,'I23',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,76.339,76.339,76.339,90,90,90,'2016-04-13 11:19:21',0),
 (1309569,1489404,'I23',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,76.339,76.339,76.339,90,90,90,'2016-04-13 11:19:21',0),
@@ -974,13 +1462,22 @@ INSERT INTO `ScreeningOutputLattice` (`screeningOutputLatticeId`, `screeningOutp
 (1323844,1522615,'P4',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,57.29,57.29,149.07,90,90,90,'2016-04-14 02:19:04',0),
 (1323847,1522618,'P4',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,57.29,57.29,149.07,90,90,90,'2016-04-14 02:19:04',0);
 /*!40000 ALTER TABLE `ScreeningOutputLattice` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningRank` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ScreeningRank` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningRankSet` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ScreeningRankSet` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningStrategy` DISABLE KEYS */;
 INSERT INTO `ScreeningStrategy` (`screeningStrategyId`, `screeningOutputId`, `phiStart`, `phiEnd`, `rotation`, `exposureTime`, `resolution`, `completeness`, `multiplicity`, `anomalous`, `program`, `rankingResolution`, `transmission`) VALUES (1473909,1489401,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'mosflm - native',NULL,NULL),
 (1473912,1489404,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'mosflm - anomalous',NULL,NULL),
@@ -1004,7 +1501,10 @@ INSERT INTO `ScreeningStrategy` (`screeningStrategyId`, `screeningOutputId`, `ph
 (1507120,1522615,NULL,NULL,NULL,0.01,NULL,NULL,NULL,1,'BEST',1.16,NULL),
 (1507123,1522618,NULL,NULL,NULL,0.01,NULL,NULL,NULL,1,'BEST',1.16,NULL);
 /*!40000 ALTER TABLE `ScreeningStrategy` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningStrategySubWedge` DISABLE KEYS */;
 INSERT INTO `ScreeningStrategySubWedge` (`screeningStrategySubWedgeId`, `screeningStrategyWedgeId`, `subWedgeNumber`, `rotationAxis`, `axisStart`, `axisEnd`, `exposureTime`, `transmission`, `oscillationRange`, `completeness`, `multiplicity`, `RESOLUTION`, `doseTotal`, `numberOfImages`, `comments`) VALUES (1111566,1143792,NULL,'Omega',64,109,0,NULL,1.4,1,NULL,1.22,NULL,33,NULL),
 (1111569,1143795,NULL,'Omega',74,119,0,NULL,1.4,0.98,NULL,1.22,NULL,33,NULL),
@@ -1028,7 +1528,10 @@ INSERT INTO `ScreeningStrategySubWedge` (`screeningStrategySubWedgeId`, `screeni
 (1123984,1156210,1,'Omega',87,239,0.01,72.2048,0.1,0.99,3.29,1.51,NULL,1520,NULL),
 (1123987,1156213,1,'Omega',87,239,0.01,72.2048,0.1,0.99,3.29,1.51,NULL,1520,NULL);
 /*!40000 ALTER TABLE `ScreeningStrategySubWedge` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScreeningStrategyWedge` DISABLE KEYS */;
 INSERT INTO `ScreeningStrategyWedge` (`screeningStrategyWedgeId`, `screeningStrategyId`, `wedgeNumber`, `resolution`, `completeness`, `multiplicity`, `doseTotal`, `numberOfImages`, `phi`, `kappa`, `chi`, `comments`, `wavelength`) VALUES (1143792,1473909,1,1.22,1,NULL,NULL,33,NULL,NULL,NULL,NULL,NULL),
 (1143795,1473912,1,1.22,0.98,NULL,NULL,33,NULL,NULL,NULL,NULL,NULL),
@@ -1052,15 +1555,24 @@ INSERT INTO `ScreeningStrategyWedge` (`screeningStrategyWedgeId`, `screeningStra
 (1156210,1507120,1,1.51,0.99,3.29,0,1520,NULL,NULL,NULL,NULL,NULL),
 (1156213,1507123,1,1.51,0.99,3.29,0,1520,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ScreeningStrategyWedge` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `SessionType` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SessionType` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Session_has_Person` DISABLE KEYS */;
 INSERT INTO `Session_has_Person` (`sessionId`, `personId`, `role`, `remote`) VALUES (55167,1,'Co-Investigator',0),
 (55168,1,'Co-Investigator',0);
 /*!40000 ALTER TABLE `Session_has_Person` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Shipping` DISABLE KEYS */;
 INSERT INTO `Shipping` (`shippingId`, `proposalId`, `shippingName`, `deliveryAgent_agentName`, `deliveryAgent_shippingDate`, `deliveryAgent_deliveryDate`, `deliveryAgent_agentCode`, `deliveryAgent_flightCode`, `shippingStatus`, `bltimeStamp`, `laboratoryId`, `isStorageShipping`, `creationDate`, `comments`, `sendingLabContactId`, `returnLabContactId`, `returnCourier`, `dateOfShippingToUser`, `shippingType`, `SAFETYLEVEL`, `deliveryAgent_flightCodeTimestamp`, `deliveryAgent_label`, `readyByTime`, `closeTime`, `physicalLocation`, `deliveryAgent_pickupConfirmationTimestamp`, `deliveryAgent_pickupConfirmation`, `deliveryAgent_readyByTime`, `deliveryAgent_callinTime`, `deliveryAgent_productcode`, `deliveryAgent_flightCodePersonId`, `extra`, `source`, `externalShippingIdToSynchrotron`) VALUES (474,141666,'cm-0001 1 processing',NULL,NULL,NULL,NULL,NULL,'processing',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
 (477,141666,'cm-0001 2 processing',NULL,NULL,NULL,NULL,NULL,'processing',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
@@ -1069,7 +1581,10 @@ INSERT INTO `Shipping` (`shippingId`, `proposalId`, `shippingName`, `deliveryAge
 (7227,37027,'cm14451-2_Shipment1',NULL,NULL,NULL,NULL,NULL,'processing','2016-02-10 13:03:07',NULL,0,'2016-02-10 13:03:07',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL),
 (7231,37027,'VMXi Simulator Test shipment',NULL,NULL,NULL,NULL,NULL,'opened',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'root@%',NULL);
 /*!40000 ALTER TABLE `Shipping` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ShippingHasSession` DISABLE KEYS */;
 INSERT INTO `ShippingHasSession` (`shippingId`, `sessionId`) VALUES (474,339525),
 (477,339528),
@@ -1077,25 +1592,46 @@ INSERT INTO `ShippingHasSession` (`shippingId`, `sessionId`) VALUES (474,339525)
 (6988,55167),
 (7227,55168);
 /*!40000 ALTER TABLE `ShippingHasSession` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Sleeve` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Sleeve` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `SubstructureDetermination` DISABLE KEYS */;
 /*!40000 ALTER TABLE `SubstructureDetermination` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `TiltImageAlignment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `TiltImageAlignment` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Tomogram` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Tomogram` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `UserGroup_has_Person` DISABLE KEYS */;
 /*!40000 ALTER TABLE `UserGroup_has_Person` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `XFEFluorescenceComposite` DISABLE KEYS */;
 /*!40000 ALTER TABLE `XFEFluorescenceComposite` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `XFEFluorescenceSpectrum` DISABLE KEYS */;
 INSERT INTO `XFEFluorescenceSpectrum` (`xfeFluorescenceSpectrumId`, `sessionId`, `blSampleId`, `jpegScanFileFullPath`, `startTime`, `endTime`, `filename`, `exposureTime`, `axisPosition`, `beamTransmission`, `annotatedPymcaXfeSpectrum`, `fittedDataFileFullPath`, `scanFileFullPath`, `energy`, `beamSizeVertical`, `beamSizeHorizontal`, `crystalClass`, `comments`, `blSubSampleId`, `flux`, `flux_end`, `workingDirectory`) VALUES (1766,55167,NULL,'/dls/i03/data/2016/cm14451-1/20160112_14_49_14.png','2016-01-12 14:49:14','2016-01-12 14:50:05','/dls/i03/data/2016/cm14451-1/20160112_14_49_14.mca',3,NULL,6.4,'/dls/i03/data/2016/cm14451-1/20160112_14_49_14.html',NULL,'/dls/i03/data/2016/cm14451-1/20160112_14_49_14.dat',12700,20,50,NULL,NULL,NULL,NULL,NULL,NULL),
 (1779,55167,NULL,'/dls/i03/data/2016/cm14451-1/20160113_15_53_23.png','2016-01-13 15:53:23','2016-01-13 15:54:53','/dls/i03/data/2016/cm14451-1/20160113_15_53_23.mca',3,NULL,1.6,'/dls/i03/data/2016/cm14451-1/20160113_15_53_23.html',NULL,'/dls/i03/data/2016/cm14451-1/20160113_15_53_23.dat',12700,20,20,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -1160,19 +1696,34 @@ INSERT INTO `XFEFluorescenceSpectrum` (`xfeFluorescenceSpectrumId`, `sessionId`,
 (2002,55168,NULL,'/dls/i03/data/2016/cm14451-2/20160406_16_29_44.png','2016-04-06 16:29:44','2016-04-06 16:30:27','/dls/i03/data/2016/cm14451-2/20160406_16_29_44.mca',2,NULL,12.8,'/dls/i03/data/2016/cm14451-2/20160406_16_29_44.html',NULL,'/dls/i03/data/2016/cm14451-2/20160406_16_29_44.dat',12700,20,50,NULL,NULL,NULL,NULL,NULL,NULL),
 (2005,55168,NULL,'/dls/i03/data/2009/in1246-1/jpegs/bs/bs_MS_1_001.jpeg',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `XFEFluorescenceSpectrum` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `XRFFluorescenceMapping` DISABLE KEYS */;
 /*!40000 ALTER TABLE `XRFFluorescenceMapping` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `XRFFluorescenceMappingROI` DISABLE KEYS */;
 /*!40000 ALTER TABLE `XRFFluorescenceMappingROI` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `XrayCentring` DISABLE KEYS */;
 /*!40000 ALTER TABLE `XrayCentring` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `XrayCentringResult` DISABLE KEYS */;
 /*!40000 ALTER TABLE `XrayCentringResult` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `v_run` DISABLE KEYS */;
 INSERT INTO `v_run` (`runId`, `run`, `startDate`, `endDate`) VALUES (1,'2008-01','2007-12-17 09:00:00','2008-02-09 08:59:59'),
 (2,'2008-02','2008-02-09 09:00:00','2008-03-14 08:59:59'),
@@ -1247,9 +1798,14 @@ INSERT INTO `v_run` (`runId`, `run`, `startDate`, `endDate`) VALUES (1,'2008-01'
 (71,'2020-02','2020-03-06 09:00:00','2020-05-22 08:59:59'),
 (72,'2020-03','2020-05-22 09:00:00','2020-08-14 08:59:59');
 /*!40000 ALTER TABLE `v_run` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `zc_ZocaloBuffer` DISABLE KEYS */;
 /*!40000 ALTER TABLE `zc_ZocaloBuffer` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1257,5 +1813,5 @@ INSERT INTO `v_run` (`runId`, `run`, `startDate`, `endDate`) VALUES (1,'2008-01'
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 

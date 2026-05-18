@@ -6,14 +6,19 @@
 /*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*M!100616 SET @OLD_NOTE_VERBOSITY=@@NOTE_VERBOSITY, NOTE_VERBOSITY=0 */;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','5.0.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','5.1.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `SchemaStatus` DISABLE KEYS */;
 INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `recordTimeStamp`) VALUES (6,'20180213_BLSample_subLocation.sql','DONE','2018-02-13 13:27:19'),
 (12,'20180213_DataCollectionFileAttachment_fileType.sql','DONE','2018-02-13 15:12:54'),
@@ -318,9 +323,15 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (346,'2026_04_10_AdminVar_bump_version.sql','DONE','2026-04-10 12:18:14'),
 (348,'2026_04_20_Ligand_name.sql','DONE','2026-04-21 14:34:29'),
 (349,'2026_04_22_GridInfo_pixelsPerMicron.sql','DONE','2026-04-21 14:34:29'),
-(350,'2026_04_23_AdminVar_bump_version.sql','DONE','2026-04-21 14:34:29');
+(350,'2026_04_23_AdminVar_bump_version.sql','DONE','2026-04-21 14:34:29'),
+(352,'2026_04_24_AutoProc_autoProcProgramId.sql','DONE','2026-05-18 15:09:04'),
+(353,'2026_05_08_MillingStep_table.sql','DONE','2026-05-18 15:09:04'),
+(354,'2026_05_18_AdminVar_bump_version.sql','DONE','2026-05-18 15:09:04');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ComponentType` DISABLE KEYS */;
 INSERT INTO `ComponentType` (`componentTypeId`, `name`) VALUES (6,'Buffer'),
 (2,'DNA'),
@@ -331,7 +342,10 @@ INSERT INTO `ComponentType` (`componentTypeId`, `name`) VALUES (6,'Buffer'),
 (4,'RNA'),
 (3,'Small Molecule');
 /*!40000 ALTER TABLE `ComponentType` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ComponentSubType` DISABLE KEYS */;
 INSERT INTO `ComponentSubType` (`componentSubTypeId`, `name`, `hasPh`, `proposalType`, `active`) VALUES (1,'Buffer',1,NULL,1),
 (2,'Precipitant',0,NULL,1),
@@ -342,7 +356,10 @@ INSERT INTO `ComponentSubType` (`componentSubTypeId`, `name`, `hasPh`, `proposal
 (7,'Solution',1,'scm',1),
 (8,'Powder',0,'cy',1);
 /*!40000 ALTER TABLE `ComponentSubType` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ConcentrationType` DISABLE KEYS */;
 INSERT INTO `ConcentrationType` (`concentrationTypeId`, `name`, `symbol`, `proposalType`, `active`) VALUES (1,'Molar','M',NULL,1),
 (2,'Percentage Weight / Volume','%(w/v)',NULL,1),
@@ -352,7 +369,10 @@ INSERT INTO `ConcentrationType` (`concentrationTypeId`, `name`, `symbol`, `propo
 (6,'Microlitre','uL','scm',1),
 (7,'Millilitre','ml','scm',1);
 /*!40000 ALTER TABLE `ConcentrationType` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ContainerType` DISABLE KEYS */;
 INSERT INTO `ContainerType` (`containerTypeId`, `name`, `proposalType`, `active`, `capacity`, `wellPerRow`, `dropPerWellX`, `dropPerWellY`, `dropHeight`, `dropWidth`, `dropOffsetX`, `dropOffsetY`, `wellDrop`) VALUES (1,'B21_8+1','saxs',1,9,9,1,1,1,1,0,0,-1),
 (2,'B21_96','saxs',1,192,12,2,1,0.5,1,0,0,-1),
@@ -394,7 +414,10 @@ INSERT INTO `ContainerType` (`containerTypeId`, `name`, `proposalType`, `active`
 (38,'Cryo-EM Puck','mx',1,12,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (39,'SWISSCI 2 Drop','mx',1,192,12,1,2,1,1,0,0,1);
 /*!40000 ALTER TABLE `ContainerType` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ExperimentType` DISABLE KEYS */;
 INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `active`) VALUES (1,'Default',NULL,1),
 (2,'MXPressE','mx',1),
@@ -445,19 +468,28 @@ INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `activ
 (47,'Soft X-Ray Tomography','em',1),
 (48,'CryoSIM','em',1);
 /*!40000 ALTER TABLE `ExperimentType` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `InspectionType` DISABLE KEYS */;
 INSERT INTO `InspectionType` (`inspectionTypeId`, `name`) VALUES (1,'Visible'),
 (2,'UV');
 /*!40000 ALTER TABLE `InspectionType` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Schedule` DISABLE KEYS */;
 INSERT INTO `Schedule` (`scheduleId`, `name`) VALUES (1,'Daily - 1 week'),
 (2,'Schedule 2'),
 (11,'Fibonacci'),
 (15,'3 Hour Interval');
 /*!40000 ALTER TABLE `Schedule` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScheduleComponent` DISABLE KEYS */;
 INSERT INTO `ScheduleComponent` (`scheduleComponentId`, `scheduleId`, `offset_hours`, `inspectionTypeId`) VALUES (1,1,0,1),
 (2,1,12,1),
@@ -496,34 +528,58 @@ INSERT INTO `ScheduleComponent` (`scheduleComponentId`, `scheduleId`, `offset_ho
 (93,1,336,1),
 (96,1,504,1);
 /*!40000 ALTER TABLE `ScheduleComponent` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Imager` DISABLE KEYS */;
 INSERT INTO `Imager` (`imagerId`, `name`, `temperature`, `serial`, `capacity`) VALUES (2,'Imager1 20c',20,'Z125434',1000),
 (7,'VMXi sim',20,'RI1000-0000',750);
 /*!40000 ALTER TABLE `Imager` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Detector` DISABLE KEYS */;
 INSERT INTO `Detector` (`detectorId`, `detectorType`, `detectorManufacturer`, `detectorModel`, `detectorPixelSizeHorizontal`, `detectorPixelSizeVertical`, `DETECTORMAXRESOLUTION`, `DETECTORMINRESOLUTION`, `detectorSerialNumber`, `detectorDistanceMin`, `detectorDistanceMax`, `trustedPixelValueRangeLower`, `trustedPixelValueRangeUpper`, `sensorThickness`, `overload`, `XGeoCorr`, `YGeoCorr`, `detectorMode`, `density`, `composition`, `numberOfPixelsX`, `numberOfPixelsY`, `detectorRollMin`, `detectorRollMax`, `localName`, `numberOfROIPixelsX`, `numberOfROIPixelsY`) VALUES (4,'Photon counting','In-house','Excalibur',NULL,NULL,NULL,NULL,'1109-434',100,300,NULL,NULL,NULL,NULL,NULL,NULL,NULL,55,'CrO3Br5Sr10',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (8,'Diamond XPDF detector',NULL,NULL,NULL,NULL,NULL,NULL,'1109-761',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,10.4,'C+Br+He',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `Detector` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `DewarLocationList` DISABLE KEYS */;
 /*!40000 ALTER TABLE `DewarLocationList` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_component` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_component` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_subcomponent` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_subcomponent` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BF_system` DISABLE KEYS */;
 /*!40000 ALTER TABLE `BF_system` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImageAutoScoreSchema` DISABLE KEYS */;
 INSERT INTO `BLSampleImageAutoScoreSchema` (`blSampleImageAutoScoreSchemaId`, `schemaName`, `enabled`) VALUES (1,'MARCO',1),
 (2,'CHIMP',1);
 /*!40000 ALTER TABLE `BLSampleImageAutoScoreSchema` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleImageAutoScoreClass` DISABLE KEYS */;
 INSERT INTO `BLSampleImageAutoScoreClass` (`blSampleImageAutoScoreClassId`, `blSampleImageAutoScoreSchemaId`, `scoreClass`) VALUES (1,1,'clear'),
 (2,1,'crystal'),
@@ -534,7 +590,10 @@ INSERT INTO `BLSampleImageAutoScoreClass` (`blSampleImageAutoScoreClassId`, `blS
 (7,2,'precipitant'),
 (8,2,'other');
 /*!40000 ALTER TABLE `BLSampleImageAutoScoreClass` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `SpaceGroup` DISABLE KEYS */;
 INSERT INTO `SpaceGroup` (`spaceGroupId`, `spaceGroupNumber`, `spaceGroupShortName`, `spaceGroupName`, `bravaisLattice`, `bravaisLatticeName`, `pointGroup`, `geometryClassnameId`, `MX_used`) VALUES (1,1,'P1','P 1','aP',NULL,NULL,NULL,1),
 (2,2,'P-1','P-1',NULL,NULL,NULL,NULL,1),
@@ -767,13 +826,19 @@ INSERT INTO `SpaceGroup` (`spaceGroupId`, `spaceGroupNumber`, `spaceGroupShortNa
 (229,229,'Im-3m','Im -3 m',NULL,NULL,NULL,NULL,0),
 (230,230,'Ia-3d','Ia -3 d1',NULL,NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `SpaceGroup` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProcessingPipelineCategory` DISABLE KEYS */;
 INSERT INTO `ProcessingPipelineCategory` (`processingPipelineCategoryId`, `name`) VALUES (1,'screening'),
 (2,'processing'),
 (3,'post processing');
 /*!40000 ALTER TABLE `ProcessingPipelineCategory` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ProcessingPipeline` DISABLE KEYS */;
 INSERT INTO `ProcessingPipeline` (`processingPipelineId`, `processingPipelineCategoryId`, `name`, `discipline`, `pipelineStatus`, `reprocessing`) VALUES (1,1,'Mosflm','MX','automatic',0),
 (2,1,'EDNA','MX','automatic',0),
@@ -792,7 +857,10 @@ INSERT INTO `ProcessingPipeline` (`processingPipelineId`, `processingPipelineCat
 (15,2,'xia2/DIALS (multi)','MX','automatic',0),
 (16,2,'xia2/3dii (multi)','MX','automatic',0);
 /*!40000 ALTER TABLE `ProcessingPipeline` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `BLSampleType` DISABLE KEYS */;
 INSERT INTO `BLSampleType` (`blSampleTypeId`, `name`, `proposalType`, `active`) VALUES (1,'background','xpdf',1),
 (2,'container','xpdf',1),
@@ -802,7 +870,10 @@ INSERT INTO `BLSampleType` (`blSampleTypeId`, `name`, `proposalType`, `active`) 
 (6,'sample','scm',1),
 (7,'sample','mx',1);
 /*!40000 ALTER TABLE `BLSampleType` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `PurificationColumn` DISABLE KEYS */;
 INSERT INTO `PurificationColumn` (`purificationColumnId`, `name`, `active`) VALUES (1,'user supplied',1),
 (2,'s75',1),
@@ -813,7 +884,10 @@ INSERT INTO `PurificationColumn` (`purificationColumnId`, `name`, `active`) VALU
 (7,'kw404',1),
 (8,'kw405',1);
 /*!40000 ALTER TABLE `PurificationColumn` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `UserGroup` DISABLE KEYS */;
 INSERT INTO `UserGroup` (`userGroupId`, `name`) VALUES (39,'autocollect'),
 (17,'bag_stats'),
@@ -840,7 +914,10 @@ INSERT INTO `UserGroup` (`userGroupId`, `name`) VALUES (39,'autocollect'),
 (11,'vmxi'),
 (34,'xpdf_admin');
 /*!40000 ALTER TABLE `UserGroup` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `Permission` DISABLE KEYS */;
 INSERT INTO `Permission` (`permissionId`, `type`, `description`) VALUES (1,'mx_admin','MX Administrator'),
 (2,'manage_groups','Manage User Groups'),
@@ -873,7 +950,10 @@ INSERT INTO `Permission` (`permissionId`, `type`, `description`) VALUES (1,'mx_a
 (77,'fault_admin','Edit Fault Categories'),
 (80,'fault_add','Add New Fault Reports');
 /*!40000 ALTER TABLE `Permission` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `UserGroup_has_Permission` DISABLE KEYS */;
 INSERT INTO `UserGroup_has_Permission` (`userGroupId`, `permissionId`) VALUES (1,1),
 (1,7),
@@ -934,27 +1014,44 @@ INSERT INTO `UserGroup_has_Permission` (`userGroupId`, `permissionId`) VALUES (1
 (34,49),
 (39,69);
 /*!40000 ALTER TABLE `UserGroup_has_Permission` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `ScanParametersService` DISABLE KEYS */;
 INSERT INTO `ScanParametersService` (`scanParametersServiceId`, `name`, `description`) VALUES (4,'Temperature','Temperature in Celsius'),
 (7,'Pressure','Pressure in pascal (Pa)');
 /*!40000 ALTER TABLE `ScanParametersService` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `EventType` DISABLE KEYS */;
 INSERT INTO `EventType` (`eventTypeId`, `name`) VALUES (3,'LaserExcitation'),
 (4,'ReactionTrigger'),
 (1,'XrayDetection'),
 (2,'XrayExposure');
 /*!40000 ALTER TABLE `EventType` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `LDAPSearchParameters` DISABLE KEYS */;
 /*!40000 ALTER TABLE `LDAPSearchParameters` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `LDAPSearchBase` DISABLE KEYS */;
 /*!40000 ALTER TABLE `LDAPSearchBase` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `UserGroup_has_LDAPSearchParameters` DISABLE KEYS */;
 /*!40000 ALTER TABLE `UserGroup_has_LDAPSearchParameters` ENABLE KEYS */;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -962,5 +1059,5 @@ INSERT INTO `EventType` (`eventTypeId`, `name`) VALUES (3,'LaserExcitation'),
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
