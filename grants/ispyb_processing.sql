@@ -34,6 +34,9 @@ GRANT SELECT,INSERT,UPDATE ON Movie TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON BFactorFit TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON DataCollectionFileAttachment TO 'ispyb_processing';
 
+GRANT SELECT, INSERT, UPDATE ON MillingStepName TO 'ispyb_processing';
+GRANT SELECT, INSERT, UPDATE ON MillingStep TO 'ispyb_processing';
+
 GRANT SELECT,INSERT,UPDATE ON Tomogram TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON ProcessedTomogram TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON TiltImageAlignment TO 'ispyb_processing';
