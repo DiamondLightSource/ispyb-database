@@ -10,6 +10,8 @@ GRANT ispyb_propagation TO ispyb_expeye_core_role;
 
 CREATE ROLE IF NOT EXISTS ispyb_expeye_acquisition_role;
 
+GRANT SELECT, INSERT, UPDATE ON AdminVar TO ispyb_expeye_core_role;
+
 GRANT SELECT, INSERT, UPDATE, DELETE ON Proposal TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSession TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON DataCollectionGroup TO ispyb_expeye_acquisition_role;
@@ -79,6 +81,7 @@ GRANT SELECT ON AutoProcScaling TO ispyb_expeye_core_role;
 GRANT SELECT ON AutoProc TO ispyb_expeye_core_role;
 
 GRANT SELECT ON ProcessingJob TO ispyb_expeye_core_role;
+GRANT SELECT, INSERT, UPDATE ON ProcessingJobParameter TO ispyb_expeye_core_role;
 
 GRANT SELECT On ExperimentType TO ispyb_expeye_core_role;
 
