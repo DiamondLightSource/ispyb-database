@@ -16,17 +16,21 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON Proposal TO ispyb_expeye_acquisition_rol
 GRANT SELECT, INSERT, UPDATE, DELETE ON BLSession TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON DataCollectionGroup TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON DataCollection TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE ON DataCollectionComment TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON DataCollectionFileAttachment TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON Position TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON EnergyScan TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON Aperture TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE ON ImageQualityIndicators TO ispyb_expeye_acquisition_role;
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON Shipping TO ispyb_expeye_acquisition_role;
-GRANT SELECT, INSERT, UPDATE, DELETE ON ShippingHasSession TO ispyb_expeye_acquisition_role;
-GRANT SELECT, INSERT, UPDATE, DELETE ON Project_has_Shipping TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE ON Shipping TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE ON ShippingHasSession TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE ON Project_has_Shipping TO ispyb_expeye_acquisition_role;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON LabContact TO ispyb_expeye_acquisition_role;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON FoilHole TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON GridSquare TO ispyb_expeye_acquisition_role;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON Dewar TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON DewarLocation TO ispyb_expeye_acquisition_role;
