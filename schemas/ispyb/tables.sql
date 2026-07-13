@@ -136,6 +136,7 @@ CREATE TABLE `AutoProcProgram` (
   `processingJobId` int(11) unsigned DEFAULT NULL,
   `processingPipelineId` int(11) unsigned DEFAULT NULL,
   `parentAutoProcProgramId` int(10) unsigned DEFAULT NULL,
+  `jobUuid` binary(16) DEFAULT NULL COMMENT 'External UUID for the job as described by the Zocalo service',
   PRIMARY KEY (`autoProcProgramId`),
   KEY `AutoProcProgram_FK2` (`processingJobId`),
   KEY `AutoProcProgram_fk_parentAutoProcProgramId` (`parentAutoProcProgramId`),
@@ -2486,7 +2487,7 @@ DROP TABLE IF EXISTS `PDB`;
 CREATE TABLE `PDB` (
   `pdbId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
-  `contents` mediumtext /*!100301 COMPRESSED*/ CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `contents` mediumtext /*M!100301 COMPRESSED*/ CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `code` varchar(4) DEFAULT NULL,
   `source` varchar(30) DEFAULT NULL COMMENT 'Could be e.g. AlphaFold or RoseTTAFold',
   PRIMARY KEY (`pdbId`)
@@ -3751,6 +3752,7 @@ CREATE TABLE `Tomogram` (
   `gridSquareId` int(11) unsigned DEFAULT NULL COMMENT 'FK, references medium mag map in GridSquare',
   `pixelLocationX` int(11) DEFAULT NULL COMMENT 'pixel location of tomogram centre on search map image (x)',
   `pixelLocationY` int(11) DEFAULT NULL COMMENT 'pixel location of tomogram centre on search map image (y)',
+  `thickness` float DEFAULT NULL COMMENT 'Unit: nm',
   PRIMARY KEY (`tomogramId`),
   KEY `Tomogram_fk_dataCollectionId` (`dataCollectionId`),
   KEY `Tomogram_fk_autoProcProgramId` (`autoProcProgramId`),

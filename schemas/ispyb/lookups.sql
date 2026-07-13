@@ -13,7 +13,7 @@
 
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `AdminVar` DISABLE KEYS */;
-INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','5.1.0');
+INSERT INTO `AdminVar` (`varId`, `name`, `value`) VALUES (4,'schemaVersion','5.2.0');
 /*!40000 ALTER TABLE `AdminVar` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -326,7 +326,11 @@ INSERT INTO `SchemaStatus` (`schemaStatusId`, `scriptName`, `schemaStatus`, `rec
 (350,'2026_04_23_AdminVar_bump_version.sql','DONE','2026-04-21 14:34:29'),
 (352,'2026_04_24_AutoProc_autoProcProgramId.sql','DONE','2026-05-18 15:09:04'),
 (353,'2026_05_08_MillingStep_table.sql','DONE','2026-05-18 15:09:04'),
-(354,'2026_05_18_AdminVar_bump_version.sql','DONE','2026-05-18 15:09:04');
+(354,'2026_05_18_AdminVar_bump_version.sql','DONE','2026-05-18 15:09:04'),
+(356,'2026_07_02_AutoProcProgram_jobUuid.sql','DONE','2026-07-13 10:06:59'),
+(357,'2026_07_02_ExperimentType_lamellaTomography.sql','DONE','2026-07-13 10:06:59'),
+(358,'2026_07_02_Tomogram_thickness.sql','DONE','2026-07-13 10:06:59'),
+(359,'2026_07_13_AdminVar_bump_version.sql','DONE','2026-07-13 10:06:59');
 /*!40000 ALTER TABLE `SchemaStatus` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -466,7 +470,9 @@ INSERT INTO `ExperimentType` (`experimentTypeId`, `name`, `proposalType`, `activ
 (45,'CLEM','em',1),
 (46,'FIB','em',1),
 (47,'Soft X-Ray Tomography','em',1),
-(48,'CryoSIM','em',1);
+(48,'CryoSIM','em',1),
+(49,'Lamella Tomography','em',1),
+(50,'Characterisation','mx',1);
 /*!40000 ALTER TABLE `ExperimentType` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
@@ -956,63 +962,63 @@ SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 /*!40000 ALTER TABLE `UserGroup_has_Permission` DISABLE KEYS */;
 INSERT INTO `UserGroup_has_Permission` (`userGroupId`, `permissionId`) VALUES (1,1),
-(1,7),
-(1,8),
-(1,9),
-(1,10),
-(1,11),
-(1,18),
-(1,20),
-(1,23),
-(1,49),
 (2,1),
-(2,6),
-(2,23),
-(2,80),
-(3,7),
-(3,23),
-(4,20),
-(5,10),
-(6,8),
-(6,23),
 (8,1),
+(9,1),
+(14,1),
+(24,1),
 (8,2),
 (8,4),
+(2,6),
 (8,6),
-(8,7),
-(8,8),
-(8,9),
-(8,10),
-(8,11),
-(8,18),
-(8,20),
-(8,23),
-(8,26),
-(8,29),
-(8,37),
-(8,49),
-(9,1),
 (9,6),
+(1,7),
+(3,7),
+(8,7),
+(1,8),
+(6,8),
+(8,8),
+(1,9),
+(8,9),
+(1,10),
+(5,10),
+(8,10),
+(1,11),
+(8,11),
 (10,12),
-(10,77),
 (11,13),
 (11,15),
 (11,16),
 (11,17),
+(1,18),
+(8,18),
+(12,18),
+(1,20),
+(4,20),
+(8,20),
+(1,23),
+(2,23),
+(3,23),
+(6,23),
+(8,23),
+(28,23),
+(8,26),
+(17,26),
+(8,29),
+(20,29),
 (11,32),
+(8,37),
+(28,37),
 (11,43),
+(1,49),
+(8,49),
+(34,49),
 (11,55),
 (11,58),
 (11,64),
-(12,18),
-(14,1),
-(17,26),
-(20,29),
-(24,1),
-(28,23),
-(28,37),
-(34,49),
-(39,69);
+(39,69),
+(10,77),
+(2,80);
 /*!40000 ALTER TABLE `UserGroup_has_Permission` ENABLE KEYS */;
 COMMIT;
 SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
