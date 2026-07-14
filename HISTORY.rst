@@ -5,6 +5,15 @@ History
 Unreleased / master
 -------------------
 
+5.2.0 (2026-07-14)
+-------------------
+
+New or modified tables, columns, lookup values:
+
+- New ``thickness`` column in ``Tomogram``
+- New ``jobUuid`` column in ``AutoProcProgram``
+- Add ``Lamella Tomography`` and ``Characterisation`` experiment types
+
 5.1.0 (2026-05-18)
 -------------------
 
