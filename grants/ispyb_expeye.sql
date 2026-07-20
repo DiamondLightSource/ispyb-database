@@ -31,6 +31,8 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON LabContact TO ispyb_expeye_acquisition_r
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON FoilHole TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON GridSquare TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON MillingStep TO ispyb_expeye_acquisition_role;
+GRANT SELECT ON MillingStepName TO ispyb_expeye_acquisition_role;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON Dewar TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON DewarLocation TO ispyb_expeye_acquisition_role;
