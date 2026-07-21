@@ -85,6 +85,8 @@ GRANT SELECT ON AutoProcScalingStatistics TO ispyb_expeye_core_role;
 GRANT SELECT ON AutoProcIntegration TO ispyb_expeye_core_role;
 GRANT SELECT ON AutoProcScaling TO ispyb_expeye_core_role;
 GRANT SELECT ON AutoProc TO ispyb_expeye_core_role;
+GRANT SELECT, INSERT, UPDATE ON MXMRRun TO ispyb_expeye_core_role;
+GRANT SELECT, INSERT, UPDATE ON MXMRRunBlob TO ispyb_expeye_core_role;
 
 GRANT SELECT ON ProcessingJob TO ispyb_expeye_core_role;
 GRANT SELECT, INSERT, UPDATE ON ProcessingJobParameter TO ispyb_expeye_core_role;
