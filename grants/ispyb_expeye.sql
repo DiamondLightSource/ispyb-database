@@ -29,6 +29,10 @@ GRANT SELECT, INSERT, UPDATE ON Project_has_Shipping TO ispyb_expeye_acquisition
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON LabContact TO ispyb_expeye_acquisition_role;
 
+GRANT SELECT, INSERT, UPDATE, DELETE ON TiltImageAlignment TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON CTF TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ParticlePicker TO ispyb_expeye_acquisition_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Movie TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON FoilHole TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON GridSquare TO ispyb_expeye_acquisition_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON MillingStep TO ispyb_expeye_acquisition_role;
