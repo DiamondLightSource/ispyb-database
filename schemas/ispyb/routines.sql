@@ -115,7 +115,8 @@ BEGIN
         p_completeness3, p_multiplicity3, p_anomalous3, p_anomalousCompleteness3, p_anomalousMultiplicity3, p_ccHalf3, p_ccAnomalous3, now());
 
     RETURN apsId;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -140,7 +141,8 @@ BEGIN
 	WHERE proposalCode = p_proposal_code AND proposalNumber = p_proposal_number
     LIMIT 1;
 	RETURN ret_title;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -167,7 +169,8 @@ BEGIN
 		AND proposalNumber = p_proposalNumber
 	LIMIT 1;
 	RETURN ret_title;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -191,7 +194,8 @@ BEGIN
     FROM Proposal p INNER JOIN BLSession bs ON p.proposalid = bs.proposalid
     WHERE concat(p.proposalcode, p.proposalnumber, '-', bs.visit_number) = p_visit;
     RETURN sessionid;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -212,7 +216,8 @@ CREATE FUNCTION `root_replace`(p_str varchar(255), p_oldroot varchar(255), p_new
 BEGIN
  DECLARE path_len smallint unsigned DEFAULT LENGTH(p_oldroot);
  RETURN CASE WHEN LEFT(p_str, path_len) = BINARY p_oldroot THEN CONCAT(p_newroot, SUBSTRING(p_str, path_len + 1)) ELSE p_str END;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -410,7 +415,8 @@ BEGIN
     ELSE
 		RETURN p_id;
     END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -465,7 +471,8 @@ BEGIN
     ELSE
 		RETURN p_id;
     END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -520,7 +527,8 @@ BEGIN
     ELSE
 		RETURN p_id;
     END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -608,7 +616,8 @@ BEGIN
 	END IF;
 
 	RETURN apiId;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -728,7 +737,8 @@ BEGIN
 
   RETURN p_id;
 
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -764,7 +774,8 @@ BEGIN
     ELSE
 		RETURN p_id;
     END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -809,7 +820,8 @@ BEGIN
     ELSE
 		RETURN LAST_INSERT_ID();
     END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -896,7 +908,8 @@ BEGIN
     END IF;
 
 	RETURN appid;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -948,7 +961,8 @@ BEGIN
     ELSE
 		RETURN p_id;
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -976,7 +990,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode is NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1004,7 +1019,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_login must be non-NULL.';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1031,7 +1047,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode is NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1064,7 +1081,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id is NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1088,7 +1106,8 @@ BEGIN
 	VALUES (p_sizeX);
 
 	SET p_id = LAST_INSERT_ID();
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1137,7 +1156,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='One or more mandatory arguments are NULL: p_proposalCode, p_proposalNumber, p_sessionNumber';
     END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1164,7 +1184,8 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode is NULL';
   END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1214,7 +1235,8 @@ BEGIN
     END WHILE;
 
 	CLOSE schedule_component_cursor;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1259,7 +1281,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: particleClassificationId must be non-NULL.';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1312,7 +1335,8 @@ BEGIN
 		p_recordTimeStamp, p_abundance, p_theoreticalDensity);
 
 	SET p_id = LAST_INSERT_ID();
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1431,7 +1455,8 @@ BEGIN
 		 MESSAGE_TEXT="Invalid value for p_experimentType";
 	END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1590,7 +1615,8 @@ BEGIN
 
   SET p_id := v_phasingAnalysisId;
   COMMIT;
-END `proc_body` ;;
+END `proc_body`
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1619,7 +1645,8 @@ BEGIN
 	VALUES (p_posX, p_posY, p_posZ, p_scale);
 
 	SET p_id = LAST_INSERT_ID();
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1738,7 +1765,8 @@ BEGIN
 	  COMMIT;
 
     END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1860,7 +1888,8 @@ BEGIN
 	  COMMIT;
 
     END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1912,7 +1941,8 @@ BEGIN
   ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) p_dataCollectionId and/or p_imageNumber are NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1954,7 +1984,8 @@ BEGIN
         SET p_id = LAST_INSERT_ID();
 
 	  END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1992,7 +2023,8 @@ BEGIN
 		  SET p_id = LAST_INSERT_ID();
       END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2027,7 +2059,8 @@ BEGIN
 	  IF LAST_INSERT_ID() <> 0 THEN
 		  SET p_id = LAST_INSERT_ID();
       END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2085,7 +2118,8 @@ BEGIN
 	  IF LAST_INSERT_ID() <> 0 THEN
 		  SET p_id = LAST_INSERT_ID();
       END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2141,7 +2175,8 @@ BEGIN
 	  IF LAST_INSERT_ID() <> 0 THEN
 		  SET p_id = LAST_INSERT_ID();
       END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2200,7 +2235,8 @@ BEGIN
 	  IF LAST_INSERT_ID() <> 0 THEN
 		  SET p_id = LAST_INSERT_ID();
       END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2244,7 +2280,8 @@ BEGIN
 		  SET p_id = LAST_INSERT_ID();
       END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2290,7 +2327,8 @@ BEGIN
 		  SET p_id = LAST_INSERT_ID();
       END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2334,7 +2372,8 @@ BEGIN
 		  SET p_id = LAST_INSERT_ID();
       END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2373,7 +2412,8 @@ BEGIN
 		  SET p_id = LAST_INSERT_ID();
       END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2446,7 +2486,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Image p_imageFullPath not found in table';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2526,7 +2567,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Image p_imageFullPath not found in table';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2554,7 +2596,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) is/are NULL: p_ug_name and p_login must be non-NULL.';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2579,7 +2622,8 @@ BEGIN
 		a.sizeX
 	FROM Aperture a
 	WHERE a.sizeX = p_sizeX;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2647,7 +2691,8 @@ proc_body:BEGIN
     ORDER BY dcids.datacollectionid;
   END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2684,7 +2729,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_sampleTypeId is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2712,7 +2758,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_componentId is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2909,7 +2956,8 @@ BEGIN
 	    MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
     END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2939,7 +2987,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_status and/or p_beamline are NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -2991,7 +3040,8 @@ FROM Proposal p
   LEFT OUTER JOIN BLSampleImage blsi ON blsi.blSampleId = blss.blSampleId
 WHERE cq.completedTimeStamp is NULL AND c.containerStatus = 'in_storage'
 ORDER BY cq.createdTimeStamp ASC;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3027,7 +3077,8 @@ BEGIN
      ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_barcode';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3061,7 +3112,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_containerInspectionId';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3154,7 +3206,8 @@ BEGIN
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
         MESSAGE_TEXT='Mandatory arguments p_id can not be NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3189,7 +3242,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3222,7 +3276,8 @@ BEGIN
      ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_containerId';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3251,7 +3306,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3281,7 +3337,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_beamline is NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3315,7 +3372,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_beamline is NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3344,7 +3402,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode is NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3374,7 +3433,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode is NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3424,7 +3484,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode is NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3480,7 +3541,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode is NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3502,7 +3564,8 @@ BEGIN
     FROM Proposal p
       INNER JOIN BLSession bs on p.proposalId = bs.proposalId
 	WHERE p.proposalCode = 'cm' AND bs.beamlinename = p_beamline AND now() > bs.startDate;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3528,7 +3591,8 @@ BEGIN
       INNER JOIN BLSession bs on p.proposalId = bs.proposalId
 	WHERE bs.beamlinename = p_beamline AND bs.visit_number <> 0 AND now() BETWEEN bs.startDate - INTERVAL p_tolerance_minutes MINUTE and bs.endDate + INTERVAL p_tolerance_minutes MINUTE
     ORDER BY bs.startDate;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3556,7 +3620,8 @@ BEGIN
 	    INNER JOIN Person per ON shp.personId = per.personId
 	  WHERE bs.beamlinename = p_beamline AND bs.visit_number <> 0 AND per.login = p_fed_id AND now() BETWEEN bs.startDate - INTERVAL p_tolerance_minutes MINUTE and bs.endDate + INTERVAL p_tolerance_minutes MINUTE
     ORDER BY bs.startDate;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3724,7 +3789,8 @@ BEGIN
     ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3775,7 +3841,8 @@ BEGIN
 	 MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
     END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3807,7 +3874,8 @@ BEGIN
 	    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
         MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3873,7 +3941,8 @@ BEGIN
 	    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
         MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3911,7 +3980,8 @@ BEGIN
     FROM DataCollection dc
 		LEFT OUTER JOIN Aperture a on dc.apertureId = a.apertureId
     WHERE blSubSampleId = p_id;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -3956,7 +4026,8 @@ BEGIN
     ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4036,7 +4107,8 @@ BEGIN
     ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4075,7 +4147,8 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_sampleId is NULL';
     END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4101,7 +4174,8 @@ BEGIN
           INNER JOIN Proposal p ON p.proposalid = bs.proposalid
 		WHERE dcpg.blsampleId is not NULL AND concat(p.proposalcode, p.proposalnumber, '-', bs.visit_number) = p_session;
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4135,7 +4209,8 @@ BEGIN
         WHERE dp.dataCollectionPlanGroupId = p_id
         ORDER BY spm.modelNumber ASC;
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4168,7 +4243,8 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_serialNumber is NULL';
   END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4200,7 +4276,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_proposalNumber is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4256,7 +4333,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_proposalCode and/or p_proposalNumber are NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4281,7 +4359,8 @@ BEGIN
       INNER JOIN BLSession bs on p.proposalId = bs.proposalId
 	WHERE bs.beamlinename LIKE p_instrument AND bs.visit_number <> 0 AND bs.endDate BETWEEN p_startDate AND p_endDate
     ORDER BY bs.startDate;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4356,7 +4435,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_dcId is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4396,7 +4476,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_dcgId is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4470,7 +4551,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_dcgId is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4519,7 +4601,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_dcIds is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4594,7 +4677,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_dcId is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4623,7 +4707,8 @@ BEGIN
     ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_proposalCode + p_proposalNumber + p_sessionNumber can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4649,7 +4734,8 @@ BEGIN
 	WHERE p.proposalCode = p_proposal_code AND bs.beamlinename = p_beamline AND bs.visit_number <> 0 AND now() > bs.startDate
     ORDER BY bs.startDate DESC
     LIMIT 1;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4678,7 +4764,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_componentId';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4707,7 +4794,8 @@ BEGIN
     ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_proposalCode + p_proposalNumber can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4737,7 +4825,8 @@ BEGIN
     ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_proposalCode + p_proposalNumber + p_visit_number can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4766,7 +4855,8 @@ BEGIN
     ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4795,7 +4885,8 @@ BEGIN
     ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4838,7 +4929,8 @@ BEGIN
     ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4867,7 +4959,8 @@ BEGIN
     ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4910,7 +5003,8 @@ BEGIN
     ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4951,7 +5045,8 @@ BEGIN
     ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -4983,7 +5078,8 @@ BEGIN
     ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5035,7 +5131,8 @@ BEGIN
     ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5074,7 +5171,8 @@ BEGIN
 	    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
         MESSAGE_TEXT='Mandatory arguments p_id and p_program can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5131,7 +5229,8 @@ BEGIN
 	    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
         MESSAGE_TEXT='Mandatory arguments p_id and p_program can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5160,7 +5259,8 @@ BEGIN
 	    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
         MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5205,7 +5305,8 @@ BEGIN
     ELSE
 	    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5246,7 +5347,8 @@ BEGIN
 
     END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5302,7 +5404,8 @@ BEGIN
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
 	  MESSAGE_TEXT='Mandatory arguments dataCollectionId can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5344,7 +5447,8 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_dcId is NULL';
     END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5480,7 +5584,8 @@ BEGIN
 
 		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5664,7 +5769,8 @@ BEGIN
     ELSE
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5704,7 +5810,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='One or more mandatory arguments are NULL: p_proposalCode, p_proposalNumber';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5740,7 +5847,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_sampleGroupId';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5788,7 +5896,8 @@ BEGIN
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_barcode';
   END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5820,7 +5929,8 @@ BEGIN
     ELSE
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_containerId and/or p_location';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5847,7 +5957,8 @@ BEGIN
 	ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_sampleId is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -5876,7 +5987,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_sampleId';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -6048,7 +6160,8 @@ BEGIN
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
   END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -6226,7 +6339,8 @@ BEGIN
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_proposalCode and p_proposalNumber can not be NULL';
   END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -6397,7 +6511,8 @@ BEGIN
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode can not be NULL';
   END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -6660,7 +6775,8 @@ BEGIN
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
   END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -6923,7 +7039,8 @@ BEGIN
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_containerId can not be NULL';
   END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7186,7 +7303,8 @@ BEGIN
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_barcode and p_location can not be NULL';
   END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7224,7 +7342,8 @@ BEGIN
 		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
 		  MESSAGE_TEXT='Mandatory arguments p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7276,7 +7395,8 @@ BEGIN
         AND vr.run = p_run
     ORDER BY bs.startDate, bs.sessionId;
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7311,7 +7431,8 @@ BEGIN
     ELSE
 	    SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_login can not be NULL';
 	  END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7333,7 +7454,8 @@ BEGIN
     SELECT max(bs.sessionid) into p_id
     FROM Proposal p INNER JOIN BLSession bs ON p.proposalid = bs.proposalid
     WHERE concat(p.proposalcode, p.proposalnumber, '-', bs.visit_number) = p_session;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7373,7 +7495,8 @@ BEGIN
 
     END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7399,7 +7522,8 @@ BEGIN
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_id must be non-NULL.';
 
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7419,7 +7543,8 @@ CREATE PROCEDURE `retrieve_sleeves`()
 BEGIN
     SELECT sleeveId "id", location "location", lastMovedToFreezer "lastMovedToFreezer", lastMovedFromFreezer "lastMovedFromFreezer"
     FROM Sleeve;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7439,7 +7564,8 @@ CREATE PROCEDURE `retrieve_test`()
     COMMENT 'For testing the connection'
 BEGIN
   SELECT now() as "curr_ts", '2016-10-07 14:02:58' as "curr_ts2", '2' as "2_1", 2 as "2_2", '2.0' as "20_1", 2.0 as "20_2";
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7470,7 +7596,8 @@ BEGIN
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644,
 	    MESSAGE_TEXT='Mandatory argument p_id can not be NULL';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7610,7 +7737,8 @@ BEGIN
       row_proposalNumber as "proposalNumber",
       row_queuedCount as "queuedCount",
       row_samples as "samples";
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7640,7 +7768,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7687,7 +7816,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode is NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7716,7 +7846,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7803,7 +7934,8 @@ BEGIN
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='p_containerId is NULL.';
 
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7850,7 +7982,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_status does not have a valid value';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7894,7 +8027,8 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_beamline is NULL';
     END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7948,7 +8082,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_barcode is NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -7981,7 +8116,8 @@ BEGIN
   ELSE
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_id and/or p_comments are NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8065,7 +8201,8 @@ BEGIN
 			sizeX = IFNULL(p_apertureSizeX, sizeX)
 		WHERE apertureId = row_apertureId;
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8151,7 +8288,8 @@ BEGIN
 			sizeX = IFNULL(p_apertureSizeX, sizeX)
 		WHERE apertureId = row_apertureId;
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8185,7 +8323,8 @@ BEGIN
 		WHERE
 			dataCollectionId = p_id;
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8305,7 +8444,8 @@ BEGIN
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='One of arguments p_shippingId, p_dewarId, p_containerId, p_sampleId must be non-NULL';
   END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8347,7 +8487,8 @@ BEGIN
 	ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_dcId is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8381,7 +8522,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id is NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8412,7 +8554,8 @@ BEGIN
   )
   WHERE autoProcProgramId BETWEEN p_startId AND p_endId AND
           AutoProcProgram.processingPrograms = 'xia2';
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8446,7 +8589,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) p_oldBarcode and/or p_newBarcode are NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8481,7 +8625,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_id is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8514,7 +8659,8 @@ BEGIN
   ELSE
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_id and/or p_staffComments are NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8548,7 +8694,8 @@ BEGIN
         SET MYSQL_ERRNO=1644,
             MESSAGE_TEXT='Mandatory arguments p_proposalCode, p_proposalNumber int, p_sessionNumber must be non-NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8579,7 +8726,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id AND p_endDate must be non-NULL.';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8737,7 +8885,8 @@ BEGIN
 		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1643, MESSAGE_TEXT='Corresponding rows for p_proposalCode + p_proposalNumber + p_sessionNumber not found';
       END IF;
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8775,7 +8924,8 @@ BEGIN
       UPDATE AdminVar SET `value` = p_value WHERE `name` = p_name;
     END IF;
     COMMIT;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8826,7 +8976,8 @@ BEGIN
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='p_id must be non-NULL or p_containerRegistryBarcode must match barcode in ContainerRegistry.';
   END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -8889,7 +9040,8 @@ BEGIN
         IF p_ctfId IS NULL THEN
             SET p_ctfId = LAST_INSERT_ID();
         END IF;
-   END ;;
+   END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -9106,7 +9258,8 @@ BEGIN
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT=
       'Mandatory argument(s) are NULL: p_id OR p_dcgId must be non-NULL.';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -9163,7 +9316,8 @@ BEGIN
 		  SET p_id = LAST_INSERT_ID();
       END IF;
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -9203,7 +9357,8 @@ BEGIN
     ELSE
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_id OR p_dataCollectionId must be non-NULL.';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -9258,7 +9413,8 @@ BEGIN
                   SET p_id = LAST_INSERT_ID();
       END IF;
         END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -9315,7 +9471,8 @@ BEGIN
                   SET p_id = LAST_INSERT_ID();
       END IF;
         END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -9404,7 +9561,8 @@ BEGIN
 		  SET p_id = LAST_INSERT_ID();
       END IF;
     END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -9502,7 +9660,8 @@ BEGIN
     ELSE
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_sessionId OR a valid session described by (p_proposalCode and p_proposalNumber and p_sessionNumber) must be non-NULL.';
     END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -9606,7 +9765,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_sessionId OR a valid session described by (p_proposalCode and p_proposalNumber and p_sessionNumber) must be non-NULL.';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -9677,7 +9837,8 @@ BEGIN
 	IF LAST_INSERT_ID() <> 0 THEN
 		SET p_id = LAST_INSERT_ID();
     END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -9752,7 +9913,8 @@ BEGIN
 	IF p_id IS NULL THEN
 		SET p_id = LAST_INSERT_ID();
     END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -9829,7 +9991,8 @@ BEGIN
 	IF p_id IS NULL THEN
 		SET p_id = LAST_INSERT_ID();
     END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -9917,7 +10080,8 @@ BEGIN
 				WHERE dewarId = p_id;
 			END IF;
 		END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10025,7 +10189,8 @@ BEGIN
 			WHERE dewarId = p_id;
 		END IF;
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10131,7 +10296,8 @@ BEGIN
 			WHERE dewarId = p_id;
 		END IF;
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10228,7 +10394,8 @@ BEGIN
   ELSE
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_sessionId must be non-NULL.';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10278,7 +10445,8 @@ BEGIN
     IF p_id IS NULL THEN
         SET p_id = LAST_INSERT_ID();
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10326,7 +10494,8 @@ BEGIN
     IF p_id IS NULL THEN
         SET p_id = LAST_INSERT_ID();
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10387,7 +10556,8 @@ BEGIN
 	IF p_motionCorrectionId IS NULL THEN
 	    SET p_motionCorrectionId = LAST_INSERT_ID();
     	END IF;
-     END ;;
+     END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10429,7 +10599,8 @@ BEGIN
 	IF p_movieId IS NULL THEN
 	    SET p_movieId = LAST_INSERT_ID();
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10562,7 +10733,8 @@ BEGIN
 	ELSE
 	  SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_parentId can not be NULL';
 	END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10603,7 +10775,8 @@ BEGIN
   ELSE
 	SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_parentId can not be NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10724,7 +10897,8 @@ ELSE
 		SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_sampleId or p_containerId must be non-NULL.';
 
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10779,7 +10953,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_particleClassificationGroupId must be non-NULL.';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10827,7 +11002,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_particlePickerId must be non-NULL.';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10885,7 +11061,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_particleClassificationGroupId must be non-NULL.';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10928,7 +11105,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_firstMotionCorrectionId must be non-NULL.';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -10973,7 +11151,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_firstMotionCorrectionId must be non-NULL.';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11024,7 +11203,8 @@ BEGIN
         ELSE
                 SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_id OR p_login must be non-NULL.';
         END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11069,7 +11249,8 @@ BEGIN
 	IF p_id IS NULL THEN
 		SET p_id = LAST_INSERT_ID();
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11155,7 +11336,8 @@ BEGIN
 			VALUES (p_parentId, p_id, now());
 	  END IF;
 	END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11199,7 +11381,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) p_id and/or p_dataCollectionId are NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11241,7 +11424,8 @@ BEGIN
   ELSE
 	SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) p_id and/or p_processingJobId + p_dataCollectionId are NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11281,7 +11465,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) p_id and/or p_processingJobId are NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11367,7 +11552,8 @@ BEGIN
     END IF;
     COMMIT;
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11408,7 +11594,8 @@ BEGIN
 	ELSE
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_parentid is NULL';
     END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11451,7 +11638,8 @@ BEGIN
 	ELSE
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument p_parentid is NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11493,7 +11681,8 @@ BEGIN
 	ELSE
       SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Both arguments p_id and p_programId cannot be NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11582,7 +11771,8 @@ BEGIN
     END IF;
     COMMIT;
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11630,7 +11820,8 @@ ELSE
   SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR (p_personId AND p_proposalCode AND p_proposalNumber) must be non-NULL.';
 END IF;
 
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11668,7 +11859,8 @@ BEGIN
         ELSE
                 SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR (p_proposalId AND p_personId) must be non-NULL.';
         END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11739,7 +11931,8 @@ BEGIN
   ELSE
 	SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory arguments p_dataCollectionId and/or p_imageNumber are NULL';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11779,7 +11972,8 @@ BEGIN
         WHERE dataCollectionId = p_dataCollectionId AND imageNumber = p_imageNumber;
         SET p_id = 1;
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11838,7 +12032,8 @@ BEGIN
 	ELSE
 		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_sessionId must be non-NULL.';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11932,7 +12127,8 @@ BEGIN
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_id or p_containerId must be non-NULL.';
 
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -11977,7 +12173,8 @@ BEGIN
       modifiedTimeStamp = current_timestamp
     WHERE blSampleImageId = p_id;
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -12047,7 +12244,8 @@ BEGIN
           END IF;
         END IF;
       END IF;
-  END ;;
+  END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -12090,7 +12288,8 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Arguments p_imageFullPath, p_schemaName and p_scoreClass cannot be NULL';
 	  END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -12173,7 +12372,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR (p_proposalCode AND p_proposalNumber) must be non-NULL.';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -12207,7 +12407,8 @@ BEGIN
         ELSE
                 SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_sessionId AND p_personId must be non-NULL.';
         END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -12248,7 +12449,8 @@ BEGIN
   ELSE
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_proposalCode, p_proposalNumber, p_visit_number AND p_login must be non-NULL.';
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -12277,7 +12479,8 @@ BEGIN
     SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument is NULL: p_id must be non-NULL.';
 
   END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -12352,7 +12555,8 @@ BEGIN
 	ELSE
 		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO=1644, MESSAGE_TEXT='Mandatory argument(s) are NULL: p_id OR p_sessionId must be non-NULL.';
 	END IF;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -12371,7 +12575,8 @@ DELIMITER ;;
 CREATE PROCEDURE `Warnings`()
 BEGIN
 select * from mysql.user;
-END ;;
+END
+;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -12405,7 +12610,7 @@ DELIMITER ;
 /*!50003 SET collation_connection  = utf8mb3_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-/*!50032 DROP TRIGGER IF EXISTS Container_sc_loc_update */;
+/*!50032 DROP TRIGGER IF EXISTS `Container_sc_loc_update` */;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER Container_sc_loc_update BEFORE UPDATE ON Container
 FOR EACH ROW
@@ -12413,7 +12618,8 @@ BEGIN
     IF IFNULL(NEW.sampleChangerLocation, -999) <> IFNULL(OLD.sampleChangerLocation, -999) THEN
         SET NEW.scLocationUpdated = now();
     END IF;
-END */;;
+END 
+*/;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
