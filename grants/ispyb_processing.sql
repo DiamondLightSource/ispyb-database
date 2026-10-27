@@ -33,6 +33,7 @@ GRANT SELECT,INSERT,UPDATE ON CTF TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON Movie TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON BFactorFit TO 'ispyb_processing';
 GRANT SELECT,INSERT,UPDATE ON DataCollectionFileAttachment TO 'ispyb_processing';
+GRANT SELECT,INSERT,UPDATE ON GridInfo TO 'ispyb_processing';
 
 GRANT SELECT, INSERT, UPDATE ON MillingStepName TO 'ispyb_processing';
 GRANT SELECT, INSERT, UPDATE ON MillingStep TO 'ispyb_processing';
