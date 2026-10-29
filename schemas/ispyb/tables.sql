@@ -9,7 +9,7 @@
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*M!100616 SET @OLD_NOTE_VERBOSITY=@@NOTE_VERBOSITY, NOTE_VERBOSITY=0 */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 DROP TABLE IF EXISTS `AdminActivity`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -62,6 +62,7 @@ CREATE TABLE `Atlas` (
   `hasMagenta` tinyint(1) DEFAULT 0 COMMENT 'Whether atlas has magenta channel',
   `hasGrey` tinyint(1) DEFAULT 0 COMMENT 'Whether atlas has grey channel',
   `mode` enum('Bright Field and Fluorescent','Bright Field','Fluorescent','Tomography','Single Particle') DEFAULT NULL COMMENT 'Collection mode',
+  `atlasType` enum('ROI','Tilescan') NOT NULL,
   PRIMARY KEY (`atlasId`),
   KEY `Atlas_fk_dataCollectionGroupId` (`dataCollectionGroupId`),
   CONSTRAINT `Atlas_fk_dataCollectionGroupId` FOREIGN KEY (`dataCollectionGroupId`) REFERENCES `DataCollectionGroup` (`dataCollectionGroupId`) ON UPDATE CASCADE
@@ -3982,5 +3983,5 @@ CREATE TABLE `zc_ZocaloBuffer` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
